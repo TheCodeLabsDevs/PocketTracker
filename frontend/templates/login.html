@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+                crossorigin="anonymous"></script>
+
+        <title>PocketTracker - Login</title>
+
+        <link href="../static/css/login.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="../static/image/PocketTracker.png" alt="" width="35" height="35" class="d-inline-block align-top">
+                    PocketTracker - v1.0.0
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
+                    </form>
+                    <a class="btn btn-primary" href="#">Login</a>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="form-signin align-middle">
+                <form>
+                    <img class="mb-4" src="../static/image/PocketTracker.png" alt="" width="80" height="80">
+                    <h1 class="h3 mb-3 fw-normal">PocketTracker</h1>
+                    <label for="inputUserName" class="visually-hidden">Username</label>
+                    <input type="text" id="inputUserName" class="form-control" placeholder="Username" required autofocus>
+                    <label for="inputPassword" class="visually-hidden">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                </form>
+            </div>
+        </main>
+    </body>
+</html>
