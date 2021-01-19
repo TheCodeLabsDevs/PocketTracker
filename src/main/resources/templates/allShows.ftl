@@ -33,7 +33,7 @@
                     <form class="d-flex">
                         <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
                     </form>
-                    <a class="btn btn-primary" href="#">Login</a>
+                    <a class="btn btn-primary" href="<@s.url "login"/>">Login</a>
                 </div>
             </div>
         </nav>
