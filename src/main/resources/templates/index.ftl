@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
     <head>
+        <#import "spring.ftl" as s/>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,14 +15,14 @@
 
         <title>PocketTracker - Home</title>
 
-        <link href="../static/css/main.css" rel="stylesheet">
+        <link href="<@s.url "/css/main.css"/>" rel="stylesheet">
     </head>
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../static/image/PocketTracker.png" alt="" width="35" height="35" class="d-inline-block align-top">
+                    <img src="<@s.url "/image/PocketTracker.png"/>" alt="" width="35" height="35" class="d-inline-block align-top">
                     PocketTracker - v1.0.0
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

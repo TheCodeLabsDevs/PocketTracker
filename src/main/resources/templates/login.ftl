@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <#import "spring.ftl" as s/>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,14 +15,14 @@
 
         <title>PocketTracker - Login</title>
 
-        <link href="../static/css/login.css" rel="stylesheet">
+        <link href="<@s.url "/css/login.css"/>" rel="stylesheet">
     </head>
 
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../static/image/PocketTracker.png" alt="" width="35" height="35" class="d-inline-block align-top">
+                    <img src="<@s.url "/image/PocketTracker.png"/>" alt="" width="35" height="35" class="d-inline-block align-top">
                     PocketTracker - v1.0.0
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +42,7 @@
         <main>
             <div class="form-signin align-middle card">
                 <form>
-                    <img class="mb-4" src="../static/image/PocketTracker.png" alt="" width="80" height="80">
+                    <img class="mb-4" src="<@s.url "/image/PocketTracker.png"/>" alt="" width="80" height="80">
                     <h1 class="h3 mb-3 fw-normal">PocketTracker</h1>
                     <label for="inputUserName" class="visually-hidden">Username</label>
                     <input type="text" id="inputUserName" class="form-control" placeholder="Username" required autofocus>
