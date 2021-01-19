@@ -45,5 +45,18 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.18</version>
         </dependency>
+
+        <!-- webjars -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.40</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.0.0-beta1</version>
+        </dependency>
+
     </dependencies>
 </project>

@@ -25,10 +25,10 @@ public class MainController
 	}
 
 	@GetMapping
-	public String index(Model model)
+	public String allShows(Model model)
 	{
 		model.addAttribute("shows", showRepository.findAll());
-		return "index";
+		return "allShows";
 	}
 
 	@GetMapping("/login")
