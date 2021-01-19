@@ -43,163 +43,34 @@
             <div class="album py-5 bg-light">
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
+                        <#list shows as show>
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    <svg class="bd-placeholder-img card-img-top" width="100%"
+                                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                                        <rect width="100%" height="100%" fill="#55595c"/>
+                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                                    </svg>
 
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">Der Lehrer</p>
-                                    <p class="card-text">
-                                        9 Staffeln - 87 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">65/87</div>
+                                    <div class="card-body">
+                                        <p class="card-text fw-bold">${show.getName()}</p>
+                                        <p class="card-text">
+                                            ${show.getSeasons()?size} Staffeln - 87 Episoden
+                                        </p>
+                                        <p class="card-text">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">65/87</div>
+                                            </div>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
                                         </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">The Big Bang Theory</p>
-                                    <p class="card-text">
-                                        12 Staffeln - 279 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">279/279</div>
-                                    </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">Lorem Ipsum</p>
-                                    <p class="card-text">
-                                        2 Staffeln - 24 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0/24</div>
-                                    </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">Der Lehrer</p>
-                                    <p class="card-text">
-                                        9 Staffeln - 87 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">65/87</div>
-                                    </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">The Big Bang Theory</p>
-                                    <p class="card-text">
-                                        12 Staffeln - 279 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">279/279</div>
-                                    </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-
-                                <div class="card-body">
-                                    <p class="card-text fw-bold">Lorem Ipsum</p>
-                                    <p class="card-text">
-                                        2 Staffeln - 24 Episoden
-                                    </p>
-                                    <p class="card-text">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0/24</div>
-                                        </div>
-                                    </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </#list>
                     </div>
                 </div>
             </div>

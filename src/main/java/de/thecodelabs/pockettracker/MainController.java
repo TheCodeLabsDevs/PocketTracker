@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker;
 
+import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController
 {
 	private final ShowRepository showRepository;
+	private final SeasonRepository seasonRepository;
+
 
 	@Autowired
-	public MainController(ShowRepository showRepository)
+	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository)
 	{
 		this.showRepository = showRepository;
+		this.seasonRepository = seasonRepository;
 	}
 
 	@GetMapping
