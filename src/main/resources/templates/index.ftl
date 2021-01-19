@@ -56,7 +56,7 @@
                                     <div class="card-body">
                                         <p class="card-text fw-bold">${show.getName()}</p>
                                         <p class="card-text">
-                                            ${show.getSeasons()?size} Staffeln - 87 Episoden
+                                            ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                                         </p>
                                         <p class="card-text">
                                             <div class="progress">
