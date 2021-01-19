@@ -1,11 +1,14 @@
 package de.thecodelabs.pockettracker.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.show.Show;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
+@Table(name = "appuser")
 public class User
 {
 	@Id
@@ -16,6 +19,12 @@ public class User
 	private String name;
 
 	private String password;
+
+	@ManyToMany
+	private List<Show> shows;
+
+	@ManyToMany
+	private List<Episode> watchedEpisodes;
 
 	public void setId(Integer id)
 	{
