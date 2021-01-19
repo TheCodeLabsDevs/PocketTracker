@@ -1,10 +1,12 @@
 package de.thecodelabs.pockettracker.season;
 
 
+import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Season
@@ -21,6 +23,9 @@ public class Season
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Show show;
+
+	@OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+	private List<Episode> episodes = new ArrayList<>();
 
 	public Season()
 	{
@@ -74,6 +79,26 @@ public class Season
 		this.number = number;
 	}
 
+	public Show getShow()
+	{
+		return show;
+	}
+
+	public void setShow(Show show)
+	{
+		this.show = show;
+	}
+
+	public List<Episode> getEpisodes()
+	{
+		return episodes;
+	}
+
+	public void setEpisodes(List<Episode> episodes)
+	{
+		this.episodes = episodes;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -81,8 +106,9 @@ public class Season
 				"id=" + id +
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
-				", show=[id=" + show.getId() + ", name=" + show.getName() + "]" +
 				", number=" + number +
+				", show=[id=" + show.getId() + ", name=" + show.getName() + "]" +
+				", episodes=" + episodes +
 				'}';
 	}
 }

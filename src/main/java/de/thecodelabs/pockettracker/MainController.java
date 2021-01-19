@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker;
 
+import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,15 @@ public class MainController
 {
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
+	private final EpisodeRepository episodeRepository;
 
 
 	@Autowired
-	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository)
+	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
 	{
 		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
+		this.episodeRepository = episodeRepository;
 	}
 
 	@GetMapping
