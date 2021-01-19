@@ -23,7 +23,9 @@ public class Show
 
 	private LocalDate firstAired;
 
-	private String imagePath;
+	private String bannerPath;
+
+	private String posterPath;
 
 	private ShowType type;
 
@@ -34,12 +36,13 @@ public class Show
 	{
 	}
 
-	public Show(@NotNull String name, String description, LocalDate firstAired, String imagePath, ShowType type)
+	public Show(@NotNull String name, String description, LocalDate firstAired, String bannerPath, String posterPath, ShowType type)
 	{
 		this.name = name;
 		this.description = description;
 		this.firstAired = firstAired;
-		this.imagePath = imagePath;
+		this.bannerPath = bannerPath;
+		this.posterPath = posterPath;
 		this.type = type;
 	}
 
@@ -83,14 +86,24 @@ public class Show
 		this.firstAired = firstAired;
 	}
 
-	public String getImagePath()
+	public String getBannerPath()
 	{
-		return imagePath;
+		return bannerPath;
 	}
 
-	public void setImagePath(String imagePath)
+	public void setBannerPath(String imagePath)
 	{
-		this.imagePath = imagePath;
+		this.bannerPath = imagePath;
+	}
+
+	public String getPosterPath()
+	{
+		return posterPath;
+	}
+
+	public void setPosterPath(String posterPath)
+	{
+		this.posterPath = posterPath;
 	}
 
 	public ShowType getType()
@@ -121,7 +134,8 @@ public class Show
 				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", firstAired=" + firstAired +
-				", imagePath='" + imagePath + '\'' +
+				", bannerPath='" + bannerPath + '\'' +
+				", posterPath='" + posterPath + '\'' +
 				", type=" + type +
 				", seasons=" + seasons +
 				'}';

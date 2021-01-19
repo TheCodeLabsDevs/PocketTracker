@@ -21,8 +21,6 @@ public class Episode
 
 	private LocalDate firstAired;
 
-	private String imagePath;
-
 	private Integer lengthInMinutes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -32,13 +30,12 @@ public class Episode
 	{
 	}
 
-	public Episode(String name, String description, Integer number, LocalDate firstAired, String imagePath, Integer lengthInMinutes, Season season)
+	public Episode(String name, String description, Integer number, LocalDate firstAired, Integer lengthInMinutes, Season season)
 	{
 		this.name = name;
 		this.description = description;
 		this.number = number;
 		this.firstAired = firstAired;
-		this.imagePath = imagePath;
 		this.lengthInMinutes = lengthInMinutes;
 		this.season = season;
 	}
@@ -93,16 +90,6 @@ public class Episode
 		this.firstAired = firstAired;
 	}
 
-	public String getImagePath()
-	{
-		return imagePath;
-	}
-
-	public void setImagePath(String imagePath)
-	{
-		this.imagePath = imagePath;
-	}
-
 	public Integer getLengthInMinutes()
 	{
 		return lengthInMinutes;
@@ -132,7 +119,6 @@ public class Episode
 				", description='" + description + '\'' +
 				", number=" + number +
 				", firstAired=" + firstAired +
-				", imagePath='" + imagePath + '\'' +
 				", lengthInMinutes=" + lengthInMinutes +
 				", season=[id=" + season.getId() + ", name=" + season.getName() + ", number: " + season.getNumber() + "]" +
 				'}';
