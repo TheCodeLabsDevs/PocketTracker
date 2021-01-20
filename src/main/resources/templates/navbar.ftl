@@ -13,13 +13,12 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
+            <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+                <div class="me-auto"></div>
+                <form class="d-flex mt-3 mb-2 my-md-0 me-md-3">
+                    <input class="form-control " type="search" placeholder="Search" aria-label="Search">
                 </form>
-                <div class="text-white mx-3">
+                <div class="text-white mx-md-3 my-2 my-md-0">
                     <i class="fas fa-user pe-3"></i>John Doe
                 </div>
                 <a class="btn btn-primary" href="<@s.url "logout"/>">Logout</a>
