@@ -14,6 +14,10 @@
         <main>
             <div class="py-5">
                 <div class="container">
+                    <div class="mx-auto text-center mb-4">
+                        <a href="<@s.url "/"/>" class="btn btn-primary" type="button"><i class="fas fa-arrow-left"></i> Back</a>
+                    </div>
+
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
