@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
     <head>
+        <#import "spring.ftl" as s/>
+        <#import "helpers.ftl" as helperMacros>
         <#import "header.ftl" as headerMacros>
         <@headerMacros.header 'Episodes'/>
     </head>

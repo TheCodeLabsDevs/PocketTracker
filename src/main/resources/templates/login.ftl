@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <#import "spring.ftl" as s/>
+        <#import "helpers.ftl" as helperMacros>
         <#import "header.ftl" as headerMacros>
         <@headerMacros.header 'Login'/>
 
