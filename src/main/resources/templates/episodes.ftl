@@ -6,9 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-              integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-              crossorigin="anonymous"/>
+        <link href="<@s.url "/webjars/font-awesome/5.15.2/css/all.min.css"/>" rel="stylesheet"/>
 
         <link href="<@s.url "/webjars/bootstrap/5.0.0-beta1/css/bootstrap.min.css"/>" rel="stylesheet"/>
         <script src="<@s.url "/webjars/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"/>"></script>
@@ -26,13 +24,12 @@
             <div class="container mt-5">
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back
+                        </button>
                         <h2 class="mb-2 text-truncate">Der Lehrer</h2>
                         <h4 class="mb-4">-Staffel 2-</h4>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28"
-                                 aria-valuemin="0" aria-valuemax="100">2/7
-                            </div>
+                            <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100">2/7</div>
                         </div>
                     </div>
                 </div>
