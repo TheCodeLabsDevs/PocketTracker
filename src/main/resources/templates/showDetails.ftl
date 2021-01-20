@@ -35,8 +35,12 @@
 
                                     <div class="mt-3 mt-md-5">
                                         <h5>Beschreibung</h5>
-                                        ${show.getDescription()}
+                                        <#if show.getDescription()??>
+                                            ${show.getDescription()}
+                                        </#if>
                                     </div>
+
+                                    <!-- TODO: list seasons as links -->
                                 </div>
                             </div>
                         </div>

@@ -2,11 +2,15 @@ package de.thecodelabs.pockettracker;
 
 import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
+import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
 
 @Controller
 public class MainController
@@ -31,10 +35,16 @@ public class MainController
 		return "allShows";
 	}
 
-	@GetMapping("/details")
-	public String details(Model model)
+	@GetMapping("/show/{showId}")
+	public String show(Model model, @PathVariable Integer showId)
 	{
-		model.addAttribute("show", showRepository.getOne(4));
+		final Optional<Show> showOptional = showRepository.findById(showId);
+		if(showOptional.isEmpty())
+		{
+			return "redirect:/";
+		}
+
+		model.addAttribute("show", showOptional.get());
 		return "showDetails";
 	}
 

@@ -30,8 +30,7 @@
                                             ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Details
-                                            </button>
+                                            <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-secondary">Details</a>
                                         </div>
                                     </div>
                                 </div>
