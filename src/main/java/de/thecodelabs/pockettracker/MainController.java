@@ -31,6 +31,13 @@ public class MainController
 		return "allShows";
 	}
 
+	@GetMapping("/details")
+	public String details(Model model)
+	{
+		model.addAttribute("show", showRepository.getOne(4));
+		return "showDetails";
+	}
+
 	@GetMapping("/login")
 	public String login()
 	{

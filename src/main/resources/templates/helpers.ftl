@@ -7,3 +7,4 @@
         <text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text>
     </svg>
 </#macro>
+
