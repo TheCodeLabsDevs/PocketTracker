@@ -32,7 +32,7 @@ public class MainController
 	public String allShows(Model model)
 	{
 		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
-		return "allShows";
+		return "index";
 	}
 
 	@GetMapping("/show/{showId}")
