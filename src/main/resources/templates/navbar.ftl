@@ -3,7 +3,7 @@
 <#macro navbar>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="<@s.url "/"/>">
                 <img src="<@s.url "/image/PocketTracker.png"/>" alt="" width="35" height="35"
                      class="d-inline-block align-top">
                 PocketTracker - v1.0.0
