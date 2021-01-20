@@ -45,7 +45,7 @@ public class MainController
 		}
 
 		model.addAttribute("show", showOptional.get());
-		return "showDetails";
+		return "show";
 	}
 
 	@GetMapping("/login")
