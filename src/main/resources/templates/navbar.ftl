@@ -19,6 +19,9 @@
                 <form class="d-flex">
                     <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
                 </form>
+                <div class="text-white mx-3">
+                    <i class="fas fa-user pe-3"></i>John Doe
+                </div>
                 <a class="btn btn-primary" href="<@s.url "logout"/>">Logout</a>
             </div>
         </div>
