@@ -27,7 +27,7 @@ public class MainController
 	@GetMapping
 	public String allShows(Model model)
 	{
-		model.addAttribute("shows", showRepository.findAll());
+		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		return "allShows";
 	}
 
