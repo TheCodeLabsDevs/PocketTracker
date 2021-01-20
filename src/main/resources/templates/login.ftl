@@ -1,15 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <#import "spring.ftl" as s/>
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link href="<@s.url "/webjars/bootstrap/5.0.0-beta1/css/bootstrap.min.css"/>" rel="stylesheet"/>
-        <script src="<@s.url "/webjars/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"/>"></script>
-
-        <title>PocketTracker - Login</title>
+        <#import "header.ftl" as headerMacros>
+        <@headerMacros.header 'Login'/>
 
         <link href="<@s.url "/css/login.css"/>" rel="stylesheet">
     </head>
