@@ -7,12 +7,12 @@
         <@headerMacros.header 'Home'/>
     </head>
 
-    <body>
+    <body class="bg-light">
         <#import "navbar.ftl" as navbar>
         <@navbar.navbar/>
 
         <main>
-            <div class="py-5 bg-light">
+            <div class="py-5">
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
