@@ -22,9 +22,9 @@
                         <div class="card-body">
                             <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
                             <div class="row mt-3 mt-md-5">
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-4 text-center">
                                     <#if show.getPosterPath()??>
-                                        <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid"/>
+                                        <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
                                     <#else>
                                         <@helperMacros.imagePlaceholder />
                                     </#if>
