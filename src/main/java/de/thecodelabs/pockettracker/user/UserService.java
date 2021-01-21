@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService
 {
@@ -17,11 +19,23 @@ public class UserService
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public User createUser(User user, String password) {
-		if (user.getUserType() == null) {
+	public Optional<User> getUser(String username)
+	{
+		return userRepository.findUserByName(username);
+	}
+
+	public User createUser(User user, String password)
+	{
+		if(user.getUserType() == null)
+		{
 			user.setUserType(UserType.USER);
 		}
 		user.setPassword(passwordEncoder.encode(password));
 		return userRepository.save(user);
+	}
+
+	public boolean hasUsers()
+	{
+		return userRepository.count() > 0;
 	}
 }

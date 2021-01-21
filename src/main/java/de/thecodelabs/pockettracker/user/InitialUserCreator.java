@@ -33,6 +33,10 @@ public class InitialUserCreator
 
 	@EventListener
 	public void applicationStarted(ApplicationStartedEvent event) {
+		if (userService.hasUsers()) {
+			return;
+		}
+
 		final String password = RandomUtils.generateRandomString(RandomUtils.RandomType.DEFAULT, DEFAULT_PASSWORD_LENGTH, RandomUtils.RandomStringPolicy.LOWER, RandomUtils.RandomStringPolicy.DIGIT);
 		try
 		{

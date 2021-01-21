@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <#import "/spring.ftl" as s/>
-    <#import "helpers.ftl" as helperMacros>
+    <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/head.ftl" as headMacros>
     <@headMacros.head 'Episodes'>
@@ -14,14 +14,19 @@
 
         <main>
             <div class="form-signin align-middle card">
-                <form>
+                <form method="post" action="<@s.url "/login"/>" role="form">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
                     <img class="mb-4" src="<@s.url "/image/PocketTracker.png"/>" alt="" width="80" height="80">
                     <h1 class="h3 mb-3 fw-normal">PocketTracker</h1>
-                    <label for="inputUserName" class="visually-hidden">Username</label>
-                    <input type="text" id="inputUserName" class="form-control" placeholder="Username" required
+
+                    <label for="username" class="visually-hidden">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
                            autofocus>
-                    <label for="inputPassword" class="visually-hidden">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+                    <label for="password" class="visually-hidden">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+
                     <div class="checkbox mb-3">
                         <label>
                             <input type="checkbox" value="remember-me"> Remember me
