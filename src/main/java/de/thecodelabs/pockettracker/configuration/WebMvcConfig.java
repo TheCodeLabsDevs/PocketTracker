@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker;
+package de.thecodelabs.pockettracker.configuration;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;

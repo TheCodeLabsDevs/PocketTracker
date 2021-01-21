@@ -1,6 +1,5 @@
-package de.thecodelabs.pockettracker.configuration;
+package de.thecodelabs.pockettracker.authentication;
 
-import de.thecodelabs.pockettracker.authentication.DatabaseUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.configuration;
+package de.thecodelabs.pockettracker.authentication;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
