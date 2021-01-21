@@ -20,6 +20,9 @@ public class User
 
 	private String password;
 
+	@NotNull
+	private UserType userType;
+
 	@ManyToMany
 	private List<Show> shows;
 
@@ -56,13 +59,23 @@ public class User
 		this.password = password;
 	}
 
+	public UserType getUserType()
+	{
+		return userType;
+	}
+
+	public void setUserType(UserType userType)
+	{
+		this.userType = userType;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "User{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", password='" + password + '\'' +
+				", userType=" + userType +
 				'}';
 	}
 }
