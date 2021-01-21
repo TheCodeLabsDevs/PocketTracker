@@ -16,3 +16,7 @@
 .progress {
     background-color: #ced1d4 !important;
 }
+
+.table-action {
+    text-decoration: none !important;
+}

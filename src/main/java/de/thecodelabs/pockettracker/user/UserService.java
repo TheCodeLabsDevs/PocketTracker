@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +33,10 @@ public class UserService
 	public Optional<User> getUser(String username)
 	{
 		return userRepository.findUserByName(username);
+	}
+
+	public List<User> getUsers() {
+		return userRepository.findAll();
 	}
 
 	public User createUser(User user, String password)
