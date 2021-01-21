@@ -1,11 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <#import "spring.ftl" as s/>
-        <#import "helpers.ftl" as helperMacros>
-        <#import "header.ftl" as headerMacros>
-        <@headerMacros.header 'Show'/>
-    </head>
+    <#import "spring.ftl" as s/>
+    <#import "helpers.ftl" as helperMacros>
+
+    <#import "/common/head.ftl" as headMacros>
+    <@headMacros.head 'Episodes'/>
 
     <body class="bg-light">
         <#import "navbar.ftl" as navbar>
@@ -15,16 +14,19 @@
             <div class="py-5">
                 <div class="container">
                     <div class="mx-auto text-center mb-4">
-                        <a href="<@s.url "/"/>" class="btn btn-primary" type="button"><i class="fas fa-arrow-left"></i> Back</a>
+                        <a href="<@s.url "/"/>" class="btn btn-primary" type="button"><i class="fas fa-arrow-left"></i>
+                            Back</a>
                     </div>
 
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
+                            <h3 class="card-title text-center">${show.getName()}
+                                (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
                             <div class="row mt-3 mt-md-5">
                                 <div class="col-12 col-md-4 text-center">
                                     <#if show.getPosterPath()??>
-                                        <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
+                                        <img src="<@s.url "/resources/" + show.getPosterPath()/>"
+                                             class="img-fluid w-50"/>
                                     <#else>
                                         <@helperMacros.imagePlaceholder />
                                     </#if>

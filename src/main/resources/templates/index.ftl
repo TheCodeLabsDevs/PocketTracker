@@ -1,11 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <#import "spring.ftl" as s/>
-        <#import "helpers.ftl" as helperMacros>
-        <#import "header.ftl" as headerMacros>
-        <@headerMacros.header 'Home'/>
-    </head>
+    <#import "spring.ftl" as s/>
+    <#import "helpers.ftl" as helperMacros>
+
+    <#import "/common/head.ftl" as headMacros>
+    <@headMacros.head 'Episodes'/>
 
     <body class="bg-light">
         <#import "navbar.ftl" as navbar>
@@ -28,10 +27,12 @@
                                     <div class="card-body">
                                         <p class="card-text fw-bold">${show.getName()}</p>
                                         <p class="card-text">
-                                            ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
+                                            ${show.getSeasons()?size} Staffeln
+                                            - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-secondary stretched-link">Details</a>
+                                            <a href="<@s.url "/show/" + show.getId()/>" type="button"
+                                               class="btn btn-sm btn-outline-secondary stretched-link">Details</a>
                                         </div>
                                     </div>
                                 </div>

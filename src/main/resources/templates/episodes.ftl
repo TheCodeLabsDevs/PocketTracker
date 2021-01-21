@@ -1,11 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <#import "spring.ftl" as s/>
-        <#import "helpers.ftl" as helperMacros>
-        <#import "header.ftl" as headerMacros>
-        <@headerMacros.header 'Episodes'/>
-    </head>
+    <#import "spring.ftl" as s/>
+    <#import "helpers.ftl" as helperMacros>
+
+    <#import "/common/head.ftl" as headMacros>
+    <@headMacros.head 'Episodes'/>
 
     <body class="bg-light">
         <#import "navbar.ftl" as navbar>
@@ -15,11 +14,14 @@
             <div class="container mt-5">
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back
+                        </button>
                         <h2 class="mb-2 text-truncate">Der Lehrer</h2>
                         <h4 class="mb-4">-Staffel 2-</h4>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100">2/7</div>
+                            <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28"
+                                 aria-valuemin="0" aria-valuemax="100">2/7
+                            </div>
                         </div>
                     </div>
                 </div>
