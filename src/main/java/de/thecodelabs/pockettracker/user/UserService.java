@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,15 @@ public class UserService
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public Optional<User> getUser(Authentication authentication)
+	{
+		if(authentication == null)
+		{
+			return Optional.empty();
+		}
+		return getUser(authentication.getName());
 	}
 
 	public Optional<User> getUser(String username)

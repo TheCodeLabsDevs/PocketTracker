@@ -1,6 +1,12 @@
 <#import "/spring.ftl" as s/>
 
 <#macro navbar>
+    <form class="hide" id="logout-form" action="<@s.url '/logout'/>" method="post">
+        <#if _csrf??>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </#if>
+    </form>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="<@s.url "/"/>">
@@ -18,10 +24,12 @@
                 <form class="d-flex mt-3 mb-2 my-md-0 me-md-3">
                     <input class="form-control " type="search" placeholder="Search" aria-label="Search">
                 </form>
-                <div class="text-white mx-md-3 my-2 my-md-0">
-                    <i class="fas fa-user pe-3"></i>John Doe
-                </div>
-                <a class="btn btn-primary" href="<@s.url "logout"/>">Logout</a>
+                <#if currentUser??>
+                    <div class="text-white mx-md-3 my-2 my-md-0">
+                        <i class="fas fa-user pe-3"></i>${currentUser.name}
+                    </div>
+                    <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                </#if>
             </div>
         </div>
     </nav>

@@ -3,3 +3,4 @@
 [#-- @ftlroot "templates" --]
 [#-- @ftlvariable name="_csrf" type="org.springframework.security.web.csrf.CsrfToken" --]
 [#-- @ftlvariable name="showService" type="de.thecodelabs.pockettracker.show.ShowService" --]
+[#-- @ftlvariable name="currentUser" type="de.thecodelabs.pockettracker.user.User" --]
