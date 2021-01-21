@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
-    <#import "spring.ftl" as s/>
+    <#import "/spring.ftl" as s/>
     <#import "helpers.ftl" as helperMacros>
 
     <#import "/common/head.ftl" as headMacros>
     <@headMacros.head 'Episodes'/>
 
     <body class="bg-light">
-        <#import "navbar.ftl" as navbar>
+        <#import "/common/navbar.ftl" as navbar>
         <@navbar.navbar/>
 
         <main>

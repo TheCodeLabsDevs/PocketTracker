@@ -1,4 +1,4 @@
-<#import "spring.ftl" as s/>
+<#import "/spring.ftl" as s/>
 
 <#macro navbar>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">

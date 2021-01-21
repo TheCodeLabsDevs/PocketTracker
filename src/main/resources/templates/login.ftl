@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-    <#import "spring.ftl" as s/>
+    <#import "/spring.ftl" as s/>
     <#import "helpers.ftl" as helperMacros>
 
     <#import "/common/head.ftl" as headMacros>
@@ -9,7 +9,7 @@
     </@headMacros.head>
 
     <body class="bg-light">
-        <#import "navbar.ftl" as navbar>
+        <#import "/common/navbar.ftl" as navbar>
         <@navbar.navbar/>
 
         <main>
