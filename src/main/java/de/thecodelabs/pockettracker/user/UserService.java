@@ -35,6 +35,11 @@ public class UserService
 		return userRepository.findUserByName(username);
 	}
 
+	public Optional<User> getUser(Integer id)
+	{
+		return userRepository.findById(id);
+	}
+
 	public List<User> getUsers() {
 		return userRepository.findAll();
 	}
@@ -52,5 +57,10 @@ public class UserService
 	public boolean hasUsers()
 	{
 		return userRepository.count() > 0;
+	}
+
+	public void deleteUser(User user)
+	{
+		userRepository.delete(user);
 	}
 }

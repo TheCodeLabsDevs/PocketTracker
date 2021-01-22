@@ -10,10 +10,10 @@
     </form>
 </#macro>
 
-<#macro submit label size="col-6">
-    <div class="mb-3 ${size}">
+<#macro submit label size="col-6" col=true>
+    <#if col><div class="mb-3 ${size}"></#if>
         <button type="submit" class="btn btn-primary">${label}</button>
-    </div>
+    <#if col></div></#if>
 </#macro>
 
 <#macro input label name value="" type="text" id=name size="col-6">

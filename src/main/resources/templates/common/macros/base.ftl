@@ -22,6 +22,13 @@
     </div>
 </#macro>
 
+<#macro back_button label="Zurück" icon="" classes="">
+    <a class="btn btn-secondary ${classes}" onclick="window.history.back()" role="button">
+        <#if icon?has_content><i class="${icon}"></i></#if>
+        ${label}
+    </a>
+</#macro>
+
 <#macro button label url icon="" classes="">
     <a class="btn btn-primary ${classes}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
@@ -31,12 +38,12 @@
 
 <#macro row>
     <div class="row">
-
+        <#nested>
     </div>
 </#macro>
 
 <#macro col size>
     <div class="${size}">
-
+        <#nested>
     </div>
 </#macro>
