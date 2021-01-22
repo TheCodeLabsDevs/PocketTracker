@@ -18,9 +18,14 @@
                 <#if isUserSpecific>
                     <p class="card-text">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 75%;"
-                                 aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">65/87
-                            </div>
+                            <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesByShow(currentUser, show)?size/>
+                            <#assign totalNumberOfEpisodes=showService.getTotalNumberOfEpisodes(show)/>
+                            <#if numberOfWatchedEpisodes==0  || totalNumberOfEpisodes==0>
+                                <#assign progress = 0/>
+                            <#else>
+                                <#assign progress=numberOfWatchedEpisodes / totalNumberOfEpisodes * 100/>
+                            </#if>
+                            <div class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="numberOfWatchedEpisodes" aria-valuemin="0" aria-valuemax="totalNumberOfEpisodes">${numberOfWatchedEpisodes}/${totalNumberOfEpisodes}</div>
                         </div>
                     </p>
                 </#if>

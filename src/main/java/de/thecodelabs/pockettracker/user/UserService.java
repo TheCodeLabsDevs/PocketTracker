@@ -1,5 +1,7 @@
 package de.thecodelabs.pockettracker.user;
 
+import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService
@@ -66,7 +69,8 @@ public class UserService
 			user.setUserType(UserType.USER);
 		}
 
-		if (!validatePassword(userForm)) {
+		if(!validatePassword(userForm))
+		{
 			throw new PasswordValidationException();
 		}
 		user.setPassword(passwordEncoder.encode(userForm.getPassword()));
@@ -89,7 +93,8 @@ public class UserService
 		final String password = userForm.getPassword();
 		if(password != null && !password.isEmpty())
 		{
-			if (!validatePassword(userForm)) {
+			if(!validatePassword(userForm))
+			{
 				throw new PasswordValidationException();
 			}
 
@@ -120,5 +125,12 @@ public class UserService
 			return false;
 		}
 		return true;
+	}
+
+	public List<Episode> getWatchedEpisodesByShow(User user, Show show)
+	{
+		return user.getWatchedEpisodes().stream()
+				.filter(episode -> episode.getSeason().getShow().equals(show))
+				.collect(Collectors.toList());
 	}
 }
