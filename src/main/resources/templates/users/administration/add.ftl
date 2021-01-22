@@ -3,28 +3,19 @@
     <#import "/spring.ftl" as s/>
     <#import "/common/helpers.ftl" as helperMacros>
 
-    <#import "/common/head.ftl" as headMacros>
-    <@headMacros.head 'Episodes'/>
+    <#import "/common/template.ftl" as template>
+    <#import "/common/macros/base.ftl" as b/>
+    <#import "/users/administration/form.ftl" as form>
 
-    <body class="bg-light">
-        <#import "/common/navbar.ftl" as navbar>
-        <@navbar.navbar/>
+    <@template.head 'Episodes'/>
+    <@template.body>
 
-        <main>
-            <div class="py-5">
-                <div class="container">
-                    <#import "/common/macros/base.ftl" as b/>
-                    <#import "/users/administration/form.ftl" as form>
+        <@b.row>
+            <@b.col "col-8">
+                <@b.h2 "Neuer Benutzer"/>
+            </@b.col>
+        </@b.row>
 
-                    <@b.row>
-                        <@b.col "col-8">
-                            <@b.h2 "Neuer Benutzer"/>
-                        </@b.col>
-                    </@b.row>
-
-                    <@form.form user userTypes/>
-                </div>
-            </div>
-        </main>
-    </body>
+        <@form.form user userTypes/>
+    </@template.body>
 </html>
