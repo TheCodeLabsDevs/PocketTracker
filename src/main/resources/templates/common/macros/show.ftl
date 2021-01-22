@@ -28,9 +28,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
                     <#if isUserSpecific>
-                        <button type="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</button>
+                        <a href="<@s.url "/user/shows/remove/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
                     <#else>
-                        <button type="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link" <#if userShows?seq_contains(show)>disabled</#if>>Hinzufügen</button>
+                        <a href="<@s.url "/user/shows/add/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
                     </#if>
                 </div>
             </div>

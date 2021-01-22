@@ -1,6 +1,8 @@
 package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.User;
 import de.thecodelabs.pockettracker.user.UserService;
@@ -9,13 +11,12 @@ import de.thecodelabs.pockettracker.utils.ToastColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.text.MessageFormat;
 import java.util.Optional;
 
 @Controller
@@ -23,11 +24,13 @@ import java.util.Optional;
 public class UserController
 {
 	private final UserService userService;
+	private final ShowRepository showRepository;
 
 	@Autowired
-	public UserController(UserService userService)
+	public UserController(UserService userService, ShowRepository showRepository)
 	{
 		this.userService = userService;
+		this.showRepository = showRepository;
 	}
 
 	@GetMapping
@@ -84,5 +87,28 @@ public class UserController
 		model.addAttribute("isUserSpecificView", true);
 
 		return "index";
+	}
+
+	@GetMapping("shows/add/{showId}")
+	@Transactional
+	public String addShow(Model model, @PathVariable Integer showId)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+
+		final Optional<Show> showOptional = showRepository.findById(showId);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException(MessageFormat.format("No show with id \"{0}\" existing", showId));
+		}
+
+		user.getShows().add(showOptional.get());
+
+		return "redirect:/";
 	}
 }
