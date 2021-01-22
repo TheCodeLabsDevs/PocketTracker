@@ -20,3 +20,7 @@
 .table-action {
     text-decoration: none !important;
 }
+
+.z-index-above-stretched-link {
+    z-index: 2;
+}

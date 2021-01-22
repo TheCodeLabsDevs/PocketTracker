@@ -1,9 +1,10 @@
 package de.thecodelabs.pockettracker;
 
-import de.thecodelabs.pockettracker.episode.EpisodeRepository;
-import de.thecodelabs.pockettracker.season.SeasonRepository;
+import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
+import de.thecodelabs.pockettracker.user.User;
+import de.thecodelabs.pockettracker.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,22 +17,30 @@ import java.util.Optional;
 public class MainController
 {
 	private final ShowRepository showRepository;
-	private final SeasonRepository seasonRepository;
-	private final EpisodeRepository episodeRepository;
+	private final UserService userService;
 
 
 	@Autowired
-	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
+	public MainController(ShowRepository showRepository, UserService userService)
 	{
 		this.showRepository = showRepository;
-		this.seasonRepository = seasonRepository;
-		this.episodeRepository = episodeRepository;
+		this.userService = userService;
 	}
 
 	@GetMapping
 	public String allShows(Model model)
 	{
 		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
+
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+		model.addAttribute("userShows", user.getShows());
+
 		return "index";
 	}
 
