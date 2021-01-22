@@ -45,7 +45,7 @@ public class MainController
 		}
 
 		final User user = userOptional.get();
-		model.addAttribute("title", "Verfügbare Serien");
+		model.addAttribute("currentPage", "Alle Serien");
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute("isUserSpecificView", false);
 
