@@ -28,6 +28,12 @@ public class MainController
 	}
 
 	@GetMapping
+	public String index()
+	{
+		return "redirect:/user/shows";
+	}
+
+	@GetMapping("/allShows")
 	public String allShows(Model model)
 	{
 		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
@@ -52,7 +58,7 @@ public class MainController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			return "redirect:/";
+			return "redirect:/allShows";
 		}
 
 		model.addAttribute("show", showOptional.get());
