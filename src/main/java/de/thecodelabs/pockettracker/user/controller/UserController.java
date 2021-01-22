@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user.controller;
 
+import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -91,7 +93,7 @@ public class UserController
 
 	@GetMapping("shows/add/{showId}")
 	@Transactional
-	public String addShow(WebRequest request, Model model, @PathVariable Integer showId)
+	public String addShow(WebRequest request, @PathVariable Integer showId)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -99,17 +101,48 @@ public class UserController
 			throw new NotFoundException("User not found");
 		}
 
+		final Optional<Show> showOptional = showRepository.findById(showId);
+		if(showOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
+			return "redirect:/";
+		}
+
 		final User user = userOptional.get();
+		user.getShows().add(showOptional.get());
+
+		return "redirect:/";
+	}
+
+	@GetMapping("shows/remove/{showId}")
+	@Transactional
+	public String removeShow(WebRequest request, @PathVariable Integer showId)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
 
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Show mit der ID \"{0}\"", showId), ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
 			return "redirect:/";
 		}
 
-		user.getShows().add(showOptional.get());
+		final User user = userOptional.get();
+		final Show showToRemove = showOptional.get();
+		final boolean userHadShow = user.getShows().remove(showToRemove);
+		if(!userHadShow)
+		{
+			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", ToastColor.WARNING));
+			return "redirect:/user/shows";
+		}
 
-		return "redirect:/";
+		final List<Episode> watchedEpisodesByShow = userService.getWatchedEpisodesByShow(user, showToRemove);
+		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
+
+		return "redirect:/user/shows";
 	}
 }
