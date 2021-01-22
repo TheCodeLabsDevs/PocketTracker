@@ -34,8 +34,8 @@
                             </div>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
+                                <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+                                <button type="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</button>
                             </div>
                         </div>
                     </div>

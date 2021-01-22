@@ -26,8 +26,8 @@
                                 ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-secondary stretched-link">Details</a>
-                                <button type="button" class="btn btn-sm btn-outline-secondary z-index-above-stretched-link" <#if userShows?seq_contains(show)>disabled</#if>>Hinzufügen</button>
+                                <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+                                <button type="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link" <#if userShows?seq_contains(show)>disabled</#if>>Hinzufügen</button>
                             </div>
                         </div>
                     </div>
