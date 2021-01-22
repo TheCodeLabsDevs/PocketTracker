@@ -28,6 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link <#if currentPage?? && currentPage=="Meine Serien">active</#if>" href="<@s.url "/"/>">Meine Serien</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link <#if currentPage?? && currentPage=="Statistiken">active</#if>" href="<@s.url "/"/>">Statistiken</a>
+                        </li>
                     </ul>
 
                     <div class="me-auto"></div>
