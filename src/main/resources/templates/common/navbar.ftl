@@ -26,7 +26,7 @@
                 </form>
                 <#if currentUser??>
                     <div class="text-white mx-md-3 my-2 my-md-0">
-                        <i class="fas fa-user pe-3"></i>${currentUser.name}
+                        <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
                     </div>
                     <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
                 </#if>
