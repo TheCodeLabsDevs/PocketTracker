@@ -43,8 +43,9 @@
 
 <#macro content>
     <#if toast??>
-        <div class="alert ${toast.getColor().getStyleClass()}" role="alert">
+        <div class="alert ${toast.getColor().getStyleClass()} alert-dismissible fade show" role="alert">
             ${toast.getMessage()}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </#if>
 
