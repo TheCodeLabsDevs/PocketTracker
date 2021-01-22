@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user;
 
+import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,6 +52,19 @@ public class UserService
 			user.setUserType(UserType.USER);
 		}
 		user.setPassword(passwordEncoder.encode(password));
+		return userRepository.save(user);
+	}
+
+	public User editUser(User user, UserForm userForm)
+	{
+		user.setName(userForm.getUsername());
+		user.setUserType(userForm.getUserType());
+
+		final String password = userForm.getPassword();
+		if (password != null && !password.isEmpty())
+		{
+			user.setPassword(passwordEncoder.encode(password));
+		}
 		return userRepository.save(user);
 	}
 

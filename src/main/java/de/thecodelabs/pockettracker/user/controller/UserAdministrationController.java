@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -37,6 +36,7 @@ public class UserAdministrationController
 	@GetMapping("/add")
 	public String addView(Model model)
 	{
+		model.addAttribute("user", new UserForm());
 		model.addAttribute("userTypes", Arrays.stream(UserType.values()).map(Objects::toString).collect(Collectors.toList()));
 		return "users/administration/add";
 	}
@@ -44,15 +44,7 @@ public class UserAdministrationController
 	@PostMapping("/add")
 	public String addSubmit(@ModelAttribute("user") UserForm userForm)
 	{
-		if(userForm.getPassword().isEmpty())
-		{
-			return "redirect:/users/administration/add";
-		}
-
-		if(!userForm.getPassword().equals(userForm.getPasswordRepeat()))
-		{
-			return "redirect:/users/administration/add";
-		}
+		if(validatePassword(userForm)) return "redirect:/users/administration/add";
 
 		User user = new User();
 		user.setName(userForm.getUsername());
@@ -63,11 +55,46 @@ public class UserAdministrationController
 	}
 
 
+	@GetMapping("/{id}/edit")
+	public String editView(@PathVariable Integer id, Model model)
+	{
+		final Optional<User> userOptional = userService.getUser(id);
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException();
+		}
+
+		model.addAttribute("user", new UserForm(userOptional.get()));
+		model.addAttribute("userTypes", Arrays.stream(UserType.values()).map(Objects::toString).collect(Collectors.toList()));
+		return "users/administration/edit";
+	}
+
+
+	@PostMapping("/{id}/edit")
+	public String editSubmit(@PathVariable Integer id, @ModelAttribute("user") UserForm userForm)
+	{
+		if(userForm.getPassword() != null && !userForm.getPassword().isEmpty())
+		{
+			if(validatePassword(userForm)) return "redirect:/users/administration/" + id + "/edit";
+		}
+
+		final Optional<User> userOptional = userService.getUser(id);
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException();
+		}
+		final User user = userOptional.get();
+		userService.editUser(user, userForm);
+
+		return "redirect:/users/administration";
+	}
+
 	@GetMapping("/{id}/delete")
 	public String deleteView(@PathVariable Integer id, Model model)
 	{
 		final Optional<User> userOptional = userService.getUser(id);
-		if (userOptional.isEmpty()) {
+		if(userOptional.isEmpty())
+		{
 			throw new NotFoundException("User not found");
 		}
 
@@ -79,11 +106,27 @@ public class UserAdministrationController
 	public String deleteSubmit(@PathVariable Integer id, Model model)
 	{
 		final Optional<User> userOptional = userService.getUser(id);
-		if (userOptional.isEmpty()) {
+		if(userOptional.isEmpty())
+		{
 			throw new NotFoundException("User not found");
 		}
 
 		userService.deleteUser(userOptional.get());
 		return "redirect:/users/administration";
+	}
+
+
+	private boolean validatePassword(UserForm userForm)
+	{
+		if(userForm.getPassword().isEmpty())
+		{
+			return true;
+		}
+
+		if(!userForm.getPassword().equals(userForm.getPasswordRepeat()))
+		{
+			return true;
+		}
+		return false;
 	}
 }
