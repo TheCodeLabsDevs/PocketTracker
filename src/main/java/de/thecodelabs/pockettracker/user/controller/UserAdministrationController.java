@@ -3,16 +3,12 @@ package de.thecodelabs.pockettracker.user.controller;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.user.User;
 import de.thecodelabs.pockettracker.user.UserService;
-import de.thecodelabs.pockettracker.user.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users/administration")
@@ -37,7 +33,6 @@ public class UserAdministrationController
 	public String addView(Model model)
 	{
 		model.addAttribute("user", new UserForm());
-		model.addAttribute("userTypes", Arrays.stream(UserType.values()).map(Objects::toString).collect(Collectors.toList()));
 		return "users/administration/add";
 	}
 
@@ -65,7 +60,6 @@ public class UserAdministrationController
 		}
 
 		model.addAttribute("user", new UserForm(userOptional.get()));
-		model.addAttribute("userTypes", Arrays.stream(UserType.values()).map(Objects::toString).collect(Collectors.toList()));
 		return "users/administration/edit";
 	}
 

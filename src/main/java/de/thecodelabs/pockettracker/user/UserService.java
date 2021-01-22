@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.user;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,11 @@ public class UserService
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public Optional<User> getCurrentUser()
+	{
+		return getUser(SecurityContextHolder.getContext().getAuthentication());
 	}
 
 	public Optional<User> getUser(Authentication authentication)
@@ -41,7 +47,8 @@ public class UserService
 		return userRepository.findById(id);
 	}
 
-	public List<User> getUsers() {
+	public List<User> getUsers()
+	{
 		return userRepository.findAll();
 	}
 
@@ -58,10 +65,17 @@ public class UserService
 	public User editUser(User user, UserForm userForm)
 	{
 		user.setName(userForm.getUsername());
-		user.setUserType(userForm.getUserType());
+
+		// Admin only changes
+		getCurrentUser().filter(u -> u.getUserType() == UserType.ADMIN).ifPresent(u -> {
+			if(userForm.getUserType() != null)
+			{
+				user.setUserType(userForm.getUserType());
+			}
+		});
 
 		final String password = userForm.getPassword();
-		if (password != null && !password.isEmpty())
+		if(password != null && !password.isEmpty())
 		{
 			user.setPassword(passwordEncoder.encode(password));
 		}
