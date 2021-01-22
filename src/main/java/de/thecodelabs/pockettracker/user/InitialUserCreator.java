@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user;
 
 import de.thecodelabs.pockettracker.authentication.AuthenticationConfigurationProperties;
+import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.utils.util.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,8 @@ public class InitialUserCreator
 	}
 
 	@EventListener
-	public void applicationStarted(ApplicationStartedEvent event) {
+	public void applicationStarted(ApplicationStartedEvent event) throws PasswordValidationException
+	{
 		if (userService.hasUsers()) {
 			return;
 		}
@@ -50,9 +52,12 @@ public class InitialUserCreator
 			return;
 		}
 
-		final User user = new User();
-		user.setName("admin");
-		user.setUserType(UserType.ADMIN);
-		userService.createUser(user, password);
+		final UserForm userForm = new UserForm();
+		userForm.setUsername("admin");
+		userForm.setUserType(UserType.ADMIN);
+		userForm.setPassword(password);
+		userForm.setPasswordRepeat(password);
+
+		userService.createUser(userForm);
 	}
 }

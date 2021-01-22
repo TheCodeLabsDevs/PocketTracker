@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.User;
 import de.thecodelabs.pockettracker.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,14 @@ public class UserAdministrationController
 	@PostMapping("/add")
 	public String addSubmit(@ModelAttribute("user") UserForm userForm)
 	{
-		if(validatePassword(userForm)) return "redirect:/users/administration/add";
-
-		User user = new User();
-		user.setName(userForm.getUsername());
-		user.setUserType(userForm.getUserType());
-		userService.createUser(user, userForm.getPassword());
+		try
+		{
+			userService.createUser(userForm);
+		}
+		catch(PasswordValidationException e)
+		{
+			return "redirect:/users/administration/add";
+		}
 
 		return "redirect:/users/administration";
 	}
@@ -67,18 +70,20 @@ public class UserAdministrationController
 	@PostMapping("/{id}/edit")
 	public String editSubmit(@PathVariable Integer id, @ModelAttribute("user") UserForm userForm)
 	{
-		if(userForm.getPassword() != null && !userForm.getPassword().isEmpty())
-		{
-			if(validatePassword(userForm)) return "redirect:/users/administration/" + id + "/edit";
-		}
-
 		final Optional<User> userOptional = userService.getUser(id);
 		if(userOptional.isEmpty())
 		{
 			throw new NotFoundException();
 		}
 		final User user = userOptional.get();
-		userService.editUser(user, userForm);
+		try
+		{
+			userService.editUser(user, userForm);
+		}
+		catch(PasswordValidationException e)
+		{
+			return "redirect:/users/administration/" + id + "/edit";
+		}
 
 		return "redirect:/users/administration";
 	}
@@ -107,20 +112,5 @@ public class UserAdministrationController
 
 		userService.deleteUser(userOptional.get());
 		return "redirect:/users/administration";
-	}
-
-
-	private boolean validatePassword(UserForm userForm)
-	{
-		if(userForm.getPassword().isEmpty())
-		{
-			return true;
-		}
-
-		if(!userForm.getPassword().equals(userForm.getPasswordRepeat()))
-		{
-			return true;
-		}
-		return false;
 	}
 }

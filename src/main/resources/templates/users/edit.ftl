@@ -13,6 +13,13 @@
         <main>
             <div class="py-5">
                 <div class="container">
+
+                    <#if toast??>
+                        <div class="alert alert-primary" role="alert">
+                            ${toast}
+                        </div>
+                    </#if>
+
                     <#import "/common/macros/base.ftl" as b/>
                     <#import "/users/form.ftl" as form>
 

@@ -55,17 +55,26 @@ public class UserService
 	}
 
 	@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserType).ADMIN)")
-	public User createUser(User user, String password)
+	public User createUser(UserForm userForm) throws PasswordValidationException
 	{
+		User user = new User();
+		user.setName(userForm.getUsername());
+		user.setUserType(userForm.getUserType());
+
 		if(user.getUserType() == null)
 		{
 			user.setUserType(UserType.USER);
 		}
-		user.setPassword(passwordEncoder.encode(password));
+
+		if (!validatePassword(userForm)) {
+			throw new PasswordValidationException();
+		}
+		user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+
 		return userRepository.save(user);
 	}
 
-	public User editUser(User user, UserForm userForm)
+	public User editUser(User user, UserForm userForm) throws PasswordValidationException
 	{
 		user.setName(userForm.getUsername());
 
@@ -80,6 +89,10 @@ public class UserService
 		final String password = userForm.getPassword();
 		if(password != null && !password.isEmpty())
 		{
+			if (!validatePassword(userForm)) {
+				throw new PasswordValidationException();
+			}
+
 			user.setPassword(passwordEncoder.encode(password));
 		}
 		return userRepository.save(user);
@@ -93,5 +106,19 @@ public class UserService
 	public void deleteUser(User user)
 	{
 		userRepository.delete(user);
+	}
+
+	private boolean validatePassword(UserForm userForm)
+	{
+		if(userForm.getPassword().isEmpty())
+		{
+			return false;
+		}
+
+		if(!userForm.getPassword().equals(userForm.getPasswordRepeat()))
+		{
+			return false;
+		}
+		return true;
 	}
 }
