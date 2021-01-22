@@ -91,7 +91,7 @@ public class UserController
 
 	@GetMapping("shows/add/{showId}")
 	@Transactional
-	public String addShow(Model model, @PathVariable Integer showId)
+	public String addShow(WebRequest request, Model model, @PathVariable Integer showId)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -104,7 +104,8 @@ public class UserController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			throw new NotFoundException(MessageFormat.format("No show with id \"{0}\" existing", showId));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Show mit der ID \"{0}\"", showId), ToastColor.DANGER));
+			return "redirect:/";
 		}
 
 		user.getShows().add(showOptional.get());
