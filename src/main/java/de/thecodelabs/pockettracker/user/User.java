@@ -70,6 +70,16 @@ public class User
 		this.userType = userType;
 	}
 
+	public List<Show> getShows()
+	{
+		return shows;
+	}
+
+	public List<Episode> getWatchedEpisodes()
+	{
+		return watchedEpisodes;
+	}
+
 	@Override
 	public String toString()
 	{

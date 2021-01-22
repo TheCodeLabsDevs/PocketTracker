@@ -23,8 +23,7 @@
                         <div class="card-body">
                             <p class="card-text fw-bold">${show.getName()}</p>
                             <p class="card-text">
-                                ${show.getSeasons()?size} Staffeln
-                                - ${showService.getTotalNumberOfEpisodes(show)} Episoden
+                                ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <a href="<@s.url "/show/" + show.getId()/>" type="button"

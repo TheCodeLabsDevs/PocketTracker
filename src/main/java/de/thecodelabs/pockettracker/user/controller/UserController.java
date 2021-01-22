@@ -8,7 +8,6 @@ import de.thecodelabs.pockettracker.utils.Toast;
 import de.thecodelabs.pockettracker.utils.ToastColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +33,10 @@ public class UserController
 	@GetMapping
 	public String view(WebRequest request, Model model)
 	{
-		final Optional<User> userOptional = userService.getUser(SecurityContextHolder.getContext().getAuthentication());
+		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
 		{
-			throw new NotFoundException("Own user not found");
+			throw new NotFoundException("User not found");
 		}
 
 		model.addAttribute("user", new UserForm(userOptional.get()));
@@ -49,10 +48,10 @@ public class UserController
 	@PostMapping
 	public String edit(WebRequest request, @ModelAttribute("user") UserForm userForm)
 	{
-		final Optional<User> userOptional = userService.getUser(SecurityContextHolder.getContext().getAuthentication());
+		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
 		{
-			throw new NotFoundException("Own user not found");
+			throw new NotFoundException("User not found");
 		}
 
 		try
@@ -67,5 +66,20 @@ public class UserController
 
 		WebRequestUtils.putToast(request, new Toast("Änderungen gespeichert", ToastColor.SUCCESS));
 		return "redirect:/user";
+	}
+
+	@GetMapping("shows")
+	public String getShows(Model model)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+		model.addAttribute("shows", user.getShows());
+
+		return "users/shows";
 	}
 }

@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
     <#import "/spring.ftl" as s/>
-    <#import "/common/helpers.ftl" as helperMacros>
+    <#import "../common/helpers.ftl" as helperMacros>
 
-    <#import "/common/template.ftl" as template>
-    <#import "/common/macros/base.ftl" as b/>
-    <#import "/users/form.ftl" as form>
+    <#import "../common/template.ftl" as template>
+    <#import "../common/macros/base.ftl" as b/>
+    <#import "../users/form.ftl" as form>
 
     <@template.head 'Episodes'/>
     <@template.body>
@@ -24,8 +24,7 @@
                         <div class="card-body">
                             <p class="card-text fw-bold">${show.getName()}</p>
                             <p class="card-text">
-                                ${show.getSeasons()?size} Staffeln
-                                - ${showService.getTotalNumberOfEpisodes(show)} Episoden
+                                ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                             </p>
                             <p class="card-text">
                             <div class="progress">
@@ -35,8 +34,7 @@
                             </div>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Details
-                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Details</button>
                                 <button type="button" class="btn btn-sm btn-outline-secondary">Add</button>
                             </div>
                         </div>

@@ -21,8 +21,7 @@
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">
                         <#if show.getPosterPath()??>
-                            <img src="<@s.url "/resources/" + show.getPosterPath()/>"
-                                 class="img-fluid w-50"/>
+                            <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
                         <#else>
                             <@helperMacros.imagePlaceholder />
                         </#if>
