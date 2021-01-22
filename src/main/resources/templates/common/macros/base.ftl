@@ -28,3 +28,15 @@
         ${label}
     </a>
 </#macro>
+
+<#macro row>
+    <div class="row">
+
+    </div>
+</#macro>
+
+<#macro col size>
+    <div class="${size}">
+
+    </div>
+</#macro>
