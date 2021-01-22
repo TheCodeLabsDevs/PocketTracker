@@ -59,7 +59,7 @@ public class UserController
 		}
 		catch(PasswordValidationException e)
 		{
-			WebRequestUtils.putToast(request, "Passwort Validierung fehlgeschalgen");
+			WebRequestUtils.putToast(request, "Passwort Validierung fehlgeschlagen");
 			return "redirect:/user";
 		}
 
