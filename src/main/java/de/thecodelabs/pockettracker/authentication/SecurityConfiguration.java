@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
-	private static final String[] PERMIT_ALL = {"/css/**", "/js/**", "/lang/**", "/image/**"};
+	private static final String[] PERMIT_ALL = {"/webjars/**", "/css/**", "/js/**", "/lang/**", "/image/**"};
 	private static final String[] AUTHENTICATED = {"/**"};
 	private static final String LOGIN_PAGE = "/login";
 
@@ -39,9 +39,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.formLogin()
 				.loginPage(LOGIN_PAGE)
 				.permitAll()
-				.and()
-
-				.httpBasic()
 				.and()
 
 				.logout()
