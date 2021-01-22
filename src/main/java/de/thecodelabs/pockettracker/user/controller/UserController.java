@@ -4,6 +4,8 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.User;
 import de.thecodelabs.pockettracker.user.UserService;
+import de.thecodelabs.pockettracker.utils.Toast;
+import de.thecodelabs.pockettracker.utils.ToastColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,11 +61,11 @@ public class UserController
 		}
 		catch(PasswordValidationException e)
 		{
-			WebRequestUtils.putToast(request, "Passwort Validierung fehlgeschlagen");
+			WebRequestUtils.putToast(request, new Toast("Passwort Validierung fehlgeschlagen", ToastColor.DANGER));
 			return "redirect:/user";
 		}
 
-		WebRequestUtils.putToast(request, "Änderungen gespeichert");
+		WebRequestUtils.putToast(request, new Toast("Änderungen gespeichert", ToastColor.SUCCESS));
 		return "redirect:/user";
 	}
 }

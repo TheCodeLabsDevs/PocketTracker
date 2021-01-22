@@ -11,15 +11,16 @@ public class WebRequestUtils
 	{
 	}
 
-	public static void putToast(WebRequest request, String message)
+	public static void putToast(WebRequest request, Toast toast)
 	{
-		request.setAttribute(ATTR_TOAST, message, RequestAttributes.SCOPE_SESSION);
+		request.setAttribute(ATTR_TOAST, toast, RequestAttributes.SCOPE_SESSION);
 	}
 
-	public static String popToast(WebRequest request)
+	public static Toast popToast(WebRequest request)
 	{
-		final Object attribute = request.getAttribute(ATTR_TOAST, RequestAttributes.SCOPE_SESSION);
+		final Object toast = request.getAttribute(ATTR_TOAST, RequestAttributes.SCOPE_SESSION);
 		request.removeAttribute(ATTR_TOAST, RequestAttributes.SCOPE_SESSION);
-		return (String) attribute;
+
+		return (Toast) toast;
 	}
 }

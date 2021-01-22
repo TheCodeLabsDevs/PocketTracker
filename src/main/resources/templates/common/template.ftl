@@ -43,8 +43,8 @@
 
 <#macro content>
     <#if toast??>
-        <div class="alert alert-primary" role="alert">
-            ${toast}
+        <div class="alert ${toast.getColor().getStyleClass()}" role="alert">
+            ${toast.getMessage()}
         </div>
     </#if>
 

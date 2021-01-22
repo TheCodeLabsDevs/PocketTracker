@@ -23,7 +23,7 @@
                 <div class="me-auto"></div>
                 <#if currentUser??>
                     <form class="d-flex mt-3 mb-2 my-md-0 me-md-3">
-                        <input class="form-control " type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0">
                         <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
