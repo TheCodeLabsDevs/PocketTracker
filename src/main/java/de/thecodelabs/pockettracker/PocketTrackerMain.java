@@ -2,9 +2,10 @@ package de.thecodelabs.pockettracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class PocketTrackerMain
 {
 	public static void main(String[] args)

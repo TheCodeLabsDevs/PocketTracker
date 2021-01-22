@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.user;
 
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,11 +48,13 @@ public class UserService
 		return userRepository.findById(id);
 	}
 
+	@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserType).ADMIN)")
 	public List<User> getUsers()
 	{
 		return userRepository.findAll();
 	}
 
+	@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserType).ADMIN)")
 	public User createUser(User user, String password)
 	{
 		if(user.getUserType() == null)
