@@ -78,8 +78,11 @@ public class UserController
 		}
 
 		final User user = userOptional.get();
+		model.addAttribute("title", "Meine Serien");
 		model.addAttribute("shows", user.getShows());
+		model.addAttribute("userShows", user.getShows());
+		model.addAttribute("isUserSpecificView", true);
 
-		return "users/shows";
+		return "index";
 	}
 }

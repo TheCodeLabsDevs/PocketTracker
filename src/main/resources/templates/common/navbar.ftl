@@ -30,7 +30,7 @@
                             <i class="fas fa-user pe-3"></i>${currentUser.name}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-                            <a class="dropdown-item" href="<@s.url "/user/shows"/>">Serien</a>
+                            <a class="dropdown-item" href="<@s.url "/user/shows"/>">Meine Serien</a>
                             <a class="dropdown-item" href="<@s.url "/user"/>">Profil bearbeiten</a>
                         </div>
                     </div>
