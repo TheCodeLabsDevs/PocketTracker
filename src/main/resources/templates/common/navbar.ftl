@@ -20,19 +20,23 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-                <div class="me-auto"></div>
                 <#if currentUser??>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="<@s.url "/allShows"/>">Alle Serien</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<@s.url "/"/>">Meine Serien</a>
+                        </li>
+                    </ul>
+
+                    <div class="me-auto"></div>
+
                     <form class="d-flex mt-3 mb-2 my-md-0 me-md-3">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
-                        <a class="dropdown-toggle link-light text-decoration-none" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user pe-3"></i>${currentUser.name}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-                            <a class="dropdown-item" href="<@s.url "/user/shows"/>">Meine Serien</a>
-                            <a class="dropdown-item" href="<@s.url "/user"/>">Profil bearbeiten</a>
-                        </div>
+                        <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
                     </div>
 
                     <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
