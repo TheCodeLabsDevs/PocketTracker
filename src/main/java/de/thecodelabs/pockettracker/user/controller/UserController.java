@@ -105,13 +105,13 @@ public class UserController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
-			return "redirect:/allShows";
+			return "redirect:/shows";
 		}
 
 		final User user = userOptional.get();
 		user.getShows().add(showOptional.get());
 
-		return "redirect:/allShows";
+		return "redirect:/shows";
 	}
 
 	@GetMapping("/shows/remove/{showId}")
@@ -128,7 +128,7 @@ public class UserController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
-			return "redirect:/allShows";
+			return "redirect:/shows";
 		}
 
 		final User user = userOptional.get();

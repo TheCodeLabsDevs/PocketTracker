@@ -27,7 +27,7 @@ public class MainController
 		this.userService = userService;
 	}
 
-	@GetMapping("/allShows")
+	@GetMapping("/shows")
 	public String allShows(Model model)
 	{
 		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
@@ -52,7 +52,7 @@ public class MainController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			return "redirect:/allShows";
+			return "redirect:/shows";
 		}
 
 		model.addAttribute("show", showOptional.get());
