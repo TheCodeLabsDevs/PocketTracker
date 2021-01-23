@@ -52,13 +52,11 @@ public class UserService
 		return userRepository.findById(id);
 	}
 
-	@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserType).ADMIN)")
 	public List<User> getUsers()
 	{
 		return userRepository.findAll();
 	}
 
-	@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserType).ADMIN)")
 	public User createUser(UserForm userForm) throws PasswordValidationException
 	{
 		User user = new User();
