@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as s/>
 <#import "/common/helpers.ftl" as helperMacros>
 
 <#macro showCard show userShows isUserSpecific>
@@ -31,11 +32,11 @@
                 </#if>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<@s.url "/show/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
                     <#if isUserSpecific>
-                        <a href="<@s.url "/user/shows/remove/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
+                        <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
                     <#else>
-                        <a href="<@s.url "/user/shows/add/" + show.getId()/>" type="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
+                        <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
                     </#if>
                 </div>
             </div>
