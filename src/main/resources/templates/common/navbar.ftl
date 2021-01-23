@@ -37,8 +37,7 @@
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
-                        <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}
-                        </a>
+                        <a href="<@s.url "/user/settings"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
                     </div>
 
                     <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
@@ -48,8 +47,11 @@
     </nav>
 </#macro>
 
-<#macro item name url>
+<#macro item name url icon="">
     <li class="nav-item">
-        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?contains(url)>active</#if>" href="<@s.url url/>">${name}</a>
+        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?contains(url)>active</#if>" href="<@s.url url/>">
+            <#if icon?has_content><i class="${icon}"></i></#if>
+            ${name}
+        </a>
     </li>
 </#macro>

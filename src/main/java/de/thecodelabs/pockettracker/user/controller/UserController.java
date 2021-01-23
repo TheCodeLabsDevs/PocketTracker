@@ -35,8 +35,8 @@ public class UserController
 		this.showRepository = showRepository;
 	}
 
-	@GetMapping
-	public String view(WebRequest request, Model model)
+	@GetMapping("/settings")
+	public String settingsView(WebRequest request, Model model)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -50,8 +50,8 @@ public class UserController
 		return "users/edit";
 	}
 
-	@PostMapping
-	public String edit(WebRequest request, @ModelAttribute("user") UserForm userForm)
+	@PostMapping("/settings")
+	public String settingsSubmit(WebRequest request, @ModelAttribute("user") UserForm userForm)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
