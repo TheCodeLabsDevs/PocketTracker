@@ -2,8 +2,8 @@ package de.thecodelabs.pockettracker.user;
 
 import de.thecodelabs.pockettracker.authentication.AuthenticationConfigurationProperties;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
+import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
-import de.thecodelabs.pockettracker.user.model.UserType;
 import de.thecodelabs.utils.util.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +60,7 @@ public class InitialUserCreator
 		userForm.setPassword(password);
 		userForm.setPasswordRepeat(password);
 
-		userService.createUser(userForm, UserType.INTERNAL);
+		final User user = userService.createUser(userForm);
+		userService.addInternalAuthentication(user, userForm);
 	}
 }

@@ -6,7 +6,9 @@ import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
-import de.thecodelabs.pockettracker.user.model.UserType;
+import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
+import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
+import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,29 +50,25 @@ public class UserService
 		if(authentication instanceof OAuth2AuthenticationToken)
 		{
 			// Get Gitlab user or create new account
-			return getUser(authentication.getName(), UserType.GITLAB).or(() -> {
+			return getUser(authentication.getName(), GitlabAuthentication.class).or(() -> {
 				final UserForm userForm = new UserForm();
 				userForm.setUsername(authentication.getName());
-				try
-				{
-					return Optional.of(createUser(userForm, UserType.GITLAB));
-				}
-				catch(PasswordValidationException ignored)
-				{
-					return Optional.empty();
-				}
+
+				final User user = createUser(userForm);
+				addGitlabAuthentication(user, authentication.getName());
+				return Optional.of(user);
 			});
 		}
 		else if(authentication instanceof UsernamePasswordAuthenticationToken)
 		{
-			return getUser(authentication.getName(), UserType.INTERNAL);
+			return getUser(authentication.getName(), InternalAuthentication.class);
 		}
 		return Optional.empty();
 	}
 
-	public Optional<User> getUser(String username, UserType userType)
+	public Optional<User> getUser(String username, Class<? extends UserAuthentication> type)
 	{
-		return userRepository.findUserByNameAndUserType(username, userType);
+		return userRepository.findUserByName(username).filter(user -> user.getAuthentication(type).isPresent());
 	}
 
 	public Optional<User> getUser(Integer id)
@@ -83,28 +81,38 @@ public class UserService
 		return userRepository.findAll().stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
 	}
 
-	public User createUser(UserForm userForm, UserType userType) throws PasswordValidationException
+	public User createUser(UserForm userForm)
 	{
 		User user = new User();
 		user.setName(userForm.getUsername());
 		user.setUserRole(userForm.getUserRole());
-		user.setUserType(userType);
 
 		if(user.getUserRole() == null)
 		{
 			user.setUserRole(UserRole.USER);
 		}
 
-		if(userType.isPasswordValidation())
-		{
-			if(!validatePassword(userForm))
-			{
-				throw new PasswordValidationException();
-			}
-			user.setPassword(passwordEncoder.encode(userForm.getPassword()));
-		}
-
 		return userRepository.save(user);
+	}
+
+	public void addGitlabAuthentication(User user, String name)
+	{
+		GitlabAuthentication authentication = new GitlabAuthentication();
+		authentication.setGitlabUsername(name);
+		user.addAuthentication(authentication);
+		userRepository.save(user);
+	}
+
+	public void addInternalAuthentication(User user, UserForm form) throws PasswordValidationException
+	{
+		if(!validatePassword(form))
+		{
+			throw new PasswordValidationException();
+		}
+		InternalAuthentication authentication = new InternalAuthentication();
+		authentication.setPassword(passwordEncoder.encode(form.getPassword()));
+		user.addAuthentication(authentication);
+		userRepository.save(user);
 	}
 
 	public User editUser(User user, UserForm userForm) throws PasswordValidationException
@@ -120,16 +128,29 @@ public class UserService
 		});
 
 		final String password = userForm.getPassword();
-		if(password != null && !password.isEmpty() && user.getUserType().isPasswordValidation())
+		if(password != null && !password.isEmpty())
 		{
-			if(!validatePassword(userForm))
+			final Optional<InternalAuthentication> authentication = user.getAuthentication(InternalAuthentication.class);
+			if(authentication.isPresent())
 			{
-				throw new PasswordValidationException();
+				editInternalAuthentication(authentication.get(), userForm);
 			}
-
-			user.setPassword(passwordEncoder.encode(password));
+			else
+			{
+				addInternalAuthentication(user, userForm);
+			}
 		}
 		return userRepository.save(user);
+	}
+
+	public void editInternalAuthentication(InternalAuthentication authentication, UserForm form) throws PasswordValidationException
+	{
+		if(!validatePassword(form))
+		{
+			throw new PasswordValidationException();
+		}
+
+		authentication.setPassword(passwordEncoder.encode(form.getPassword()));
 	}
 
 	public boolean hasUsers()

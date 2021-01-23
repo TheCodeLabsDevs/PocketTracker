@@ -2,10 +2,13 @@ package de.thecodelabs.pockettracker.user.model;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "appuser")
@@ -19,13 +22,11 @@ public class User
 	@Column(unique = true)
 	private String name;
 
-	private String password;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<UserAuthentication> authentications = new ArrayList<>();
 
 	@NotNull
 	private UserRole userRole;
-
-	@NotNull
-	private UserType userType;
 
 	@ManyToMany
 	private List<Show> shows;
@@ -53,14 +54,26 @@ public class User
 		this.name = name;
 	}
 
-	public String getPassword()
+	public List<UserAuthentication> getAuthentications()
 	{
-		return password;
+		return authentications;
 	}
 
-	public void setPassword(String password)
+	public <T extends UserAuthentication> Optional<T> getAuthentication(Class<T> type)
 	{
-		this.password = password;
+		return authentications.stream()
+				.filter(authentication -> authentication.getClass().equals(type))
+				.map(authentication -> (T) authentication)
+				.findFirst();
+	}
+
+	public void addAuthentication(UserAuthentication userAuthentication) {
+		this.authentications.add(userAuthentication);
+	}
+
+	public void setAuthentications(List<UserAuthentication> authentications)
+	{
+		this.authentications = authentications;
 	}
 
 	public UserRole getUserRole()
@@ -71,16 +84,6 @@ public class User
 	public void setUserRole(UserRole userRole)
 	{
 		this.userRole = userRole;
-	}
-
-	public UserType getUserType()
-	{
-		return userType;
-	}
-
-	public void setUserType(UserType userType)
-	{
-		this.userType = userType;
 	}
 
 	public List<Show> getShows()
@@ -100,7 +103,6 @@ public class User
 				"id=" + id +
 				", name='" + name + '\'' +
 				", userRole=" + userRole +
-				", userType=" + userType +
 				'}';
 	}
 }

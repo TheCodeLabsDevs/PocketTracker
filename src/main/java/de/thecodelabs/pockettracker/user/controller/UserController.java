@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -44,7 +45,11 @@ public class UserController
 			throw new NotFoundException("User not found");
 		}
 
-		model.addAttribute("user", new UserForm(userOptional.get()));
+		final User user = userOptional.get();
+		model.addAttribute("user", new UserForm(user));
+		model.addAttribute("authentications", user.getAuthentications().stream()
+				.map(userAuthentication -> userAuthentication.getClass().getSimpleName())
+				.collect(Collectors.toList()));
 		model.addAttribute("toast", WebRequestUtils.popToast(request));
 
 		return "users/edit";
@@ -66,11 +71,11 @@ public class UserController
 		catch(PasswordValidationException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("Passwort Validierung fehlgeschlagen", ToastColor.DANGER));
-			return "redirect:/user";
+			return "redirect:/user/settings";
 		}
 
 		WebRequestUtils.putToast(request, new Toast("Änderungen gespeichert", ToastColor.SUCCESS));
-		return "redirect:/user";
+		return "redirect:/user/settings";
 	}
 
 	@GetMapping("/shows")

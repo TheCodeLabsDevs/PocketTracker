@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.authentication;
 
 import de.thecodelabs.pockettracker.user.UserService;
 import de.thecodelabs.pockettracker.user.model.User;
-import de.thecodelabs.pockettracker.user.model.UserType;
+import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,7 +28,7 @@ public class DatabaseUserDetailService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws AuthenticationException
 	{
-		final Optional<User> userOptional = userService.getUser(username, UserType.INTERNAL);
+		final Optional<User> userOptional = userService.getUser(username, InternalAuthentication.class);
 
 		if(userOptional.isEmpty())
 		{
@@ -37,6 +37,7 @@ public class DatabaseUserDetailService implements UserDetailsService
 
 		final User user = userOptional.get();
 		final Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(user.getUserRole().getRoleName()));
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
+		final String password = user.getAuthentication(InternalAuthentication.class).orElseThrow().getPassword();
+		return new org.springframework.security.core.userdetails.User(user.getName(), password, authorities);
 	}
 }
