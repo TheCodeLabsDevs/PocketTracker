@@ -27,12 +27,6 @@ public class MainController
 		this.userService = userService;
 	}
 
-	@GetMapping
-	public String index()
-	{
-		return "redirect:/user/shows";
-	}
-
 	@GetMapping("/allShows")
 	public String allShows(Model model)
 	{
