@@ -38,7 +38,8 @@
                         <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                <button class="w-100 mb-3 btn btn-lg btn-primary" type="submit">Login</button>
+                <@b.button id="oauth-login-thecodelabs" classes="w-100 btn-lg" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="TheCodeLabs"/>
             </form>
         </div>
     </@template.body>

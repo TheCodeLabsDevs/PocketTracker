@@ -29,8 +29,8 @@
     </a>
 </#macro>
 
-<#macro button label url icon="" classes="">
-    <a class="btn btn-primary ${classes}" href="<@s.url url/>" role="button">
+<#macro button label url icon="" classes="" id="">
+    <a class="btn btn-primary ${classes}" id="${id}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
         ${label}
     </a>
