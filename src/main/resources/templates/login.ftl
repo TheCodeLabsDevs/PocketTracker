@@ -27,6 +27,12 @@
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password"
                        required>
 
+                <#if springMacroRequestContext.getQueryString()?? && springMacroRequestContext.getQueryString() == "error">
+                    <div class="mt-4 mb-4 alert alert-danger" role="alert">
+                        Falsches Passwort
+                    </div>
+                </#if>
+
                 <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" value="remember-me"> Remember me
