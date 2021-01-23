@@ -14,8 +14,7 @@
             <div class="container mt-5">
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back
-                        </button>
+                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
                         <h2 class="mb-2 text-truncate">Der Lehrer</h2>
                         <h4 class="mb-4">-Staffel 2-</h4>
                         <div class="progress">

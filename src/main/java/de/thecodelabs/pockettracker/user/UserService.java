@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user;
 
 import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,13 @@ public class UserService
 	{
 		return user.getWatchedEpisodes().stream()
 				.filter(episode -> episode.getSeason().getShow().equals(show))
+				.collect(Collectors.toList());
+	}
+
+	public List<Episode> getWatchedEpisodesBySeason(User user, Season season)
+	{
+		return user.getWatchedEpisodes().stream()
+				.filter(episode -> episode.getSeason().equals(season))
 				.collect(Collectors.toList());
 	}
 }

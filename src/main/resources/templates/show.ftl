@@ -41,7 +41,22 @@
                             </#if>
                         </div>
 
-                        <!-- TODO: list seasons as links -->
+                        <div class="col-12 col-md-11 my-3 my-md-5">
+                            <div class="list-group list-episodes">
+                                <#list show.getSeasons() as season>
+                                    <a href="#" class="list-group-item list-group-item-action w-100 p-3">
+                                        <div class="row">
+                                            <div class="col-10 fw-bold text-truncate">
+                                                ${season.getNumber()} - ${season.getName()}
+                                            </div>
+                                            <div class="col-2 d-flex justify-content-end">
+                                                ${userService.getWatchedEpisodesBySeason(currentUser, season)?size}/${season.getEpisodes()?size}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </#list>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
