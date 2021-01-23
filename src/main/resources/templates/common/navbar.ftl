@@ -22,15 +22,9 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link <#if currentPage?? && currentPage=="Alle Serien">active</#if>" href="<@s.url "/allShows"/>">Alle Serien</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <#if currentPage?? && currentPage=="Meine Serien">active</#if>" href="<@s.url "/"/>">Meine Serien</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <#if currentPage?? && currentPage=="Statistiken">active</#if>" href="<@s.url "/"/>">Statistiken</a>
-                        </li>
+                        <@item "Alle Serien" "/allShows"/>
+                        <@item "Meine Serien" "/"/>
+                        <@item "Statistiken" "/allShows"/>
                     </ul>
 
                     <div class="me-auto"></div>
@@ -47,4 +41,10 @@
             </div>
         </div>
     </nav>
+</#macro>
+
+<#macro item name url>
+    <li class="nav-item">
+        <a class="nav-link <#if currentPage?? && currentPage==name>active</#if>" href="<@s.url url/>">${name}</a>
+    </li>
 </#macro>
