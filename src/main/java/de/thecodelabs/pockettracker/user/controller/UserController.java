@@ -73,7 +73,7 @@ public class UserController
 		return "redirect:/user";
 	}
 
-	@GetMapping("shows")
+	@GetMapping("/shows")
 	public String getShows(Model model)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
@@ -91,7 +91,7 @@ public class UserController
 		return "index";
 	}
 
-	@GetMapping("shows/add/{showId}")
+	@GetMapping("/shows/add/{showId}")
 	@Transactional
 	public String addShow(WebRequest request, @PathVariable Integer showId)
 	{
@@ -114,7 +114,7 @@ public class UserController
 		return "redirect:/allShows";
 	}
 
-	@GetMapping("shows/remove/{showId}")
+	@GetMapping("/shows/remove/{showId}")
 	@Transactional
 	public String removeShow(WebRequest request, @PathVariable Integer showId)
 	{
