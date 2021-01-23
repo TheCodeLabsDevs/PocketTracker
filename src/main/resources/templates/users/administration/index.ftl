@@ -28,7 +28,7 @@
                 <#list users as user>
                     <@t.row>
                         <@t.cell value=user.name/>
-                        <@t.cell value=user.userType.toString()/>
+                        <@t.cell value=user.userRole.toString()/>
                         <@t.cell>
                             <@t.action icon="fas fa-pen" url="/users/administration/${user.id}/edit" />
                             <#if currentUser.name != user.name>

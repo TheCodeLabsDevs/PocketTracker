@@ -54,7 +54,7 @@ public class InitialUserCreator
 
 		final UserForm userForm = new UserForm();
 		userForm.setUsername("admin");
-		userForm.setUserType(UserType.ADMIN);
+		userForm.setUserRole(UserRole.ADMIN);
 		userForm.setPassword(password);
 		userForm.setPasswordRepeat(password);
 

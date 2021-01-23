@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.user;
 
-public enum UserType
+public enum UserRole
 {
 	ADMIN,
 	USER;

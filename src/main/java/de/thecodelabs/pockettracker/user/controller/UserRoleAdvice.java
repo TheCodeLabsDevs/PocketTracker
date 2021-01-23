@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.user.controller;
 
-import de.thecodelabs.pockettracker.user.UserType;
+import de.thecodelabs.pockettracker.user.UserRole;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class UserTypeAdvice
+public class UserRoleAdvice
 {
-
-	@ModelAttribute("userTypes")
-	public List<String> userTypes()
+	@ModelAttribute("userRoles")
+	public List<String> userRoles()
 	{
-		return Arrays.stream(UserType.values()).map(Enum::name).collect(Collectors.toList());
+		return Arrays.stream(UserRole.values()).map(Enum::name).collect(Collectors.toList());
 	}
 }

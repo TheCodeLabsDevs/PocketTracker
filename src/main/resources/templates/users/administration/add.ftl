@@ -16,6 +16,6 @@
             </@b.col>
         </@b.row>
 
-        <@form.form user userTypes/>
+        <@form.form user userRoles/>
     </@template.body>
 </html>

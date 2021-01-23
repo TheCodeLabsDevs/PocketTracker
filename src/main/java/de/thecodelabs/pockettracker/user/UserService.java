@@ -5,7 +5,6 @@ import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,11 +60,11 @@ public class UserService
 	{
 		User user = new User();
 		user.setName(userForm.getUsername());
-		user.setUserType(userForm.getUserType());
+		user.setUserRole(userForm.getUserRole());
 
-		if(user.getUserType() == null)
+		if(user.getUserRole() == null)
 		{
-			user.setUserType(UserType.USER);
+			user.setUserRole(UserRole.USER);
 		}
 
 		if(!validatePassword(userForm))
@@ -82,10 +81,10 @@ public class UserService
 		user.setName(userForm.getUsername());
 
 		// Admin only changes
-		getCurrentUser().filter(u -> u.getUserType() == UserType.ADMIN).ifPresent(u -> {
-			if(userForm.getUserType() != null)
+		getCurrentUser().filter(u -> u.getUserRole() == UserRole.ADMIN).ifPresent(u -> {
+			if(userForm.getUserRole() != null)
 			{
-				user.setUserType(userForm.getUserType());
+				user.setUserRole(userForm.getUserRole());
 			}
 		});
 

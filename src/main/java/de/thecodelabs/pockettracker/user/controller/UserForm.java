@@ -1,16 +1,14 @@
 package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.user.User;
-import de.thecodelabs.pockettracker.user.UserType;
-
-import java.util.Optional;
+import de.thecodelabs.pockettracker.user.UserRole;
 
 public class UserForm
 {
 	private String username;
 	private String password;
 	private String passwordRepeat;
-	private UserType userType;
+	private UserRole userRole;
 
 	public UserForm()
 	{
@@ -19,7 +17,7 @@ public class UserForm
 	public UserForm(User user)
 	{
 		this.username = user.getName();
-		this.userType = user.getUserType();
+		this.userRole = user.getUserRole();
 	}
 
 	public String getUsername()
@@ -52,13 +50,13 @@ public class UserForm
 		this.passwordRepeat = passwordRepeat;
 	}
 
-	public UserType getUserType()
+	public UserRole getUserRole()
 	{
-		return userType;
+		return userRole;
 	}
 
-	public void setUserType(UserType userType)
+	public void setUserRole(UserRole userRole)
 	{
-		this.userType = userType;
+		this.userRole = userRole;
 	}
 }

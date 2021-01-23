@@ -22,7 +22,7 @@ public class User
 	private String password;
 
 	@NotNull
-	private UserType userType;
+	private UserRole userRole;
 
 	@ManyToMany
 	private List<Show> shows;
@@ -60,14 +60,14 @@ public class User
 		this.password = password;
 	}
 
-	public UserType getUserType()
+	public UserRole getUserRole()
 	{
-		return userType;
+		return userRole;
 	}
 
-	public void setUserType(UserType userType)
+	public void setUserRole(UserRole userRole)
 	{
-		this.userType = userType;
+		this.userRole = userRole;
 	}
 
 	public List<Show> getShows()
@@ -86,7 +86,7 @@ public class User
 		return "User{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", userType=" + userType +
+				", userRole=" + userRole +
 				'}';
 	}
 }

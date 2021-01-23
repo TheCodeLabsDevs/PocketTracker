@@ -2,7 +2,7 @@
 <#import "/common/macros/form.ftl" as f/>
 <#import "/common/macros/card.ftl" as c/>
 
-<#macro form user userTypes>
+<#macro form user>
     <@f.form name="user" url="${springMacroRequestContext.contextPath}">
         <@c.card>
             <@c.body>

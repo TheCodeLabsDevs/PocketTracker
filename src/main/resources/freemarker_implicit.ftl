@@ -5,4 +5,4 @@
 [#-- @ftlvariable name="showService" type="de.thecodelabs.pockettracker.show.ShowService" --]
 [#-- @ftlvariable name="userService" type="de.thecodelabs.pockettracker.user.UserService" --]
 [#-- @ftlvariable name="currentUser" type="de.thecodelabs.pockettracker.user.User" --]
-[#-- @ftlvariable name="userTypes" type="java.util.List<de.thecodelabs.pockettracker.user.UserType>" --]
+[#-- @ftlvariable name="userRoles" type="java.util.List<de.thecodelabs.pockettracker.user.UserRole>" --]

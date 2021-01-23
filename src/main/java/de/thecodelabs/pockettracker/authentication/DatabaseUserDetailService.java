@@ -34,7 +34,7 @@ public class DatabaseUserDetailService implements UserDetailsService
 		}
 
 		final User user = userOptional.get();
-		final Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(user.getUserType().getRoleName()));
+		final Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(user.getUserRole().getRoleName()));
 		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
 	}
 }
