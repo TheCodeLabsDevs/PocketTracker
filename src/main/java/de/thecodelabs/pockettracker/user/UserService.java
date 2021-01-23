@@ -51,10 +51,12 @@ public class UserService
 		{
 			// Get Gitlab user or create new account
 			return getUser(authentication.getName(), GitlabAuthentication.class).or(() -> {
-				final UserForm userForm = new UserForm();
-				userForm.setUsername(authentication.getName());
 
-				final User user = createUser(userForm);
+				final User user = getUser(authentication.getName()).orElseGet(() -> {
+					final UserForm userForm = new UserForm();
+					userForm.setUsername(authentication.getName());
+					return createUser(userForm);
+				});
 				addGitlabAuthentication(user, authentication.getName());
 				return Optional.of(user);
 			});
@@ -68,7 +70,12 @@ public class UserService
 
 	public Optional<User> getUser(String username, Class<? extends UserAuthentication> type)
 	{
-		return userRepository.findUserByName(username).filter(user -> user.getAuthentication(type).isPresent());
+		return getUser(username).filter(user -> user.getAuthentication(type).isPresent());
+	}
+
+	public Optional<User> getUser(String username)
+	{
+		return userRepository.findUserByName(username);
 	}
 
 	public Optional<User> getUser(Integer id)

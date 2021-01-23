@@ -15,12 +15,6 @@
             </@b.col>
         </@b.row>
 
-        <#list authentications as authentication>
-            <ul>
-                <li>${authentication}</li>
-            </ul>
-        </#list>
-
-        <@form.form user/>
+        <@form.form user authentications/>
     </@template.body>
 </html>
