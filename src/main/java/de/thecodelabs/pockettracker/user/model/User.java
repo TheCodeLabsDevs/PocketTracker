@@ -24,6 +24,9 @@ public class User
 	@NotNull
 	private UserRole userRole;
 
+	@NotNull
+	private UserType userType;
+
 	@ManyToMany
 	private List<Show> shows;
 
@@ -70,6 +73,16 @@ public class User
 		this.userRole = userRole;
 	}
 
+	public UserType getUserType()
+	{
+		return userType;
+	}
+
+	public void setUserType(UserType userType)
+	{
+		this.userType = userType;
+	}
+
 	public List<Show> getShows()
 	{
 		return shows;
@@ -87,6 +100,7 @@ public class User
 				"id=" + id +
 				", name='" + name + '\'' +
 				", userRole=" + userRole +
+				", userType=" + userType +
 				'}';
 	}
 }

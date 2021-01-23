@@ -1,8 +1,10 @@
 package de.thecodelabs.pockettracker.authentication;
 
-import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.UserService;
+import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,9 +26,9 @@ public class DatabaseUserDetailService implements UserDetailsService
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+	public UserDetails loadUserByUsername(String username) throws AuthenticationException
 	{
-		final Optional<User> userOptional = userService.getUser(username);
+		final Optional<User> userOptional = userService.getUser(username, UserType.INTERNAL);
 
 		if(userOptional.isEmpty())
 		{

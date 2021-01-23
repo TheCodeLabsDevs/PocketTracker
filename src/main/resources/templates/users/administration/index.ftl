@@ -22,6 +22,7 @@
             <@t.head>
                 <@t.headCell label="Username"/>
                 <@t.headCell label="Role"/>
+                <@t.headCell label="Provider"/>
                 <@t.headCell label="Actions"/>
             </@t.head>
             <@t.body>
@@ -29,6 +30,7 @@
                     <@t.row>
                         <@t.cell value=user.name/>
                         <@t.cell value=user.userRole.toString()/>
+                        <@t.cell value=user.userType.toString()/>
                         <@t.cell>
                             <@t.action icon="fas fa-pen" url="/users/administration/${user.id}/edit" />
                             <#if currentUser.name != user.name>

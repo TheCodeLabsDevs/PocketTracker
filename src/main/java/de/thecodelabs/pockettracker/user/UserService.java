@@ -6,10 +6,13 @@ import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
+import de.thecodelabs.pockettracker.user.model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,12 +43,33 @@ public class UserService
 		{
 			return Optional.empty();
 		}
-		return getUser(authentication.getName());
+
+		if(authentication instanceof OAuth2AuthenticationToken)
+		{
+			// Get Gitlab user or create new account
+			return getUser(authentication.getName(), UserType.GITLAB).or(() -> {
+				final UserForm userForm = new UserForm();
+				userForm.setUsername(authentication.getName());
+				try
+				{
+					return Optional.of(createUser(userForm, UserType.GITLAB));
+				}
+				catch(PasswordValidationException ignored)
+				{
+					return Optional.empty();
+				}
+			});
+		}
+		else if(authentication instanceof UsernamePasswordAuthenticationToken)
+		{
+			return getUser(authentication.getName(), UserType.INTERNAL);
+		}
+		return Optional.empty();
 	}
 
-	public Optional<User> getUser(String username)
+	public Optional<User> getUser(String username, UserType userType)
 	{
-		return userRepository.findUserByName(username);
+		return userRepository.findUserByNameAndUserType(username, userType);
 	}
 
 	public Optional<User> getUser(Integer id)
@@ -58,22 +82,26 @@ public class UserService
 		return userRepository.findAll();
 	}
 
-	public User createUser(UserForm userForm) throws PasswordValidationException
+	public User createUser(UserForm userForm, UserType userType) throws PasswordValidationException
 	{
 		User user = new User();
 		user.setName(userForm.getUsername());
 		user.setUserRole(userForm.getUserRole());
+		user.setUserType(userType);
 
 		if(user.getUserRole() == null)
 		{
 			user.setUserRole(UserRole.USER);
 		}
 
-		if(!validatePassword(userForm))
+		if(userType.isPasswordValidation())
 		{
-			throw new PasswordValidationException();
+			if(!validatePassword(userForm))
+			{
+				throw new PasswordValidationException();
+			}
+			user.setPassword(passwordEncoder.encode(userForm.getPassword()));
 		}
-		user.setPassword(passwordEncoder.encode(userForm.getPassword()));
 
 		return userRepository.save(user);
 	}
@@ -91,7 +119,7 @@ public class UserService
 		});
 
 		final String password = userForm.getPassword();
-		if(password != null && !password.isEmpty())
+		if(password != null && !password.isEmpty() && user.getUserType().isPasswordValidation())
 		{
 			if(!validatePassword(userForm))
 			{
