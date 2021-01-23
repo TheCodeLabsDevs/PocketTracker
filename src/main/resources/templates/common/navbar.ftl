@@ -23,8 +23,12 @@
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <@item "Alle Serien" "/allShows"/>
-                        <@item "Meine Serien" "/"/>
-                        <@item "Statistiken" "/allShows"/>
+                        <@item "Meine Serien" "/user/shows"/>
+                        <@item "Statistiken" "/statistics"/>
+
+                        <#if currentUser?? && currentUser.userRole.name() == "ADMIN">
+                            <@item "Benutzerverwaltung" "/users/administration"/>
+                        </#if>
                     </ul>
 
                     <div class="me-auto"></div>
@@ -33,7 +37,8 @@
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
-                        <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
+                        <a href="<@s.url "/user"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}
+                        </a>
                     </div>
 
                     <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
@@ -45,6 +50,6 @@
 
 <#macro item name url>
     <li class="nav-item">
-        <a class="nav-link <#if currentPage?? && currentPage==name>active</#if>" href="<@s.url url/>">${name}</a>
+        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?contains(url)>active</#if>" href="<@s.url url/>">${name}</a>
     </li>
 </#macro>
