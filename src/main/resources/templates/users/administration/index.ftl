@@ -4,8 +4,8 @@
     <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/template.ftl" as template>
-    <#import "/common/macros/base.ftl" as b/>
-    <#import "/common/macros/table.ftl" as t/>
+    <#import "/common/components/base.ftl" as b/>
+    <#import "/common/components/table.ftl" as t/>
 
     <@template.head 'Episodes'/>
     <@template.body>

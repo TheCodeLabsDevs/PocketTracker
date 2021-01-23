@@ -4,7 +4,7 @@
     <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/template.ftl" as template>
-    <#import "/common/macros/base.ftl" as b/>
+    <#import "/common/components/base.ftl" as b/>
     <#import "/users/form.ftl" as form>
 
     <@template.head 'Episodes'/>

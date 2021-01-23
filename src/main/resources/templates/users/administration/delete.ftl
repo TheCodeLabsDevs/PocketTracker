@@ -4,9 +4,9 @@
     <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/template.ftl" as template>
-    <#import "/common/macros/base.ftl" as b/>
-    <#import "/common/macros/card.ftl" as c/>
-    <#import "/common/macros/form.ftl" as f/>
+    <#import "/common/components/base.ftl" as b/>
+    <#import "/common/components/card.ftl" as c/>
+    <#import "/common/components/form.ftl" as f/>
     <#import "/users/administration/form.ftl" as form>
 
     <@template.head 'Episodes'/>

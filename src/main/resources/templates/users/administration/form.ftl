@@ -1,6 +1,6 @@
-<#import "/common/macros/base.ftl" as b/>
-<#import "/common/macros/form.ftl" as f/>
-<#import "/common/macros/card.ftl" as c/>
+<#import "/common/components/base.ftl" as b/>
+<#import "/common/components/form.ftl" as f/>
+<#import "/common/components/card.ftl" as c/>
 
 <#macro form user userRoles>
     <@f.form name="user" url="${springMacroRequestContext.contextPath}">
