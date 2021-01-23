@@ -3,7 +3,7 @@ package de.thecodelabs.pockettracker;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
-import de.thecodelabs.pockettracker.user.User;
+import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

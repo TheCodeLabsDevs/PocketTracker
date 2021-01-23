@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.user;
 
 import de.thecodelabs.pockettracker.authentication.AuthenticationConfigurationProperties;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
+import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.utils.util.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

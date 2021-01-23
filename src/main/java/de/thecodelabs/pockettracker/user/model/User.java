@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.user;
+package de.thecodelabs.pockettracker.user.model;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;

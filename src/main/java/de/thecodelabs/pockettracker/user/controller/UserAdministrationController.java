@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
-import de.thecodelabs.pockettracker.user.User;
+import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users/administration")
-@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.UserRole).ADMIN)")
+@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class UserAdministrationController
 {
 	private final UserService userService;

@@ -4,6 +4,8 @@ import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
+import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

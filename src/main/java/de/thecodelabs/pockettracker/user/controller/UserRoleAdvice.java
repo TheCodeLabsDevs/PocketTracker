@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.user.controller;
 
-import de.thecodelabs.pockettracker.user.UserRole;
+import de.thecodelabs.pockettracker.user.model.UserRole;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

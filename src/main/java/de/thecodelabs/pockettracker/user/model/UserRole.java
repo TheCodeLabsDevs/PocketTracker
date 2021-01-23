@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.user;
+package de.thecodelabs.pockettracker.user.model;
 
 public enum UserRole
 {

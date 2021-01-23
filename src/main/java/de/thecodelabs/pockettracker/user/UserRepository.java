@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user;
 
+import de.thecodelabs.pockettracker.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

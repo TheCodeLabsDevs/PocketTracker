@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker.user.controller;
 
-import de.thecodelabs.pockettracker.user.User;
-import de.thecodelabs.pockettracker.user.UserRole;
+import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.UserRole;
 
 public class UserForm
 {
