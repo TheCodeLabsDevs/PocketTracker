@@ -10,35 +10,50 @@
 
     <@template.head show.getName()/>
     <@template.body>
-        <div class="mx-auto text-center mb-4">
-            <a href="<@s.url "/"/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
-        </div>
+    <div class="mx-auto text-center mb-4">
+        <a href="<@s.url "/"/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h3 class="card-title text-center">${show.getName()}
-                    (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
-                <div class="row mt-3 mt-md-5">
-                    <div class="col-12 col-md-4 text-center">
-                        <#if show.getPosterPath()??>
-                            <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
-                        <#else>
-                            <@helperMacros.imagePlaceholder />
-                        </#if>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center">${show.getName()}
+                (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
+            <div class="row mt-3 mt-md-5">
+                <div class="col-12 col-md-4 text-center">
+                    <#if show.getPosterPath()??>
+                        <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
+                    <#else>
+                        <@helperMacros.imagePlaceholder />
+                    </#if>
+                </div>
+
+                <div class="col-12 col-md-8 mt-3 mt-md-0">
+                    <div class="row">
+                        <@factItem "fas fa-folder" show.getSeasons()?size "Staffeln"/>
+                        <@factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show) "Episoden"/>
+                        <@factItem "fas fa-hourglass" showService.getTotalPlayTime(show) "Minuten"/>
                     </div>
 
-                    <div class="col-12 col-md-8 mt-3 mt-md-0">
-                        <div class="row">
-                            <@factItem "fas fa-folder" show.getSeasons()?size "Staffeln"/>
-                            <@factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show) "Episoden"/>
-                            <@factItem "fas fa-hourglass" showService.getTotalPlayTime(show) "Minuten"/>
-                        </div>
-
-                        <div class="mt-3 mt-md-5">
-                            <h5>Beschreibung</h5>
-                            <#if show.getDescription()??>
-                                ${show.getDescription()}
-                            </#if>
+                    <div class="row mt-3 mt-md-5 mb-4 mb-md-0">
+                        <div class="col-12 col-md-11">
+                            <div class="accordion" id="accordionDescription">
+                                <div class="accordion-item">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="collapseHeaderOne">
+                                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItemOne" aria-expanded="false" aria-controls="collapseItemOne">
+                                                Beschreibung
+                                            </button>
+                                        </h2>
+                                        <div id="collapseItemOne" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDescription">
+                                            <div class="accordion-body">
+                                                <#if show.getDescription()??>
+                                                    ${show.getDescription()}
+                                                </#if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-12 col-md-11 my-3 my-md-5">
@@ -68,14 +83,14 @@
                 </div>
             </div>
         </div>
-    </@template.body>
+        </@template.body>
 </html>
 
 
 <#macro factItem icon value description>
     <div class="col-4 text-center">
-        <i class="${icon} fs-3"></i>
-        <div class="fs-4">
+        <i class="${icon} fs-4"></i>
+        <div class="fs-5">
             ${value}&nbsp;
             <span class="d-md-none"><br></span>
             ${description}

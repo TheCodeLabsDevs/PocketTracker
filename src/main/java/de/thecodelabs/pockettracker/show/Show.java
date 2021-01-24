@@ -19,6 +19,7 @@ public class Show
 	@NotNull
 	private String name;
 
+	@Column(length = 2048)
 	private String description;
 
 	private LocalDate firstAired;
