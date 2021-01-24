@@ -209,4 +209,9 @@ public class UserService
 				.filter(episode -> episode.getSeason().equals(season))
 				.collect(Collectors.toList());
 	}
+
+	public boolean isWatchedEpisode(User user, Episode episode)
+	{
+		return user.getWatchedEpisodes().contains(episode);
+	}
 }

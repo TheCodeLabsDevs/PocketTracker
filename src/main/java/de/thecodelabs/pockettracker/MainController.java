@@ -81,10 +81,4 @@ public class MainController
 	{
 		return "login";
 	}
-
-	@GetMapping("/episodes")
-	public String episodes()
-	{
-		return "episodes";
-	}
 }

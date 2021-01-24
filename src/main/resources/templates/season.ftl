@@ -35,7 +35,7 @@
                                             ${episode.getNumber()} - ${episode.getName()}
                                         </div>
                                         <div class="col-2 d-flex justify-content-end">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <input class="form-check-input" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                                         </div>
                                     </div>
                                 </a>
