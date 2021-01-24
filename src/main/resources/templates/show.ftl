@@ -5,6 +5,7 @@
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
+    <#import "/common/macros/show.ftl" as showMacros/>
     <#import "/users/form.ftl" as form>
 
     <@template.head 'Episodes'/>
@@ -51,6 +52,13 @@
                                             </div>
                                             <div class="col-2 d-flex justify-content-end">
                                                 ${userService.getWatchedEpisodesBySeason(currentUser, season)?size}/${season.getEpisodes()?size}
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
+                                                <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
+                                                <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
                                             </div>
                                         </div>
                                     </a>

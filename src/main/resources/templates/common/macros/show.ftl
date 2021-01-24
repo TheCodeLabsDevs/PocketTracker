@@ -18,16 +18,9 @@
 
                 <#if isUserSpecific>
                     <p class="card-text">
-                        <div class="progress">
-                            <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesByShow(currentUser, show)?size/>
-                            <#assign totalNumberOfEpisodes=showService.getTotalNumberOfEpisodes(show)/>
-                            <#if numberOfWatchedEpisodes==0  || totalNumberOfEpisodes==0>
-                                <#assign progress = 0/>
-                            <#else>
-                                <#assign progress=numberOfWatchedEpisodes / totalNumberOfEpisodes * 100/>
-                            </#if>
-                            <div class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="numberOfWatchedEpisodes" aria-valuemin="0" aria-valuemax="totalNumberOfEpisodes">${numberOfWatchedEpisodes}/${totalNumberOfEpisodes}</div>
-                        </div>
+                        <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesByShow(currentUser, show)?size/>
+                        <#assign totalNumberOfEpisodes=showService.getTotalNumberOfEpisodes(show)/>
+                        <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
                     </p>
                 </#if>
 
@@ -41,5 +34,16 @@
                 </div>
             </div>
         </div>
+    </div>
+</#macro>
+
+<#macro progessBar currentValue totalValue>
+    <div class="progress">
+        <#if currentValue==0 || totalValue==0>
+            <#assign progress = 0/>
+        <#else>
+            <#assign progress=currentValue / totalValue * 100/>
+        </#if>
+        <div class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="currentValue" aria-valuemin="0" aria-valuemax="totalValue">${currentValue}/${totalValue}</div>
     </div>
 </#macro>
