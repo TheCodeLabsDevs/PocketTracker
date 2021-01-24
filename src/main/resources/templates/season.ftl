@@ -29,7 +29,7 @@
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto">
                         <div class="list-group list-episodes">
                             <#list season.getEpisodes() as episode>
-                                <a href="#" class="list-group-item list-group-item-action w-100 p-3">
+                                <a href="<@s.url "/episode/" + episode.getId()/>" class="list-group-item list-group-item-action w-100 p-3">
                                     <div class="row">
                                         <div class="col-10 fw-bold text-truncate">
                                             ${episode.getNumber()} - ${episode.getName()}

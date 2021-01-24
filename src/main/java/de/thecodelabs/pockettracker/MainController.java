@@ -1,5 +1,7 @@
 package de.thecodelabs.pockettracker;
 
+import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
@@ -20,14 +22,16 @@ public class MainController
 {
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
+	private final EpisodeRepository episodeRepository;
 	private final UserService userService;
 
 
 	@Autowired
-	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, UserService userService)
+	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService)
 	{
 		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
+		this.episodeRepository = episodeRepository;
 		this.userService = userService;
 	}
 
@@ -75,6 +79,20 @@ public class MainController
 		model.addAttribute("season", seasonOptional.get());
 		return "season";
 	}
+
+	@GetMapping("/episode/{episodeId}")
+	public String episode(Model model, @PathVariable Integer episodeId)
+	{
+		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
+		if(episodeOptional.isEmpty())
+		{
+			return "redirect:/shows";
+		}
+
+		model.addAttribute("episode", episodeOptional.get());
+		return "episode";
+	}
+
 
 	@GetMapping("/login")
 	public String login()
