@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s/>
 
-<#macro form name url method="post" id=name>
-    <form name="${name}" id="${id}" action="<@s.url url/>" method="${method}">
+<#macro form name url method="post" id=name rawUrl=false>
+    <form name="${name}" id="${id}" action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}">
         <#if _csrf??>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </#if>

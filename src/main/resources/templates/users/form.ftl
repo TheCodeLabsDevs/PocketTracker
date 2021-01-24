@@ -3,7 +3,7 @@
 <#import "/common/components/card.ftl" as c/>
 
 <#macro form user authentications>
-    <@f.form name="user" url="${springMacroRequestContext.getRequestUri()}">
+    <@f.form name="user" url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@c.card>
             <@c.body>
                 <@b.row>
