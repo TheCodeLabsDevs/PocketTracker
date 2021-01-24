@@ -11,8 +11,7 @@
     <@template.head show.getName()/>
     <@template.body>
         <div class="mx-auto text-center mb-4">
-            <a href="<@s.url "/"/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i>
-                Back</a>
+            <a href="<@s.url "/"/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
 
         <div class="card shadow-sm">

@@ -15,7 +15,7 @@
             <div class="container mt-5">
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
+                        <a href="<@s.url "/show/" + season.getShow().getId()/>" class="btn btn-primary mb-4" role="button"><i class="fas fa-arrow-left"></i> Back</a>
                         <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
                         <h4 class="mb-4">-${season.getName()}-</h4>
 
