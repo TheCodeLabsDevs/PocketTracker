@@ -22,8 +22,8 @@
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 mt-3 mt-md-0">
                         <div class="row">
-                            <@factItem "fas fa-calendar" episode.getFirstAired()?date('yyy-MM-dd') "Datum"/>
-                            <@factItem "fas fa-hourglass" episode.getLengthInMinutes() "Minuten"/>
+                            <@showMacros.factItem "fas fa-calendar" episode.getFirstAired()?date('yyy-MM-dd') "Datum"/>
+                            <@showMacros.factItem "fas fa-hourglass" episode.getLengthInMinutes() "Minuten"/>
                         </div>
 
                         <#if episode.getDescription()??>
@@ -41,14 +41,3 @@
     </@template.body>
 </html>
 
-
-<#macro factItem icon value description>
-    <div class="col text-center">
-        <i class="${icon} fs-4"></i>
-        <div class="fs-5">
-            ${value}&nbsp;
-            <span class="d-md-none"><br></span>
-            ${description}
-        </div>
-    </div>
-</#macro>

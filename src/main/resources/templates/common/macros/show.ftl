@@ -47,3 +47,14 @@
         <div class="progress-bar <#if progress == 100>bg-success</#if>" role="progressbar" style="width: ${progress?c}%;" aria-valuenow="currentValue" aria-valuemin="0" aria-valuemax="totalValue">${currentValue}/${totalValue}</div>
     </div>
 </#macro>
+
+<#macro factItem icon value description>
+    <div class="col text-center">
+        <i class="${icon} fs-4"></i>
+        <div class="fs-5">
+            ${value}&nbsp;
+            <span class="d-md-none"><br></span>
+            ${description}
+        </div>
+    </div>
+</#macro>

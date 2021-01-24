@@ -28,9 +28,9 @@
 
                 <div class="col-12 col-md-8 mt-3 mt-md-0">
                     <div class="row">
-                        <@factItem "fas fa-folder" show.getSeasons()?size "Staffeln"/>
-                        <@factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show) "Episoden"/>
-                        <@factItem "fas fa-hourglass" showService.getTotalPlayTime(show) "Minuten"/>
+                        <@showMacros.factItem "fas fa-folder" show.getSeasons()?size "Staffeln"/>
+                        <@showMacros.factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show) "Episoden"/>
+                        <@showMacros.factItem "fas fa-hourglass" showService.getTotalPlayTime(show) "Minuten"/>
                     </div>
 
                     <div class="row mt-3 mt-md-5 mb-4 mb-md-0">
@@ -84,15 +84,3 @@
         </div>
         </@template.body>
 </html>
-
-
-<#macro factItem icon value description>
-    <div class="col-4 text-center">
-        <i class="${icon} fs-4"></i>
-        <div class="fs-5">
-            ${value}&nbsp;
-            <span class="d-md-none"><br></span>
-            ${description}
-        </div>
-    </div>
-</#macro>
