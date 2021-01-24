@@ -6,7 +6,7 @@ import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
-import de.thecodelabs.pockettracker.user.UserService;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.Toast;
 import de.thecodelabs.pockettracker.utils.ToastColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;

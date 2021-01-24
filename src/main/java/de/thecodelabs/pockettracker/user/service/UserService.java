@@ -1,15 +1,18 @@
-package de.thecodelabs.pockettracker.user;
+package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
+import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,6 +68,10 @@ public class UserService
 		{
 			return getUser(authentication.getName(), InternalAuthentication.class);
 		}
+		else if(authentication instanceof RememberMeAuthenticationToken)
+		{
+			return getUser(authentication.getName(), InternalAuthentication.class);
+		}
 		return Optional.empty();
 	}
 
@@ -81,6 +88,11 @@ public class UserService
 	public Optional<User> getUser(Integer id)
 	{
 		return userRepository.findById(id);
+	}
+
+	public Optional<User> getUserByAuthentication(UserAuthentication userAuthentication)
+	{
+		return userRepository.findUserByAuthenticationsContains(userAuthentication);
 	}
 
 	public List<User> getUsers()

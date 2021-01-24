@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class AuthenticationConfigurationProperties
 {
 	private String defaultPasswordFolder;
+	private int rememberMeTokenValiditySeconds;
 
 	public String getDefaultPasswordFolder()
 	{
@@ -17,5 +18,15 @@ public class AuthenticationConfigurationProperties
 	public void setDefaultPasswordFolder(String defaultPasswordFolder)
 	{
 		this.defaultPasswordFolder = defaultPasswordFolder;
+	}
+
+	public int getRememberMeTokenValiditySeconds()
+	{
+		return rememberMeTokenValiditySeconds;
+	}
+
+	public void setRememberMeTokenValiditySeconds(int rememberMeTokenValiditySeconds)
+	{
+		this.rememberMeTokenValiditySeconds = rememberMeTokenValiditySeconds;
 	}
 }

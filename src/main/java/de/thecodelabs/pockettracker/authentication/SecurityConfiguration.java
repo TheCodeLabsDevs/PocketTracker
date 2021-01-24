@@ -16,12 +16,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final DatabaseUserDetailService databaseUserDetailService;
+	private final RememberMeService rememberMeService;
+	private final AuthenticationConfigurationProperties configurationProperties;
 
 	@Autowired
-	public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DatabaseUserDetailService databaseUserDetailService)
+	public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DatabaseUserDetailService databaseUserDetailService,
+								 RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties)
 	{
 		this.passwordEncoder = passwordEncoder;
 		this.databaseUserDetailService = databaseUserDetailService;
+		this.rememberMeService = rememberMeService;
+		this.configurationProperties = configurationProperties;
 	}
 
 	@Override
@@ -39,6 +44,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.formLogin()
 				.loginPage(LOGIN_PAGE)
 				.permitAll()
+				.and()
+
+				.rememberMe()
+				.tokenRepository(rememberMeService)
+				.tokenValiditySeconds(configurationProperties.getRememberMeTokenValiditySeconds())
 				.and()
 
 				.logout()

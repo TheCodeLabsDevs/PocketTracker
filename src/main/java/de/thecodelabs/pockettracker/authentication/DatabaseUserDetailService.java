@@ -1,8 +1,8 @@
 package de.thecodelabs.pockettracker.authentication;
 
-import de.thecodelabs.pockettracker.user.UserService;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
