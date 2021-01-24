@@ -214,4 +214,27 @@ public class UserService
 	{
 		return user.getWatchedEpisodes().contains(episode);
 	}
+
+	public void toggleCompleteSeason(User user, Season season, boolean markAsWatched)
+	{
+		for(Episode episode : season.getEpisodes())
+		{
+			if(isWatchedEpisode(user, episode))
+			{
+				// is watched but should be marked as unwatched
+				if(!markAsWatched)
+				{
+					user.getWatchedEpisodes().remove(episode);
+				}
+			}
+			else
+			{
+				// is unwatched but should be marked as watched
+				if(markAsWatched)
+				{
+					user.getWatchedEpisodes().add(episode);
+				}
+			}
+		}
+	}
 }

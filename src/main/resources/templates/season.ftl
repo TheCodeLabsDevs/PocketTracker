@@ -17,11 +17,22 @@
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
                         <a href="<@s.url "/show/" + season.getShow().getId()/>" class="btn btn-primary mb-4" role="button"><i class="fas fa-arrow-left"></i> Back</a>
                         <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
-                        <h4 class="mb-4">-${season.getName()}-</h4>
+                        <h4>-${season.getName()}-</h4>
+                    </div>
+                </div>
 
+                <div class="row mb-4">
+                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
                         <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
                         <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
                         <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
+                        <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=true"/>" class="btn btn-outline-success" role="button"><i class="fas fa-check"></i> Alle gesehen</a>
+                        <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=false"/>" class="btn btn-outline-danger" role="button"><i class="fas fa-ban"></i> Alle nicht gesehen</a>
                     </div>
                 </div>
 

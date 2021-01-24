@@ -3,6 +3,8 @@ package de.thecodelabs.pockettracker.user.controller;
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
@@ -29,13 +31,15 @@ public class UserController
 {
 	private final UserService userService;
 	private final ShowRepository showRepository;
+	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 
 	@Autowired
-	public UserController(UserService userService, ShowRepository showRepository, EpisodeRepository episodeRepository)
+	public UserController(UserService userService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
 	{
 		this.userService = userService;
 		this.showRepository = showRepository;
+		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
 	}
 
@@ -152,6 +156,32 @@ public class UserController
 		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
 
 		return "redirect:/user/shows";
+	}
+
+	@GetMapping("/season/{seasonId}")
+	@Transactional
+	public String setSeasonAsWatched(WebRequest request,
+									 @PathVariable Integer seasonId,
+									 @RequestParam(name = "markAsWatched") boolean markAsWatched)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
+		if(seasonOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Staffel mit der ID \"{0}\"", seasonId), ToastColor.DANGER));
+			return "redirect:/shows";
+		}
+
+		final User user = userOptional.get();
+		final Season season = seasonOptional.get();
+		userService.toggleCompleteSeason(user, season, markAsWatched);
+
+		return "redirect:/season/" + season.getId();
 	}
 
 	@GetMapping("/episode/{episodeId}/toggle/{redirectTo}")
