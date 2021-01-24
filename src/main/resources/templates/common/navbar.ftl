@@ -49,7 +49,7 @@
 
 <#macro item name url icon="">
     <li class="nav-item">
-        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?contains(url)>active</#if>" href="<@s.url url/>">
+        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?starts_with(springMacroRequestContext.contextPath + url)>active</#if>" href="<@s.url url/>">
             <#if icon?has_content><i class="${icon}"></i></#if>
             ${name}
         </a>
