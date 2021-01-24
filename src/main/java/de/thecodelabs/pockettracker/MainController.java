@@ -1,6 +1,8 @@
 package de.thecodelabs.pockettracker;
 
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.model.User;
@@ -17,13 +19,15 @@ import java.util.Optional;
 public class MainController
 {
 	private final ShowRepository showRepository;
+	private final SeasonRepository seasonRepository;
 	private final UserService userService;
 
 
 	@Autowired
-	public MainController(ShowRepository showRepository, UserService userService)
+	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, UserService userService)
 	{
 		this.showRepository = showRepository;
+		this.seasonRepository = seasonRepository;
 		this.userService = userService;
 	}
 
@@ -57,6 +61,19 @@ public class MainController
 
 		model.addAttribute("show", showOptional.get());
 		return "show";
+	}
+
+	@GetMapping("/season/{seasonId}")
+	public String season(Model model, @PathVariable Integer seasonId)
+	{
+		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
+		if(seasonOptional.isEmpty())
+		{
+			return "redirect:/shows";
+		}
+
+		model.addAttribute("season", seasonOptional.get());
+		return "season";
 	}
 
 	@GetMapping("/login")

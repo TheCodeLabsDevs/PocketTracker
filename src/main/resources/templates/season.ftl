@@ -2,9 +2,10 @@
 <html>
     <#import "/spring.ftl" as s/>
     <#import "/common/helpers.ftl" as helperMacros>
-
     <#import "/common/template.ftl" as template>
-    <@template.head 'Episodes'/>
+    <#import "/common/macros/show.ftl" as showMacros/>
+
+    <@template.head season.getName()/>
 
     <body class="bg-light">
         <#import "/common/navbar.ftl" as navbar>
@@ -15,13 +16,12 @@
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
                         <button class="btn btn-primary mb-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
-                        <h2 class="mb-2 text-truncate">Der Lehrer</h2>
-                        <h4 class="mb-4">-Staffel 2-</h4>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28"
-                                 aria-valuemin="0" aria-valuemax="100">2/7
-                            </div>
-                        </div>
+                        <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
+                        <h4 class="mb-4">-${season.getName()}-</h4>
+
+                        <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
+                        <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
+                        <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
                     </div>
                 </div>
 

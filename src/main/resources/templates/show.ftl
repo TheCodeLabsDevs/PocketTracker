@@ -8,7 +8,7 @@
     <#import "/common/macros/show.ftl" as showMacros/>
     <#import "/users/form.ftl" as form>
 
-    <@template.head 'Episodes'/>
+    <@template.head show.getName()/>
     <@template.body>
         <div class="mx-auto text-center mb-4">
             <a href="<@s.url "/"/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i>
@@ -45,7 +45,7 @@
                         <div class="col-12 col-md-11 my-3 my-md-5">
                             <div class="list-group list-episodes">
                                 <#list show.getSeasons() as season>
-                                    <a href="#" class="list-group-item list-group-item-action w-100 p-3">
+                                    <a href="<@s.url "/season/" + season.getId() />" class="list-group-item list-group-item-action w-100 p-3">
                                         <div class="row">
                                             <div class="col-10 fw-bold text-truncate">
                                                 ${season.getNumber()} - ${season.getName()}
