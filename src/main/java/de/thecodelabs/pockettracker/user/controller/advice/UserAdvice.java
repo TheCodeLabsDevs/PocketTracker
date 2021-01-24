@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.user.controller;
+package de.thecodelabs.pockettracker.user.controller.advice;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;

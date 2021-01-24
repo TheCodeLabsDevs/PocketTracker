@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.user.controller;
+package de.thecodelabs.pockettracker.user.controller.advice;
 
 import de.thecodelabs.pockettracker.user.model.UserRole;
 import org.springframework.web.bind.annotation.ControllerAdvice;

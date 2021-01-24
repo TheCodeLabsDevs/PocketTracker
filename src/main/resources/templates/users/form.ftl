@@ -23,7 +23,7 @@
 
                     <@f.submit "Speichern"/>
 
-                    <#if !authentications?seq_contains("GitlabAuthentication")>
+                    <#if !authentications?seq_contains("GitlabAuthentication") && oauthEnabled>
                         <@b.button id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="Connect with TheCodeLabs"/>
                     </#if>
                 </@b.row>

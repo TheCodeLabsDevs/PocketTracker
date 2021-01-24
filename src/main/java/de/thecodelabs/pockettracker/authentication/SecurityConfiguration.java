@@ -53,10 +53,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 				.logout()
 				.permitAll()
-				.and()
+				.and();
 
-				.oauth2Login()
-				.loginPage(LOGIN_PAGE);
+		if(configurationProperties.isEnableOAuth())
+		{
+			http
+					.oauth2Login()
+					.loginPage(LOGIN_PAGE);
+		}
 	}
 
 	@Override

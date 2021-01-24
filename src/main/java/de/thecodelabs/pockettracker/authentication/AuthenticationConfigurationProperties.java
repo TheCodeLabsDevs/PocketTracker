@@ -9,6 +9,7 @@ public class AuthenticationConfigurationProperties
 {
 	private String defaultPasswordFolder;
 	private int rememberMeTokenValiditySeconds;
+	private boolean enableOAuth = false;
 
 	public String getDefaultPasswordFolder()
 	{
@@ -28,5 +29,15 @@ public class AuthenticationConfigurationProperties
 	public void setRememberMeTokenValiditySeconds(int rememberMeTokenValiditySeconds)
 	{
 		this.rememberMeTokenValiditySeconds = rememberMeTokenValiditySeconds;
+	}
+
+	public boolean isEnableOAuth()
+	{
+		return enableOAuth;
+	}
+
+	public void setEnableOAuth(boolean enableOAuth)
+	{
+		this.enableOAuth = enableOAuth;
 	}
 }
