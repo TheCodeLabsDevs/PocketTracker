@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
@@ -28,12 +29,14 @@ public class UserController
 {
 	private final UserService userService;
 	private final ShowRepository showRepository;
+	private final EpisodeRepository episodeRepository;
 
 	@Autowired
-	public UserController(UserService userService, ShowRepository showRepository)
+	public UserController(UserService userService, ShowRepository showRepository, EpisodeRepository episodeRepository)
 	{
 		this.userService = userService;
 		this.showRepository = showRepository;
+		this.episodeRepository = episodeRepository;
 	}
 
 	@GetMapping("/settings")
@@ -149,5 +152,37 @@ public class UserController
 		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
 
 		return "redirect:/user/shows";
+	}
+
+	@GetMapping("/episode/{episodeId}/toggle")
+	@Transactional
+	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
+		if(episodeOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), ToastColor.DANGER));
+			return "redirect:/shows";
+		}
+
+		final User user = userOptional.get();
+
+		final Episode episode = episodeOptional.get();
+		if(user.getWatchedEpisodes().contains(episode))
+		{
+			user.getWatchedEpisodes().remove(episode);
+		}
+		else
+		{
+			user.getWatchedEpisodes().add(episode);
+		}
+
+		return "redirect:/season/" + episode.getSeason().getId();
 	}
 }
