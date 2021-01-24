@@ -17,7 +17,10 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
-                <h3 class="card-title text-center">${showService.getShortCode(episode)} - ${episode.getName()}</h3>
+                <h3 class="card-title text-center">
+                    ${showService.getShortCode(episode)} - ${episode.getName()}
+                    <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
+                </h3>
 
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 mt-3 mt-md-0">

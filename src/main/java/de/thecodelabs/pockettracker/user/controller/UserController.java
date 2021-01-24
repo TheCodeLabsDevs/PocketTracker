@@ -154,9 +154,9 @@ public class UserController
 		return "redirect:/user/shows";
 	}
 
-	@GetMapping("/episode/{episodeId}/toggle")
+	@GetMapping("/episode/{episodeId}/toggle/{redirectTo}")
 	@Transactional
-	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId)
+	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId, @PathVariable String redirectTo)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -181,6 +181,11 @@ public class UserController
 		else
 		{
 			user.getWatchedEpisodes().add(episode);
+		}
+
+		if(redirectTo.equals("episode"))
+		{
+			return "redirect:/episode/" + episode.getId();
 		}
 
 		return "redirect:/season/" + episode.getSeason().getId();
