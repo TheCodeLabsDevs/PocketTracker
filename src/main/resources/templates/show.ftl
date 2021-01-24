@@ -57,7 +57,7 @@
 
                         <div class="col-12 col-md-11 my-3 my-md-5">
                             <div class="list-group list-episodes">
-                                <#list show.getSeasons() as season>
+                                <#list show.getSeasons()?sort_by("number") as season>
                                     <a href="<@s.url "/season/" + season.getId() />" class="list-group-item list-group-item-action w-100 p-3">
                                         <div class="row">
                                             <div class="col-10 fw-bold text-truncate">
