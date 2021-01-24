@@ -1,11 +1,19 @@
-let episodeLinks = document.getElementsByClassName('episodeLink');
-
-for(let i = 0; i < episodeLinks.length; i++)
+window.addEventListener('load', function(event)
 {
-    episodeLinks[i].addEventListener('click', onEpisodeToggle, false);
-}
+    handleEpisodeToggles();
+});
 
-function onEpisodeToggle()
+function handleEpisodeToggles()
 {
-    window.location.href = this.getAttribute('data-url');
+    let episodeLinks = document.getElementsByClassName('episodeLink');
+    for(let i = 0; i < episodeLinks.length; i++)
+    {
+        episodeLinks[i].addEventListener('click', onEpisodeToggle, false);
+    }
+
+    function onEpisodeToggle(event)
+    {
+        window.location.href = this.getAttribute('data-url');
+        event.preventDefault();
+    }
 }

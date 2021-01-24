@@ -45,7 +45,5 @@
                 </div>
             </div>
         </main>
-
-        <script src="<@s.url "/js/main.js"/>"></script>
     </body>
 </html>

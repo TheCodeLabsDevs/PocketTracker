@@ -10,6 +10,7 @@
         <link href="<@s.url "/css/main.css"/>" rel="stylesheet">
 
         <script src="<@s.url "/webjars/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"/>"></script>
+        <script src="<@s.url "/js/main.js"/>"></script>
 
         <#nested>
 
