@@ -5,7 +5,7 @@
     <#import "/common/template.ftl" as template>
     <#import "/common/macros/show.ftl" as showMacros/>
 
-    <@template.head season.getName()/>
+    <@template.head season.getName() + " - " + season.getShow().getName()/>
 
     <body class="bg-light">
         <#import "/common/navbar.ftl" as navbar>
