@@ -220,4 +220,20 @@ public class UserController
 
 		return "redirect:/season/" + episode.getSeason().getId();
 	}
+
+	@GetMapping("/statistics")
+	public String statistics(Model model)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+		model.addAttribute("currentPage", "Statistiken");
+		model.addAttribute("statisticItems", userService.getStatistics(user));
+
+		return "statistics";
+	}
 }

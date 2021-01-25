@@ -24,7 +24,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <@item "Alle Serien" "/shows"/>
                         <@item "Meine Serien" "/user/shows"/>
-                        <@item "Statistiken" "/statistics"/>
+                        <@item "Statistiken" "/user/statistics"/>
 
                         <#if currentUser?? && currentUser.userRole.name() == "ADMIN">
                             <@item "Benutzerverwaltung" "/users/administration"/>
