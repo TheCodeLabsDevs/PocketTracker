@@ -2,3 +2,4 @@ target/
 config/
 images/
 password.txt
+build/episodes.db
