@@ -11,7 +11,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "Benutzerübersicht"/>
+                <@b.h2 "Benutzerübersicht" true/>
             </@b.col>
             <@b.col "col-4">
                 <@b.button label="Hinzufügen" url="/users/administration/add" icon="fas fa-plus" classes="float-end"/>

@@ -1,31 +1,39 @@
 <#import "/spring.ftl" as s/>
 
-<#macro h1 title>
-    <h1>${title}</h1>
+<#macro localize label>
+    <#attempt>
+        <@s.message label/>
+        <#recover>
+            ${label}
+    </#attempt>
 </#macro>
 
-<#macro h2 title>
+<#macro h1 title raw=false>
+    <h1><#if raw>${title}<#else><@localize title/></#if></h1>
+</#macro>
+
+<#macro h2 title raw=false>
     <div class="row">
         <div class="col-md-12 d-flex">
-            <h2>${title}</h2>
+            <h2><#if raw>${title}<#else><@localize title/></#if></h2>
             <#nested>
         </div>
     </div>
 </#macro>
 
-<#macro h3 title>
+<#macro h3 title raw=false>
     <div class="row">
         <div class="col-md-12 d-flex">
-            <h3>${title}</h3>
+            <h3><#if raw>${title}<#else><@localize title/></#if></h3>
             <#nested>
         </div>
     </div>
 </#macro>
 
-<#macro h4 title>
+<#macro h4 title raw=false>
     <div class="row">
         <div class="col-md-12 d-flex">
-            <h4>${title}</h4>
+            <h4><#if raw>${title}<#else><@localize title/></#if></h4>
             <#nested>
         </div>
     </div>
@@ -34,14 +42,14 @@
 <#macro back_button label="Zurück" icon="" classes="">
     <a class="btn btn-secondary ${classes}" onclick="window.history.back()" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
-        ${label}
+        <@localize label/>
     </a>
 </#macro>
 
 <#macro button label url icon="" classes="" id="">
     <a class="btn btn-primary ${classes}" id="${id}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
-        ${label}
+        <@localize label/>
     </a>
 </#macro>
 
@@ -55,4 +63,10 @@
     <div class="${size}">
         <#nested>
     </div>
+</#macro>
+
+<#macro separater>
+    <@col size="col-12">
+        <hr>
+    </@col>
 </#macro>

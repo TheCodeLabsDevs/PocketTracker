@@ -12,7 +12,7 @@
     <@template.head 'Episodes'/>
     <@template.body>
 
-        <@b.h2 "Benutzer löschen"/>
+        <@b.h2 "Benutzer löschen" true/>
 
         <@f.form name="delete" url=springMacroRequestContext.contextPath>
             <@c.card>

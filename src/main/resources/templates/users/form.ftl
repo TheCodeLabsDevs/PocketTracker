@@ -8,12 +8,7 @@
         <@c.card>
             <@c.body>
                 <@b.row>
-                    <@f.input label="Nutzername" name="username" value=user.username size="col-12"/>
-
-                    <@f.input label="Passwort" name="password" type="password"/>
-                    <@f.input label="Passwort wiederholen" name="passwordRepeat" type="password"/>
-
-                    <@b.h4 "Authentication Provider"/>
+                    <@b.h4 "Aktive Authentication Provider" true/>
                     <@b.col>
                         <ul>
                             <#list authentications as authentication>
@@ -21,11 +16,22 @@
                             </#list>
                         </ul>
                     </@b.col>
+                    <@b.separater/>
+
+                    <@b.h4 "authentication.provider.internal"/>
+                    <@f.input label="Nutzername" name="username" value=user.username size="col-12"/>
+                    <@f.input label="Passwort" name="password" type="password"/>
+                    <@f.input label="Passwort wiederholen" name="passwordRepeat" type="password"/>
 
                     <@f.submit "Speichern"/>
 
-                    <#if !authentications?seq_contains("GitlabAuthentication") && oauthEnabled>
-                        <@b.button id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="Connect with TheCodeLabs"/>
+                    <#if !authentications?seq_contains("gitlab") && oauthEnabled>
+                        <@b.separater/>
+
+                        <@b.h4 "authentication.provider.gitlab"/>
+                        <@b.col>
+                            <@b.button id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="Connect with TheCodeLabs"/>
+                        </@b.col>
                     </#if>
                 </@b.row>
             </@c.body>

@@ -12,7 +12,7 @@
 
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "Neuer Benutzer"/>
+                <@b.h2 "Neuer Benutzer" true/>
             </@b.col>
         </@b.row>
 

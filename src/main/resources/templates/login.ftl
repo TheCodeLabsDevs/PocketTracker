@@ -41,7 +41,7 @@
                 <button class="w-100 mb-3 btn btn-lg btn-primary" type="submit">Login</button>
 
                 <#if oauthEnabled>
-                    <@b.button id="oauth-login-thecodelabs" classes="w-100 btn-lg" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="TheCodeLabs"/>
+                    <@b.button id="oauth-login-thecodelabs" classes="w-100 btn-lg" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="authentication.provider.gitlab"/>
                 </#if>
             </form>
         </div>

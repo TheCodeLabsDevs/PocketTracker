@@ -11,7 +11,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "Benutzer bearbeiten"/>
+                <@b.h2 "Benutzer bearbeiten" true/>
             </@b.col>
         </@b.row>
 
