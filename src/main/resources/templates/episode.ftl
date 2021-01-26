@@ -26,7 +26,9 @@
                     <div class="col-12 mt-3 mt-md-0">
                         <div class="row">
                             <@showMacros.factItem "fas fa-calendar" episode.getFirstAired()?date('yyy-MM-dd') "Datum"/>
-                            <@showMacros.factItem "fas fa-hourglass" episode.getLengthInMinutes() "Minuten"/>
+                            <#if episode.getLengthInMinutes()??>
+                                <@showMacros.factItem "fas fa-hourglass" episode.getLengthInMinutes() "Minuten"/>
+                            </#if>
                         </div>
 
                         <#if episode.getDescription()??>

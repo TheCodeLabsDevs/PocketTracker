@@ -19,6 +19,7 @@ public class ShowService
 	{
 		return show.getSeasons().stream()
 				.flatMapToInt(season -> season.getEpisodes().stream()
+						.filter(episode -> episode.getLengthInMinutes() != null)
 						.mapToInt(Episode::getLengthInMinutes))
 				.sum();
 	}
