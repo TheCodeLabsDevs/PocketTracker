@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.persistence.DiscriminatorValue;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class UserController
 		final User user = userOptional.get();
 		model.addAttribute("user", new UserForm(user));
 		model.addAttribute("authentications", user.getAuthentications().stream()
-				.map(userAuthentication -> userAuthentication.getClass().getSimpleName())
+				.map(userAuthentication -> userAuthentication.getClass().getAnnotation(DiscriminatorValue.class).value())
 				.collect(Collectors.toList()));
 		model.addAttribute("toast", WebRequestUtils.popToast(request));
 

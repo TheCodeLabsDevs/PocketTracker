@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 <#import "/common/components/form.ftl" as f/>
 <#import "/common/components/card.ftl" as c/>
@@ -16,7 +17,7 @@
                     <@b.col>
                         <ul>
                             <#list authentications as authentication>
-                                <li>${authentication}</li>
+                                <li><@s.message "authentication.provider." + authentication/></li>
                             </#list>
                         </ul>
                     </@b.col>
