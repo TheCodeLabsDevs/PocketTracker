@@ -17,6 +17,7 @@ public class Season
 
 	private String name;
 
+	@Column(length = 2048)
 	private String description;
 
 	private Integer number;
