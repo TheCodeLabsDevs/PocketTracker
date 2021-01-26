@@ -140,7 +140,7 @@ def migrate_seasons_for_show(episodeList):
 def migrate_episodes_for_season(allEpsiodes, seasonNumber, newSeasonId):
     episodesForSeason = [episode for episode in allEpsiodes if episode.seasonNumber == seasonNumber]
     for idx, episode in enumerate(episodesForSeason):
-        progress(idx, len(episodesForSeason), message=f'Migrating episodes for season {seasonNumber}: {episode.name}')
+        progress(idx, len(episodesForSeason), message=f'[S{seasonNumber:02d}] Migrating season episodes: [E{episode.number:02d}] {episode.name}')
         migrate_episode(episode, newSeasonId)
 
 
@@ -204,9 +204,11 @@ if __name__ == '__main__':
         for episode in episodes:
             episodesByShows[episode.showId].append(episode)
 
+        showIndex = 0
         for showId, episodeList in episodesByShows.items():
+            showIndex += 1
             showForId = [show for show in oldShows if show['_id'] == showId][0]
-            print(f'\n>>> Migrating episodes for show "{showForId["name"]}"...')
+            print(f'\n>>> [{showIndex}/{len(episodesByShows.keys())}] Migrating episodes for show "{showForId["name"]}"...')
 
             cursorPostgres.execute("SELECT * FROM show WHERE name = %s", (showForId["name"],))
             newShow = cursorPostgres.fetchone()
