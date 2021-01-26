@@ -1,7 +1,9 @@
 [#ftl]
 [#-- @implicitly included --]
 [#-- @ftlroot "templates" --]
+
 [#-- @ftlvariable name="_csrf" type="org.springframework.security.web.csrf.CsrfToken" --]
+[#-- @ftlvariable name="oauthEnabled" type="java.lang.Boolean" --]
 [#-- @ftlvariable name="toast" type="de.thecodelabs.pockettracker.utils.Toast" --]
 [#-- @ftlvariable name="showService" type="de.thecodelabs.pockettracker.show.ShowService" --]
 [#-- @ftlvariable name="userService" type="de.thecodelabs.pockettracker.user.service.UserService" --]
