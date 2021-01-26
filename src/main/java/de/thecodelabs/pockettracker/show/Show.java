@@ -24,8 +24,10 @@ public class Show
 
 	private LocalDate firstAired;
 
+	@Column(length = 2048)
 	private String bannerPath;
 
+	@Column(length = 2048)
 	private String posterPath;
 
 	private ShowType type;
