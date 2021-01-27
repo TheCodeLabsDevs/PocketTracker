@@ -257,6 +257,7 @@ public class UserService
 	public Integer getTotalPlayedMinutes(User user)
 	{
 		return user.getWatchedEpisodes().stream()
+				.filter(episode -> episode.getLengthInMinutes() != null)
 				.mapToInt(Episode::getLengthInMinutes)
 				.sum();
 	}

@@ -29,7 +29,7 @@ public class Show
 	@JsonView(View.Summery.class)
 	private String name;
 
-	@Column(length = 2048)
+	@Column(length = 4096)
 	@JsonView(View.Summery.class)
 	private String description;
 
