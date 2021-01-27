@@ -8,12 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer
+public class WebMvcConfiguration implements WebMvcConfigurer
 {
 	private final WebConfigurationProperties webConfigurationProperties;
 
 	@Autowired
-	public WebMvcConfig(WebConfigurationProperties webConfigurationProperties)
+	public WebMvcConfiguration(WebConfigurationProperties webConfigurationProperties)
 	{
 		this.webConfigurationProperties = webConfigurationProperties;
 	}
