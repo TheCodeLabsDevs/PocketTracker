@@ -27,7 +27,7 @@ public class ShowService
 		}
 		else
 		{
-			return repository.findAllByNameContainingOrderByNameAsc(name);
+			return repository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name);
 		}
 	}
 

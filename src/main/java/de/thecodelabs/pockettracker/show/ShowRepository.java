@@ -10,5 +10,5 @@ public interface ShowRepository extends JpaRepository<Show, Integer>
 {
 	List<Show> findAllByOrderByNameAsc();
 
-	List<Show> findAllByNameContainingOrderByNameAsc(String name);
+	List<Show> findAllByNameContainingIgnoreCaseOrderByNameAsc(String name);
 }
