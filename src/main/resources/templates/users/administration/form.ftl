@@ -18,5 +18,4 @@
             </@c.body>
         </@c.card>
     </@f.form>
-
 </#macro>

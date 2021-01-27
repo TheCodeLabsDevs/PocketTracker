@@ -65,7 +65,7 @@
     </div>
 </#macro>
 
-<#macro separater>
+<#macro separator>
     <@col size="col-12">
         <hr>
     </@col>

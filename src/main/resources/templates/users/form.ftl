@@ -16,7 +16,7 @@
                             </#list>
                         </ul>
                     </@b.col>
-                    <@b.separater/>
+                    <@b.separator/>
 
                     <@b.h4 "authentication.provider.internal"/>
                     <@f.input label="Nutzername" name="username" value=user.username size="col-12"/>
@@ -26,7 +26,7 @@
                     <@f.submit "Speichern"/>
 
                     <#if !authentications?seq_contains("gitlab") && oauthEnabled>
-                        <@b.separater/>
+                        <@b.separator/>
 
                         <@b.h4 "authentication.provider.gitlab"/>
                         <@b.col>
