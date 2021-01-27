@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -78,7 +79,16 @@ public class UserService
 		{
 			return getUser(authentication.getName(), InternalAuthentication.class);
 		}
+		else if(authentication instanceof PreAuthenticatedAuthenticationToken)
+		{
+			return getUserByToken((String) authentication.getCredentials());
+		}
 		return Optional.empty();
+	}
+
+	public Optional<User> getUserByToken(String token)
+	{
+		return userRepository.findUserByTokens_token(token);
 	}
 
 	public Optional<User> getUser(String username, Class<? extends UserAuthentication> type)

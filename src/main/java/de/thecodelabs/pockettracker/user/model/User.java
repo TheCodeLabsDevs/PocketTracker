@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.user.model;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 
 import javax.persistence.*;
@@ -24,6 +25,9 @@ public class User
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<UserAuthentication> authentications = new ArrayList<>();
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<ApiTokenAuthentication> tokens = new ArrayList<>();
 
 	@NotNull
 	private UserRole userRole;
@@ -74,6 +78,16 @@ public class User
 	public void setAuthentications(List<UserAuthentication> authentications)
 	{
 		this.authentications = authentications;
+	}
+
+	public List<ApiTokenAuthentication> getTokens()
+	{
+		return tokens;
+	}
+
+	public void setTokens(List<ApiTokenAuthentication> tokens)
+	{
+		this.tokens = tokens;
 	}
 
 	public UserRole getUserRole()

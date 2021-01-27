@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.season;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;
 
@@ -23,6 +24,7 @@ public class Season
 	private Integer number;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Show show;
 
 	@OneToMany(mappedBy = "season", cascade = CascadeType.ALL)

@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Integer>
 	Optional<User> findUserByName(String name);
 
 	Optional<User> findUserByAuthenticationsContains(UserAuthentication authentication);
+
+	Optional<User> findUserByTokens_token(String token);
 }

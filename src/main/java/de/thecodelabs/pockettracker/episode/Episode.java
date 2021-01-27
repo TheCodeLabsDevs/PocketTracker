@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.episode;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.season.Season;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Episode
 	private Integer lengthInMinutes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Season season;
 
 	public Episode()

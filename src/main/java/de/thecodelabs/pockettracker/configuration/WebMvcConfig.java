@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.configuration;
 
-import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,6 +30,13 @@ public class WebMvcConfig implements WebMvcConfigurer
 		if(!registry.hasMappingForPattern("/resources/**"))
 		{
 			registry.addResourceHandler("/resources/**")
+					.addResourceLocations("file://" + webConfigurationProperties.getImageResourcePath() +
+							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""));
+		}
+
+		if(!registry.hasMappingForPattern("/api/resources/**"))
+		{
+			registry.addResourceHandler("/api/resources/**")
 					.addResourceLocations("file://" + webConfigurationProperties.getImageResourcePath() +
 							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""));
 		}

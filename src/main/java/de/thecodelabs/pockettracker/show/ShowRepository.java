@@ -8,5 +8,7 @@ import java.util.List;
 @Repository
 public interface ShowRepository extends JpaRepository<Show, Integer>
 {
-	public List<Show> findAllByOrderByNameAsc();
+	List<Show> findAllByOrderByNameAsc();
+
+	List<Show> findAllByNameContainingOrderByNameAsc(String name);
 }

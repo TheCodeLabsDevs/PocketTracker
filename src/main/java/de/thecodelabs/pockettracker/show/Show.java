@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.show;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.season.Season;
 
 import javax.persistence.*;
@@ -12,24 +13,38 @@ import java.util.List;
 @Entity
 public class Show
 {
+	public static class View
+	{
+		interface Summery
+		{
+		}
+	}
+
 	@Id
 	@GeneratedValue
+	@JsonView(View.Summery.class)
 	private Integer id;
 
 	@NotNull
+	@JsonView(View.Summery.class)
 	private String name;
 
 	@Column(length = 2048)
+	@JsonView(View.Summery.class)
 	private String description;
 
+	@JsonView(View.Summery.class)
 	private LocalDate firstAired;
 
 	@Column(length = 2048)
+	@JsonView(View.Summery.class)
 	private String bannerPath;
 
 	@Column(length = 2048)
+	@JsonView(View.Summery.class)
 	private String posterPath;
 
+	@JsonView(View.Summery.class)
 	private ShowType type;
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)

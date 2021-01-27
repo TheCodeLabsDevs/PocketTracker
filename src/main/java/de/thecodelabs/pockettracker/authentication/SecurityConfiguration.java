@@ -59,7 +59,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		{
 			http
 					.oauth2Login()
-					.loginPage(LOGIN_PAGE);
+					.loginPage(LOGIN_PAGE)
+					.permitAll();
 		}
 	}
 
