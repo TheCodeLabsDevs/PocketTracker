@@ -54,8 +54,8 @@ def migrate_shows():
         showType = 0 if show['isTvShow'] == 1 else 1
 
         imageName = escape_image_path(name.lower())
-        bannerPath = f'banner/{imageName}'
-        posterPath = f'poster/{imageName}'
+        bannerPath = f'banner/{imageName}.jpg'
+        posterPath = f'poster/{imageName}.jpg'
 
         global PREVIOUS_ID
         idAlreadyExists = True
