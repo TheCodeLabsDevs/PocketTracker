@@ -48,8 +48,8 @@
     </div>
 </#macro>
 
-<#macro button label url icon="" classes="" id="">
-    <a class="btn btn-primary ${classes}" id="${id}" href="<@s.url url/>" role="button">
+<#macro button label url icon="" classes="" id="" style="btn-primary">
+    <a class="btn ${style} ${classes}" id="${id}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
         <@localize label/>
     </a>

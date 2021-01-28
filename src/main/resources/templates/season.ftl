@@ -27,8 +27,8 @@
 
         <div class="row mb-4">
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=true"/>" class="btn btn-outline-success" role="button"><i class="fas fa-check"></i> Alle gesehen</a>
-                <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=false"/>" class="btn btn-outline-danger" role="button"><i class="fas fa-ban"></i> Alle nicht gesehen</a>
+                <@b.button label="button.markAllWatched" url="/user/season/" + season.getId() + "?markAsWatched=true" icon="fas fa-check" style="btn-outline-success"/>
+                <@b.button label="button.markAllUnwatched" url="/user/season/" + season.getId() + "?markAsWatched=false" icon="fas fa-ban" style="btn-outline-danger"/>
             </div>
         </div>
 
