@@ -1,11 +1,12 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import de.thecodelabs.pockettracker.user.model.User;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "appuser_token")
 public class ApiTokenAuthentication
 {
 	@Id
@@ -13,6 +14,9 @@ public class ApiTokenAuthentication
 	private Integer id;
 	private LocalDateTime createDate;
 	private String token;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	private User user;
 
 	public Integer getId()
 	{
@@ -42,5 +46,15 @@ public class ApiTokenAuthentication
 	public void setToken(String token)
 	{
 		this.token = token;
+	}
+
+	public User getUser()
+	{
+		return user;
+	}
+
+	public void setUser(User user)
+	{
+		this.user = user;
 	}
 }

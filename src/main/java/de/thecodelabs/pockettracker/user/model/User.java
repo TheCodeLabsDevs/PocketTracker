@@ -23,10 +23,10 @@ public class User
 	@Column(unique = true)
 	private String name;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<UserAuthentication> authentications = new ArrayList<>();
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ApiTokenAuthentication> tokens = new ArrayList<>();
 
 	@NotNull

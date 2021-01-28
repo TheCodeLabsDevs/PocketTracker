@@ -135,6 +135,7 @@ public class UserService
 		GitlabAuthentication authentication = new GitlabAuthentication();
 		authentication.setGitlabUsername(name);
 		user.addAuthentication(authentication);
+		authentication.setUser(user);
 		userRepository.save(user);
 	}
 
@@ -147,6 +148,7 @@ public class UserService
 		InternalAuthentication authentication = new InternalAuthentication();
 		authentication.setPassword(passwordEncoder.encode(form.getPassword()));
 		user.addAuthentication(authentication);
+		authentication.setUser(user);
 		userRepository.save(user);
 	}
 
