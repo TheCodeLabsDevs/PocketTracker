@@ -4,6 +4,7 @@
     <#import "/common/helpers.ftl" as helperMacros>
     <#import "/common/template.ftl" as template>
     <#import "/common/macros/show.ftl" as showMacros/>
+    <#import "/common/components/base.ftl" as b/>
 
     <@template.head season.getName() + " - " + season.getShow().getName()/>
 
@@ -15,7 +16,7 @@
             <div class="container mt-5">
                 <div class="row mb-4">
                     <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <a href="<@s.url "/show/" + season.getShow().getId()/>" class="btn btn-primary mb-4" role="button"><i class="fas fa-arrow-left"></i> Back</a>
+                        <@b.back_button center=true/>
                         <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
                         <h4>-${season.getName()}-</h4>
                     </div>

@@ -39,11 +39,13 @@
     </div>
 </#macro>
 
-<#macro back_button label="Zurück" icon="" classes="">
-    <a class="btn btn-secondary ${classes}" onclick="window.history.back()" role="button">
-        <#if icon?has_content><i class="${icon}"></i></#if>
-        <@localize label/>
-    </a>
+<#macro back_button label="button.back" icon="" classes="" showIcon=true margin="mb-4" center=false>
+    <div class="<#if center>mx-auto text-center</#if>">
+        <a class="btn btn-primary ${margin} ${classes}" onclick="window.history.back()" role="button">
+            <#if showIcon><i class="<#if icon?has_content>${icon}<#else>fas fa-arrow-left</#if>"></i></#if>
+            <@localize label/>
+        </a>
+    </div>
 </#macro>
 
 <#macro button label url icon="" classes="" id="">
