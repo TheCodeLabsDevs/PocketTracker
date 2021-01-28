@@ -8,54 +8,47 @@
 
     <@template.head season.getName() + " - " + season.getShow().getName()/>
 
-    <body class="bg-light">
-        <#import "/common/navbar.ftl" as navbar>
-        <@navbar.navbar/>
+    <@template.body>
+        <div class="row mb-4">
+            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
+                <@b.back_button center=true/>
+                <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
+                <h4>-${season.getName()}-</h4>
+            </div>
+        </div>
 
-        <main>
-            <div class="container mt-5">
-                <div class="row mb-4">
-                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <@b.back_button center=true/>
-                        <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
-                        <h4>-${season.getName()}-</h4>
-                    </div>
-                </div>
+        <div class="row mb-4">
+            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
+                <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
+                <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
+                <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
+            </div>
+        </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
-                        <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
-                        <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
-                    </div>
-                </div>
+        <div class="row mb-4">
+            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
+                <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=true"/>" class="btn btn-outline-success" role="button"><i class="fas fa-check"></i> Alle gesehen</a>
+                <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=false"/>" class="btn btn-outline-danger" role="button"><i class="fas fa-ban"></i> Alle nicht gesehen</a>
+            </div>
+        </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                        <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=true"/>" class="btn btn-outline-success" role="button"><i class="fas fa-check"></i> Alle gesehen</a>
-                        <a href="<@s.url "/user/season/" + season.getId() + "?markAsWatched=false"/>" class="btn btn-outline-danger" role="button"><i class="fas fa-ban"></i> Alle nicht gesehen</a>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12 col-md-8 col-lg-6 mx-auto">
-                        <div class="list-group list-episodes">
-                            <#list season.getEpisodes()?sort_by("number") as episode>
-                                <a href="<@s.url "/episode/" + episode.getId()/>" class="list-group-item list-group-item-action w-100 p-3">
-                                    <div class="row">
-                                        <div class="col-10 fw-bold text-truncate">
-                                            ${episode.getNumber()} - ${episode.getName()}
-                                        </div>
-                                        <div class="col-2 d-flex justify-content-end">
-                                            <input class="form-check-input episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/season"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
-                                        </div>
-                                    </div>
-                                </a>
-                            </#list>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto">
+                <div class="list-group list-episodes">
+                    <#list season.getEpisodes()?sort_by("number") as episode>
+                        <a href="<@s.url "/episode/" + episode.getId()/>" class="list-group-item list-group-item-action w-100 p-3">
+                            <div class="row">
+                                <div class="col-10 fw-bold text-truncate">
+                                    ${episode.getNumber()} - ${episode.getName()}
+                                </div>
+                                <div class="col-2 d-flex justify-content-end">
+                                    <input class="form-check-input episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/season"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
+                                </div>
+                            </div>
+                        </a>
+                    </#list>
                 </div>
             </div>
-        </main>
-    </body>
+        </div>
+    </@template.body>
 </html>
