@@ -27,16 +27,16 @@ public class WebMvcConfiguration implements WebMvcConfigurer
 					.addResourceLocations("classpath:/META-INF/resources/webjars/");
 		}
 
-		if(!registry.hasMappingForPattern("/resources/**"))
+		if(!registry.hasMappingForPattern(webConfigurationProperties.getWebResourcesUrl() + "/**"))
 		{
-			registry.addResourceHandler("/resources/**")
+			registry.addResourceHandler(webConfigurationProperties.getWebResourcesUrl() + "/**")
 					.addResourceLocations("file://" + webConfigurationProperties.getImageResourcePath() +
 							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""));
 		}
 
-		if(!registry.hasMappingForPattern("/api/resources/**"))
+		if(!registry.hasMappingForPattern(webConfigurationProperties.getApiResourcesUrl() + "/**"))
 		{
-			registry.addResourceHandler("/api/resources/**")
+			registry.addResourceHandler(webConfigurationProperties.getApiResourcesUrl() + "/**")
 					.addResourceLocations("file://" + webConfigurationProperties.getImageResourcePath() +
 							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""));
 		}

@@ -2,7 +2,9 @@ package de.thecodelabs.pockettracker.show;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.utils.JsonResourcePathSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -38,10 +40,12 @@ public class Show
 
 	@Column(length = 2048)
 	@JsonView(View.Summery.class)
+	@JsonSerialize(using = JsonResourcePathSerializer.class)
 	private String bannerPath;
 
 	@Column(length = 2048)
 	@JsonView(View.Summery.class)
+	@JsonSerialize(using = JsonResourcePathSerializer.class)
 	private String posterPath;
 
 	@JsonView(View.Summery.class)
