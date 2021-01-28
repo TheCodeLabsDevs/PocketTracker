@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.utils.JsonResourcePathSerializer;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class Show
 {
 	public static class View
 	{
-		interface Summery
+		public interface Summery
 		{
 		}
 	}
@@ -28,6 +31,7 @@ public class Show
 	private Integer id;
 
 	@NotNull
+	@NotEmpty
 	@JsonView(View.Summery.class)
 	private String name;
 
@@ -36,6 +40,7 @@ public class Show
 	private String description;
 
 	@JsonView(View.Summery.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate firstAired;
 
 	@Column(length = 2048)
@@ -49,6 +54,7 @@ public class Show
 	private String posterPath;
 
 	@JsonView(View.Summery.class)
+	@NotNull
 	private ShowType type;
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
@@ -146,6 +152,13 @@ public class Show
 	public void setSeasons(List<Season> seasons)
 	{
 		this.seasons = seasons;
+	}
+
+	public String getFirstAiredReadable() {
+		if (firstAired == null) {
+			return null;
+		}
+		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
 	@Override

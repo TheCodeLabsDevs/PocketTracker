@@ -10,9 +10,9 @@ import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
-import de.thecodelabs.pockettracker.utils.Toast;
-import de.thecodelabs.pockettracker.utils.ToastColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
+import de.thecodelabs.pockettracker.utils.toast.Toast;
+import de.thecodelabs.pockettracker.utils.toast.ToastColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +58,6 @@ public class UserController
 		model.addAttribute("authentications", user.getAuthentications().stream()
 				.map(userAuthentication -> userAuthentication.getClass().getAnnotation(DiscriminatorValue.class).value())
 				.collect(Collectors.toList()));
-		model.addAttribute("toast", WebRequestUtils.popToast(request));
 
 		return "users/edit";
 	}

@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s/>
+<#import "/common/components/base.ftl" as b/>
 
 <#macro navbar>
     <form class="hide" id="logout-form" action="<@s.url '/logout'/>" method="post">
@@ -26,9 +27,9 @@
                         <@item "Meine Serien" "/user/shows"/>
                         <@item "Statistiken" "/user/statistics"/>
 
-                        <#if currentUser?? && currentUser.userRole.name() == "ADMIN">
+                        <@b.hasPermission "ADMIN">
                             <@item "Benutzerverwaltung" "/users/administration"/>
-                        </#if>
+                        </@b.hasPermission>
                     </ul>
 
                     <div class="me-auto"></div>

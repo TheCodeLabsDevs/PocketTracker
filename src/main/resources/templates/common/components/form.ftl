@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s/>
+<#import "/common/components/base.ftl" as b/>
 
 <#macro form name url method="post" id=name rawUrl=false>
     <form name="${name}" id="${id}" action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}">
@@ -10,26 +11,51 @@
     </form>
 </#macro>
 
-<#macro submit label size="col-6" col=true>
+<#macro submit label="button.save" size="col-12" col=true>
     <#if col><div class="mb-3 ${size}"></#if>
-        <button type="submit" class="btn btn-primary">${label}</button>
+    <button type="submit" class="btn btn-primary"><@b.localize label/></button>
     <#if col></div></#if>
 </#macro>
 
 <#macro input label name value="" type="text" id=name size="col-6">
     <div class="mb-3 ${size}">
-        <label for="${id}" class="form-label">${label}</label>
-        <input type="${type}" class="form-control" id="${id}" name="${name}" value="${value}">
+        <label for="${id}" class="form-label"><@b.localize label/></label>
+        <input type="${type}" class="form-control <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}" value="${value}">
+        <@inputError fieldName=name/>
+    </div>
+</#macro>
+
+<#macro textarea label name value="" type="text" id=name size="col-6">
+    <div class="mb-3 ${size}">
+        <label for="${id}" class="form-label"><@b.localize label/></label>
+        <textarea class="form-control <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}" rows="4">${value}</textarea>
+        <@inputError fieldName=name/>
     </div>
 </#macro>
 
 <#macro select label name options value="" id=name size="col-6">
     <div class="mb-3 ${size}">
-        <label for="${id}" class="form-label">${label}</label>
-        <select class="form-select" id="${id}" name="${name}">
+        <label for="${id}" class="form-label"><@b.localize label/></label>
+        <select class="form-select <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}">
             <#list options as option>
                 <option <#if value == option>selected</#if> value="${option}">${option}</option>
             </#list>
         </select>
+        <@inputError fieldName=name/>
     </div>
+</#macro>
+
+<#function hasError fieldName>
+    <#if validation?? && validation.hasFieldErrors(fieldName)>
+        <#return true>
+    </#if>
+    <#return false/>
+</#function>
+
+<#macro inputError fieldName>
+    <#if hasError(fieldName)>
+        <div class="invalid-feedback">
+            <@b.localize validation.getFieldError(fieldName)/>
+        </div>
+    </#if>
 </#macro>

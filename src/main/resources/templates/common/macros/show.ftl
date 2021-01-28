@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s/>
+<#import "/common/components/base.ftl" as b/>
 <#import "/common/helpers.ftl" as helperMacros>
 
 <#macro showCard show userShows isUserSpecific>
@@ -11,7 +12,12 @@
             </#if>
 
             <div class="card-body">
-                <p class="card-text fw-bold">${show.getName()}</p>
+                <p class="card-text fw-bold">
+                    ${show.getName()}
+                    <@b.hasPermission "ADMIN">
+                        <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary float-end"/>
+                    </@b.hasPermission>
+                </p>
                 <p class="card-text">
                     ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
                 </p>
@@ -26,6 +32,7 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+
                     <#if isUserSpecific>
                         <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
                     <#else>

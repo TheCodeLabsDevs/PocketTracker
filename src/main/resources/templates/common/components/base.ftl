@@ -1,5 +1,11 @@
 <#import "/spring.ftl" as s/>
 
+<#macro hasPermission permission>
+    <#if currentUser?? && currentUser.userRole.name() == permission>
+        <#nested>
+    </#if>
+</#macro>
+
 <#macro localize label>
     <#attempt>
         <@s.message label/>

@@ -1,6 +1,8 @@
-package de.thecodelabs.pockettracker.show;
+package de.thecodelabs.pockettracker.show.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.show.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.utils;
+package de.thecodelabs.pockettracker.utils.toast;
 
 public class Toast
 {
