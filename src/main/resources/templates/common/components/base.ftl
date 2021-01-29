@@ -67,8 +67,8 @@
     </div>
 </#macro>
 
-<#macro col size="col-12">
-    <div class="${size}">
+<#macro col size="col-12" classes="">
+    <div class="${size} ${classes}">
         <#nested>
     </div>
 </#macro>

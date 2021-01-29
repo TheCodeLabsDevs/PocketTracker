@@ -25,7 +25,10 @@
 
                         <@f.select label="show.type" name="type" options=showTypes value=show.type.name()/>
 
-                        <@f.submit/>
+                        <@b.col classes="mt-4">
+                            <@b.button label="button.cancel" url="/show/${show.id}" style="btn-secondary"/>
+                            <@f.submit col=false classes="float-end"/>
+                        </@b.col>
                     </@b.row>
                 </@f.form>
             </@c.body>
