@@ -1,5 +1,5 @@
 <#macro card>
-    <div class="card">
+    <div class="card shadow-sm my-3">
         <#nested>
     </div>
 </#macro>
