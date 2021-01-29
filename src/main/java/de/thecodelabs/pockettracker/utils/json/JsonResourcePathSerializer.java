@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.utils;
+package de.thecodelabs.pockettracker.utils.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

@@ -4,8 +4,8 @@ package de.thecodelabs.pockettracker.show;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.Season;
-import de.thecodelabs.pockettracker.utils.JsonResourcePathSerializer;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
+import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
