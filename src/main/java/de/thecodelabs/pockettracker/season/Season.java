@@ -4,6 +4,7 @@ package de.thecodelabs.pockettracker.season;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.show.Show;
+import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,9 +26,11 @@ public class Season
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
+	@MergeIgnore
 	private Show show;
 
 	@OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+	@MergeIgnore
 	private List<Episode> episodes = new ArrayList<>();
 
 	public Season()

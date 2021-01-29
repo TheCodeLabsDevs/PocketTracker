@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.utils.JsonResourcePathSerializer;
+import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -61,6 +62,7 @@ public class Show
 	private ShowType type;
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
+	@MergeIgnore
 	private List<Season> seasons = new ArrayList<>();
 
 	public Show()

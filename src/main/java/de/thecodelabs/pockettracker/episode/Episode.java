@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.episode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class Episode
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
+	@MergeIgnore
 	private Season season;
 
 	public Episode()

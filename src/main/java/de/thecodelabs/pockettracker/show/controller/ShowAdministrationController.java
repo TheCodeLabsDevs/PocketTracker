@@ -4,11 +4,13 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
+import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import de.thecodelabs.pockettracker.utils.toast.ToastColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -44,7 +46,8 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{id}/edit")
-	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation, Model model)
+	@Transactional
+	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
@@ -52,6 +55,15 @@ public class ShowAdministrationController
 			WebRequestUtils.putValidationError(request, validation);
 			return "redirect:/show/" + id + "/edit";
 		}
+
+		final Optional<Show> managedShowOptional = service.getShowById(id);
+		if (managedShowOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+		final Show managedShow = managedShowOptional.get();
+		BeanUtils.merge(show, managedShow);
+
 		return "redirect:/show/" + id;
 	}
 }
