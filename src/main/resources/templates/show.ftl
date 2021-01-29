@@ -14,6 +14,10 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
+                <@b.hasPermission "ADMIN">
+                    <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary float-end"/>
+                </@b.hasPermission>
+
                 <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">
