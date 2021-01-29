@@ -9,6 +9,7 @@ public class WebRequestUtils
 {
 	private static final String ATTR_TOAST = "toast";
 	private static final String ATTR_VALIDATION_ERROR = "validation-error";
+	private static final String ATTR_VALIDATION_DATA = "validation-data";
 
 	private WebRequestUtils()
 	{
@@ -24,14 +25,19 @@ public class WebRequestUtils
 		return (Toast) pop(request, ATTR_TOAST);
 	}
 
-	public static void putValidationError(WebRequest request, BindingResult result)
+	public static void putValidationError(WebRequest request, BindingResult result, Object data)
 	{
 		put(request, result, ATTR_VALIDATION_ERROR);
+		put(request, data, ATTR_VALIDATION_DATA);
 	}
 
 	public static BindingResult popValidationError(WebRequest request)
 	{
 		return (BindingResult) pop(request, ATTR_VALIDATION_ERROR);
+	}
+	public static Object popValidationData(WebRequest request)
+	{
+		return pop(request, ATTR_VALIDATION_DATA);
 	}
 
 	private static void put(WebRequest request, Object any, String key)

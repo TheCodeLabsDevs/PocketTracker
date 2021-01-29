@@ -33,7 +33,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/edit")
-	public String editPage(@PathVariable Integer id, Model model)
+	public String editPage(WebRequest request, @PathVariable Integer id, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -41,7 +41,16 @@ public class ShowAdministrationController
 			throw new NotFoundException("Show for id " + id + " not found");
 		}
 
-		model.addAttribute("show", showOptional.get());
+		final Object oldData = WebRequestUtils.popValidationData(request);
+		if(oldData instanceof Show)
+		{
+			model.addAttribute("show", oldData);
+		}
+		else
+		{
+			model.addAttribute("show", showOptional.get());
+		}
+
 		return "administration/show/edit";
 	}
 
@@ -52,12 +61,12 @@ public class ShowAdministrationController
 		if(validation.hasErrors())
 		{
 			WebRequestUtils.putToast(request, new Toast("Validierungfehler", ToastColor.DANGER));
-			WebRequestUtils.putValidationError(request, validation);
+			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/" + id + "/edit";
 		}
 
 		final Optional<Show> managedShowOptional = service.getShowById(id);
-		if (managedShowOptional.isEmpty())
+		if(managedShowOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
 		}
