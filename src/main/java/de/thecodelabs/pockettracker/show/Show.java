@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,10 +33,12 @@ public class Show
 
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	@JsonView(View.Summery.class)
 	private String name;
 
 	@Column(length = 4096)
+	@Size(max = 4096)
 	@JsonView(View.Summery.class)
 	private String description;
 
