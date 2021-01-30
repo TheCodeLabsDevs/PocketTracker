@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/show")
-@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class ShowAdministrationController
 {
 	private final ShowService service;

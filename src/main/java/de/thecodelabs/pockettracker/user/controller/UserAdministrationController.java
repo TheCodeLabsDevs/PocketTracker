@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users/administration")
-@PreAuthorize("hasAuthority(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class UserAdministrationController
 {
 	private final UserService userService;
