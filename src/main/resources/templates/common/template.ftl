@@ -1,6 +1,10 @@
 <#macro head title>
     <#import "/spring.ftl" as s/>
 
+    <#--FTL Settings-->
+    <#setting number_format="computer">
+
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

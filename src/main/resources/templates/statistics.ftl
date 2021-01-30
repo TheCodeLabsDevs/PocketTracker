@@ -18,7 +18,7 @@
                     <div class="col-12 mt-3 mt-md-0">
                         <div class="row">
                             <#list statisticItems as item>
-                                <@showMacros.factItem item.getIcon() "" item.getText()/>
+                                <@showMacros.factItem icon=item.getIcon() value="" description=item.getText()/>
                             </#list>
                         </div>
                     </div>

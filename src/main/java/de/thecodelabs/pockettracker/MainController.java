@@ -92,10 +92,4 @@ public class MainController
 		model.addAttribute("episode", episodeOptional.get());
 		return "episode";
 	}
-
-	@GetMapping("/login")
-	public String login()
-	{
-		return "login";
-	}
 }
