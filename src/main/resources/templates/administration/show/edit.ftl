@@ -20,19 +20,19 @@
             <@b.h2 title=title raw=true/>
         </@b.flex>
 
-        <@c.card margin="my-4">
+        <@c.card classes="my-4">
             <@c.body>
                 <@form.baseDate show/>
             </@c.body>
         </@c.card>
 
-        <@c.card margin="my-4">
+        <@c.card classes="my-4">
             <@c.body>
                 <@form.images show/>
             </@c.body>
         </@c.card>
 
-        <@c.card margin="my-4">
+        <@c.card classes="my-4">
             <@c.body>
                 <@form.seasons show/>
             </@c.body>
