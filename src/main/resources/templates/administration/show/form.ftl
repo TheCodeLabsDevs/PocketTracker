@@ -2,7 +2,7 @@
 <#import "/common/components/form.ftl" as f/>
 
 <#macro baseDate show>
-    <@b.h3 title="show.base_data"/>
+    <@b.h3 title="show.baseData"/>
 
     <@f.form name="show" url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>

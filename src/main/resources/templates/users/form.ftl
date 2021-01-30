@@ -7,10 +7,10 @@
     <@f.form name="user" url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@c.card classes="my-4">
             <@c.body>
-                <@b.h4 "Aktive Authentication Provider" true/>
+                <@b.h4 "user.form.provider"/>
                 <ul>
                     <#list authentications as authentication>
-                        <li><@b.localize "authentication.provider." + authentication/></li>
+                        <li><@b.localize authentication/></li>
                     </#list>
                 </ul>
             </@c.body>
@@ -20,20 +20,20 @@
             <@c.body>
                 <@b.row>
                     <@b.h4 "authentication.provider.internal"/>
-                    <@f.input label="Nutzername" name="username" value=user.username size="col-12"/>
-                    <@f.input label="Passwort" name="password" type="password"/>
-                    <@f.input label="Passwort wiederholen" name="passwordRepeat" type="password"/>
+                    <@f.input label="user.form.username" name="username" value=user.username size="col-12"/>
+                    <@f.input label="user.form.password" name="password" type="password"/>
+                    <@f.input label="user.form.passwordRepeat" name="passwordRepeat" type="password"/>
 
-                    <@f.submit "Speichern"/>
+                    <@f.submit "button.save"/>
                 </@b.row>
             </@c.body>
         </@c.card>
 
-        <#if !authentications?seq_contains("gitlab") && oauthEnabled>
+        <#if !isGitlabConnected && oauthEnabled>
             <@c.card classes="my-4">
                 <@c.body>
                     <@b.h4 "authentication.provider.gitlab"/>
-                    <@b.button id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="Connect with TheCodeLabs"/>
+                    <@b.button label="user.form.connectWithGitlab" id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab"/>
                 </@c.body>
             </@c.card>
         </#if>
