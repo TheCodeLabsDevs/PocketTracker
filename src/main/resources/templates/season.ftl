@@ -27,8 +27,8 @@
 
         <div class="row mb-4">
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                <@b.button label="button.markAllWatched" url="/user/season/" + season.getId() + "?markAsWatched=true" icon="fas fa-check" style="btn-outline-success"/>
-                <@b.button label="button.markAllUnwatched" url="/user/season/" + season.getId() + "?markAsWatched=false" icon="fas fa-ban" style="btn-outline-danger"/>
+                <@b.button label="button.markAllWatched" url="/user/season/" + season.getId()?c + "?markAsWatched=true" icon="fas fa-check" style="btn-outline-success"/>
+                <@b.button label="button.markAllUnwatched" url="/user/season/" + season.getId()?c + "?markAsWatched=false" icon="fas fa-ban" style="btn-outline-danger"/>
             </div>
         </div>
 
@@ -36,13 +36,13 @@
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto">
                 <div class="list-group list-episodes">
                     <#list season.getEpisodes()?sort_by("number") as episode>
-                        <a href="<@s.url "/episode/" + episode.getId()/>" class="list-group-item list-group-item-action w-100 p-3">
+                        <a href="<@s.url "/episode/" + episode.getId()?c/>" class="list-group-item list-group-item-action w-100 p-3">
                             <div class="row">
                                 <div class="col-10 fw-bold text-truncate">
                                     ${episode.getNumber()} - ${episode.getName()}
                                 </div>
                                 <div class="col-2 d-flex justify-content-end">
-                                    <input class="form-check-input episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/season"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
+                                    <input class="form-check-input episodeLink" data-url="<@s.url "/user/episode/" + episode.getId()?c + "/toggle/season"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                                 </div>
                             </div>
                         </a>

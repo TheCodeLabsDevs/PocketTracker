@@ -15,7 +15,7 @@
                 <p class="card-text fw-bold">
                     ${show.getName()}
                     <@b.hasPermission "ADMIN">
-                        <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary float-end"/>
+                        <@b.button label="button.edit" url="/show/" + show.getId()?c + "/edit" style="btn-sm btn-outline-primary float-end"/>
                     </@b.hasPermission>
                 </p>
                 <p class="card-text">
@@ -31,12 +31,12 @@
                 </#if>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+                    <a href="<@s.url "/show/" + show.getId()?c/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
 
                     <#if isUserSpecific>
-                        <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
+                        <a href="<@s.url "/user/shows/remove/" + show.getId()?c/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
                     <#else>
-                        <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
+                        <a href="<@s.url "/user/shows/add/" + show.getId()?c/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
                     </#if>
                 </div>
             </div>

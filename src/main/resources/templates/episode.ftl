@@ -11,7 +11,7 @@
     <@template.head showService.getShortCode(episode) + " - " + episode.getName()/>
     <@template.body>
         <div class="mx-auto text-center mb-4">
-            <a href="<@s.url "/season/" + episode.getSeason().getId()/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
+            <a href="<@s.url "/season/" + episode.getSeason().getId()?c/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
 
         <div class="card shadow-sm">
@@ -19,7 +19,7 @@
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
                 <h3 class="card-title text-center">
                     ${showService.getShortCode(episode)} - ${episode.getName()}
-                    <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
+                    <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId()?c + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                 </h3>
 
                 <div class="row mt-3 mt-md-5">

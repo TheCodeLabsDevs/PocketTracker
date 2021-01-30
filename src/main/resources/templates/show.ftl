@@ -15,7 +15,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <@b.hasPermission "ADMIN">
-                    <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary float-end"/>
+                    <@b.button label="button.edit" url="/show/" + show.getId()?c + "/edit" style="btn-sm btn-outline-primary float-end"/>
                 </@b.hasPermission>
 
                 <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
@@ -60,7 +60,7 @@
                             <div class="col-12 col-md-11 my-3 my-md-5">
                                 <div class="list-group list-episodes">
                                     <#list show.getSeasons()?sort_by("number") as season>
-                                        <a href="<@s.url "/season/" + season.getId() />" class="list-group-item list-group-item-action w-100 p-3">
+                                        <a href="<@s.url "/season/" + season.getId()?c />" class="list-group-item list-group-item-action w-100 p-3">
                                             <div class="row">
                                                 <div class="col-10 fw-bold text-truncate">
                                                     ${season.getNumber()} - ${season.getName()}
