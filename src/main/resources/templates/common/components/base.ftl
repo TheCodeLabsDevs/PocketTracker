@@ -18,10 +18,10 @@
     <h1><#if raw>${title}<#else><@localize title/></#if></h1>
 </#macro>
 
-<#macro h2 title raw=false>
+<#macro h2 title raw=false classes="">
     <div class="row">
         <div class="col-md-12 d-flex">
-            <h2><#if raw>${title}<#else><@localize title/></#if></h2>
+            <h2 class="${classes}"><#if raw>${title}<#else><@localize title/></#if></h2>
             <#nested>
         </div>
     </div>
@@ -45,11 +45,12 @@
     </div>
 </#macro>
 
-<#macro back_button label="button.back" icon="" classes="" showIcon=true margin="mb-4" center=false style="btn-primary">
+<#macro back_button label="button.back" icon="" classes="" url="" showLabel=true showIcon=true margin="mb-4" center=false style="btn-primary">
     <#if center><div class="mx-auto text-center"></#if>
-    <a class="btn ${style} ${margin} ${classes}" onclick="window.history.back()" role="button">
+    <a class="btn ${style} ${margin} ${classes}"
+       <#if url?has_content>href="<@s.url url/>" <#else>onclick="window.history.back()"</#if> role="button">
         <#if showIcon><i class="<#if icon?has_content>${icon}<#else>fas fa-arrow-left</#if>"></i></#if>
-        <@localize label/>
+        <#if showLabel><@localize label/></#if>
     </a>
     <#if center></div></#if>
 </#macro>
@@ -59,6 +60,12 @@
         <#if icon?has_content><i class="${icon}"></i></#if>
         <@localize label/>
     </a>
+</#macro>
+
+<#macro flex>
+    <div class="d-flex flex-row">
+        <#nested>
+    </div>
 </#macro>
 
 <#macro row classes="">

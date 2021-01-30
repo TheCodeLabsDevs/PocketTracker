@@ -8,7 +8,6 @@ import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import de.thecodelabs.pockettracker.utils.toast.ToastColor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -27,13 +25,11 @@ import java.util.Optional;
 public class ShowAdministrationController
 {
 	private final ShowService service;
-	private final MessageSource messageSource;
 
 	@Autowired
-	public ShowAdministrationController(ShowService service, MessageSource messageSource)
+	public ShowAdministrationController(ShowService service)
 	{
 		this.service = service;
-		this.messageSource = messageSource;
 	}
 
 	@GetMapping("/create")
@@ -48,7 +44,7 @@ public class ShowAdministrationController
 		{
 			model.addAttribute("show", new Show());
 		}
-		model.addAttribute("title", messageSource.getMessage("show.create", null, Locale.getDefault()));
+		model.addAttribute("back_url", "/shows");
 
 		return "administration/show/edit";
 	}
@@ -87,7 +83,7 @@ public class ShowAdministrationController
 		{
 			model.addAttribute("show", showOptional.get());
 		}
-		model.addAttribute("title", showOptional.get().getName());
+		model.addAttribute("back_url", "/show/" + id);
 
 		return "administration/show/edit";
 	}

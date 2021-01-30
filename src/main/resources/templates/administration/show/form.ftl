@@ -14,10 +14,7 @@
 
             <@f.select label="show.type" name="type" options=showTypes value=show.type/>
 
-            <@b.col classes="mt-4">
-                <@b.back_button label="button.cancel" style="btn-secondary" showIcon=false/>
-                <@f.submit col=false classes="float-end"/>
-            </@b.col>
+            <@f.submit classes="float-end"/>
         </@b.row>
     </@f.form>
 </#macro>
