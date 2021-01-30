@@ -13,7 +13,7 @@
         <@b.hasPermission "ADMIN">
             <@b.row classes="mb-4">
                 <@b.col>
-                    <@b.button label="button.add" url="/show/create" style="btn-sm btn-outline-primary float-end"/>
+                    <@b.button label="button.add" url="/show/create" style="btn-sm btn-primary float-end"/>
                 </@b.col>
             </@b.row>
         </@b.hasPermission>
