@@ -15,6 +15,6 @@
             </@b.col>
         </@b.row>
 
-        <@form.form user authentications/>
+        <@form.form user authentications isGitlabConnected/>
     </@template.body>
 </html>

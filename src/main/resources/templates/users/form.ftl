@@ -4,7 +4,7 @@
 <#import "/common/components/table.ftl" as t/>
 <#import "/common/components/card.ftl" as c/>
 
-<#macro form user authentications>
+<#macro form user authentications isGitlabConnected>
     <@c.card classes="my-4">
         <@c.body>
             <@b.h4 "authentication.provider.headline"/>
