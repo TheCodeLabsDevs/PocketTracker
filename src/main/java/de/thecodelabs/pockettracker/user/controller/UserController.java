@@ -77,11 +77,11 @@ public class UserController
 		}
 		catch(PasswordValidationException e)
 		{
-			WebRequestUtils.putToast(request, new Toast("Passwort Validierung fehlgeschlagen", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validate_password", ToastColor.DANGER));
 			return "redirect:/user/settings";
 		}
 
-		WebRequestUtils.putToast(request, new Toast("Änderungen gespeichert", ToastColor.SUCCESS));
+		WebRequestUtils.putToast(request, new Toast("toast.saved", ToastColor.SUCCESS));
 		return "redirect:/user/settings";
 	}
 

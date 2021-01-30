@@ -43,9 +43,11 @@
 </#macro>
 
 <#macro content>
+    <#import "/common/components/base.ftl" as b>
+
     <#if toast??>
         <div class="alert ${toast.getColor().getStyleClass()} alert-dismissible fade show" role="alert">
-            ${toast.getMessage()}
+            <@b.localize toast.getMessage()/>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </#if>

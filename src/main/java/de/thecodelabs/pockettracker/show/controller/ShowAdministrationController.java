@@ -55,7 +55,7 @@ public class ShowAdministrationController
 	{
 		if(validation.hasErrors())
 		{
-			WebRequestUtils.putToast(request, new Toast("Validierungfehler", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validation", ToastColor.DANGER));
 			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/create";
 		}
@@ -94,7 +94,7 @@ public class ShowAdministrationController
 	{
 		if(validation.hasErrors())
 		{
-			WebRequestUtils.putToast(request, new Toast("Validierungfehler", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validation", ToastColor.DANGER));
 			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/" + id + "/edit";
 		}
