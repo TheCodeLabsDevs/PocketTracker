@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-import psycopg2
 import psycopg2.extras
 import sqlite3
 import sys
@@ -16,9 +15,7 @@ POSTGRES_PASSWORD = 'pocketTracker'
 POSTGRES_HOST = '127.0.0.1'
 POSTGRES_PORT = '5432'
 
-POCKET_TRACKER_USER_ID = 13
-
-PREVIOUS_ID = 1
+POCKET_TRACKER_USER_ID = 2
 
 
 def progress(count, total, message=''):
@@ -57,19 +54,10 @@ def migrate_shows():
         bannerPath = f'banner/{imageName}.jpg'
         posterPath = f'poster/{imageName}.jpg'
 
-        global PREVIOUS_ID
-        idAlreadyExists = True
-
-        while idAlreadyExists:
-            try:
-                cursorPostgres.execute(
-                    'INSERT INTO show (id, name, description, first_aired, type, banner_path, poster_path) '
-                    'VALUES (%s, %s, %s, %s, %s, %s, %s);',
-                    (PREVIOUS_ID, name, description, firstAired, showType, bannerPath, posterPath))
-                idAlreadyExists = False
-            except psycopg2.errors.UniqueViolation:
-                idAlreadyExists = True
-                PREVIOUS_ID += 1
+        cursorPostgres.execute(
+            'INSERT INTO show (name, description, first_aired, type, banner_path, poster_path) '
+            'VALUES (%s, %s, %s, %s, %s, %s);',
+            (name, description, firstAired, showType, bannerPath, posterPath))
 
     print('\n>>> Migrating shows DONE\n')
     return shows
@@ -121,23 +109,14 @@ def migrate_seasons_for_show(episodeList):
     print(f'    Found the following unique season numbers: {uniqueSeasonNumbers}')
 
     for idx, seasonNumber in enumerate(uniqueSeasonNumbers):
-        global PREVIOUS_ID
-        idAlreadyExists = True
+        cursorPostgres.execute(
+            'INSERT INTO season (name, description, number, show_id) '
+            'VALUES (%s, %s, %s, %s) RETURNING id;',
+            (f'Staffel {seasonNumber}', None, seasonNumber, newShow['id']))
 
-        while idAlreadyExists:
-            try:
-                cursorPostgres.execute(
-                    'INSERT INTO season (id, name, description, number, show_id) '
-                    'VALUES (%s, %s, %s, %s, %s);',
-                    (PREVIOUS_ID, f'Staffel {seasonNumber}', None, seasonNumber, newShow['id']))
-                idAlreadyExists = False
-
-                print(f'\nSeason [{idx + 1}/{len(uniqueSeasonNumbers)}] Migrating episodes...')
-                migrate_episodes_for_season(episodeList, seasonNumber, PREVIOUS_ID)
-
-            except psycopg2.errors.UniqueViolation:
-                idAlreadyExists = True
-                PREVIOUS_ID += 1
+        newSeasonId = cursorPostgres.fetchone()['id']
+        print(f'\nSeason [{idx + 1}/{len(uniqueSeasonNumbers)}] Migrating episodes...')
+        migrate_episodes_for_season(episodeList, seasonNumber, newSeasonId)
 
 
 def migrate_episodes_for_season(allEpisodes, seasonNumber, newSeasonId):
@@ -148,40 +127,23 @@ def migrate_episodes_for_season(allEpisodes, seasonNumber, newSeasonId):
 
 
 def migrate_episode(episode, newSeasonId):
-    global PREVIOUS_ID
-    idAlreadyExists = True
+    cursorPostgres.execute(
+        'INSERT INTO episode (name, description, first_aired, length_in_minutes, number, season_id) '
+        'VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;',
+        (episode.name, episode.description, episode.firstAired, None, episode.number, newSeasonId))
 
-    while idAlreadyExists:
-        try:
-            cursorPostgres.execute(
-                'INSERT INTO episode (id, name, description, first_aired, length_in_minutes, number, season_id) '
-                'VALUES (%s, %s, %s, %s, %s, %s, %s);',
-                (PREVIOUS_ID, episode.name, episode.description, episode.firstAired, None, episode.number, newSeasonId))
-            idAlreadyExists = False
-
-            if episode.watched:
-                migrate_watched_episode(PREVIOUS_ID)
-
-        except psycopg2.errors.UniqueViolation:
-            idAlreadyExists = True
-            PREVIOUS_ID += 1
+    if episode.watched:
+        newSeasonId = cursorPostgres.fetchone()['id']
+        migrate_watched_episode(newSeasonId)
 
 
 def migrate_watched_episode(newEpisodeId):
-    idAlreadyExists = True
+    cursorPostgres.execute(
+        'INSERT INTO appuser_watched_episodes (user_id, watched_episodes_id) VALUES (%s, %s);',
+        (POCKET_TRACKER_USER_ID, newEpisodeId))
 
-    while idAlreadyExists:
-        try:
-            cursorPostgres.execute(
-                'INSERT INTO appuser_watched_episodes (user_id, watched_episodes_id) VALUES (%s, %s);',
-                (POCKET_TRACKER_USER_ID, newEpisodeId))
-            idAlreadyExists = False
-
-            if episode.watched:
-                migrate_watched_episode(episode)
-
-        except psycopg2.errors.UniqueViolation:
-            idAlreadyExists = True
+    if episode.watched:
+        migrate_watched_episode(episode)
 
 
 if __name__ == '__main__':
@@ -209,8 +171,8 @@ if __name__ == '__main__':
         for showId, episodeList in episodesByShows.items():
             showIndex += 1
             showForId = [show for show in oldShows if show['_id'] == showId][0]
-            print(
-                f'\n\n>>> [{showIndex}/{len(episodesByShows.keys())}] Migrating episodes for show "{showForId["name"]}"...')
+            print(f'\n\n>>> [{showIndex}/{len(episodesByShows.keys())}] '
+                  f'Migrating episodes for show "{showForId["name"]}"...')
 
             cursorPostgres.execute("SELECT * FROM show WHERE name = %s", (showForId["name"],))
             newShow = cursorPostgres.fetchone()
