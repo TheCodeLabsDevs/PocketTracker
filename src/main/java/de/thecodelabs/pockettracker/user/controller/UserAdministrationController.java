@@ -105,7 +105,7 @@ public class UserAdministrationController
 	}
 
 	@PostMapping("/{id}/delete")
-	public String deleteSubmit(@PathVariable Integer id, Model model)
+	public String deleteSubmit(@PathVariable Integer id)
 	{
 		final Optional<User> userOptional = userService.getUser(id);
 		if(userOptional.isEmpty())
