@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
+import de.thecodelabs.pockettracker.user.service.UserAuthenticationService;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -36,14 +37,17 @@ public class UserController
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	private final UserService userService;
+	private final UserAuthenticationService authenticationService;
+
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 
 	@Autowired
-	public UserController(UserService userService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
+	public UserController(UserService userService, UserAuthenticationService authenticationService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
 	{
 		this.userService = userService;
+		this.authenticationService = authenticationService;
 		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
@@ -94,6 +98,19 @@ public class UserController
 		}
 
 		WebRequestUtils.putToast(request, new Toast("toast.saved", BootstrapColor.SUCCESS));
+		return "redirect:/user/settings";
+	}
+
+	@PostMapping("/settings/provider/{id}/delete")
+	public String deleteProvider(@PathVariable Integer id)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		authenticationService.deleteAuthenticationProvider(userOptional.get(), id);
 		return "redirect:/user/settings";
 	}
 

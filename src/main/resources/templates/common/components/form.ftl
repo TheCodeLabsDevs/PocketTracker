@@ -11,9 +11,9 @@
     </form>
 </#macro>
 
-<#macro submit label="button.save" size="col-12" col=true classes="">
+<#macro submit label="button.save" form="" size="col-12" col=true classes="">
     <#if col><div class="mb-3 ${size}"></#if>
-    <button type="submit" class="btn btn-primary ${classes}"><@b.localize label/></button>
+    <button type="submit" <#if form?has_content>form="${form}"</#if> class="btn btn-primary ${classes}"><@b.localize label/></button>
     <#if col></div></#if>
 </#macro>
 
