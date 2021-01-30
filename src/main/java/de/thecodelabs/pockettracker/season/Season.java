@@ -14,7 +14,7 @@ import java.util.List;
 public class Season
 {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String name;

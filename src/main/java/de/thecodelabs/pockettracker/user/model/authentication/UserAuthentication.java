@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class UserAuthentication
 {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(cascade = CascadeType.ALL)

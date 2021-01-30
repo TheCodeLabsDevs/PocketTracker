@@ -28,7 +28,7 @@ public class Show
 	}
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView(View.Summery.class)
 	private Integer id;
 
@@ -159,8 +159,10 @@ public class Show
 		this.seasons = seasons;
 	}
 
-	public String getFirstAiredReadable() {
-		if (firstAired == null) {
+	public String getFirstAiredReadable()
+	{
+		if(firstAired == null)
+		{
 			return null;
 		}
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

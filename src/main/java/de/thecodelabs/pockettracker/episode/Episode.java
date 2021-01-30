@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Episode
 {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String name;

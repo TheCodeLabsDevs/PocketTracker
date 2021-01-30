@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ApiTokenAuthentication
 {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private LocalDateTime createDate;
 	private String token;
