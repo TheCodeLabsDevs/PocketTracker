@@ -3,10 +3,10 @@ package de.thecodelabs.pockettracker.show.controller;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowService;
+import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
-import de.thecodelabs.pockettracker.utils.toast.ToastColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -55,7 +55,7 @@ public class ShowAdministrationController
 	{
 		if(validation.hasErrors())
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validation", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
 			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/create";
 		}
@@ -94,7 +94,7 @@ public class ShowAdministrationController
 	{
 		if(validation.hasErrors())
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validation", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
 			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/" + id + "/edit";
 		}

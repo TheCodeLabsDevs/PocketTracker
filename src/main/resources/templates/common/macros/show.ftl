@@ -55,8 +55,8 @@
     </div>
 </#macro>
 
-<#macro factItem icon value description>
-    <div class="col text-center">
+<#macro factItem icon value description classes="">
+    <div class="col text-center ${classes}">
         <i class="${icon} fs-4"></i>
         <div class="fs-5">
             ${value}&nbsp;

@@ -10,9 +10,9 @@ import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
-import de.thecodelabs.pockettracker.utils.toast.ToastColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,11 +77,11 @@ public class UserController
 		}
 		catch(PasswordValidationException e)
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validate_password", ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validate_password", BootstrapColor.DANGER));
 			return "redirect:/user/settings";
 		}
 
-		WebRequestUtils.putToast(request, new Toast("toast.saved", ToastColor.SUCCESS));
+		WebRequestUtils.putToast(request, new Toast("toast.saved", BootstrapColor.SUCCESS));
 		return "redirect:/user/settings";
 	}
 
@@ -116,7 +116,7 @@ public class UserController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
 			return "redirect:/shows";
 		}
 
@@ -139,7 +139,7 @@ public class UserController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
 			return "redirect:/shows";
 		}
 
@@ -148,7 +148,7 @@ public class UserController
 		final boolean userHadShow = user.getShows().remove(showToRemove);
 		if(!userHadShow)
 		{
-			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", ToastColor.WARNING));
+			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", BootstrapColor.WARNING));
 			return "redirect:/user/shows";
 		}
 
@@ -173,7 +173,7 @@ public class UserController
 		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
 		if(seasonOptional.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Staffel mit der ID \"{0}\"", seasonId), ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Staffel mit der ID \"{0}\"", seasonId), BootstrapColor.DANGER));
 			return "redirect:/shows";
 		}
 
@@ -197,7 +197,7 @@ public class UserController
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), ToastColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), BootstrapColor.DANGER));
 			return "redirect:/shows";
 		}
 

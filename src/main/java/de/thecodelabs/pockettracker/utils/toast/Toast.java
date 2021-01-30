@@ -1,11 +1,13 @@
 package de.thecodelabs.pockettracker.utils.toast;
 
+import de.thecodelabs.pockettracker.utils.BootstrapColor;
+
 public class Toast
 {
 	private String message;
-	private ToastColor color;
+	private BootstrapColor color;
 
-	public Toast(String message, ToastColor color)
+	public Toast(String message, BootstrapColor color)
 	{
 		this.message = message;
 		this.color = color;
@@ -16,7 +18,7 @@ public class Toast
 		return message;
 	}
 
-	public ToastColor getColor()
+	public BootstrapColor getColor()
 	{
 		return color;
 	}

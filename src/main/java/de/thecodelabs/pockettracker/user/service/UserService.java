@@ -13,6 +13,7 @@ import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthenticati
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
+import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -307,11 +308,11 @@ public class UserService
 	public List<StatisticItem> getStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size())));
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user))));
-		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user))));
-		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size())));
-		statisticItems.add(new StatisticItem("fas fa-hourglass", MessageFormat.format("{0} Minuten", getTotalPlayedMinutes(user))));
+		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.WARNING, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-hourglass", MessageFormat.format("{0} Minuten", getTotalPlayedMinutes(user)), BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		return statisticItems;
 	}

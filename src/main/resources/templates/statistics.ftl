@@ -6,24 +6,26 @@
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
     <#import "/common/macros/show.ftl" as showMacros/>
-    <#import "/users/form.ftl" as form>
+    <#import "/common/components/card.ftl" as c/>
 
     <@template.head currentPage/>
     <@template.body>
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-2 text-truncate">${currentPage}</h2>
+        <@b.row classes="mb-4">
+            <@b.col size="col-sm-12 col-md-8 col-lg-6" classes="mx-auto text-center">
+                <h2>Statistiken</h2>
+            </@b.col>
+        </@b.row>
 
-                <div class="row mt-3 mt-md-5">
-                    <div class="col-12 mt-3 mt-md-0">
-                        <div class="row">
-                            <#list statisticItems as item>
-                                <@showMacros.factItem icon=item.getIcon() value="" description=item.getText()/>
-                            </#list>
-                        </div>
-                    </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <#list statisticItems as item>
+                <div class="col">
+                    <@c.card classes=item.getBackgroundColor().getBackgroundColor() + " " + item.getTextColor().getTextColor()>
+                        <@c.body>
+                            <@showMacros.factItem item.getIcon() "" item.getText()/>
+                        </@c.body>
+                    </@c.card>
                 </div>
-            </div>
+            </#list>
         </div>
     </@template.body>
 </html>

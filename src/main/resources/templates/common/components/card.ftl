@@ -1,7 +1,7 @@
 <#import "/common/components/base.ftl" as b/>
 
-<#macro card margin="">
-    <div class="card shadow-sm ${margin}">
+<#macro card classes="">
+    <div class="card shadow-sm ${classes}">
         <#nested>
     </div>
 </#macro>
