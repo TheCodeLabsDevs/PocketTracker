@@ -57,6 +57,12 @@ public class MainController
 	@GetMapping("/show/{showId}")
 	public String show(Model model, @PathVariable Integer showId)
 	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
@@ -64,6 +70,7 @@ public class MainController
 		}
 
 		model.addAttribute("show", showOptional.get());
+		model.addAttribute("isAdded", userOptional.get().getShows().contains(showOptional.get()));
 		return "show";
 	}
 

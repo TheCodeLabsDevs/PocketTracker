@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Show
@@ -166,6 +167,21 @@ public class Show
 			return null;
 		}
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof Show)) return false;
+		Show show = (Show) o;
+		return Objects.equals(id, show.id);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id);
 	}
 
 	@Override

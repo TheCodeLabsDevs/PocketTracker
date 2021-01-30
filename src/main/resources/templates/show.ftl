@@ -21,11 +21,18 @@
                 <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy})</h3>
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">
-                        <#if show.getPosterPath()??>
-                            <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
-                        <#else>
-                            <@helperMacros.imagePlaceholder />
-                        </#if>
+                        <@b.row>
+                            <@b.col>
+                                <#if show.getPosterPath()??>
+                                    <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
+                                <#else>
+                                    <@helperMacros.imagePlaceholder />
+                                </#if>
+                            </@b.col>
+                            <@b.col>
+                                <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50 <#if isAdded>d-none</#if>">Hinzufügen</a>
+                            </@b.col>
+                        </@b.row>
                     </div>
 
                     <div class="col-12 col-md-8 mt-3 mt-md-0">
