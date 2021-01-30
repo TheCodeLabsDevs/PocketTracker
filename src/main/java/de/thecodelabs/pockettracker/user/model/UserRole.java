@@ -1,11 +1,20 @@
 package de.thecodelabs.pockettracker.user.model;
 
-public enum UserRole
+import org.springframework.context.MessageSourceResolvable;
+
+public enum UserRole implements MessageSourceResolvable
 {
 	ADMIN,
 	USER;
 
-	public String getRoleName() {
+	public String getRoleName()
+	{
 		return this.name();
+	}
+
+	@Override
+	public String[] getCodes()
+	{
+		return new String[]{"role." + name()};
 	}
 }

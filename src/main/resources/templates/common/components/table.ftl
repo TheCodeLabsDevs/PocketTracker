@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s/>
+<#import "/common/components/base.ftl" as b/>
 
 <#macro table id>
     <table id="${id}" class="table">
@@ -16,7 +17,7 @@
 
 <#macro headCell label>
     <th scope="col">
-        ${label}
+        <@b.localize label/>
     </th>
 </#macro>
 
@@ -32,6 +33,10 @@
     </tr>
 </#macro>
 
+<#macro content value>
+    <td><#if value??><@b.localize value/><#else><#nested></#if></td>
+</#macro>
+
 <#macro cell value="">
     <td><#if value?has_content>${value}<#else><#nested></#if></td>
 </#macro>
@@ -42,7 +47,7 @@
             <#if onclick?has_content>onclick="${onclick}"</#if>
             <#if id?has_content>id="${id}"</#if>
             class="px-2 table-action ${classes}"
-            <#if tooltip?has_content>data-bs-toggle="tooltip" data-bs-placement="bottom" title="${tooltip}"</#if>
+            <#if tooltip?has_content>data-bs-toggle="tooltip" data-bs-placement="bottom" title="<@b.localize tooltip/>"</#if>
     >
         <i class="${icon} ${style}"></i>
     </a>

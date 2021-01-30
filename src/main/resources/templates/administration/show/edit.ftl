@@ -16,8 +16,8 @@
     <@template.head 'Episodes'/>
     <@template.body>
         <@b.flex>
-            <@b.back_button url=back_url style="btn-secondary" showLabel=false/>
-            <@b.h2 title=title raw=true classes="mx-2"/>
+            <@b.back_button url=back_url showLabel=false/>
+            <@b.h2 title=title raw=true/>
         </@b.flex>
 
         <@c.card>

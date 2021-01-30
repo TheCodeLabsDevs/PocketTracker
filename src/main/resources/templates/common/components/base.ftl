@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as s/>
+<#import "/common/components/base.ftl" as b/>
 
 <#macro hasPermission permission>
     <#if currentUser?? && currentUser.userRole.name() == permission>
@@ -45,7 +46,7 @@
     </div>
 </#macro>
 
-<#macro back_button label="button.back" icon="" classes="" url="" showLabel=true showIcon=true margin="mb-4" center=false style="btn-primary">
+<#macro back_button label="button.back" icon="" classes="me-2" url="" showLabel=true showIcon=true margin="mb-4" center=false style="btn-secondary">
     <#if center><div class="mx-auto text-center"></#if>
     <a class="btn ${style} ${margin} ${classes}"
        <#if url?has_content>href="<@s.url url/>" <#else>onclick="window.history.back()"</#if> role="button">

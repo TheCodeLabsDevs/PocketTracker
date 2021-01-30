@@ -5,16 +5,14 @@
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
-    <#import "/users/administration/form.ftl" as form>
+    <#import "/administration/user/form.ftl" as form>
 
     <@template.head 'Episodes'/>
     <@template.body>
-
-        <@b.row>
-            <@b.col "col-8">
-                <@b.h2 "Neuer Benutzer" true/>
-            </@b.col>
-        </@b.row>
+        <@b.flex>
+            <@b.back_button showLabel=false/>
+            <@b.h2 "admin.user.create"/>
+        </@b.flex>
 
         <@form.form user userRoles/>
     </@template.body>

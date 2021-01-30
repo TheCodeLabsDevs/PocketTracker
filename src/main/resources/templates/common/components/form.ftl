@@ -38,7 +38,7 @@
         <label for="${id}" class="form-label"><@b.localize label/></label>
         <select class="form-select <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}">
             <#list options as option>
-                <option <#if value == option>selected</#if> value="${option}">${option}</option>
+                <option <#if value == option>selected</#if> value="${option}"><@b.localize option/></option>
             </#list>
         </select>
         <@inputError fieldName=name/>

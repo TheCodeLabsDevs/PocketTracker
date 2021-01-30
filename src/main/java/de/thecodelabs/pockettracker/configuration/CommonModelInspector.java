@@ -26,9 +26,16 @@ public class CommonModelInspector implements HandlerInterceptor
 	public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 						   @NonNull Object handler, @Nullable ModelAndView modelAndView) throws Exception
 	{
-		if(modelAndView != null)
+		if(modelAndView == null)
 		{
-			modelAndView.addObject("oauthEnabled", properties.isEnableOAuth());
+			return;
 		}
+
+		if(modelAndView.getViewName() == null || modelAndView.getViewName().startsWith("redirect:"))
+		{
+			return;
+		}
+
+		modelAndView.addObject("oauthEnabled", properties.isEnableOAuth());
 	}
 }

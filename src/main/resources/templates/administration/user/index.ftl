@@ -11,24 +11,24 @@
     <@template.body>
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "Benutzerübersicht" true/>
+                <@b.h2 "admin.user.headline"/>
             </@b.col>
             <@b.col "col-4">
-                <@b.button label="Hinzufügen" url="/users/administration/add" icon="fas fa-plus" classes="float-end"/>
+                <@b.button label="button.add" url="/users/administration/add" icon="fas fa-plus" classes="float-end"/>
             </@b.col>
         </@b.row>
 
         <@t.table id="users">
             <@t.head>
-                <@t.headCell label="Username"/>
-                <@t.headCell label="Role"/>
-                <@t.headCell label="Actions"/>
+                <@t.headCell label="admin.user.table.username"/>
+                <@t.headCell label="admin.user.table.role"/>
+                <@t.headCell label="admin.user.table.actions"/>
             </@t.head>
             <@t.body>
                 <#list users as user>
                     <@t.row>
                         <@t.cell value=user.name/>
-                        <@t.cell value=user.userRole.toString()/>
+                        <@t.content value=user.userRole/>
                         <@t.cell>
                             <@t.action icon="fas fa-pen" url="/users/administration/${user.id}/edit" />
                             <#if currentUser.name != user.name>

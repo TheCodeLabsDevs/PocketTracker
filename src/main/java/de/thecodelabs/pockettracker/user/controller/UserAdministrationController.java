@@ -29,14 +29,14 @@ public class UserAdministrationController
 	public String index(Model model)
 	{
 		model.addAttribute("users", userService.getUsers());
-		return "users/administration/index";
+		return "administration/user/index";
 	}
 
 	@GetMapping("/add")
 	public String addView(Model model)
 	{
 		model.addAttribute("user", new UserForm());
-		return "users/administration/add";
+		return "administration/user/add";
 	}
 
 	@PostMapping("/add")
@@ -66,7 +66,7 @@ public class UserAdministrationController
 		}
 
 		model.addAttribute("user", new UserForm(userOptional.get()));
-		return "users/administration/edit";
+		return "administration/user/edit";
 	}
 
 
@@ -101,7 +101,7 @@ public class UserAdministrationController
 		}
 
 		model.addAttribute("user", userOptional.get());
-		return "users/administration/delete";
+		return "administration/user/delete";
 	}
 
 	@PostMapping("/{id}/delete")

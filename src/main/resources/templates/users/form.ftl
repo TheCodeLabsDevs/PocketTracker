@@ -5,7 +5,7 @@
 
 <#macro form user authentications>
     <@f.form name="user" url=springMacroRequestContext.getRequestUri() rawUrl=true>
-        <@c.card>
+        <@c.card margin="my-4">
             <@c.body>
                 <@b.h4 "Aktive Authentication Provider" true/>
                 <ul>
@@ -16,7 +16,7 @@
             </@c.body>
         </@c.card>
 
-        <@c.card>
+        <@c.card margin="my-4">
             <@c.body>
                 <@b.row>
                     <@b.h4 "authentication.provider.internal"/>
@@ -30,7 +30,7 @@
         </@c.card>
 
         <#if !authentications?seq_contains("gitlab") && oauthEnabled>
-            <@c.card>
+            <@c.card margin="my-4">
                 <@c.body>
                     <@b.h4 "authentication.provider.gitlab"/>
                     <@b.button id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab" label="Connect with TheCodeLabs"/>
