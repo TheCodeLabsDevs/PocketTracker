@@ -11,17 +11,23 @@
 
     <@template.head 'Episodes'/>
     <@template.body>
-        <@b.h2 title=show.name raw=true/>
+        <@b.h2 title=title raw=true/>
 
         <@c.card>
             <@c.body>
-                <@form.form show/>
+                <@form.baseDate show/>
             </@c.body>
         </@c.card>
 
         <@c.card>
             <@c.body>
+                <@form.images show/>
+            </@c.body>
+        </@c.card>
 
+        <@c.card>
+            <@c.body>
+                <@form.seasons show/>
             </@c.body>
         </@c.card>
     </@template.body>

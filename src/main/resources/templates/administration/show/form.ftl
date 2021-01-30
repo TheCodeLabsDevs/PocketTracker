@@ -1,7 +1,9 @@
 <#import "/common/components/base.ftl" as b/>
 <#import "/common/components/form.ftl" as f/>
 
-<#macro form show>
+<#macro baseDate show>
+    <@b.h3 title="show.base_data"/>
+
     <@f.form name="show" url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>
             <@f.input label="show.name" name="name" value=show.name!""/>
@@ -18,4 +20,14 @@
             </@b.col>
         </@b.row>
     </@f.form>
+</#macro>
+
+<#macro images show>
+    <@b.h3 title="show.images"/>
+
+</#macro>
+
+<#macro seasons show>
+    <@b.h3 title="show.seasons"/>
+
 </#macro>
