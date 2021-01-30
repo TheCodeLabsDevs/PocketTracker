@@ -32,6 +32,38 @@ public class ShowAdministrationController
 		this.service = service;
 	}
 
+	@GetMapping("/create")
+	public String createPage(WebRequest request, Model model)
+	{
+		final Object oldData = WebRequestUtils.popValidationData(request);
+		if(oldData instanceof Show)
+		{
+			model.addAttribute("show", oldData);
+		}
+		else
+		{
+			model.addAttribute("show", new Show());
+		}
+
+		return "administration/show/create";
+	}
+
+	@PostMapping("/create")
+	@Transactional
+	public String createPost(WebRequest request, @Validated @ModelAttribute("show") Show show, BindingResult validation)
+	{
+		if(validation.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("Validierungfehler", ToastColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, show);
+			return "redirect:/show/create";
+		}
+
+		final Show createdShow = service.createShow(show);
+
+		return "redirect:/show/" + createdShow.getId();
+	}
+
 	@GetMapping("/{id}/edit")
 	public String editPage(WebRequest request, @PathVariable Integer id, Model model)
 	{

@@ -11,7 +11,7 @@
 
     <@template.head 'Episodes'/>
     <@template.body>
-        <@b.h2 title=show.name raw=true/>
+        <@b.h2 title="show.create"/>
 
         <@c.card>
             <@c.body>

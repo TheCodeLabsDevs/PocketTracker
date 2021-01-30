@@ -36,7 +36,7 @@ public class Show
 	@NotEmpty
 	@Size(max = 255)
 	@JsonView(View.Summery.class)
-	private String name;
+	private String name = "";
 
 	@Column(length = 4096)
 	@Size(max = 4096)

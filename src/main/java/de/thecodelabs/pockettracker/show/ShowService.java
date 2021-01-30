@@ -36,6 +36,12 @@ public class ShowService
 		return repository.findById(id);
 	}
 
+
+	public Show createShow(Show show)
+	{
+		return repository.save(show);
+	}
+
 	public Integer getTotalNumberOfEpisodes(Show show)
 	{
 		return show.getSeasons().stream()

@@ -45,13 +45,13 @@
     </div>
 </#macro>
 
-<#macro back_button label="button.back" icon="" classes="" showIcon=true margin="mb-4" center=false>
-    <div class="<#if center>mx-auto text-center</#if>">
-        <a class="btn btn-primary ${margin} ${classes}" onclick="window.history.back()" role="button">
-            <#if showIcon><i class="<#if icon?has_content>${icon}<#else>fas fa-arrow-left</#if>"></i></#if>
-            <@localize label/>
-        </a>
-    </div>
+<#macro back_button label="button.back" icon="" classes="" showIcon=true margin="mb-4" center=false style="btn-primary">
+    <#if center><div class="mx-auto text-center"></#if>
+    <a class="btn ${style} ${margin} ${classes}" onclick="window.history.back()" role="button">
+        <#if showIcon><i class="<#if icon?has_content>${icon}<#else>fas fa-arrow-left</#if>"></i></#if>
+        <@localize label/>
+    </a>
+    <#if center></div></#if>
 </#macro>
 
 <#macro button label url icon="" classes="" id="" style="btn-primary">
@@ -61,8 +61,8 @@
     </a>
 </#macro>
 
-<#macro row>
-    <div class="row">
+<#macro row classes="">
+    <div class="row ${classes}">
         <#nested>
     </div>
 </#macro>
