@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
+import org.springframework.context.MessageSourceResolvable;
 
 import javax.persistence.*;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "appuser_authentication")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public class UserAuthentication
+public class UserAuthentication implements MessageSourceResolvable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,12 @@ public class UserAuthentication
 	public void setUser(User user)
 	{
 		this.user = user;
+	}
+
+	@Override
+	public String[] getCodes()
+	{
+		final String providerName = this.getClass().getAnnotation(DiscriminatorValue.class).value();
+		return new String[]{"authentication.provider." + providerName};
 	}
 }

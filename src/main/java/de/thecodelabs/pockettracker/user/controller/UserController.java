@@ -9,10 +9,13 @@ import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +23,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.persistence.DiscriminatorValue;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 public class UserController
 {
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	private final UserService userService;
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
@@ -45,19 +50,26 @@ public class UserController
 	}
 
 	@GetMapping("/settings")
-	public String settingsView(WebRequest request, Model model)
+	public String settingsView(HttpServletRequest request, Model model)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
 		{
-			throw new NotFoundException("User not found");
+			try
+			{
+				request.logout();
+			}
+			catch(ServletException e)
+			{
+				logger.error("Cannot logout user", e);
+			}
+			return "redirect:/";
 		}
 
 		final User user = userOptional.get();
 		model.addAttribute("user", new UserForm(user));
-		model.addAttribute("authentications", user.getAuthentications().stream()
-				.map(userAuthentication -> userAuthentication.getClass().getAnnotation(DiscriminatorValue.class).value())
-				.collect(Collectors.toList()));
+		model.addAttribute("authentications", user.getAuthentications());
+		model.addAttribute("isGitlabConnected", user.getAuthentications().stream().anyMatch(provider -> provider instanceof GitlabAuthentication));
 
 		return "users/edit";
 	}
@@ -77,7 +89,7 @@ public class UserController
 		}
 		catch(PasswordValidationException e)
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validate_password", BootstrapColor.DANGER));
+			WebRequestUtils.putToast(request, new Toast("toast.validatePassword", BootstrapColor.DANGER));
 			return "redirect:/user/settings";
 		}
 
