@@ -41,7 +41,11 @@ public class UserAuthentication implements MessageSourceResolvable
 	@Override
 	public String[] getCodes()
 	{
-		final String providerName = this.getClass().getAnnotation(DiscriminatorValue.class).value();
+		final String providerName = getType();
 		return new String[]{"authentication.provider." + providerName};
+	}
+
+	public String getType() {
+		return getClass().getAnnotation(DiscriminatorValue.class).value();
 	}
 }

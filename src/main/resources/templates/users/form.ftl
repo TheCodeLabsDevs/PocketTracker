@@ -31,7 +31,7 @@
                                         <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
                                             <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false/>
                                         </@f.form>
-                                    </@m.footer>^
+                                    </@m.footer>
                                 </@m.modal>
                             </#if>
                         </@t.cell>

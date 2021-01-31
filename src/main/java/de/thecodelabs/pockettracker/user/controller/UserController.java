@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
+import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.service.UserAuthenticationService;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -27,8 +28,10 @@ import org.springframework.web.context.request.WebRequest;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -72,7 +75,7 @@ public class UserController
 
 		final User user = userOptional.get();
 		model.addAttribute("user", new UserForm(user));
-		model.addAttribute("authentications", user.getAuthentications());
+		model.addAttribute("authentications", user.getAuthentications().stream().sorted(Comparator.comparing(UserAuthentication::getType)).collect(Collectors.toList()));
 		model.addAttribute("isGitlabConnected", user.getAuthentications().stream().anyMatch(provider -> provider instanceof GitlabAuthentication));
 
 		return "users/edit";
