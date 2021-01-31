@@ -10,9 +10,7 @@
 
     <@template.head showService.getShortCode(episode) + " - " + episode.getName()/>
     <@template.body>
-        <div class="mx-auto text-center mb-4">
-            <a href="<@s.url "/season/" + episode.getSeason().getId()/>" class="btn btn-primary" role="button"><i class="fas fa-arrow-left"></i> Back</a>
-        </div>
+        <@b.back_button url="/season/" + episode.getSeason().getId() center=true/>
 
         <div class="card shadow-sm">
             <div class="card-body">
