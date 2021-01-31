@@ -10,13 +10,15 @@
 
     <@template.head currentPage/>
     <@template.body>
-        <@b.hasPermission "ADMIN">
-            <@b.row classes="mb-4">
-                <@b.col>
-                    <@b.button label="button.add" url="/show/create" style="btn-sm btn-primary float-end"/>
-                </@b.col>
-            </@b.row>
-        </@b.hasPermission>
+        <#if !isUserSpecificView>
+            <@b.hasPermission "ADMIN">
+                <@b.row classes="mb-4">
+                    <@b.col>
+                        <@b.button label="button.add" url="/show/create" style="btn-sm btn-primary float-end"/>
+                    </@b.col>
+                </@b.row>
+            </@b.hasPermission>
+        </#if>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <#list shows![] as show>

@@ -31,14 +31,13 @@
                     <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
 
                     <div class="d-flex justify-content-end">
-                        <@b.hasPermission "ADMIN">
-                            <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link me-2"><@b.localize "button.edit"/></a>
-                        </@b.hasPermission>
-
                         <#if isUserSpecific>
                             <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
                         <#else>
-                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if>">Hinzufügen</a>
+                            <@b.hasPermission "ADMIN">
+                                <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@b.localize "button.edit"/></a>
+                            </@b.hasPermission>
+                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if> ms-2">Hinzufügen</a>
                         </#if>
                     </div>
                 </div>
