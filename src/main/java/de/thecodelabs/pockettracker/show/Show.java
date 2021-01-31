@@ -155,7 +155,7 @@ public class Show
 		this.type = type;
 	}
 
-	public Boolean isFinished()
+	public Boolean getFinished()
 	{
 		return isFinished;
 	}
