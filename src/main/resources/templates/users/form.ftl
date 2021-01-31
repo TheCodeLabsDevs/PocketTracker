@@ -1,8 +1,9 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
-<#import "/common/components/form.ftl" as f/>
-<#import "/common/components/table.ftl" as t/>
 <#import "/common/components/card.ftl" as c/>
+<#import "/common/components/form.ftl" as f/>
+<#import "/common/components/modal.ftl" as m/>
+<#import "/common/components/table.ftl" as t/>
 
 <#macro form user authentications isGitlabConnected>
     <@c.card classes="my-4">
@@ -18,29 +19,20 @@
                         <@t.content authentication/>
                         <@t.cell>
                             <#if authentications?size gt 1>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#provider-logout-${authentication.id}">
-                                    <@b.localize "button.logout"/>
-                                </button>
+                                <@m.open label="button.logout" modalId="provider-logout-${authentication.id}" style="btn-danger"/>
 
-                                <div class="modal fade" id="provider-logout-${authentication.id}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel"><@b.localize authentication/></h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <@b.localize "authentication.provider.logout"/>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
-                                                <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
-                                                    <@f.submit label="button.logout" form="provider-${authentication.id}" col=false/>
-                                                </@f.form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <@m.modal id="provider-logout-${authentication.id}">
+                                    <@m.header authentication/>
+                                    <@m.body>
+                                        <@b.localize "authentication.provider.logout"/>
+                                    </@m.body>
+                                    <@m.footer>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+                                        <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
+                                            <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false/>
+                                        </@f.form>
+                                    </@m.footer>^
+                                </@m.modal>
                             </#if>
                         </@t.cell>
                     </@t.row>
