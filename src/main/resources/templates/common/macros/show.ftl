@@ -16,7 +16,7 @@
                     ${show.getName()}
                 </p>
                 <p class="card-text">
-                    ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden
+                   ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden <i class="fas fa-flag-checkered"></i>
                 </p>
 
                 <#if isUserSpecific>
