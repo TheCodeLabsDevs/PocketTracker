@@ -23,44 +23,48 @@ public class Show
 {
 	public static class View
 	{
-		public interface Summery
+		public interface Summary
 		{
 		}
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	private Integer id;
 
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	private String name = "";
 
 	@Column(length = 4096)
 	@Size(max = 4096)
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	private String description;
 
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate firstAired;
 
 	@Column(length = 2048)
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	@JsonSerialize(using = JsonResourcePathSerializer.class)
 	private String bannerPath;
 
 	@Column(length = 2048)
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	@JsonSerialize(using = JsonResourcePathSerializer.class)
 	private String posterPath;
 
-	@JsonView(View.Summery.class)
+	@JsonView(View.Summary.class)
 	@NotNull
 	private ShowType type;
+
+	@JsonView(View.Summary.class)
+	private Boolean isFinished = false;
+
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
 	@MergeIgnore
@@ -70,7 +74,7 @@ public class Show
 	{
 	}
 
-	public Show(@NotNull String name, String description, LocalDate firstAired, String bannerPath, String posterPath, ShowType type)
+	public Show(@NotNull String name, String description, LocalDate firstAired, String bannerPath, String posterPath, ShowType type, boolean isFinished)
 	{
 		this.name = name;
 		this.description = description;
@@ -78,6 +82,7 @@ public class Show
 		this.bannerPath = bannerPath;
 		this.posterPath = posterPath;
 		this.type = type;
+		this.isFinished = isFinished;
 	}
 
 	public void setId(Integer id)
@@ -150,6 +155,16 @@ public class Show
 		this.type = type;
 	}
 
+	public Boolean isFinished()
+	{
+		return isFinished;
+	}
+
+	public void setFinished(Boolean finished)
+	{
+		isFinished = finished;
+	}
+
 	public List<Season> getSeasons()
 	{
 		return seasons;
@@ -195,6 +210,7 @@ public class Show
 				", bannerPath='" + bannerPath + '\'' +
 				", posterPath='" + posterPath + '\'' +
 				", type=" + type +
+				", isFinished=" + isFinished +
 				", seasons=" + seasons +
 				'}';
 	}

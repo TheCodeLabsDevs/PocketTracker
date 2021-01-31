@@ -22,14 +22,14 @@ public class ShowApiController
 	}
 
 	@GetMapping
-	@JsonView(Show.View.Summery.class)
+	@JsonView(Show.View.Summary.class)
 	public List<Show> getAllShows(@RequestParam(name = "name", required = false) String name)
 	{
 		return showService.getAllShows(name);
 	}
 
 	@GetMapping("/{id}")
-	@JsonView(Show.View.Summery.class)
+	@JsonView(Show.View.Summary.class)
 	public Optional<Show> getAllShows(@PathVariable Integer id)
 	{
 		return showService.getShowById(id);
