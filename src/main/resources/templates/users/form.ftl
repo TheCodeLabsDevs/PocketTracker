@@ -59,8 +59,14 @@
     <#if !isGitlabConnected && oauthEnabled>
         <@c.card classes="my-4">
             <@c.body>
-                <@b.h4 "authentication.provider.gitlab"/>
-                <@b.button label="user.form.connectWithGitlab" id="oauth-login-thecodelabs" classes="floating-end" url="/oauth2/authorization/gitlab" icon="fab fa-gitlab"/>
+                <@f.form name="oauth" url="/user/settings/oauth/gitlab">
+                    <@b.row>
+                        <@b.h4 "authentication.provider.gitlab"/>
+                        <@f.input label="user.form.username" name="username" size="col-12"/>
+
+                        <@f.submit label="user.form.connectWithGitlab" icon="fab fa-gitlab"/>
+                    </@b.row>
+                </@f.form>
             </@c.body>
         </@c.card>
     </#if>

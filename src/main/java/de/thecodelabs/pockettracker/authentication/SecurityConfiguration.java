@@ -1,11 +1,17 @@
 package de.thecodelabs.pockettracker.authentication;
 
+import de.thecodelabs.pockettracker.user.controller.UserForm;
+import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Optional;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
@@ -19,14 +25,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	private final RememberMeService rememberMeService;
 	private final AuthenticationConfigurationProperties configurationProperties;
 
+	private final UserService userService;
+
 	@Autowired
 	public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DatabaseUserDetailService databaseUserDetailService,
-								 RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties)
+								 RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties,
+								 UserService userService)
 	{
 		this.passwordEncoder = passwordEncoder;
 		this.databaseUserDetailService = databaseUserDetailService;
 		this.rememberMeService = rememberMeService;
 		this.configurationProperties = configurationProperties;
+		this.userService = userService;
 	}
 
 	@Override
@@ -59,6 +69,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		{
 			http
 					.oauth2Login()
+					.successHandler((httpServletRequest, httpServletResponse, authentication) -> {
+						// Create user if missing
+						final Optional<User> userOptional = userService.getUser(authentication);
+						if(userOptional.isEmpty())
+						{
+							try
+							{
+								final UserForm userForm = new UserForm();
+								userForm.setUsername(authentication.getName());
+								final User user = userService.createUser(userForm);
+								userService.addGitlabAuthentication(user, authentication.getName());
+							}
+							catch(Exception e)
+							{
+								throw new UsernameNotFoundException("Fail to create Gitlab Authentication");
+							}
+						}
+
+						httpServletResponse.sendRedirect("/");
+					})
 					.loginPage(LOGIN_PAGE)
 					.permitAll();
 		}

@@ -12,6 +12,7 @@ import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
+import de.thecodelabs.pockettracker.user.repository.GitlabAuthenticationRepository;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,16 @@ public class UserService
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final ShowService showService;
 
+	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
+
 	@Autowired
-	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService)
+	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.showService = showService;
+		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
 	}
 
 	public Optional<User> getCurrentUser()
@@ -60,54 +65,41 @@ public class UserService
 
 		if(authentication instanceof OAuth2AuthenticationToken)
 		{
-			// Get Gitlab user or create new account
-			return getUser(authentication.getName(), GitlabAuthentication.class).or(() -> {
-
-				final User user = getUser(authentication.getName()).orElseGet(() -> {
-					final UserForm userForm = new UserForm();
-					userForm.setUsername(authentication.getName());
-					return createUser(userForm);
-				});
-				addGitlabAuthentication(user, authentication.getName());
-				return Optional.of(user);
-			});
+			return getUserByGitlabAuthentication(authentication.getName());
 		}
-		else if(authentication instanceof UsernamePasswordAuthenticationToken)
+		else if(authentication instanceof UsernamePasswordAuthenticationToken ||
+				authentication instanceof RememberMeAuthenticationToken)
 		{
-			return getUser(authentication.getName(), InternalAuthentication.class);
-		}
-		else if(authentication instanceof RememberMeAuthenticationToken)
-		{
-			return getUser(authentication.getName(), InternalAuthentication.class);
+			return getUserByInternalAuthentication(authentication.getName());
 		}
 		else if(authentication instanceof PreAuthenticatedAuthenticationToken)
 		{
-			return getUserByToken((String) authentication.getCredentials());
+			return getUserByAccessToken((String) authentication.getCredentials());
 		}
 		return Optional.empty();
 	}
 
-	public Optional<User> getUserByToken(String token)
+	public Optional<User> getUserByAccessToken(String token)
 	{
 		return userRepository.findUserByTokens_token(token);
 	}
 
-	public Optional<User> getUser(String username, Class<? extends UserAuthentication> type)
+	public Optional<User> getUserByGitlabAuthentication(String username)
 	{
-		return getUser(username).filter(user -> user.getAuthentication(type).isPresent());
+		return gitlabAuthenticationRepository.findByGitlabUsername(username).map(UserAuthentication::getUser);
 	}
 
-	public Optional<User> getUser(String username)
+	public Optional<User> getUserByInternalAuthentication(String username)
 	{
-		return userRepository.findUserByName(username);
+		return userRepository.findUserByName(username).filter(user -> user.getAuthentication(InternalAuthentication.class).isPresent());
 	}
 
-	public Optional<User> getUser(Integer id)
+	public Optional<User> getUserById(Integer id)
 	{
 		return userRepository.findById(id);
 	}
 
-	public Optional<User> getUserByAuthentication(UserAuthentication userAuthentication)
+	public Optional<User> getUserByUserAuthentication(UserAuthentication userAuthentication)
 	{
 		return userRepository.findUserByAuthenticationsContains(userAuthentication);
 	}

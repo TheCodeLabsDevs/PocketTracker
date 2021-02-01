@@ -31,7 +31,7 @@ public class ApiKeyAuthenticationManager implements AuthenticationManager
 			throw new BadCredentialsException("No API Key provided");
 		}
 
-		final Optional<User> userOptional = userService.getUserByToken(credentials);
+		final Optional<User> userOptional = userService.getUserByAccessToken(credentials);
 		if(userOptional.isEmpty())
 		{
 			throw new BadCredentialsException("The API key was not found or not the expected value.");

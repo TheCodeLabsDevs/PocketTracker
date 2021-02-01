@@ -32,7 +32,7 @@ public class RememberMeService implements PersistentTokenRepository
 	@Transactional
 	public void createNewToken(PersistentRememberMeToken persistentRememberMeToken)
 	{
-		final Optional<User> userOptional = userService.getUser(persistentRememberMeToken.getUsername(), InternalAuthentication.class);
+		final Optional<User> userOptional = userService.getUserByInternalAuthentication(persistentRememberMeToken.getUsername());
 		if(userOptional.isEmpty())
 		{
 			return;
@@ -68,7 +68,7 @@ public class RememberMeService implements PersistentTokenRepository
 		}
 
 		final InternalAuthentication authentication = authenticationOptional.get();
-		final Optional<User> userOptional = userService.getUserByAuthentication(authentication);
+		final Optional<User> userOptional = userService.getUserByUserAuthentication(authentication);
 
 		if(userOptional.isEmpty())
 		{
@@ -88,8 +88,9 @@ public class RememberMeService implements PersistentTokenRepository
 	@Transactional
 	public void removeUserTokens(String username)
 	{
-		final Optional<User> userOptional = userService.getUser(username, InternalAuthentication.class);
-		if (userOptional.isEmpty()) {
+		final Optional<User> userOptional = userService.getUserByInternalAuthentication(username);
+		if(userOptional.isEmpty())
+		{
 			return;
 		}
 

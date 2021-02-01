@@ -19,9 +19,12 @@ import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -102,6 +105,28 @@ public class UserController
 
 		WebRequestUtils.putToast(request, new Toast("toast.saved", BootstrapColor.SUCCESS));
 		return "redirect:/user/settings";
+	}
+
+	@PostMapping("/settings/oauth/{provider}")
+	public String connectOauth(WebRequest request, @PathVariable String provider,
+							   @ModelAttribute("oauth") @Validated UserOauthForm oauthForm, BindingResult result)
+	{
+		if(result.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("authentication.provider.gitlab.missingUsername", BootstrapColor.DANGER));
+			return "redirect:/user/settings";
+		}
+
+		Optional<User> userOptional = userService.getUser(SecurityContextHolder.getContext().getAuthentication());
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+		userService.addGitlabAuthentication(user, oauthForm.getUsername());
+
+		return "redirect:/oauth2/authorization/" + provider;
 	}
 
 	@PostMapping("/settings/provider/{id}/delete")

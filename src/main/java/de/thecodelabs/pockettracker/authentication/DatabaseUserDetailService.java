@@ -28,8 +28,7 @@ public class DatabaseUserDetailService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws AuthenticationException
 	{
-		final Optional<User> userOptional = userService.getUser(username, InternalAuthentication.class);
-
+		final Optional<User> userOptional = userService.getUserByInternalAuthentication(username);
 		if(userOptional.isEmpty())
 		{
 			throw new UsernameNotFoundException(username);

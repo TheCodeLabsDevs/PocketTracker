@@ -59,7 +59,7 @@ public class UserAdministrationController
 	@GetMapping("/{id}/edit")
 	public String editView(@PathVariable Integer id, Model model)
 	{
-		final Optional<User> userOptional = userService.getUser(id);
+		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
 		{
 			throw new NotFoundException();
@@ -73,7 +73,7 @@ public class UserAdministrationController
 	@PostMapping("/{id}/edit")
 	public String editSubmit(@PathVariable Integer id, @ModelAttribute("user") UserForm userForm)
 	{
-		final Optional<User> userOptional = userService.getUser(id);
+		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
 		{
 			throw new NotFoundException();
@@ -94,7 +94,7 @@ public class UserAdministrationController
 	@GetMapping("/{id}/delete")
 	public String deleteView(@PathVariable Integer id, Model model)
 	{
-		final Optional<User> userOptional = userService.getUser(id);
+		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
 		{
 			throw new NotFoundException("User not found");
@@ -107,7 +107,7 @@ public class UserAdministrationController
 	@PostMapping("/{id}/delete")
 	public String deleteSubmit(@PathVariable Integer id)
 	{
-		final Optional<User> userOptional = userService.getUser(id);
+		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
 		{
 			throw new NotFoundException("User not found");

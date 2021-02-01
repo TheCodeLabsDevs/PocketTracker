@@ -11,9 +11,12 @@
     </form>
 </#macro>
 
-<#macro submit label="button.save" form="" size="col-12" col=true classes="" style="btn-primary">
+<#macro submit label="button.save" form="" size="col-12" col=true classes="" style="btn-primary" icon="">
     <#if col><div class="mb-3 ${size}"></#if>
-    <button type="submit" <#if form?has_content>form="${form}"</#if> class="btn ${style} ${classes}"><@b.localize label/></button>
+    <button type="submit" <#if form?has_content>form="${form}"</#if> class="btn ${style} ${classes}">
+        <#if icon?has_content><i class="${icon}"></i></#if>
+        <@b.localize label/>
+    </button>
     <#if col></div></#if>
 </#macro>
 
