@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
+import de.thecodelabs.pockettracker.utils.WebUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,12 +30,17 @@ public class JsonResourcePathSerializer extends StdSerializer<String>
 	@Override
 	public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
 	{
-		if(!s.startsWith("/"))
+		if (WebUtils.isApiRequest())
 		{
-			s = "/" + s;
-		}
+			if(!s.startsWith("/"))
+			{
+				s = "/" + s;
+			}
 
-		final String url = StringUtils.join(webConfigurationProperties.getBaseUrl(), contextPath, webConfigurationProperties.getApiResourcesUrl(), s);
-		jsonGenerator.writeString(url);
+			final String url = StringUtils.join(webConfigurationProperties.getBaseUrl(), contextPath, webConfigurationProperties.getApiResourcesUrl(), s);
+			jsonGenerator.writeString(url);
+		} else {
+			jsonGenerator.writeString(s);
+		}
 	}
 }
