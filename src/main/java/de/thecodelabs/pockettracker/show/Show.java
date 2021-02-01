@@ -184,6 +184,30 @@ public class Show
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
+	public String getImagePath(ShowImageType showImageType) {
+		switch (showImageType) {
+			case BANNER:
+				return getBannerPath();
+			case POSTER:
+				return getPosterPath();
+			default:
+				throw new UnsupportedOperationException("Image type not implemented");
+		}
+	}
+
+	public void setImagePath(ShowImageType showImageType, String path) {
+		switch (showImageType) {
+			case BANNER:
+				setBannerPath(path);
+				break;
+			case POSTER:
+				setPosterPath(path);
+				break;
+			default:
+				throw new UnsupportedOperationException("Image type not implemented");
+		}
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

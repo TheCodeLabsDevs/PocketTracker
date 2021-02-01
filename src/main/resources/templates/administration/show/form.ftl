@@ -28,8 +28,8 @@
     </#if>
 
     <@b.row>
-        <@f.form name="banner" url="/show/${show.id}/edit/banner" multipart=true>
-            <@f.file label="show.banner" name="banner"/>
+        <@f.form name="banner" url="/show/${show.id}/edit/BANNER" multipart=true>
+            <@f.file label="show.banner" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>
     </@b.row>
@@ -40,8 +40,8 @@
     </#if>
 
     <@b.row>
-        <@f.form name="poster" url="/show/${show.id}/edit/poster" multipart=true>
-            <@f.file label="show.poster" name="poster"/>
+        <@f.form name="poster" url="/show/${show.id}/edit/POSTER" multipart=true>
+            <@f.file label="show.poster" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>
     </@b.row>
