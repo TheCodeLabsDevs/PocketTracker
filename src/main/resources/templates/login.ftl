@@ -7,7 +7,7 @@
     <#import "/common/components/base.ftl" as b/>
     <#import "/users/form.ftl" as form>
 
-    <@template.head 'Episodes'>
+    <@template.head 'Login'>
         <link href="<@s.url "/css/login.css"/>" rel="stylesheet">
     </@template.head>
 
