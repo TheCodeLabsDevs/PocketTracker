@@ -63,7 +63,7 @@ public class ShowAdministrationController
 
 		final Show createdShow = service.createShow(show);
 
-		return "redirect:/show/" + createdShow.getId();
+		return "redirect:/show/" + createdShow.getId() + "/edit";
 	}
 
 	@GetMapping("/{id}/edit")
