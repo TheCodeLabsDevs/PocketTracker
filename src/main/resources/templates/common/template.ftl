@@ -16,6 +16,8 @@
         <script src="<@s.url "/webjars/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"/>"></script>
         <script src="<@s.url "/js/main.js"/>"></script>
 
+        <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
+
         <#nested>
 
         <title>PocketTracker - ${title}</title>
