@@ -1,8 +1,11 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 
-<#macro form name url method="post" id=name rawUrl=false>
-    <form name="${name}" id="${id}" action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}">
+<#macro form name url method="post" id=name rawUrl=false multipart=false>
+    <form name="${name}" id="${id}"
+        action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}"
+        <#if multipart>enctype="multipart/form-data"</#if>
+    >
         <#if _csrf??>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </#if>
@@ -45,6 +48,13 @@
             </#list>
         </select>
         <@inputError fieldName=name/>
+    </div>
+</#macro>
+
+<#macro file label name id=name size="col-12">
+    <div class="mb-3 ${size}">
+        <label for="${id}" class="form-label"><@b.localize label/></label>
+        <input class="form-control" type="file" id="${id}" name="${name}">
     </div>
 </#macro>
 

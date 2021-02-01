@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -108,5 +109,25 @@ public class ShowAdministrationController
 		BeanUtils.merge(show, managedShow);
 
 		return "redirect:/show/" + id;
+	}
+
+	@PostMapping("/{id}/edit/banner")
+	public String updateBanner(WebRequest request, @PathVariable Integer id, @RequestParam("banner") MultipartFile multipartFile)
+	{
+		Optional<Show> showOptional = service.getShowById(id);
+		if(showOptional.isEmpty())
+		{
+			return "redirect:/show/" + id + "/edit";
+		}
+
+		if(multipartFile == null || multipartFile.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			// Delete old image
+
+			return "redirect:/show/" + id + "/edit";
+		}
+
+		return "redirect:/show/" + id + "/edit";
 	}
 }

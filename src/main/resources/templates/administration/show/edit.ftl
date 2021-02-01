@@ -26,16 +26,18 @@
             </@c.body>
         </@c.card>
 
-        <@c.card classes="my-4">
-            <@c.body>
-                <@form.images show/>
-            </@c.body>
-        </@c.card>
+        <#if show.id??>
+            <@c.card classes="my-4">
+                <@c.body>
+                    <@form.images show/>
+                </@c.body>
+            </@c.card>
 
-        <@c.card classes="my-4">
-            <@c.body>
-                <@form.seasons show/>
-            </@c.body>
-        </@c.card>
+            <@c.card classes="my-4">
+                <@c.body>
+                    <@form.seasons show/>
+                </@c.body>
+            </@c.card>
+        </#if>
     </@template.body>
 </html>

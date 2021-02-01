@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 <#import "/common/components/form.ftl" as f/>
 
@@ -22,6 +23,28 @@
 <#macro images show>
     <@b.h3 title="show.images"/>
 
+    <#if show.getBannerPath()??>
+        <img src="<@s.url "/resources/" + show.getBannerPath()/>" class="w-50 mb-4"/>
+    </#if>
+
+    <@b.row>
+        <@f.form name="banner" url="/show/${show.id}/edit/banner" multipart=true>
+            <@f.file label="show.banner" name="banner"/>
+            <@f.submit classes="float-end"/>
+        </@f.form>
+    </@b.row>
+    <@b.separator/>
+
+    <#if show.getPosterPath()??>
+        <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="w-25 mb-4"/>
+    </#if>
+
+    <@b.row>
+        <@f.form name="poster" url="/show/${show.id}/edit/poster" multipart=true>
+            <@f.file label="show.poster" name="poster"/>
+            <@f.submit classes="float-end"/>
+        </@f.form>
+    </@b.row>
 </#macro>
 
 <#macro seasons show>
