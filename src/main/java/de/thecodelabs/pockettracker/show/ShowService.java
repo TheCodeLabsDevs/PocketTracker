@@ -65,7 +65,7 @@ public class ShowService
 		StringBuilder bannerFilenameBuilder = new StringBuilder(Optional.ofNullable(file.getOriginalFilename()).orElse(show.getName()));
 		Path bannerPath;
 
-		while(Files.exists(bannerPath = basePath.resolve("banner").resolve(bannerFilenameBuilder.toString())))
+		while(Files.exists(bannerPath = basePath.resolve(showImageType.getPathName()).resolve(bannerFilenameBuilder.toString())))
 		{
 			bannerFilenameBuilder.insert(0, "_");
 		}
