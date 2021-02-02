@@ -16,7 +16,7 @@ import java.util.Optional;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
-	private static final String[] PERMIT_ALL = {"/webjars/**", "/css/**", "/js/**", "/lang/**", "/image/**"};
+	private static final String[] PERMIT_ALL = {"/webjars/**", "/css/**", "/js/**", "/lang/**", "/image/**", "/touch_icon.png"};
 	private static final String[] AUTHENTICATED = {"/**"};
 	private static final String LOGIN_PAGE = "/login";
 
