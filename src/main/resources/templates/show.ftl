@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
     <#import "/spring.ftl" as s/>
-    <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
@@ -26,7 +25,7 @@
                                 <#if show.getPosterPath()??>
                                     <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="img-fluid w-50"/>
                                 <#else>
-                                    <@helperMacros.imagePlaceholder />
+                                    <img src="<@s.url "/image/placeholder_poster.jpg"/>" class="img-fluid w-50"/>
                                 </#if>
                             </@b.col>
                             <@b.col>

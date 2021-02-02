@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
     <#import "/spring.ftl" as s/>
-    <#import "/common/helpers.ftl" as helperMacros>
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>

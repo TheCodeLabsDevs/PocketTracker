@@ -1,6 +1,5 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
-<#import "/common/helpers.ftl" as helperMacros>
 
 <#macro showCard show userShows isUserSpecific>
     <div class="col">
@@ -8,7 +7,7 @@
             <#if show.getBannerPath()??>
                 <img src="<@s.url "/resources/" + show.getBannerPath()/>" class="card-img-top"/>
             <#else>
-                <@helperMacros.imagePlaceholder />
+                <img src="<@s.url "/image/placeholder_banner.jpg"/>" class="card-img-top"/>
             </#if>
 
             <div class="card-body">
