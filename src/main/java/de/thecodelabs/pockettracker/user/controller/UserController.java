@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user.controller;
 
+import de.thecodelabs.pockettracker.MainController;
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
@@ -27,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -143,21 +145,10 @@ public class UserController
 	}
 
 	@GetMapping("/shows")
-	public String getShows(Model model)
+	public String getShows(RedirectAttributes redirectAttributes)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
-		final User user = userOptional.get();
-		model.addAttribute("currentPage", "Meine Serien");
-		model.addAttribute("shows", user.getShows());
-		model.addAttribute("userShows", user.getShows());
-		model.addAttribute("isUserSpecificView", true);
-
-		return "index";
+		redirectAttributes.addFlashAttribute(MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
+		return "redirect:/shows";
 	}
 
 	@GetMapping("/shows/add/{showId}")

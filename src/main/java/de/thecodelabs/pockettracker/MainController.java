@@ -19,16 +19,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MainController
 {
+	public static final String PARAMETER_NAME_IS_USER_SPECIFIC_VIEW = "isUserSpecificView";
 	private static final String PARAMETER_NAME_SEARCH_RESULTS = "searchResults";
 
 	private final ShowRepository showRepository;
@@ -47,8 +52,9 @@ public class MainController
 		this.databaseExporter = databaseExporter;
 	}
 
+	@SuppressWarnings("squid:S1319")
 	@GetMapping("/shows")
-	public String allShows(Model model, @ModelAttribute(PARAMETER_NAME_SEARCH_RESULTS) ArrayList<Show> searchResults)
+	public String allShows(Model model)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -56,18 +62,33 @@ public class MainController
 			throw new NotFoundException("User not found");
 		}
 
-		final User user = userOptional.get();
-		model.addAttribute("currentPage", "Alle Serien");
-		model.addAttribute("userShows", user.getShows());
-		model.addAttribute("isUserSpecificView", false);
-
-		if(searchResults.isEmpty())
+		boolean isUserSpecificView = false;
+		if(model.containsAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW))
 		{
-			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
+			isUserSpecificView = (boolean) model.getAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW);
+		}
+
+		if(isUserSpecificView)
+		{
+			model.addAttribute("currentPage", "Meine Serien");
 		}
 		else
 		{
+			model.addAttribute("currentPage", "Alle Serien");
+		}
+
+		final User user = userOptional.get();
+		model.addAttribute("userShows", user.getShows());
+		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, isUserSpecificView);
+
+		if(model.containsAttribute(PARAMETER_NAME_SEARCH_RESULTS))
+		{
+			final List<Show> searchResults = (List<Show>) model.getAttribute(PARAMETER_NAME_SEARCH_RESULTS);
 			model.addAttribute("shows", searchResults);
+		}
+		else
+		{
+			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		}
 
 		return "index";
@@ -170,16 +191,9 @@ public class MainController
 				Hibernate.initialize(season.getEpisodes());
 			}
 		}
+
 		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_RESULTS, searchResults);
-
-		if(isUserSpecificView)
-		{
-			return "redirect:/user/shows";
-		}
-		else
-		{
-			return "redirect:/shows";
-		}
+		redirectAttributes.addFlashAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, isUserSpecificView);
+		return "redirect:/shows";
 	}
-
 }
