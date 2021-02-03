@@ -61,6 +61,7 @@ public class MainController
 		{
 			throw new NotFoundException("User not found");
 		}
+		final User user = userOptional.get();
 
 		boolean isUserSpecificView = false;
 		if(model.containsAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW))
@@ -71,13 +72,14 @@ public class MainController
 		if(isUserSpecificView)
 		{
 			model.addAttribute("currentPage", "Meine Serien");
+			model.addAttribute("shows", user.getShows());
 		}
 		else
 		{
 			model.addAttribute("currentPage", "Alle Serien");
+			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		}
 
-		final User user = userOptional.get();
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, isUserSpecificView);
 
@@ -85,10 +87,6 @@ public class MainController
 		{
 			final List<Show> searchResults = (List<Show>) model.getAttribute(PARAMETER_NAME_SEARCH_RESULTS);
 			model.addAttribute("shows", searchResults);
-		}
-		else
-		{
-			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		}
 
 		return "index";
