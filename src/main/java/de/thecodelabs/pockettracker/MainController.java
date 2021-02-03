@@ -13,19 +13,24 @@ import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class MainController
 {
+	private static final String PARAMETER_NAME_SEARCH_RESULTS = "searchResults";
+
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
@@ -43,7 +48,7 @@ public class MainController
 	}
 
 	@GetMapping("/shows")
-	public String allShows(Model model)
+	public String allShows(Model model, @ModelAttribute(PARAMETER_NAME_SEARCH_RESULTS) ArrayList<Show> searchResults)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -53,9 +58,17 @@ public class MainController
 
 		final User user = userOptional.get();
 		model.addAttribute("currentPage", "Alle Serien");
-		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute("isUserSpecificView", false);
+
+		if(searchResults.isEmpty())
+		{
+			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
+		}
+		else
+		{
+			model.addAttribute("shows", searchResults);
+		}
 
 		return "index";
 	}
@@ -132,9 +145,10 @@ public class MainController
 	}
 
 	@PostMapping("/search")
-	public String search(Model model,
-						 @RequestParam("searchText") String searchText,
-						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView)
+	@Transactional
+	public String search(@RequestParam("searchText") String searchText,
+						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView,
+						 RedirectAttributes redirectAttributes)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -147,13 +161,25 @@ public class MainController
 			isUserSpecificView = false;
 		}
 
-		final User user = userOptional.get();
-		model.addAttribute("currentPage", "Alle Serien");
-		model.addAttribute("shows", showRepository.findAllByNameContainsIgnoreCaseOrderByNameAsc(searchText));
-		model.addAttribute("userShows", user.getShows());
-		model.addAttribute("isUserSpecificView", isUserSpecificView);
+		// override lazy fetching
+		final List<Show> searchResults = showRepository.findAllByNameContainsIgnoreCaseOrderByNameAsc(searchText);
+		for(Show show : searchResults)
+		{
+			for(Season season : show.getSeasons())
+			{
+				Hibernate.initialize(season.getEpisodes());
+			}
+		}
+		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_RESULTS, searchResults);
 
-		return "index";
+		if(isUserSpecificView)
+		{
+			return "redirect:/user/shows";
+		}
+		else
+		{
+			return "redirect:/shows";
+		}
 	}
 
 }
