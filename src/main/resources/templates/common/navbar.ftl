@@ -23,13 +23,13 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item "Alle Serien" "/shows"/>
-                        <@item "Meine Serien" "/user/shows"/>
-                        <@item "Statistiken" "/user/statistics"/>
+                        <@item name="Alle Serien" url="/shows" markAsActiveByName=true/>
+                        <@item name="Meine Serien" url="/user/shows" markAsActiveByName=true/>
+                        <@item name="Statistiken" url="/user/statistics"/>
 
                         <@b.hasPermission "ADMIN">
-                            <@item "Benutzerverwaltung" "/users/administration"/>
-                            <@item "Backup" "/administration/backup"/>
+                            <@item name="Benutzerverwaltung" url="/users/administration"/>
+                            <@item name="Backup" url="/administration/backup"/>
                         </@b.hasPermission>
                     </ul>
 
@@ -53,9 +53,18 @@
     </nav>
 </#macro>
 
-<#macro item name url icon="">
+<#macro item name url icon="" markAsActiveByName=false>
+    <#assign isActive=false/>
+    <#if markAsActiveByName>
+        <#if currentPage?? && currentPage == name>
+            <#assign isActive=true/>
+        </#if>
+    <#elseif springMacroRequestContext.getRequestUri()?starts_with(springMacroRequestContext.contextPath + url)>
+        <#assign isActive=true/>
+    </#if>
+
     <li class="nav-item">
-        <a class="nav-link <#if springMacroRequestContext.getRequestUri()?starts_with(springMacroRequestContext.contextPath + url)>active</#if>" href="<@s.url url/>">
+        <a class="nav-link <#if isActive>active</#if>" href="<@s.url url/>">
             <#if icon?has_content><i class="${icon}"></i></#if>
             ${name}
         </a>
