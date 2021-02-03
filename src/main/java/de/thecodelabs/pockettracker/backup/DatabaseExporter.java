@@ -4,7 +4,6 @@ import de.thecodelabs.pockettracker.episode.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
-import de.thecodelabs.pockettracker.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.io.IOException;
 @Component
 public class DatabaseExporter
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(WebUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseExporter.class);
 
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
