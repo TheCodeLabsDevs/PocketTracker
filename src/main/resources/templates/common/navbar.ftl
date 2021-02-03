@@ -29,6 +29,7 @@
 
                         <@b.hasPermission "ADMIN">
                             <@item "Benutzerverwaltung" "/users/administration"/>
+                            <@item "Backup" "/administration/backup"/>
                         </@b.hasPermission>
                     </ul>
 
