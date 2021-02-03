@@ -18,7 +18,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
@@ -46,8 +48,6 @@ public class MainController
 	@GetMapping("/shows")
 	public String allShows(Model model)
 	{
-		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
-
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
 		{
@@ -56,6 +56,7 @@ public class MainController
 
 		final User user = userOptional.get();
 		model.addAttribute("currentPage", "Alle Serien");
+		model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute("isUserSpecificView", false);
 
@@ -132,4 +133,23 @@ public class MainController
 
 		return "redirect:/administration/backup";
 	}
+
+	@PostMapping("/search")
+	public String search(Model model, @ModelAttribute("searchText") String searchText)
+	{
+		final Optional<User> userOptional = userService.getCurrentUser();
+		if(userOptional.isEmpty())
+		{
+			throw new NotFoundException("User not found");
+		}
+
+		final User user = userOptional.get();
+		model.addAttribute("currentPage", "Alle Serien");
+		model.addAttribute("shows", showRepository.findAllByNameContainsIgnoreCaseOrderByNameAsc(searchText));
+		model.addAttribute("userShows", user.getShows());
+		model.addAttribute("isUserSpecificView", false);
+
+		return "index";
+	}
+
 }

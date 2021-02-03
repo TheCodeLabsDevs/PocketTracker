@@ -35,8 +35,9 @@
 
                     <div class="me-auto"></div>
 
-                    <form class="d-flex mt-3 mb-2 my-md-0 me-md-3">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex mt-3 mb-2 my-md-0 me-md-3" method="post" action="<@s.url "/search"/>">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input class="form-control" type="search" placeholder="Suche" aria-label="Suche" name="searchText">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
                         <a href="<@s.url "/user/settings"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
