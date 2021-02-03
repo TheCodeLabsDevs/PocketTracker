@@ -37,6 +37,9 @@
 
                     <form class="d-flex mt-3 mb-2 my-md-0 me-md-3" method="post" action="<@s.url "/search"/>">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <#if isUserSpecificView?? && isUserSpecificView>
+                            <input type="hidden" name="isUserSpecificView" value="1"/>
+                        </#if>
                         <input class="form-control" type="search" placeholder="Suche" aria-label="Suche" name="searchText">
                     </form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">

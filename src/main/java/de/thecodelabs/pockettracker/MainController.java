@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
@@ -135,7 +132,9 @@ public class MainController
 	}
 
 	@PostMapping("/search")
-	public String search(Model model, @ModelAttribute("searchText") String searchText)
+	public String search(Model model,
+						 @RequestParam("searchText") String searchText,
+						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView)
 	{
 		final Optional<User> userOptional = userService.getCurrentUser();
 		if(userOptional.isEmpty())
@@ -143,11 +142,16 @@ public class MainController
 			throw new NotFoundException("User not found");
 		}
 
+		if(isUserSpecificView == null)
+		{
+			isUserSpecificView = false;
+		}
+
 		final User user = userOptional.get();
 		model.addAttribute("currentPage", "Alle Serien");
 		model.addAttribute("shows", showRepository.findAllByNameContainsIgnoreCaseOrderByNameAsc(searchText));
 		model.addAttribute("userShows", user.getShows());
-		model.addAttribute("isUserSpecificView", false);
+		model.addAttribute("isUserSpecificView", isUserSpecificView);
 
 		return "index";
 	}
