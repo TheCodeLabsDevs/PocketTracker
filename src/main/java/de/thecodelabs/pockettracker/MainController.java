@@ -181,7 +181,7 @@ public class MainController
 		}
 
 		// override lazy fetching
-		final List<Show> searchResults = showRepository.findAllByNameContainsIgnoreCaseOrderByNameAsc(searchText);
+		final List<Show> searchResults = showRepository.findAllByNameContainingIgnoreCaseOrderByNameAsc(searchText);
 		for(Show show : searchResults)
 		{
 			for(Season season : show.getSeasons())
