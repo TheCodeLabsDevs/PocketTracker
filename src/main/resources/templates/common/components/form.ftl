@@ -1,8 +1,8 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 
-<#macro form name url method="post" id=name rawUrl=false multipart=false>
-    <form name="${name}" id="${id}"
+<#macro form name url method="post" id=name rawUrl=false multipart=false classes="">
+    <form name="${name}" id="${id}" class="${classes}"
         action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}"
         <#if multipart>enctype="multipart/form-data"</#if>
     >

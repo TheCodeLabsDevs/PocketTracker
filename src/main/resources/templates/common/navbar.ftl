@@ -1,12 +1,9 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
+<#import "/common/components/form.ftl" as f/>
 
 <#macro navbar>
-    <form class="hide" id="logout-form" action="<@s.url '/logout'/>" method="post">
-        <#if _csrf??>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </#if>
-    </form>
+    <@f.form name="logout-form" url="/logout" classes="hide"></@f.form>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
@@ -23,27 +20,29 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item name="Alle Serien" url="/shows" markAsActiveByName=true/>
-                        <@item name="Meine Serien" url="/user/shows" markAsActiveByName=true/>
-                        <@item name="Statistiken" url="/user/statistics"/>
+                        <@item name="menu.allShows" url="/shows" markAsActiveByName=true/>
+                        <@item name="menu.myShows" url="/user/shows" markAsActiveByName=true/>
+                        <@item name="menu.statistics" url="/user/statistics"/>
 
                         <@b.hasPermission "ADMIN">
-                            <@item name="Benutzerverwaltung" url="/users/administration"/>
-                            <@item name="Backup" url="/administration/backup"/>
+                            <@dropdown name="menu.administration">
+                                <@item name="menu.administration.users" url="/users/administration" subItem=true/>
+                                <@item name="menu.administration.backup" url="/administration/backup" subItem=true/>
+                            </@dropdown>
                         </@b.hasPermission>
                     </ul>
 
                     <div class="me-auto"></div>
 
-                    <form class="d-flex mt-3 mb-2 my-md-0 me-md-3" method="post" action="<@s.url "/search"/>">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <@f.form name="logout-form" url="/search" classes="d-flex mt-3 mb-2 my-md-0 me-md-3">
                         <#if isUserSpecificView?? && isUserSpecificView>
                             <input type="hidden" name="isUserSpecificView" value="1"/>
                         </#if>
                         <input class="form-control" type="search" placeholder="Suche" aria-label="Suche" name="searchText">
-                    </form>
+                    </@f.form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
-                        <a href="<@s.url "/user/settings"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}</a>
+                        <a href="<@s.url "/user/settings"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}
+                        </a>
                     </div>
 
                     <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
@@ -53,7 +52,18 @@
     </nav>
 </#macro>
 
-<#macro item name url icon="" markAsActiveByName=false>
+<#macro dropdown name>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <@b.localize name/>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <#nested>
+        </ul>
+    </li>
+</#macro>
+
+<#macro item name url icon="" markAsActiveByName=false subItem=false>
     <#assign isActive=false/>
     <#if markAsActiveByName>
         <#if currentPage?? && currentPage == name>
@@ -63,10 +73,10 @@
         <#assign isActive=true/>
     </#if>
 
-    <li class="nav-item">
-        <a class="nav-link <#if isActive>active</#if>" href="<@s.url url/>">
+    <li class="<#if !subItem>nav-item</#if>">
+        <a class="<#if subItem>dropdown-item<#else>nav-link</#if> <#if isActive>active</#if>" href="<@s.url url/>">
             <#if icon?has_content><i class="${icon}"></i></#if>
-            ${name}
+            <@b.localize name/>
         </a>
     </li>
 </#macro>
