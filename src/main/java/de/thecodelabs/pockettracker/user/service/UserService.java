@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowService;
@@ -51,9 +52,15 @@ public class UserService
 		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
 	}
 
-	public Optional<User> getCurrentUser()
+	public Optional<User> getCurrentUserOptional()
 	{
 		return getUser(SecurityContextHolder.getContext().getAuthentication());
+	}
+
+	public User getCurrentUser()
+	{
+		return getUser(SecurityContextHolder.getContext().getAuthentication())
+				.orElseThrow(() -> new NotFoundException("User not found"));
 	}
 
 	public Optional<User> getUser(Authentication authentication)
@@ -150,7 +157,7 @@ public class UserService
 		user.setName(userForm.getUsername());
 
 		// Admin only changes
-		getCurrentUser().filter(u -> u.getUserRole() == UserRole.ADMIN).ifPresent(u -> {
+		getCurrentUserOptional().filter(u -> u.getUserRole() == UserRole.ADMIN).ifPresent(u -> {
 			if(userForm.getUserRole() != null)
 			{
 				user.setUserRole(userForm.getUserRole());

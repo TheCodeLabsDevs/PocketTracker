@@ -64,7 +64,7 @@ public class UserController
 	@GetMapping("/settings")
 	public String settingsView(HttpServletRequest request, Model model)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
+		final Optional<User> userOptional = userService.getCurrentUserOptional();
 		if(userOptional.isEmpty())
 		{
 			try
@@ -89,15 +89,9 @@ public class UserController
 	@PostMapping("/settings")
 	public String settingsSubmit(WebRequest request, @ModelAttribute("user") UserForm userForm)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		try
 		{
-			userService.editUser(userOptional.get(), userForm);
+			userService.editUser(userService.getCurrentUser(), userForm);
 		}
 		catch(PasswordValidationException e)
 		{
@@ -134,13 +128,7 @@ public class UserController
 	@PostMapping("/settings/provider/{id}/delete")
 	public String deleteProvider(@PathVariable Integer id)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
-		authenticationService.deleteAuthenticationProvider(userOptional.get(), id);
+		authenticationService.deleteAuthenticationProvider(userService.getCurrentUser(), id);
 		return "redirect:/user/settings";
 	}
 
@@ -155,12 +143,6 @@ public class UserController
 	@Transactional
 	public String addShow(WebRequest request, @PathVariable Integer showId)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
@@ -168,7 +150,7 @@ public class UserController
 			return "redirect:/shows";
 		}
 
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 		user.getShows().add(showOptional.get());
 
 		return "redirect:/shows";
@@ -178,12 +160,6 @@ public class UserController
 	@Transactional
 	public String removeShow(WebRequest request, @PathVariable Integer showId)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
@@ -191,7 +167,7 @@ public class UserController
 			return "redirect:/shows";
 		}
 
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 		final Show showToRemove = showOptional.get();
 		final boolean userHadShow = user.getShows().remove(showToRemove);
 		if(!userHadShow)
@@ -212,12 +188,6 @@ public class UserController
 									 @PathVariable Integer seasonId,
 									 @RequestParam(name = "markAsWatched") boolean markAsWatched)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
 		if(seasonOptional.isEmpty())
 		{
@@ -225,7 +195,7 @@ public class UserController
 			return "redirect:/shows";
 		}
 
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 		final Season season = seasonOptional.get();
 		userService.toggleCompleteSeason(user, season, markAsWatched);
 
@@ -236,12 +206,6 @@ public class UserController
 	@Transactional
 	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId, @PathVariable String redirectTo)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())
 		{
@@ -249,7 +213,7 @@ public class UserController
 			return "redirect:/shows";
 		}
 
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 
 		final Episode episode = episodeOptional.get();
 		if(user.getWatchedEpisodes().contains(episode))
@@ -272,13 +236,7 @@ public class UserController
 	@GetMapping("/statistics")
 	public String statistics(Model model)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 		model.addAttribute("currentPage", "Statistiken");
 		model.addAttribute("statisticItems", userService.getStatistics(user));
 

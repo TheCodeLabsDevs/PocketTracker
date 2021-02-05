@@ -2,7 +2,6 @@ package de.thecodelabs.pockettracker;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.episode.EpisodeRepository;
-import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.Show;
@@ -47,12 +46,7 @@ public class MainController
 	@GetMapping("/shows")
 	public String allShows(Model model)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-		final User user = userOptional.get();
+		final User user = userService.getCurrentUser();
 
 		boolean isUserSpecificView = false;
 		if(model.containsAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW))
@@ -86,12 +80,7 @@ public class MainController
 	@GetMapping("/show/{showId}")
 	public String show(Model model, @PathVariable Integer showId)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
+		final User user = userService.getCurrentUser();
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
@@ -99,7 +88,7 @@ public class MainController
 		}
 
 		model.addAttribute("show", showOptional.get());
-		model.addAttribute("isAdded", userOptional.get().getShows().contains(showOptional.get()));
+		model.addAttribute("isAdded", user.getShows().contains(showOptional.get()));
 		return "show";
 	}
 
@@ -135,12 +124,6 @@ public class MainController
 						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView,
 						 RedirectAttributes redirectAttributes)
 	{
-		final Optional<User> userOptional = userService.getCurrentUser();
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
 		if(isUserSpecificView == null)
 		{
 			isUserSpecificView = false;
