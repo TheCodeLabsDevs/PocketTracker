@@ -63,7 +63,7 @@ public class Show
 	private ShowType type;
 
 	@JsonView(View.Summary.class)
-	private Boolean isFinished = false;
+	private Boolean finished = false;
 
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
@@ -74,7 +74,7 @@ public class Show
 	{
 	}
 
-	public Show(@NotNull String name, String description, LocalDate firstAired, String bannerPath, String posterPath, ShowType type, boolean isFinished)
+	public Show(@NotNull String name, String description, LocalDate firstAired, String bannerPath, String posterPath, ShowType type, boolean finished)
 	{
 		this.name = name;
 		this.description = description;
@@ -82,7 +82,7 @@ public class Show
 		this.bannerPath = bannerPath;
 		this.posterPath = posterPath;
 		this.type = type;
-		this.isFinished = isFinished;
+		this.finished = finished;
 	}
 
 	public void setId(Integer id)
@@ -157,12 +157,12 @@ public class Show
 
 	public Boolean getFinished()
 	{
-		return isFinished;
+		return finished;
 	}
 
 	public void setFinished(Boolean finished)
 	{
-		isFinished = finished;
+		this.finished = finished;
 	}
 
 	public List<Season> getSeasons()
@@ -234,7 +234,7 @@ public class Show
 				", bannerPath='" + bannerPath + '\'' +
 				", posterPath='" + posterPath + '\'' +
 				", type=" + type +
-				", isFinished=" + isFinished +
+				", finished=" + finished +
 				", seasons=" + seasons +
 				'}';
 	}

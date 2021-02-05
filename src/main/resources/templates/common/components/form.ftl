@@ -3,8 +3,8 @@
 
 <#macro form name url method="post" id=name rawUrl=false multipart=false classes="">
     <form name="${name}" id="${id}" class="${classes}"
-        action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}"
-        <#if multipart>enctype="multipart/form-data"</#if>
+          action="<#if rawUrl>${url}<#else><@s.url url/></#if>" method="${method}"
+          <#if multipart>enctype="multipart/form-data"</#if>
     >
         <#if _csrf??>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -48,6 +48,15 @@
             </#list>
         </select>
         <@inputError fieldName=name/>
+    </div>
+</#macro>
+
+<#macro switch label name id=name size="col-6" value=false>
+    <div class="mb-3 ${size}">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="${id}" name="${name}" <#if value>checked</#if>>
+            <label class="form-check-label" for="${id}"><@b.localize label/></label>
+        </div>
     </div>
 </#macro>
 
