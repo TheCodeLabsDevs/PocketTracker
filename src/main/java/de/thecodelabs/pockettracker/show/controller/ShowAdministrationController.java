@@ -175,7 +175,7 @@ public class ShowAdministrationController
 	 Utils
 	 */
 
-	private boolean isShowModelInvalide(WebRequest request, @ModelAttribute("show") @Validated Show show, BindingResult validation)
+	private boolean isShowModelInvalide(WebRequest request, Show show, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
