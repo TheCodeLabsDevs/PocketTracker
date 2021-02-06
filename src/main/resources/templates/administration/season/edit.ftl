@@ -11,9 +11,9 @@
     <@template.head 'Episodes'/>
     <@template.body>
         <@b.flex>
-            <@b.back_button url="/show/${season.show.id}/edit" showLabel=false/>
+            <@b.back_button url="/show/${show.id}/edit" showLabel=false/>
             <@b.button url="/season/${season.id}" label="season.view" classes="me-2"/>
-            <@b.h2 title="${season.show.name} - ${season.name}" raw=true/>
+            <@b.h2 title="${show.name} - ${season.name!''}" raw=true/>
         </@b.flex>
 
         <@c.card classes="my-4">
@@ -24,7 +24,7 @@
 
         <@c.card classes="my-4">
             <@c.body>
-                <@form.episodes season/>
+                <@form.episodes season episodes/>
             </@c.body>
         </@c.card>
     </@template.body>

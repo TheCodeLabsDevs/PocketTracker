@@ -7,6 +7,9 @@ import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +20,15 @@ public class Season
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotNull
+	@NotEmpty
 	private String name;
 
 	@Column(length = 4096)
 	private String description;
 
+	@NotNull
+	@Min(0)
 	private Integer number;
 
 	@ManyToOne(fetch = FetchType.LAZY)

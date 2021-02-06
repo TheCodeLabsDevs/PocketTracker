@@ -20,7 +20,7 @@
     </@f.form>
 </#macro>
 
-<#macro episodes season>
+<#macro episodes season episodes>
     <@b.row>
         <@b.col size="col-6">
             <@b.h3 title="season.episodes"/>
@@ -51,7 +51,7 @@
             <@t.headCell label="season.episodes.actions"/>
         </@t.head>
         <@t.body>
-            <#list season.getEpisodes() as episode>
+            <#list episodes as episode>
                 <@t.row>
                     <@t.cell value="${episode.number}"/>
                     <@t.cell value="${episode.name}"/>
