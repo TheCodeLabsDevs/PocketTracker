@@ -22,7 +22,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 		name = "token",
 		type = SecuritySchemeType.APIKEY,
 		in = SecuritySchemeIn.HEADER,
-		paramName = "api-token"
+		paramName = "api-key"
 )
 public class PocketTrackerMain
 {

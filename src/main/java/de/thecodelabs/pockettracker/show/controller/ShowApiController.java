@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.show.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.show.Show;
 import de.thecodelabs.pockettracker.show.ShowService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class ShowApiController
 		this.showService = showService;
 	}
 
+	@Operation(operationId = "getAllShows")
 	@GetMapping
 	@JsonView(Show.View.Summary.class)
 	public List<Show> getAllShows(@RequestParam(name = "name", required = false) String name)
@@ -30,6 +32,7 @@ public class ShowApiController
 		return showService.getAllShows(name);
 	}
 
+	@Operation(operationId = "getShowById")
 	@GetMapping("/{id}")
 	@JsonView(Show.View.Summary.class)
 	public Optional<Show> getAllShows(@PathVariable Integer id)
