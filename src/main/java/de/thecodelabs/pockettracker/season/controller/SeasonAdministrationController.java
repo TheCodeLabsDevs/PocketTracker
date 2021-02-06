@@ -8,6 +8,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/season")
+@PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class SeasonAdministrationController
 {
 	private final SeasonService seasonService;
