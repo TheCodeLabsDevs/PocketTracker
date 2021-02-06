@@ -63,10 +63,8 @@ public class ShowAdministrationController
 	@Transactional
 	public String createPost(WebRequest request, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(validation.hasErrors())
+		if(isShowModelInvalide(request, show, validation))
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
-			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/create";
 		}
 
@@ -105,10 +103,8 @@ public class ShowAdministrationController
 	@Transactional
 	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(validation.hasErrors())
+		if(isShowModelInvalide(request, show, validation))
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
-			WebRequestUtils.putValidationError(request, validation, show);
 			return "redirect:/show/" + id + "/edit";
 		}
 
@@ -175,4 +171,18 @@ public class ShowAdministrationController
 		return firstSeason.map(season -> "redirect:/season/" + season.getId() + "/edit").orElseGet(() -> "redirect:/show/" + id + "/edit");
 	}
 
+	/*
+	 Utils
+	 */
+
+	private boolean isShowModelInvalide(WebRequest request, @ModelAttribute("show") @Validated Show show, BindingResult validation)
+	{
+		if(validation.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, show);
+			return true;
+		}
+		return false;
+	}
 }
