@@ -13,7 +13,7 @@
 
             <@f.input label="season.name" name="name" value=season.name!""/>
             <@f.input label="season.number" name="number" value=season.number!""/>
-            <@f.textarea label="show.description" name="description" value=season.description!"" size="col-12"/>
+            <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
 
             <@f.submit classes="float-end"/>
         </@b.row>

@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.show;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
@@ -63,13 +64,20 @@ public class ShowService
 	}
 
 	@Transactional
-	public Season addSeasonToShow(Show show)
+	public Season addSeasonToShow(Integer showId)
 	{
+		final Optional<Show> showOptional = getShowById(showId);
+		if (showOptional.isEmpty()) {
+			throw new NotFoundException("Show not found");
+		}
+
+		final Show show = showOptional.get();
 		final int highestSeasonNumber = show.getSeasons().stream().mapToInt(Season::getNumber).max().orElse(0);
 
 		final String title = messageSource.getMessage("season.defaultName", new Object[]{highestSeasonNumber + 1}, LocaleContextHolder.getLocale());
 		Season season = new Season(title, "", highestSeasonNumber + 1, show);
 		show.getSeasons().add(season);
+
 		return season;
 	}
 

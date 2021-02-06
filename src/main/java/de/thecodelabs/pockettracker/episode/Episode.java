@@ -35,6 +35,13 @@ public class Episode
 	{
 	}
 
+	public Episode(String name, Integer number, Season season)
+	{
+		this.name = name;
+		this.number = number;
+		this.season = season;
+	}
+
 	public Episode(String name, String description, Integer number, LocalDate firstAired, Integer lengthInMinutes, Season season)
 	{
 		this.name = name;

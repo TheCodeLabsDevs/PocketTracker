@@ -1,6 +1,8 @@
 package de.thecodelabs.pockettracker.season.controller;
 
+import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.service.SeasonService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -78,6 +80,34 @@ public class SeasonAdministrationController
 
 		return "redirect:/season/" + id + "/edit";
 	}
+
+	@PostMapping("/{id}/episode/add")
+	public String addEpisode(WebRequest request, @PathVariable Integer id,
+							 @ModelAttribute("addEpisode") @Validated EpisodesDialogModel model, BindingResult validation)
+	{
+		if(validation.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, model);
+			return "redirect:/season/" + id + "/edit";
+		}
+
+		Optional<Episode> firstEpisode = Optional.empty();
+		for(int index = 0; index < model.getEpisodeCount(); index++)
+		{
+			final Episode episode = seasonService.addEpisodeToSeason(id);
+			if (firstEpisode.isEmpty()) {
+				firstEpisode = Optional.of(episode);
+			}
+		}
+		return firstEpisode.map(episode -> "redirect:/episode/" + episode.getId() + "/edit")
+				.orElseGet(() -> "redirect:/season/" + id + "/edit");
+	}
+
+
+	/*
+	Utils
+	 */
 
 	private boolean isSeasonModelInvalide(WebRequest request, Season season, BindingResult validation)
 	{

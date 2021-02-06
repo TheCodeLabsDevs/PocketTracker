@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/show")
@@ -151,7 +150,7 @@ public class ShowAdministrationController
 
 	@PostMapping("/{id}/season/add")
 	public String addSeasons(WebRequest request, @PathVariable Integer id,
-							 @ModelAttribute("seasons") @Validated SeasonsDialogModel model, BindingResult validation)
+							 @ModelAttribute("addSeason") @Validated SeasonsDialogModel model, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
@@ -160,15 +159,16 @@ public class ShowAdministrationController
 			return "redirect:/show/" + id + "/edit";
 		}
 
-		final Optional<Show> managedShowOptional = service.getShowById(id);
-		if(managedShowOptional.isEmpty())
+		Optional<Season> firstSeason = Optional.empty();
+		for(int index = 0; index < model.getSeasonCount(); index++)
 		{
-			throw new NotFoundException("Show for id " + id + " not found");
+			final Season season = service.addSeasonToShow(id);
+			if (firstSeason.isEmpty()) {
+				firstSeason = Optional.of(season);
+			}
 		}
-		final Show managedShow = managedShowOptional.get();
-
-		final Optional<Season> firstSeason = IntStream.range(0, model.getSeasonCount()).mapToObj(index -> service.addSeasonToShow(managedShow)).findFirst();
-		return firstSeason.map(season -> "redirect:/season/" + season.getId() + "/edit").orElseGet(() -> "redirect:/show/" + id + "/edit");
+		return firstSeason.map(season -> "redirect:/season/" + season.getId() + "/edit")
+				.orElseGet(() -> "redirect:/show/" + id + "/edit");
 	}
 
 	/*
