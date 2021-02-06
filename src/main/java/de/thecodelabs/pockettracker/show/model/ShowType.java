@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.show;
+package de.thecodelabs.pockettracker.show.model;
 
 import org.springframework.context.MessageSourceResolvable;
 

@@ -2,9 +2,14 @@ package de.thecodelabs.pockettracker.show;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,12 +28,14 @@ public class ShowService
 	private static final Logger logger = LoggerFactory.getLogger(ShowService.class);
 
 	private final ShowRepository repository;
+	private final MessageSource messageSource;
 	private final WebConfigurationProperties webConfigurationProperties;
 
 	@Autowired
-	public ShowService(ShowRepository repository, WebConfigurationProperties webConfigurationProperties)
+	public ShowService(ShowRepository repository, MessageSource messageSource, WebConfigurationProperties webConfigurationProperties)
 	{
 		this.repository = repository;
+		this.messageSource = messageSource;
 		this.webConfigurationProperties = webConfigurationProperties;
 	}
 
@@ -53,6 +60,17 @@ public class ShowService
 	public Show createShow(Show show)
 	{
 		return repository.save(show);
+	}
+
+	@Transactional
+	public Season addSeasonToShow(Show show)
+	{
+		final int highestSeasonNumber = show.getSeasons().stream().mapToInt(Season::getNumber).max().orElse(0);
+
+		final String title = messageSource.getMessage("season.defaultName", new Object[]{highestSeasonNumber + 1}, LocaleContextHolder.getLocale());
+		Season season = new Season(title, "", highestSeasonNumber + 1, show);
+		show.getSeasons().add(season);
+		return season;
 	}
 
 	@Transactional

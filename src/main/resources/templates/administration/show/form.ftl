@@ -1,6 +1,8 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 <#import "/common/components/form.ftl" as f/>
+<#import "/common/components/modal.ftl" as m/>
+<#import "/common/components/table.ftl" as t/>
 
 <#macro baseDate show>
     <@b.h3 title="show.baseData"/>
@@ -50,6 +52,45 @@
 </#macro>
 
 <#macro seasons show>
-    <@b.h3 title="show.seasons"/>
+    <@b.row>
+        <@b.col size="col-6">
+            <@b.h3 title="show.seasons"/>
+        </@b.col>
+        <@b.col size="col-6">
+            <@m.open label="show.season.add" modalId="addSeasons" classes="float-end"/>
+        </@b.col>
+    </@b.row>
 
+    <@m.modal id="addSeasons">
+        <@m.header "show.season.add"/>
+        <@m.body>
+            <@f.form name="addSeason" url="/show/${show.id}/season/add">
+                <@f.input label="show.season.add.count" name="seasonCount" value="1"/>
+            </@f.form>
+        </@m.body>
+        <@m.footer>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+            <@f.submit label="button.add" form="addSeason" col=false/>
+        </@m.footer>
+    </@m.modal>
+
+
+    <@t.table id="seasons">
+        <@t.head>
+            <@t.headCell label="show.season.number"/>
+            <@t.headCell label="show.season.name"/>
+            <@t.headCell label="show.season.actions"/>
+        </@t.head>
+        <@t.body>
+            <#list show.getSeasons() as season>
+                <@t.row>
+                    <@t.cell value="${season.number}"/>
+                    <@t.cell value="${season.name}"/>
+                    <@t.cell>
+                        <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
+                    </@t.cell>
+                </@t.row>
+            </#list>
+        </@t.body>
+    </@t.table>
 </#macro>

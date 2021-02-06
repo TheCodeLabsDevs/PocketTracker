@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.show.controller.advice;
 
-import de.thecodelabs.pockettracker.show.ShowType;
+import de.thecodelabs.pockettracker.show.model.ShowType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

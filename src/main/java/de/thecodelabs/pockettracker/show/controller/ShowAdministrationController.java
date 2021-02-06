@@ -1,9 +1,11 @@
 package de.thecodelabs.pockettracker.show.controller;
 
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
-import de.thecodelabs.pockettracker.show.Show;
-import de.thecodelabs.pockettracker.show.ShowImageType;
+import de.thecodelabs.pockettracker.season.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
+import de.thecodelabs.pockettracker.show.model.SeasonsDialogModel;
+import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/show")
@@ -82,14 +85,17 @@ public class ShowAdministrationController
 		}
 
 		final Object oldData = WebRequestUtils.popValidationData(request);
+		final Show show;
 		if(oldData instanceof Show)
 		{
-			model.addAttribute("show", oldData);
+			show = (Show) oldData;
 		}
 		else
 		{
-			model.addAttribute("show", showOptional.get());
+			show = showOptional.get();
 		}
+		model.addAttribute("show", show);
+
 		model.addAttribute("back_url", "/show/" + id);
 
 		return "administration/show/edit";
@@ -118,8 +124,8 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{id}/edit/{type}")
-	public String updateBanner(WebRequest request, @PathVariable Integer id, @PathVariable ShowImageType type,
-							   @RequestParam("image") MultipartFile multipartFile)
+	public String updateImage(WebRequest request, @PathVariable Integer id, @PathVariable ShowImageType type,
+							  @RequestParam("image") MultipartFile multipartFile)
 	{
 		Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -146,4 +152,27 @@ public class ShowAdministrationController
 		}
 		return "redirect:/show/" + id + "/edit";
 	}
+
+	@PostMapping("/{id}/season/add")
+	public String addSeasons(WebRequest request, @PathVariable Integer id,
+							 @ModelAttribute("seasons") @Validated SeasonsDialogModel model, BindingResult validation)
+	{
+		if(validation.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, model);
+			return "redirect:/show/" + id + "/edit";
+		}
+
+		final Optional<Show> managedShowOptional = service.getShowById(id);
+		if(managedShowOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+		final Show managedShow = managedShowOptional.get();
+
+		final Optional<Season> firstSeason = IntStream.range(0, model.getSeasonCount()).mapToObj(index -> service.addSeasonToShow(managedShow)).findFirst();
+		return firstSeason.map(season -> "redirect:/season/" + season.getId() + "/edit").orElseGet(() -> "redirect:/show/" + id + "/edit");
+	}
+
 }
