@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.show;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.Episode;
-import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import org.slf4j.Logger;

@@ -3,7 +3,7 @@ package de.thecodelabs.pockettracker.show.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import org.springframework.format.annotation.DateTimeFormat;

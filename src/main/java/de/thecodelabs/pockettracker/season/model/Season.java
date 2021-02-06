@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.season;
+package de.thecodelabs.pockettracker.season.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

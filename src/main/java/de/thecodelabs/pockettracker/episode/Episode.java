@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.episode;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import javax.persistence.*;

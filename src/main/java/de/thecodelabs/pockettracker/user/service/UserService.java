@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.episode.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
-import de.thecodelabs.pockettracker.season.Season;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;

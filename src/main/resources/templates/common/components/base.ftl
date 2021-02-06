@@ -48,16 +48,16 @@
 
 <#macro back_button label="button.back" icon="" classes="me-2" url="" showLabel=true showIcon=true margin="mb-4" center=false style="btn-secondary">
     <#if center><div class="mx-auto text-center"></#if>
-    <a class="btn ${style} ${margin} ${classes}"
-       <#if url?has_content>href="<@s.url url/>" <#else>onclick="window.history.back()"</#if> role="button">
+    <a class="btn ${style} ${margin} ${classes}" role="button"
+       <#if url?has_content>href="<@s.url url/>" <#else>onclick="window.history.back()"</#if>>
         <#if showIcon><i class="<#if icon?has_content>${icon}<#else>fas fa-arrow-left</#if>"></i></#if>
         <#if showLabel><@localize label/></#if>
     </a>
     <#if center></div></#if>
 </#macro>
 
-<#macro button label url icon="" classes="" id="" style="btn-primary">
-    <a class="btn ${style} ${classes}" id="${id}" href="<@s.url url/>" role="button">
+<#macro button label url icon="" classes="" id="" style="btn-primary" margin="mb-4">
+    <a class="btn ${style} ${classes} ${margin}" id="${id}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
         <@localize label/>
     </a>

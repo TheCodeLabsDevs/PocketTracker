@@ -1,5 +1,6 @@
-package de.thecodelabs.pockettracker.season;
+package de.thecodelabs.pockettracker.season.reposiroty;
 
+import de.thecodelabs.pockettracker.season.model.Season;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

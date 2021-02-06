@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker.backup;
 
 import de.thecodelabs.pockettracker.episode.EpisodeRepository;
-import de.thecodelabs.pockettracker.season.SeasonRepository;
+import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import org.slf4j.Logger;
