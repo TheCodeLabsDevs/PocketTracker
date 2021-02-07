@@ -13,6 +13,10 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
+                <@b.hasPermission "ADMIN">
+                    <@b.button label="button.edit" url="/episode/" + episode.getId() + "/edit" style="btn-sm btn-outline-primary" classes="float-end"/>
+                </@b.hasPermission>
+
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
                 <h3 class="card-title text-center">
                     ${showService.getShortCode(episode)} - ${episode.getName()}

@@ -8,6 +8,10 @@
     <@template.head season.getName() + " - " + season.getShow().getName()/>
 
     <@template.body>
+        <@b.hasPermission "ADMIN">
+            <@b.button label="button.edit" url="/season/" + season.getId() + "/edit" style="btn-sm btn-outline-primary" classes="float-end"/>
+        </@b.hasPermission>
+
         <div class="row mb-4">
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
                 <@b.back_button center=true/>
