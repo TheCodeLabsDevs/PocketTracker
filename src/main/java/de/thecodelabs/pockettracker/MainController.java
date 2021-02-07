@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController
@@ -129,8 +130,17 @@ public class MainController
 			isUserSpecificView = false;
 		}
 
+		final List<Show> userShows = userService.getCurrentUser().getShows();
+
+		List<Show> searchResults = showRepository.findAllByNameContainingIgnoreCaseOrderByNameAsc(searchText);
+		if(isUserSpecificView)
+		{
+			searchResults = searchResults.stream()
+					.filter(userShows::contains)
+					.collect(Collectors.toList());
+		}
+
 		// override lazy fetching
-		final List<Show> searchResults = showRepository.findAllByNameContainingIgnoreCaseOrderByNameAsc(searchText);
 		for(Show show : searchResults)
 		{
 			for(Season season : show.getSeasons())
