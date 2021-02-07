@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,21 +44,29 @@ public class ShowService
 
 	public List<Show> getAllShows(String name)
 	{
+		final List<Show> shows;
 		if(name == null || name.isEmpty())
 		{
-			return repository.findAllByOrderByNameAsc();
+			shows = repository.findAllByOrderByNameAsc();
 		}
 		else
 		{
-			return repository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name);
+			shows = repository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name);
 		}
+		shows.forEach(this::prepareShow);
+		return shows;
 	}
 
 	public Optional<Show> getShowById(Integer id)
 	{
-		return repository.findById(id);
+		final Optional<Show> showOptional = repository.findById(id);
+		showOptional.ifPresent(this::prepareShow);
+		return showOptional;
 	}
 
+	private void prepareShow(Show show) {
+		show.getSeasons().sort(Comparator.comparingInt(Season::getNumber));
+	}
 
 	public Show createShow(Show show)
 	{
