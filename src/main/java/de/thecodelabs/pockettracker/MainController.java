@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker;
 
-import de.thecodelabs.pockettracker.episode.Episode;
-import de.thecodelabs.pockettracker.episode.EpisodeRepository;
+import de.thecodelabs.pockettracker.episode.model.Episode;
+import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;

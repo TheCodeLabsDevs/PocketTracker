@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.backup;
 
-import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;

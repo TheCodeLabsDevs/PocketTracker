@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.season.controller;
 
-import de.thecodelabs.pockettracker.episode.Episode;
+import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
