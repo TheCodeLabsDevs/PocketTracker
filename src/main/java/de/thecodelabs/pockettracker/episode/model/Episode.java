@@ -4,8 +4,13 @@ package de.thecodelabs.pockettracker.episode.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,15 +21,21 @@ public class Episode
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotNull
+	@NotEmpty
+	@Size(max = 255)
 	private String name;
 
+	@Size(max = 4096)
 	@Column(length = 4096)
 	private String description;
 
 	private Integer number;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate firstAired;
 
+	@Min(0)
 	private Integer lengthInMinutes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
