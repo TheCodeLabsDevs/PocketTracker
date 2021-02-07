@@ -9,8 +9,6 @@
 
     <@f.form name="season" url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>
-            <#assign today = .now?string['yyyy-MM-dd']/>
-
             <@f.input label="season.name" name="name" value=season.name!""/>
             <@f.input label="season.number" name="number" value=season.number!""/>
             <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
@@ -56,7 +54,7 @@
                     <@t.cell value="${episode.number}"/>
                     <@t.cell value="${episode.name}"/>
                     <@t.cell>
-                        <@t.action icon="fas fa-pen" url="/episoe/${episode.id}/edit" />
+                        <@t.action icon="fas fa-pen" url="/episode/${episode.id}/edit" />
                     </@t.cell>
                 </@t.row>
             </#list>

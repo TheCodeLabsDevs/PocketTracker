@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Episode
@@ -120,6 +121,15 @@ public class Episode
 	public void setSeason(Season season)
 	{
 		this.season = season;
+	}
+
+	public String getFirstAiredReadable()
+	{
+		if(firstAired == null)
+		{
+			return null;
+		}
+		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
 	@Override
