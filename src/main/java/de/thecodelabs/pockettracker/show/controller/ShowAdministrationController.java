@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.SeasonsDialogModel;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
@@ -24,6 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Optional;
 
 @Controller
@@ -33,11 +35,13 @@ public class ShowAdministrationController
 {
 	private static final Logger logger = LoggerFactory.getLogger(ShowAdministrationController.class);
 
+	private final UserService userService;
 	private final ShowService service;
 
 	@Autowired
-	public ShowAdministrationController(ShowService service)
+	public ShowAdministrationController(UserService userService, ShowService service)
 	{
+		this.userService = userService;
 		this.service = service;
 	}
 
@@ -163,12 +167,31 @@ public class ShowAdministrationController
 		for(int index = 0; index < model.getSeasonCount(); index++)
 		{
 			final Season season = service.addSeasonToShow(id);
-			if (firstSeason.isEmpty()) {
+			if(firstSeason.isEmpty())
+			{
 				firstSeason = Optional.of(season);
 			}
 		}
 		return firstSeason.map(season -> "redirect:/season/" + season.getId() + "/edit")
 				.orElseGet(() -> "redirect:/show/" + id + "/edit");
+	}
+
+	@PostMapping("/{id}/delete")
+	@Transactional
+	public String deletePost(WebRequest request, @PathVariable Integer id)
+	{
+		final Optional<Show> managedShowOptional = service.getShowById(id);
+		if(managedShowOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+		final Show managedShow = managedShowOptional.get();
+		final String showName = managedShow.getName();
+		userService.deleteShow(managedShow);
+		service.deleteShow(managedShow);
+
+		WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Die Serie \"{0}\" wurde erfolgreich gelöscht", showName), BootstrapColor.SUCCESS));
+		return "redirect:/shows";
 	}
 
 	/*

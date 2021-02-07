@@ -37,6 +37,12 @@
                     <@form.seasons show/>
                 </@c.body>
             </@c.card>
+
+            <@c.card classes="my-4">
+                <@c.body>
+                    <@form.showDelete show/>
+                </@c.body>
+            </@c.card>
         </#if>
     </@template.body>
 </html>

@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,5 +144,11 @@ public class ShowService
 		return MessageFormat.format("[S{0} E{1}]",
 				String.format("%02d", episode.getSeason().getNumber()),
 				String.format("%02d", episode.getNumber()));
+	}
+
+	@Transactional
+	public void deleteShow(Show show)
+	{
+		repository.delete(show);
 	}
 }

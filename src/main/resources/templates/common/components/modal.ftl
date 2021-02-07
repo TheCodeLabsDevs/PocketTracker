@@ -1,7 +1,7 @@
 <#import "/common/components/base.ftl" as b/>
 
-<#macro open label modalId style="btn-primary" classes="">
-    <button type="button" class="btn btn-sm ${style} ${classes}" data-bs-toggle="modal" data-bs-target="#${modalId}">
+<#macro open label modalId style="btn-primary" classes="" buttonSize="btn-sm">
+    <button type="button" class="btn ${buttonSize} ${style} ${classes}" data-bs-toggle="modal" data-bs-target="#${modalId}">
         <@b.localize label/>
     </button>
 </#macro>

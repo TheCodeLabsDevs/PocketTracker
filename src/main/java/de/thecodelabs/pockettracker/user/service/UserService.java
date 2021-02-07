@@ -25,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -314,5 +315,18 @@ public class UserService
 		statisticItems.add(new StatisticItem("fas fa-hourglass", MessageFormat.format("{0} Minuten", getTotalPlayedMinutes(user)), BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		return statisticItems;
+	}
+
+	@Transactional
+	public void deleteShow(Show show)
+	{
+		final List<User> users = userRepository.findAll();
+		for(User user : users)
+		{
+			user.getShows().remove(show);
+
+			final List<Episode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
+			user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
+		}
 	}
 }

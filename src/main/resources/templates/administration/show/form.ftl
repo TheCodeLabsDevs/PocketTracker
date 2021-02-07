@@ -94,3 +94,26 @@
         </@t.body>
     </@t.table>
 </#macro>
+
+<#macro showDelete show>
+    <@b.row>
+        <@b.col size="col-12">
+            <@b.h3 title="show.delete"/>
+        </@b.col>
+        <@b.col size="col-12">
+            <@m.open label="show.delete" modalId="deleteShow" style="btn-danger" buttonSize=""/>
+        </@b.col>
+    </@b.row>
+
+    <@m.modal id="deleteShow">
+        <@m.header "show.delete"/>
+        <@m.body>
+            <@f.form name="deleteShowForm" url="/show/${show.id}/delete"></@f.form>
+            <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
+        </@m.body>
+        <@m.footer>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+            <@f.submit label="show.delete" form="deleteShowForm" col=false style="btn-danger"/>
+        </@m.footer>
+    </@m.modal>
+</#macro>
