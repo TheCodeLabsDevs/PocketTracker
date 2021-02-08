@@ -184,8 +184,10 @@ public class Show
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
-	public String getImagePath(ShowImageType showImageType) {
-		switch (showImageType) {
+	public String getImagePath(ShowImageType showImageType)
+	{
+		switch(showImageType)
+		{
 			case BANNER:
 				return getBannerPath();
 			case POSTER:
@@ -195,8 +197,10 @@ public class Show
 		}
 	}
 
-	public void setImagePath(ShowImageType showImageType, String path) {
-		switch (showImageType) {
+	public void setImagePath(ShowImageType showImageType, String path)
+	{
+		switch(showImageType)
+		{
 			case BANNER:
 				setBannerPath(path);
 				break;

@@ -71,7 +71,8 @@ public class User
 				.findFirst();
 	}
 
-	public void addAuthentication(UserAuthentication userAuthentication) {
+	public void addAuthentication(UserAuthentication userAuthentication)
+	{
 		this.authentications.add(userAuthentication);
 	}
 

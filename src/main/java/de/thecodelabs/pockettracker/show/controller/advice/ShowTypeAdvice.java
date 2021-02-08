@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class ShowTypeAdvice
 {
 	@ModelAttribute("showTypes")
-	public ShowType[] showTypes() {
+	public ShowType[] showTypes()
+	{
 		return ShowType.values();
 	}
 }

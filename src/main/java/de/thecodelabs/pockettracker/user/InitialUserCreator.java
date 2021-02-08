@@ -38,7 +38,8 @@ public class InitialUserCreator
 	@EventListener
 	public void applicationStarted(ApplicationStartedEvent event) throws PasswordValidationException
 	{
-		if (userService.hasUsers()) {
+		if(userService.hasUsers())
+		{
 			return;
 		}
 

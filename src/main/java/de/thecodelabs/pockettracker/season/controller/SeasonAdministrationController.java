@@ -96,7 +96,8 @@ public class SeasonAdministrationController
 		for(int index = 0; index < model.getEpisodeCount(); index++)
 		{
 			final Episode episode = seasonService.addEpisodeToSeason(id);
-			if (firstEpisode.isEmpty()) {
+			if(firstEpisode.isEmpty())
+			{
 				firstEpisode = Optional.of(episode);
 			}
 		}

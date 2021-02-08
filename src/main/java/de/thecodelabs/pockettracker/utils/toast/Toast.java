@@ -29,7 +29,7 @@ public class Toast implements MessageSourceResolvable
 	@Override
 	public String[] getCodes()
 	{
-		return new String[] {message};
+		return new String[]{message};
 	}
 
 	@Override

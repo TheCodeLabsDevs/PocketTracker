@@ -19,12 +19,14 @@ public class UserAdvice
 	}
 
 	@ModelAttribute("currentUser")
-	public User currentUser() {
+	public User currentUser()
+	{
 		return userService.getUser(SecurityContextHolder.getContext().getAuthentication()).orElse(null);
 	}
 
 	@ModelAttribute("userService")
-	public UserService userService() {
+	public UserService userService()
+	{
 		return userService;
 	}
 }

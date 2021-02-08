@@ -9,7 +9,8 @@ import org.springframework.web.context.request.WebRequest;
 public class ToastAdvice
 {
 	@ModelAttribute("toast")
-	public Toast getToast(WebRequest request) {
+	public Toast getToast(WebRequest request)
+	{
 		return WebRequestUtils.popToast(request);
 	}
 }

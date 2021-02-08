@@ -18,7 +18,8 @@ public class InternalAuthenticationService
 		this.repository = repository;
 	}
 
-	public Optional<InternalAuthentication> getInternalAuthenticationByRememberMeSeries(String series) {
+	public Optional<InternalAuthentication> getInternalAuthenticationByRememberMeSeries(String series)
+	{
 		return repository.findInternalAuthenticationByRememberMeSeries(series);
 	}
 }

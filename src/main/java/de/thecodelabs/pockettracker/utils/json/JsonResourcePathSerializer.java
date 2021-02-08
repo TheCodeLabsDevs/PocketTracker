@@ -30,7 +30,7 @@ public class JsonResourcePathSerializer extends StdSerializer<String>
 	@Override
 	public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
 	{
-		if (WebUtils.isApiRequest())
+		if(WebUtils.isApiRequest())
 		{
 			if(!s.startsWith("/"))
 			{
@@ -39,7 +39,9 @@ public class JsonResourcePathSerializer extends StdSerializer<String>
 
 			final String url = StringUtils.join(webConfigurationProperties.getBaseUrl(), contextPath, webConfigurationProperties.getApiResourcesUrl(), s);
 			jsonGenerator.writeString(url);
-		} else {
+		}
+		else
+		{
 			jsonGenerator.writeString(s);
 		}
 	}

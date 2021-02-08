@@ -34,7 +34,8 @@ public class SeasonService
 	public Episode addEpisodeToSeason(Integer seasonId)
 	{
 		final Optional<Season> seasonOptional = getSeasonById(seasonId);
-		if (seasonOptional.isEmpty()) {
+		if(seasonOptional.isEmpty())
+		{
 			throw new NotFoundException("Season with id " + seasonId + " not found");
 		}
 		final Season season = seasonOptional.get();

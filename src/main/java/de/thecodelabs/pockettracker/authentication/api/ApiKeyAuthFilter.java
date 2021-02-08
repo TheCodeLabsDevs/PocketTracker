@@ -8,17 +8,20 @@ public class ApiKeyAuthFilter extends AbstractPreAuthenticatedProcessingFilter
 {
 	private final String principalRequestHeader;
 
-	public ApiKeyAuthFilter(String principalRequestHeader) {
+	public ApiKeyAuthFilter(String principalRequestHeader)
+	{
 		this.principalRequestHeader = principalRequestHeader;
 	}
 
 	@Override
-	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request)
+	{
 		return "api-token";
 	}
 
 	@Override
-	protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
+	protected Object getPreAuthenticatedCredentials(HttpServletRequest request)
+	{
 		return request.getHeader(principalRequestHeader);
 	}
 

@@ -20,9 +20,11 @@ public class PermissionChecker
 		this.service = service;
 	}
 
-	public boolean hasPermission(UserRole role) {
+	public boolean hasPermission(UserRole role)
+	{
 		final Optional<User> userOptional = service.getUser(SecurityContextHolder.getContext().getAuthentication());
-		if (userOptional.isEmpty()) {
+		if(userOptional.isEmpty())
+		{
 			return false;
 		}
 		return userOptional.get().getUserRole() == role;

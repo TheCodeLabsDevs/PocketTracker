@@ -35,6 +35,7 @@ public class WebRequestUtils
 	{
 		return (BindingResult) pop(request, ATTR_VALIDATION_ERROR);
 	}
+
 	public static Object popValidationData(WebRequest request)
 	{
 		return pop(request, ATTR_VALIDATION_DATA);
