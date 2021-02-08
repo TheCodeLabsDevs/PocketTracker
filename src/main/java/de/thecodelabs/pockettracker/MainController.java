@@ -5,10 +5,10 @@ import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
+import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,24 +19,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController
 {
 	public static final String PARAMETER_NAME_IS_USER_SPECIFIC_VIEW = "isUserSpecificView";
-	private static final String PARAMETER_NAME_SEARCH_RESULTS = "searchResults";
+	public static final String PARAMETER_NAME_SEARCH_RESULTS = "searchResults";
+	public static final String PARAMETER_NAME_SEARCH_TEXT = "searchText";
 
+	private final ShowService showService;
 	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 	private final UserService userService;
 
 	@Autowired
-	public MainController(ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService)
+	public MainController(ShowService showService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService)
 	{
+		this.showService = showService;
 		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
@@ -49,31 +50,17 @@ public class MainController
 	{
 		final User user = userService.getCurrentUser();
 
-		boolean isUserSpecificView = false;
-		if(model.containsAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW))
+		String searchText = null;
+		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
 		{
-			isUserSpecificView = (boolean) model.getAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW);
+			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		if(isUserSpecificView)
-		{
-			model.addAttribute("currentPage", "Meine Serien");
-			model.addAttribute("shows", user.getShows());
-		}
-		else
-		{
-			model.addAttribute("currentPage", "Alle Serien");
-			model.addAttribute("shows", showRepository.findAllByOrderByNameAsc());
-		}
+		model.addAttribute("currentPage", "Alle Serien");
+		model.addAttribute("shows", showService.getAllShows(searchText));
 
 		model.addAttribute("userShows", user.getShows());
-		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, isUserSpecificView);
-
-		if(model.containsAttribute(PARAMETER_NAME_SEARCH_RESULTS))
-		{
-			final List<Show> searchResults = (List<Show>) model.getAttribute(PARAMETER_NAME_SEARCH_RESULTS);
-			model.addAttribute("shows", searchResults);
-		}
+		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
 		return "index";
 	}
@@ -130,27 +117,15 @@ public class MainController
 			isUserSpecificView = false;
 		}
 
-		final List<Show> userShows = userService.getCurrentUser().getShows();
+		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_TEXT, searchText);
 
-		List<Show> searchResults = showRepository.findAllByNameContainingIgnoreCaseOrderByNameAsc(searchText);
 		if(isUserSpecificView)
 		{
-			searchResults = searchResults.stream()
-					.filter(userShows::contains)
-					.collect(Collectors.toList());
+			return "redirect:/user/shows";
 		}
-
-		// override lazy fetching
-		for(Show show : searchResults)
+		else
 		{
-			for(Season season : show.getSeasons())
-			{
-				Hibernate.initialize(season.getEpisodes());
-			}
+			return "redirect:/shows";
 		}
-
-		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_RESULTS, searchResults);
-		redirectAttributes.addFlashAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, isUserSpecificView);
-		return "redirect:/shows";
 	}
 }

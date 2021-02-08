@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.user.controller;
 
-import de.thecodelabs.pockettracker.MainController;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
@@ -28,7 +27,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +35,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW;
+import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_SEARCH_TEXT;
 
 @Controller
 @RequestMapping("/user")
@@ -133,10 +134,33 @@ public class UserController
 	}
 
 	@GetMapping("/shows")
-	public String getShows(RedirectAttributes redirectAttributes)
+	public String getShows(Model model)
 	{
-		redirectAttributes.addFlashAttribute(MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
-		return "redirect:/shows";
+		final User user = userService.getCurrentUser();
+
+		final String searchText;
+		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
+		{
+			searchText = model.getAttribute(PARAMETER_NAME_SEARCH_TEXT).toString().toLowerCase();
+		}
+		else
+		{
+			searchText = "";
+		}
+
+		model.addAttribute("currentPage", "Meine Serien");
+		List<Show> userShows = user.getShows();
+
+		userShows = userShows.stream()
+				.filter(show -> show.getName().toLowerCase().contains(searchText))
+				.collect(Collectors.toList());
+
+		model.addAttribute("shows", userShows);
+
+		model.addAttribute("userShows", user.getShows());
+		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
+
+		return "index";
 	}
 
 	@GetMapping("/shows/add/{showId}")
