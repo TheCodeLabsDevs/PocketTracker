@@ -148,7 +148,6 @@ public class UserController
 			searchText = "";
 		}
 
-		model.addAttribute("currentPage", "Meine Serien");
 		List<Show> userShows = user.getShows();
 
 		userShows = userShows.stream()
@@ -157,6 +156,7 @@ public class UserController
 
 		model.addAttribute("shows", userShows);
 
+		model.addAttribute("currentPage", "Meine Serien");
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 

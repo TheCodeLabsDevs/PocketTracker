@@ -11,7 +11,6 @@ import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +24,6 @@ import java.util.Optional;
 public class MainController
 {
 	public static final String PARAMETER_NAME_IS_USER_SPECIFIC_VIEW = "isUserSpecificView";
-	public static final String PARAMETER_NAME_SEARCH_RESULTS = "searchResults";
 	public static final String PARAMETER_NAME_SEARCH_TEXT = "searchText";
 
 	private final ShowService showService;
@@ -56,9 +54,9 @@ public class MainController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		model.addAttribute("currentPage", "Alle Serien");
 		model.addAttribute("shows", showService.getAllShows(searchText));
 
+		model.addAttribute("currentPage", "Alle Serien");
 		model.addAttribute("userShows", user.getShows());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
@@ -107,7 +105,6 @@ public class MainController
 	}
 
 	@PostMapping("/search")
-	@Transactional
 	public String search(@RequestParam("searchText") String searchText,
 						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView,
 						 RedirectAttributes redirectAttributes)

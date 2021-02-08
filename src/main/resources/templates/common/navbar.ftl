@@ -20,8 +20,8 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item name="menu.allShows" url="/shows" markAsActiveByName=true/>
-                        <@item name="menu.myShows" url="/user/shows" markAsActiveByName=true/>
+                        <@item name="menu.allShows" url="/shows"/>
+                        <@item name="menu.myShows" url="/user/shows"/>
                         <@item name="menu.statistics" url="/user/statistics"/>
 
                         <@b.hasPermission "ADMIN">
