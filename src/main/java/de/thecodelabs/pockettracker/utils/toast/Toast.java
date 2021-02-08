@@ -1,16 +1,19 @@
 package de.thecodelabs.pockettracker.utils.toast;
 
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
+import org.springframework.context.MessageSourceResolvable;
 
-public class Toast
+public class Toast implements MessageSourceResolvable
 {
-	private String message;
-	private BootstrapColor color;
+	private final String message;
+	private final BootstrapColor color;
+	private final Object[] args;
 
-	public Toast(String message, BootstrapColor color)
+	public Toast(String message, BootstrapColor color, Object... args)
 	{
 		this.message = message;
 		this.color = color;
+		this.args = args;
 	}
 
 	public String getMessage()
@@ -21,6 +24,18 @@ public class Toast
 	public BootstrapColor getColor()
 	{
 		return color;
+	}
+
+	@Override
+	public String[] getCodes()
+	{
+		return new String[] {message};
+	}
+
+	@Override
+	public Object[] getArguments()
+	{
+		return args;
 	}
 
 	@Override

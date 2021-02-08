@@ -53,7 +53,7 @@
 
     <#if toast??>
         <div class="alert ${toast.getColor().getToastColor()} alert-dismissible fade show" role="alert">
-            <@b.localize toast.getMessage()/>
+            <@b.localize toast/>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </#if>

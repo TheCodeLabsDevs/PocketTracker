@@ -25,7 +25,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Optional;
 
 @Controller
@@ -190,7 +189,7 @@ public class ShowAdministrationController
 		userService.deleteShow(managedShow);
 		service.deleteShow(managedShow);
 
-		WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Die Serie \"{0}\" wurde erfolgreich gelöscht", showName), BootstrapColor.SUCCESS));
+		WebRequestUtils.putToast(request, new Toast("toast.show.delete", BootstrapColor.SUCCESS, showName));
 		return "redirect:/shows";
 	}
 
