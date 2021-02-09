@@ -4,6 +4,8 @@
 <#import "/common/components/modal.ftl" as m/>
 <#import "/common/components/table.ftl" as t/>
 
+<#import "/common/macros/deleteModal.ftl" as delete>
+
 <#macro baseDate episode>
     <@b.h3 title="episode.baseData"/>
 
@@ -18,7 +20,16 @@
             <@f.input label="episode.firstAired" name="firstAired" value=episode.getFirstAiredReadable()!today/>
             <@f.input label="episode.lengthInMinutes" name="lengthInMinutes" value=episode.lengthInMinutes!""/>
 
-            <@f.submit classes="float-end"/>
+        </@b.row>
+        <@b.row>
+            <@b.col size="col-6">
+                <@m.open label="episode.delete" modalId="deleteEpisode" buttonSize="btn" style="btn-danger"/>
+            </@b.col>
+            <@f.submit classes="float-end" size="col-6"/>
         </@b.row>
     </@f.form>
+
+    <@delete.modal modalId="deleteEpisode" title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id}/delete">
+        <@s.messageArgs code="episode.delete.message" args=[episode.getName()]/>
+    </@delete.modal>
 </#macro>

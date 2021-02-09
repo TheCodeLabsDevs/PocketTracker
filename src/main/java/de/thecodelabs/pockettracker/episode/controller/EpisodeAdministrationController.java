@@ -77,6 +77,24 @@ public class EpisodeAdministrationController
 		return "redirect:/episode/" + id + "/edit";
 	}
 
+	@PostMapping("/{id}/delete")
+	public String deleteEpisodeSubmit(WebRequest request, @PathVariable Integer id)
+	{
+		final Optional<Episode> episodeOptional = episodeService.getEpisodeById(id);
+		if(episodeOptional.isEmpty())
+		{
+			throw new NotFoundException("Episode with id " + id + " not found");
+		}
+
+		final Episode episode = episodeOptional.get();
+		final Season season = episode.getSeason();
+		final String episodeName = episode.getName();
+
+		episodeService.deleteEpisode(episode);
+		WebRequestUtils.putToast(request, new Toast("toast.episode.delete", BootstrapColor.SUCCESS, episodeName));
+
+		return "redirect:/season/" + season.getId() + "/edit";
+	}
 
 	/*
 	Utils

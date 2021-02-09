@@ -14,7 +14,6 @@
             <@f.input label="season.name" name="name" value=season.name!""/>
             <@f.input label="season.number" name="number" value=season.number!""/>
             <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
-
         </@b.row>
         <@b.row>
             <@b.col size="col-6">
@@ -66,6 +65,12 @@
                     <@t.cell value="${episode.name}"/>
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/episode/${episode.id}/edit" />
+
+                        <#assign modalId = "deleteEpisode-${episode.id}">
+                        <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
+                        <@delete.modal modalId=modalId title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id}/delete">
+                            <@s.messageArgs code="episode.delete.message" args=[episode.getName()]/>
+                        </@delete.modal>
                     </@t.cell>
                 </@t.row>
             </#list>

@@ -22,4 +22,9 @@ public class EpisodeService
 	{
 		return episodeRepository.findById(id);
 	}
+
+	public void deleteEpisode(Episode episode)
+	{
+		episodeRepository.delete(episode);
+	}
 }
