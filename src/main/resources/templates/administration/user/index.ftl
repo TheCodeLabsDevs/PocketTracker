@@ -4,7 +4,10 @@
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
+    <#import "/common/components/modal.ftl" as m/>
     <#import "/common/components/table.ftl" as t/>
+
+    <#import "/common/macros/deleteModal.ftl" as delete>
 
     <@template.head 'Episodes'/>
     <@template.body>
@@ -30,8 +33,13 @@
                         <@t.content value=user.userRole/>
                         <@t.cell>
                             <@t.action icon="fas fa-pen" url="/users/administration/${user.id}/edit" />
+
                             <#if currentUser.name != user.name>
-                                <@t.action icon="fas fa-trash" url="/users/administration/${user.id}/delete" />
+                                <#assign modalId = "deleteUser-${user.id}">
+                                <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
+                                <@delete.modal modalId=modalId title="admin.user.delete" url="/users/administration/${user.id}/delete">
+                                    <@s.messageArgs code="admin.user.delete.message" args=[user.name]/>
+                                </@delete.modal>
                             </#if>
                         </@t.cell>
                     </@t.row>

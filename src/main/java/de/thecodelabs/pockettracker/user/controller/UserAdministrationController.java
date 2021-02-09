@@ -91,19 +91,6 @@ public class UserAdministrationController
 		return "redirect:/users/administration";
 	}
 
-	@GetMapping("/{id}/delete")
-	public String deleteView(@PathVariable Integer id, Model model)
-	{
-		final Optional<User> userOptional = userService.getUserById(id);
-		if(userOptional.isEmpty())
-		{
-			throw new NotFoundException("User not found");
-		}
-
-		model.addAttribute("user", userOptional.get());
-		return "administration/user/delete";
-	}
-
 	@PostMapping("/{id}/delete")
 	public String deleteSubmit(@PathVariable Integer id)
 	{
