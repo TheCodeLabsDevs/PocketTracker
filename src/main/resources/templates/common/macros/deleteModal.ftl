@@ -3,7 +3,7 @@
 
 <#import "/spring.ftl" as s>
 
-<#macro modal season modalId title url deleteButton="button.delete">
+<#macro modal modalId title url deleteButton="button.delete">
     <@m.modal id=modalId>
         <@m.header title/>
         <@m.body>

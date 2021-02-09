@@ -93,7 +93,7 @@
 
                         <#assign modalId = "deleteSeason-${season.id}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
-                        <@delete.modal season=season modalId=modalId title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
+                        <@delete.modal modalId=modalId title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
                             <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
                         </@delete.modal>
                     </@t.cell>
@@ -113,15 +113,7 @@
         </@b.col>
     </@b.row>
 
-    <@m.modal id="deleteShow">
-        <@m.header "show.delete"/>
-        <@m.body>
-            <@f.form name="deleteShowForm" url="/show/${show.id}/delete"></@f.form>
-            <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
-        </@m.body>
-        <@m.footer>
-            <@m.cancelButton/>
-            <@f.submit label="show.delete" form="deleteShowForm" col=false style="btn-danger"/>
-        </@m.footer>
-    </@m.modal>
+    <@delete.modal modalId="deleteShow" title="show.delete" deleteButton="show.delete" url="/show/${show.id}/delete">
+        <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
+    </@delete.modal>
 </#macro>

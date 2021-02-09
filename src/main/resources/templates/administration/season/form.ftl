@@ -24,7 +24,7 @@
         </@b.row>
     </@f.form>
 
-    <@delete.modal season=season modalId="deleteSeason" title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
+    <@delete.modal modalId="deleteSeason" title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
         <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
     </@delete.modal>
 </#macro>
