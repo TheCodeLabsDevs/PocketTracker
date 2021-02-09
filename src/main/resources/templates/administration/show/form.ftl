@@ -69,7 +69,7 @@
             </@f.form>
         </@m.body>
         <@m.footer>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+            <@m.cancelButton/>
             <@f.submit label="button.add" form="addSeason" col=false/>
         </@m.footer>
     </@m.modal>
@@ -112,7 +112,7 @@
             <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
         </@m.body>
         <@m.footer>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+            <@m.cancelButton/>
             <@f.submit label="show.delete" form="deleteShowForm" col=false style="btn-danger"/>
         </@m.footer>
     </@m.modal>

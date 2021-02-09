@@ -36,7 +36,7 @@
             </@f.form>
         </@m.body>
         <@m.footer>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+            <@m.cancelButton/>
             <@f.submit label="button.add" form="addEpisode" col=false/>
         </@m.footer>
     </@m.modal>

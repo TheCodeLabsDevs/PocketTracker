@@ -27,7 +27,7 @@
                                         <@b.localize "authentication.provider.logout"/>
                                     </@m.body>
                                     <@m.footer>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><@b.localize "button.cancel"/></button>
+                                        <@m.cancelButton/>
                                         <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
                                             <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false/>
                                         </@f.form>

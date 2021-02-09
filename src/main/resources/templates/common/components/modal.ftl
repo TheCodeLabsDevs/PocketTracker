@@ -6,6 +6,10 @@
     </button>
 </#macro>
 
+<#macro cancelButton label="button.cancel" style="btn-secondary">
+    <button type="button" class="btn ${style}" data-bs-dismiss="modal"><@b.localize label/></button>
+</#macro>
+
 <#macro modal id>
     <div class="modal fade" id="${id}" tabindex="-1">
         <div class="modal-dialog">
