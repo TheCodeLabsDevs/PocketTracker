@@ -4,6 +4,8 @@
 <#import "/common/components/modal.ftl" as m/>
 <#import "/common/components/table.ftl" as t/>
 
+<#import "/administration/season/deleteModal.ftl" as delete>
+
 <#macro baseDate season>
     <@b.h3 title="season.baseData"/>
 
@@ -13,9 +15,16 @@
             <@f.input label="season.number" name="number" value=season.number!""/>
             <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
 
-            <@f.submit classes="float-end"/>
+        </@b.row>
+        <@b.row>
+            <@b.col size="col-6">
+                <@m.open label="season.delete" modalId="deleteSeason" buttonSize="btn" style="btn-danger"/>
+            </@b.col>
+            <@f.submit classes="float-end" size="col-6"/>
         </@b.row>
     </@f.form>
+
+    <@delete.modal season=season modalId="deleteSeason"/>
 </#macro>
 
 <#macro episodes season episodes>
