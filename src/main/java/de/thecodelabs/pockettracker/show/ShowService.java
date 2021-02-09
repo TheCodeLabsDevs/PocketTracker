@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
+import de.thecodelabs.pockettracker.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,22 @@ public class ShowService
 		shows.forEach(this::prepareShow);
 		return shows;
 	}
+
+	public List<Show> getAllFavoriteShowsByUser(String name, User user)
+	{
+		final List<Show> shows;
+		if(name == null || name.isEmpty())
+		{
+			shows = repository.findAllByFavoriteUsersContainingOrderByNameAsc(user);
+		}
+		else
+		{
+			shows = repository.findAllByNameContainingIgnoreCaseAndFavoriteUsersContainingOrderByNameAsc(name, user);
+		}
+		shows.forEach(this::prepareShow);
+		return shows;
+	}
+
 
 	public Optional<Show> getShowById(Integer id)
 	{

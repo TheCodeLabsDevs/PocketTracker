@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
+import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
@@ -49,15 +50,17 @@ public class UserController
 	private final UserAuthenticationService authenticationService;
 
 	private final ShowRepository showRepository;
+	private final ShowService showService;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 
 	@Autowired
-	public UserController(UserService userService, UserAuthenticationService authenticationService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
+	public UserController(UserService userService, UserAuthenticationService authenticationService, ShowRepository showRepository, ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
 	{
 		this.userService = userService;
 		this.authenticationService = authenticationService;
 		this.showRepository = showRepository;
+		this.showService = showService;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
 	}
@@ -138,23 +141,13 @@ public class UserController
 	{
 		final User user = userService.getCurrentUser();
 
-		final String searchText;
+		String searchText = null;
 		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
 		{
-			searchText = model.getAttribute(PARAMETER_NAME_SEARCH_TEXT).toString().toLowerCase();
-		}
-		else
-		{
-			searchText = "";
+			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		List<Show> userShows = user.getShows();
-
-		userShows = userShows.stream()
-				.filter(show -> show.getName().toLowerCase().contains(searchText))
-				.collect(Collectors.toList());
-
-		model.addAttribute("shows", userShows);
+		model.addAttribute("shows", showService.getAllFavoriteShowsByUser(searchText, user));
 
 		model.addAttribute("currentPage", "Meine Serien");
 		model.addAttribute("userShows", user.getShows());
