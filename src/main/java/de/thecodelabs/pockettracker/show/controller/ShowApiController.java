@@ -34,7 +34,6 @@ public class ShowApiController
 
 	@Operation(operationId = "getShowById")
 	@GetMapping("/{id}")
-	@JsonView(Show.View.Summary.class)
 	public Optional<Show> getAllShows(@PathVariable Integer id)
 	{
 		return showService.getShowById(id);
