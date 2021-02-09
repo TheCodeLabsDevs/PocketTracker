@@ -6,6 +6,12 @@
     </button>
 </#macro>
 
+<#macro openIcon icon modalId classes="" iconStyle="">
+    <a data-bs-toggle="modal" data-bs-target="#${modalId}" class="px-2 table-action ${classes}">
+        <i class="${icon} ${iconStyle}"></i>
+    </a>
+</#macro>
+
 <#macro cancelButton label="button.cancel" style="btn-secondary">
     <button type="button" class="btn ${style}" data-bs-dismiss="modal"><@b.localize label/></button>
 </#macro>

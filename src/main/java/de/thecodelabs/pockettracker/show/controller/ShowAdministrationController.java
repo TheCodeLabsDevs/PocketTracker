@@ -186,6 +186,7 @@ public class ShowAdministrationController
 		}
 		final Show managedShow = managedShowOptional.get();
 		final String showName = managedShow.getName();
+
 		userService.deleteShow(managedShow);
 		service.deleteShow(managedShow);
 

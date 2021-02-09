@@ -88,6 +88,19 @@
                     <@t.cell value="${season.name}"/>
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
+                        <@m.openIcon icon="fas fa-trash" modalId="deleteSeason-${season.id}" classes="link-danger"/>
+
+                        <@m.modal id="deleteSeason-${season.id}">
+                            <@m.header "season.delete"/>
+                            <@m.body>
+                                <@f.form name="deleteSeasonForm-${season.id}" url="/season/${season.id}/delete"></@f.form>
+                                <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
+                            </@m.body>
+                            <@m.footer>
+                                <@m.cancelButton/>
+                                <@f.submit label="season.delete" form="deleteSeasonForm-${season.id}" col=false style="btn-danger"/>
+                            </@m.footer>
+                        </@m.modal>
                     </@t.cell>
                 </@t.row>
             </#list>

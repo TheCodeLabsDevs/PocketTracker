@@ -105,6 +105,25 @@ public class SeasonAdministrationController
 				.orElseGet(() -> "redirect:/season/" + id + "/edit");
 	}
 
+	@PostMapping("/{id}/delete")
+	public String deleteSeasonSubmit(WebRequest request, @PathVariable Integer id)
+	{
+		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
+		if(seasonOptional.isEmpty())
+		{
+			throw new NotFoundException("Season for id " + id + " not found");
+		}
+
+		final Season season = seasonOptional.get();
+		final Integer showId = season.getShow().getId();
+		final String seasonName = season.getName();
+
+		seasonService.deleteSeason(season);
+		WebRequestUtils.putToast(request, new Toast("toast.season.delete", BootstrapColor.SUCCESS, seasonName));
+
+		return "redirect:/show/" + showId + "/edit";
+	}
+
 
 	/*
 	Utils

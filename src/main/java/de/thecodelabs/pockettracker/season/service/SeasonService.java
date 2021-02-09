@@ -46,4 +46,9 @@ public class SeasonService
 		season.getEpisodes().add(episode);
 		return episode;
 	}
+
+	public void deleteSeason(Season season)
+	{
+		seasonRepository.delete(season);
+	}
 }
