@@ -4,7 +4,7 @@
 <#import "/common/components/modal.ftl" as m/>
 <#import "/common/components/table.ftl" as t/>
 
-<#import "/administration/season/deleteModal.ftl" as delete>
+<#import "/common/macros/deleteModal.ftl" as delete>
 
 <#macro baseDate show>
     <@b.h3 title="show.baseData"/>
@@ -91,8 +91,11 @@
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
 
-                        <@m.openIcon icon="fas fa-trash" modalId="deleteSeason-${season.id}" classes="link-danger"/>
-                        <@delete.modal season=season modalId="deleteSeason-${season.id}"/>
+                        <#assign modalId = "deleteSeason-${season.id}">
+                        <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
+                        <@delete.modal season=season modalId=modalId title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
+                            <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
+                        </@delete.modal>
                     </@t.cell>
                 </@t.row>
             </#list>

@@ -4,7 +4,7 @@
 <#import "/common/components/modal.ftl" as m/>
 <#import "/common/components/table.ftl" as t/>
 
-<#import "/administration/season/deleteModal.ftl" as delete>
+<#import "/common/macros/deleteModal.ftl" as delete>
 
 <#macro baseDate season>
     <@b.h3 title="season.baseData"/>
@@ -24,7 +24,9 @@
         </@b.row>
     </@f.form>
 
-    <@delete.modal season=season modalId="deleteSeason"/>
+    <@delete.modal season=season modalId="deleteSeason" title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
+        <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
+    </@delete.modal>
 </#macro>
 
 <#macro episodes season episodes>
