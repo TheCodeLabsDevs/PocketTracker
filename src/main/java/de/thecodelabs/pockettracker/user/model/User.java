@@ -33,6 +33,10 @@ public class User
 	private UserRole userRole;
 
 	@ManyToMany
+	@JoinTable(
+			name = "appuser_shows",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "shows_id"))
 	private List<Show> shows;
 
 	@ManyToMany

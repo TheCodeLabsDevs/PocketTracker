@@ -1,9 +1,11 @@
 package de.thecodelabs.pockettracker.show.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -69,6 +71,11 @@ public class Show
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
 	@MergeIgnore
 	private List<Season> seasons = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "shows")
+	@MergeIgnore
+	@JsonIgnore
+	private List<User> favoriteUsers = new ArrayList<>();
 
 	public Show()
 	{
@@ -173,6 +180,16 @@ public class Show
 	public void setSeasons(List<Season> seasons)
 	{
 		this.seasons = seasons;
+	}
+
+	public List<User> getFavoriteUsers()
+	{
+		return favoriteUsers;
+	}
+
+	public void setFavoriteUsers(List<User> favoriteUsers)
+	{
+		this.favoriteUsers = favoriteUsers;
 	}
 
 	public String getFirstAiredReadable()
