@@ -5,10 +5,7 @@ import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -25,10 +22,17 @@ public class EpisodeApiController
 		this.episodeService = episodeService;
 	}
 
-	@Operation(operationId = "getEpisode")
+	@Operation(operationId = "getEpisodeById")
 	@GetMapping("/{id}")
 	public Optional<Episode> getEpisodeById(@PathVariable Integer id)
 	{
 		return episodeService.getEpisodeById(id);
+	}
+
+	@Operation(operationId = "getEpisode")
+	@GetMapping()
+	public Optional<Episode> getEpisodeByNumbers(@RequestParam Integer showId, @RequestParam Integer seasonNumber, @RequestParam Integer episodeNumber)
+	{
+		return episodeService.getEpisodeByNumbers(showId, seasonNumber, episodeNumber);
 	}
 }

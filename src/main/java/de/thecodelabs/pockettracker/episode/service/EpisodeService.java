@@ -23,6 +23,11 @@ public class EpisodeService
 		return episodeRepository.findById(id);
 	}
 
+	public Optional<Episode> getEpisodeByNumbers(Integer showId, Integer seasonNumber, Integer episodeNumber)
+	{
+		return episodeRepository.findByNumberAndSeasonNumberAndSeasonShowId(episodeNumber, seasonNumber, showId);
+	}
+
 	public void deleteEpisode(Episode episode)
 	{
 		episodeRepository.delete(episode);
