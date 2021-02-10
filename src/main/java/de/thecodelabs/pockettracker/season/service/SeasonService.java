@@ -10,6 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,11 @@ public class SeasonService
 		return seasonRepository.findById(id);
 	}
 
+	public List<Season> getSeasonsForShow(Integer show)
+	{
+		return seasonRepository.findAllByShowId(show);
+	}
+
 	@Transactional
 	public Episode addEpisodeToSeason(Integer seasonId)
 	{
@@ -44,6 +50,7 @@ public class SeasonService
 		final String title = messageSource.getMessage("episode.defaultName", new Object[]{highestEpisodeNumber + 1}, LocaleContextHolder.getLocale());
 		Episode episode = new Episode(title, highestEpisodeNumber + 1, season);
 		season.getEpisodes().add(episode);
+
 		return episode;
 	}
 

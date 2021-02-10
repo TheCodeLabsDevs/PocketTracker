@@ -34,7 +34,7 @@ public class ShowApiController
 
 	@Operation(operationId = "getShowById")
 	@GetMapping("/{id}")
-	public Optional<Show> getAllShows(@PathVariable Integer id)
+	public Optional<Show> getShowById(@PathVariable Integer id)
 	{
 		return showService.getShowById(id);
 	}

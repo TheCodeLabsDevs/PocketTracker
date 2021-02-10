@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.season.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -16,19 +17,30 @@ import java.util.List;
 @Entity
 public class Season
 {
+	public static class View
+	{
+		public interface Summary
+		{
+		}
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(View.Summary.class)
 	private Integer id;
 
 	@NotNull
 	@NotEmpty
+	@JsonView(View.Summary.class)
 	private String name;
 
 	@Column(length = 4096)
+	@JsonView(View.Summary.class)
 	private String description;
 
 	@NotNull
 	@Min(0)
+	@JsonView(View.Summary.class)
 	private Integer number;
 
 	@ManyToOne(fetch = FetchType.LAZY)
