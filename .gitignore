@@ -3,3 +3,6 @@ config/
 images/
 password.txt
 build/episodes.db
+
+client/target
+client/openapi-generator-cli.jar

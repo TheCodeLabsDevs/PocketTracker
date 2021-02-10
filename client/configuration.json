@@ -1,0 +1,9 @@
+{
+    "artifactId": "PocketTracker-Client",
+    "groupId": "de.thecodelabs",
+    "packageName": "de.thecodelabs.pockettracker",
+    "apiPackage": "de.thecodelabs.pockettracker.api",
+    "modelPackage":"de.thecodelabs.pockettracker.model",
+    "invokerPackage": "de.thecodelabs.pockettracker.invoker",
+    "hideGenerationTimestamp": true
+}
