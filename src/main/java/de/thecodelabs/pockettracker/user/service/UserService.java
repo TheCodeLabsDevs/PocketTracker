@@ -10,11 +10,13 @@ import de.thecodelabs.pockettracker.user.StatisticItem;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
+import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.repository.GitlabAuthenticationRepository;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
+import de.thecodelabs.pockettracker.user.repository.WatchedEpisodeRepository;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -39,18 +42,20 @@ public class UserService
 {
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder passwordEncoder;
-	private final ShowService showService;
-
 	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
+
+	private final ShowService showService;
+	private final WatchedEpisodeRepository episodeRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository)
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository, WatchedEpisodeRepository episodeRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.showService = showService;
 		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
+		this.episodeRepository = episodeRepository;
 	}
 
 	public Optional<User> getCurrentUserOptional()
@@ -215,25 +220,46 @@ public class UserService
 		return true;
 	}
 
-	public List<Episode> getWatchedEpisodesByShow(User user, Show show)
+	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, Show show)
 	{
 		return user.getWatchedEpisodes().stream()
-				.filter(episode -> episode.getSeason().getShow().equals(show))
+				.filter(watched -> watched.getEpisode().getSeason().getShow().equals(show))
 				.collect(Collectors.toList());
 	}
 
-	public List<Episode> getWatchedEpisodesBySeason(User user, Season season)
+	public List<WatchedEpisode> getWatchedEpisodesBySeason(User user, Season season)
 	{
 		return user.getWatchedEpisodes().stream()
-				.filter(episode -> episode.getSeason().equals(season))
+				.filter(watched -> watched.getEpisode().getSeason().equals(season))
 				.collect(Collectors.toList());
 	}
 
 	public boolean isWatchedEpisode(User user, Episode episode)
 	{
-		return user.getWatchedEpisodes().contains(episode);
+		return user.getWatchedEpisodes().stream().anyMatch(watched -> watched.getEpisode().equals(episode));
 	}
 
+	@Transactional
+	public void addWatchedEpisode(User user, Episode episode)
+	{
+		WatchedEpisode watchedEpisode = new WatchedEpisode(user, episode, LocalDate.now());
+		user.getWatchedEpisodes().add(watchedEpisode);
+	}
+
+	@Transactional
+	public void removeWatchedEpisode(User user, Episode episode)
+	{
+		final Optional<WatchedEpisode> watchedEpisodeOptional = user.getWatchedEpisodes().stream()
+				.filter(watched -> watched.getEpisode().equals(episode))
+				.findFirst();
+
+		watchedEpisodeOptional.ifPresent(watchedEpisode -> {
+			user.getWatchedEpisodes().remove(watchedEpisode);
+			episodeRepository.delete(watchedEpisode);
+		});
+	}
+
+	@Transactional
 	public void toggleCompleteSeason(User user, Season season, boolean markAsWatched)
 	{
 		for(Episode episode : season.getEpisodes())
@@ -243,7 +269,7 @@ public class UserService
 				// is watched but should be marked as unwatched
 				if(!markAsWatched)
 				{
-					user.getWatchedEpisodes().remove(episode);
+					removeWatchedEpisode(user, episode);
 				}
 			}
 			else
@@ -251,7 +277,7 @@ public class UserService
 				// is unwatched but should be marked as watched
 				if(markAsWatched)
 				{
-					user.getWatchedEpisodes().add(episode);
+					addWatchedEpisode(user, episode);
 				}
 			}
 		}
@@ -260,15 +286,15 @@ public class UserService
 	public Integer getTotalPlayedMinutes(User user)
 	{
 		return user.getWatchedEpisodes().stream()
-				.filter(episode -> episode.getLengthInMinutes() != null)
-				.mapToInt(Episode::getLengthInMinutes)
+				.filter(watched -> watched.getEpisode().getLengthInMinutes() != null)
+				.mapToInt(watched -> watched.getEpisode().getLengthInMinutes())
 				.sum();
 	}
 
 	public Integer getNumberOfCompletedSeasons(User user)
 	{
 		final List<Season> seasonsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
-				.map(Episode::getSeason)
+				.map(watched -> watched.getEpisode().getSeason())
 				.distinct()
 				.collect(Collectors.toList());
 
@@ -288,7 +314,7 @@ public class UserService
 	public Integer getNumberOfCompletedShows(User user)
 	{
 		final List<Show> showsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
-				.map(episode -> episode.getSeason().getShow())
+				.map(watched -> watched.getEpisode().getSeason().getShow())
 				.distinct()
 				.collect(Collectors.toList());
 
@@ -325,8 +351,15 @@ public class UserService
 		{
 			user.getShows().remove(show);
 
-			final List<Episode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
+			final List<WatchedEpisode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
 			user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
 		}
+	}
+
+	@Transactional
+	public void deleteWatchedEpisodes(Episode episode)
+	{
+		final List<WatchedEpisode> watchedEpisodes = episode.getWatchedEpisodes();
+		episodeRepository.deleteAll(watchedEpisodes);
 	}
 }

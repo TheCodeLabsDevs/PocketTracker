@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.user.model;
 
-import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
@@ -39,8 +38,8 @@ public class User
 			inverseJoinColumns = @JoinColumn(name = "shows_id"))
 	private List<Show> shows;
 
-	@ManyToMany
-	private List<Episode> watchedEpisodes;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<WatchedEpisode> watchedEpisodes;
 
 	public void setId(Integer id)
 	{
@@ -110,7 +109,7 @@ public class User
 		return shows;
 	}
 
-	public List<Episode> getWatchedEpisodes()
+	public List<WatchedEpisode> getWatchedEpisodes()
 	{
 		return watchedEpisodes;
 	}

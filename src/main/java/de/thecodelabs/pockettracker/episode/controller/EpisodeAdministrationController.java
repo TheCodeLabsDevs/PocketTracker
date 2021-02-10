@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
@@ -24,11 +25,13 @@ import java.util.Optional;
 public class EpisodeAdministrationController
 {
 	private final EpisodeService episodeService;
+	private final UserService userService;
 
 	@Autowired
-	public EpisodeAdministrationController(EpisodeService episodeService)
+	public EpisodeAdministrationController(EpisodeService episodeService, UserService userService)
 	{
 		this.episodeService = episodeService;
+		this.userService = userService;
 	}
 
 	@GetMapping("/{id}/edit")
@@ -90,7 +93,9 @@ public class EpisodeAdministrationController
 		final Season season = episode.getSeason();
 		final String episodeName = episode.getName();
 
+		userService.deleteWatchedEpisodes(episode);
 		episodeService.deleteEpisode(episode);
+
 		WebRequestUtils.putToast(request, new Toast("toast.episode.delete", BootstrapColor.SUCCESS, episodeName));
 
 		return "redirect:/season/" + season.getId() + "/edit";

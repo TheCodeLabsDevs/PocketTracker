@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.service.UserAuthenticationService;
@@ -193,7 +194,7 @@ public class UserController
 			return "redirect:/user/shows";
 		}
 
-		final List<Episode> watchedEpisodesByShow = userService.getWatchedEpisodesByShow(user, showToRemove);
+		final List<WatchedEpisode> watchedEpisodesByShow = userService.getWatchedEpisodesByShow(user, showToRemove);
 		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
 
 		return "redirect:/user/shows";
@@ -220,7 +221,6 @@ public class UserController
 	}
 
 	@GetMapping("/episode/{episodeId}/toggle/{redirectTo}")
-	@Transactional
 	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId, @PathVariable String redirectTo)
 	{
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
@@ -233,13 +233,13 @@ public class UserController
 		final User user = userService.getCurrentUser();
 
 		final Episode episode = episodeOptional.get();
-		if(user.getWatchedEpisodes().contains(episode))
+		if(userService.isWatchedEpisode(user, episode))
 		{
-			user.getWatchedEpisodes().remove(episode);
+			userService.removeWatchedEpisode(user, episode);
 		}
 		else
 		{
-			user.getWatchedEpisodes().add(episode);
+			userService.addWatchedEpisode(user, episode);
 		}
 
 		if(redirectTo.equals("episode"))

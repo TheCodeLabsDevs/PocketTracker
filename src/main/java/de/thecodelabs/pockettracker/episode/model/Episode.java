@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.episode.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Episode
@@ -42,6 +45,9 @@ public class Episode
 	@JsonIgnore
 	@MergeIgnore
 	private Season season;
+
+	@OneToMany(mappedBy = "episode")
+	private List<WatchedEpisode> watchedEpisodes;
 
 	public Episode()
 	{
@@ -141,6 +147,34 @@ public class Episode
 			return null;
 		}
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
+	public List<WatchedEpisode> getWatchedEpisodes()
+	{
+		return watchedEpisodes;
+	}
+
+	public void setWatchedEpisodes(List<WatchedEpisode> watchedEpisodes)
+	{
+		this.watchedEpisodes = watchedEpisodes;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof Episode)) return false;
+		Episode episode = (Episode) o;
+		return Objects.equals(id, episode.id) && Objects.equals(name, episode.name)
+				&& Objects.equals(description, episode.description) && Objects.equals(number, episode.number)
+				&& Objects.equals(firstAired, episode.firstAired)
+				&& Objects.equals(lengthInMinutes, episode.lengthInMinutes);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id, name, description, number, firstAired, lengthInMinutes);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
-from collections import defaultdict
-
 import psycopg2.extras
 import sqlite3
 import sys
+from collections import defaultdict
 from dataclasses import dataclass
+from datetime import date
 from datetime import datetime
 from typing import List
 
@@ -11,7 +11,7 @@ SQLITE_DATABASE_PATH = 'episodes.db'
 
 POSTGRES_DATABASE_NAME = 'pockettracker'
 POSTGRES_USER_NAME = 'pockettracker'
-POSTGRES_PASSWORD = 'pocketTracker'
+POSTGRES_PASSWORD = ''
 POSTGRES_HOST = '127.0.0.1'
 POSTGRES_PORT = '5432'
 
@@ -138,9 +138,12 @@ def migrate_episode(episode, newSeasonId):
 
 
 def migrate_watched_episode(newEpisodeId):
+    today = date.today()
+    watched_at = today.strftime("%Y-%m-%d")
+
     cursorPostgres.execute(
-        'INSERT INTO appuser_watched_episodes (user_id, watched_episodes_id) VALUES (%s, %s);',
-        (POCKET_TRACKER_USER_ID, newEpisodeId))
+        'INSERT INTO appuser_watched_episodes (user_id, episode_id, watched_at) VALUES (%s, %s, %s);',
+        (POCKET_TRACKER_USER_ID, newEpisodeId, watched_at))
 
     if episode.watched:
         migrate_watched_episode(episode)
