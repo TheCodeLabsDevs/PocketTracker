@@ -43,10 +43,11 @@ public class Episode
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
-	@MergeIgnore
 	private Season season;
 
 	@OneToMany(mappedBy = "episode")
+	@JsonIgnore
+	@MergeIgnore
 	private List<WatchedEpisode> watchedEpisodes;
 
 	public Episode()
