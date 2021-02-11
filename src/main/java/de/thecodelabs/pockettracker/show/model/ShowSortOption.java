@@ -7,15 +7,22 @@ import org.springframework.context.MessageSourceResolvable;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum ShowSortOption implements MessageSourceResolvable
 {
-	NAME((shows, user) -> shows.stream().sorted(Comparator.comparing(Show::getName)).collect(Collectors.toList())),
+	NAME((shows, user) -> shows.stream()
+			.sorted(Comparator.comparing(Show::getName))
+			.collect(Collectors.toList())),
 	LAST_WATCHED((shows, user) -> shows.stream()
 			.sorted(Comparator.comparing((Show show) -> getLatestWatchDate(show, user))
 					.thenComparing(Show::getName)
 					.reversed())
+			.collect(Collectors.toList())),
+	RUNNING((shows, user) -> shows.stream()
+			.filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false))
+			.sorted(Comparator.comparing(Show::getName))
 			.collect(Collectors.toList()));
 
 	private final ShowSort sorter;
