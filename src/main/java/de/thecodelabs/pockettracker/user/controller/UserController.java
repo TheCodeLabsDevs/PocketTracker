@@ -8,6 +8,7 @@ import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
@@ -138,8 +139,13 @@ public class UserController
 	}
 
 	@GetMapping("/shows")
-	public String getShows(Model model)
+	public String getShows(@RequestParam(required = false) ShowSortOption sortOption, Model model)
 	{
+		if(sortOption == null)
+		{
+			sortOption = ShowSortOption.LAST_WATCHED;
+		}
+
 		final User user = userService.getCurrentUser();
 
 		String searchText = null;
@@ -148,7 +154,10 @@ public class UserController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		model.addAttribute("shows", showService.getAllFavoriteShowsByUser(searchText, user));
+		final List<Show> shows = showService.getAllFavoriteShowsByUser(searchText, user);
+		final List<Show> sortedShows = sortOption.getSorter().sort(shows, user);
+		model.addAttribute("shows", sortedShows);
+		model.addAttribute("currentSortOption", sortOption);
 
 		model.addAttribute("currentPage", "Meine Serien");
 		model.addAttribute("userShows", user.getShows());

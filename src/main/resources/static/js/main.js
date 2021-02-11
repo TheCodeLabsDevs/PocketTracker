@@ -1,6 +1,7 @@
 window.addEventListener('load', function(event)
 {
     handleEpisodeToggles();
+    changeSortOption();
 });
 
 function handleEpisodeToggles()
@@ -15,5 +16,16 @@ function handleEpisodeToggles()
     {
         window.location.href = this.getAttribute('data-url');
         event.preventDefault();
+    }
+}
+
+function changeSortOption() {
+    let sortOption = document.getElementById("sortOption");
+    if (sortOption) {
+        sortOption.addEventListener("change", onChange, false);
+    }
+
+    function onChange(event) {
+        document.getElementById("sortOptionForm").submit();
     }
 }

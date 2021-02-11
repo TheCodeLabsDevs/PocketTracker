@@ -4,8 +4,8 @@
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
+    <#import "/common/components/form.ftl" as f>
     <#import "/common/macros/show.ftl" as showMacros/>
-    <#import "/users/form.ftl" as form>
 
     <@template.head currentPage/>
     <@template.body>
@@ -17,6 +17,14 @@
                     </@b.col>
                 </@b.row>
             </@b.hasPermission>
+        </#if>
+
+        <#if isUserSpecificView>
+            <@b.row>
+                <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() method="GET" rawUrl=true csrf=false>
+                    <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size="col-12 col-md-6 col-lg-3" classes="float-end"/>
+                </@f.form>
+            </@b.row>
         </#if>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
