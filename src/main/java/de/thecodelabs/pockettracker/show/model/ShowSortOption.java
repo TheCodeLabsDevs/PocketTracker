@@ -55,6 +55,6 @@ public enum ShowSortOption implements MessageSourceResolvable
 				.flatMap(episode -> episode.getWatchedEpisodes().stream())
 				.filter(watchedEpisode -> watchedEpisode.getUser().equals(user))
 				.map(WatchedEpisode::getWatchedAt)
-				.max(LocalDate::compareTo).orElse(null);
+				.max(LocalDate::compareTo).orElse(LocalDate.MIN);
 	}
 }
