@@ -5,6 +5,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.service.SeasonService;
+import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
@@ -27,11 +28,13 @@ import java.util.Optional;
 public class SeasonAdministrationController
 {
 	private final SeasonService seasonService;
+	private final UserService userService;
 
 	@Autowired
-	public SeasonAdministrationController(SeasonService seasonService)
+	public SeasonAdministrationController(SeasonService seasonService, UserService userService)
 	{
 		this.seasonService = seasonService;
+		this.userService = userService;
 	}
 
 	@GetMapping("/{id}/edit")
@@ -118,6 +121,7 @@ public class SeasonAdministrationController
 		final Integer showId = season.getShow().getId();
 		final String seasonName = season.getName();
 
+		userService.deleteSeason(season);
 		seasonService.deleteSeason(season);
 		WebRequestUtils.putToast(request, new Toast("toast.season.delete", BootstrapColor.SUCCESS, seasonName));
 

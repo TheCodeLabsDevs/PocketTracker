@@ -45,17 +45,17 @@ public class UserService
 	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
 
 	private final ShowService showService;
-	private final WatchedEpisodeRepository episodeRepository;
+	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository, WatchedEpisodeRepository episodeRepository)
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository, WatchedEpisodeRepository watchedEpisodeRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.showService = showService;
 		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
-		this.episodeRepository = episodeRepository;
+		this.watchedEpisodeRepository = watchedEpisodeRepository;
 	}
 
 	public Optional<User> getCurrentUserOptional()
@@ -255,7 +255,7 @@ public class UserService
 
 		watchedEpisodeOptional.ifPresent(watchedEpisode -> {
 			user.getWatchedEpisodes().remove(watchedEpisode);
-			episodeRepository.delete(watchedEpisode);
+			watchedEpisodeRepository.delete(watchedEpisode);
 		});
 	}
 
@@ -350,9 +350,20 @@ public class UserService
 		for(User user : users)
 		{
 			user.getShows().remove(show);
+		}
 
-			final List<WatchedEpisode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
-			user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
+		for(Season season : show.getSeasons())
+		{
+			deleteSeason(season);
+		}
+	}
+
+	@Transactional
+	public void deleteSeason(Season season)
+	{
+		for(Episode episode : season.getEpisodes())
+		{
+			deleteWatchedEpisodes(episode);
 		}
 	}
 
@@ -360,6 +371,6 @@ public class UserService
 	public void deleteWatchedEpisodes(Episode episode)
 	{
 		final List<WatchedEpisode> watchedEpisodes = episode.getWatchedEpisodes();
-		episodeRepository.deleteAll(watchedEpisodes);
+		watchedEpisodeRepository.deleteAll(watchedEpisodes);
 	}
 }
