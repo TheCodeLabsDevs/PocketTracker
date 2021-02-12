@@ -59,7 +59,7 @@
             <@t.headCell label="season.episodes.actions"/>
         </@t.head>
         <@t.body>
-            <#list episodes as episode>
+            <#list episodes?sort_by("number") as episode>
                 <@t.row>
                     <@t.cell value="${episode.number}"/>
                     <@t.cell value="${episode.name}"/>
