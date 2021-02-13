@@ -21,5 +21,13 @@
                 <@form.baseDate episode/>
             </@c.body>
         </@c.card>
+
+        <#if episode.id??>
+            <@c.card classes="my-4">
+                <@c.body>
+                    <@form.images episode/>
+                </@c.body>
+            </@c.card>
+        </#if>
     </@template.body>
 </html>

@@ -33,3 +33,18 @@
         <@s.messageArgs code="episode.delete.message" args=[episode.getName()]/>
     </@delete.modal>
 </#macro>
+
+<#macro images episode>
+    <@b.h3 title="show.images"/>
+
+    <#if episode.getPosterPath()??>
+        <img src="<@s.url "/resources/" + episode.getPosterPath()/>" class="w-25 mb-4"/>
+    </#if>
+
+    <@b.row>
+        <@f.form name="poster" url="/episode/${episode.id}/edit/POSTER" multipart=true>
+            <@f.file label="show.poster" name="image"/>
+            <@f.submit classes="float-end"/>
+        </@f.form>
+    </@b.row>
+</#macro>
