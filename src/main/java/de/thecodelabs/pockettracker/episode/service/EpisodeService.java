@@ -57,7 +57,7 @@ public class EpisodeService
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
 
 		final String showName = Helpers.replaceNonAlphaNumericCharacters(episode.getSeason().getShow().getName(), "_");
-		final String fileName = MessageFormat.format("{0}_{1}.jpg", showName, Helpers.getShortCode(episode));
+		final String fileName = MessageFormat.format("{0}+{1}.jpg", showName, Helpers.getShortCode(episode));
 		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
 		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
 		Path bannerPath;
