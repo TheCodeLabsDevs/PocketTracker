@@ -166,13 +166,6 @@ public class ShowService
 				.sum();
 	}
 
-	public String getShortCode(Episode episode)
-	{
-		return MessageFormat.format("[S{0} E{1}]",
-				String.format("%02d", episode.getSeason().getNumber()),
-				String.format("%02d", episode.getNumber()));
-	}
-
 	@Transactional
 	public void deleteShow(Show show)
 	{

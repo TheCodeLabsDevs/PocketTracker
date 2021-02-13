@@ -7,7 +7,7 @@
     <#import "/common/macros/show.ftl" as showMacros/>
     <#import "/users/form.ftl" as form>
 
-    <@template.head showService.getShortCode(episode) + " - " + episode.getName()/>
+    <@template.head helpers.getShortCode(episode) + " - " + episode.getName()/>
     <@template.body>
         <@b.back_button url="/season/" + episode.getSeason().getId() center=true/>
 
@@ -19,7 +19,7 @@
 
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
                 <h3 class="card-title text-center">
-                    ${showService.getShortCode(episode)} - ${episode.getName()}
+                    ${helpers.getShortCode(episode)} - ${episode.getName()}
                     <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                 </h3>
 
