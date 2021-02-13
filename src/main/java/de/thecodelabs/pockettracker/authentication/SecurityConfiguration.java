@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 
 import java.util.Optional;
 
@@ -24,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	private final DatabaseUserDetailService databaseUserDetailService;
 	private final RememberMeService rememberMeService;
 	private final AuthenticationConfigurationProperties configurationProperties;
+
+	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	private final UserService userService;
 
@@ -87,7 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 							}
 						}
 
-						httpServletResponse.sendRedirect("/");
+						redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/");
 					})
 					.loginPage(LOGIN_PAGE)
 					.permitAll();
