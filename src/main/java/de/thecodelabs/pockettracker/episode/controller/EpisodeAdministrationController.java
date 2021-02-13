@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.episode.controller;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
+import de.thecodelabs.pockettracker.episode.model.EpisodeImageType;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
@@ -9,6 +10,8 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +20,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/episode")
 public class EpisodeAdministrationController
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(EpisodeAdministrationController.class);
+
 	private final EpisodeService episodeService;
 	private final UserService userService;
 
@@ -99,6 +106,36 @@ public class EpisodeAdministrationController
 		WebRequestUtils.putToast(request, new Toast("toast.episode.delete", BootstrapColor.SUCCESS, episodeName));
 
 		return "redirect:/season/" + season.getId() + "/edit";
+	}
+
+	@PostMapping("/{id}/edit/{type}")
+	public String updateImage(WebRequest request, @PathVariable Integer id, @PathVariable EpisodeImageType type,
+							  @RequestParam("image") MultipartFile multipartFile)
+	{
+		Optional<Episode> episodeOptional = episodeService.getEpisodeById(id);
+		if(episodeOptional.isEmpty())
+		{
+			return "redirect:/episode/" + id + "/edit";
+		}
+		final Episode episode = episodeOptional.get();
+
+		if(multipartFile == null || multipartFile.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			episodeService.deleteEpisodeImage(type, episode);
+			return "redirect:/episode/" + id + "/edit";
+		}
+
+		try
+		{
+			episodeService.changeEpisodeImage(type, episode, multipartFile);
+		}
+		catch(IOException e)
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			LOGGER.error("Fail to change image", e);
+		}
+		return "redirect:/episode/" + id + "/edit";
 	}
 
 	/*
