@@ -2,9 +2,12 @@ package de.thecodelabs.pockettracker.episode.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
+import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -41,6 +44,10 @@ public class Episode
 	@Min(0)
 	private Integer lengthInMinutes;
 
+	@Column(length = 2048)
+	@JsonSerialize(using = JsonResourcePathSerializer.class)
+	private String posterPath;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Season season;
@@ -61,7 +68,7 @@ public class Episode
 		this.season = season;
 	}
 
-	public Episode(String name, String description, Integer number, LocalDate firstAired, Integer lengthInMinutes, Season season)
+	public Episode(String name, String description, Integer number, LocalDate firstAired, Integer lengthInMinutes, Season season, String posterPath)
 	{
 		this.name = name;
 		this.description = description;
@@ -69,6 +76,7 @@ public class Episode
 		this.firstAired = firstAired;
 		this.lengthInMinutes = lengthInMinutes;
 		this.season = season;
+		this.posterPath = posterPath;
 	}
 
 	public Integer getId()
@@ -141,6 +149,16 @@ public class Episode
 		this.season = season;
 	}
 
+	public String getPosterPath()
+	{
+		return posterPath;
+	}
+
+	public void setPosterPath(String posterPath)
+	{
+		this.posterPath = posterPath;
+	}
+
 	public String getFirstAiredReadable()
 	{
 		if(firstAired == null)
@@ -160,22 +178,48 @@ public class Episode
 		this.watchedEpisodes = watchedEpisodes;
 	}
 
+	public String getImagePath(EpisodeImageType episodeImageType)
+	{
+		switch(episodeImageType)
+		{
+			case POSTER:
+				return getPosterPath();
+			default:
+				throw new UnsupportedOperationException("Image type not implemented");
+		}
+	}
+
+	public void setImagePath(EpisodeImageType episodeImageType, String path)
+	{
+		switch(episodeImageType)
+		{
+			case POSTER:
+				setPosterPath(path);
+				break;
+			default:
+				throw new UnsupportedOperationException("Image type not implemented");
+		}
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
-		if(!(o instanceof Episode)) return false;
+		if(o == null || getClass() != o.getClass()) return false;
 		Episode episode = (Episode) o;
-		return Objects.equals(id, episode.id) && Objects.equals(name, episode.name)
-				&& Objects.equals(description, episode.description) && Objects.equals(number, episode.number)
+		return Objects.equals(id, episode.id)
+				&& Objects.equals(name, episode.name)
+				&& Objects.equals(description, episode.description)
+				&& Objects.equals(number, episode.number)
 				&& Objects.equals(firstAired, episode.firstAired)
-				&& Objects.equals(lengthInMinutes, episode.lengthInMinutes);
+				&& Objects.equals(lengthInMinutes, episode.lengthInMinutes)
+				&& Objects.equals(posterPath, episode.posterPath);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(id, name, description, number, firstAired, lengthInMinutes);
+		return Objects.hash(id, name, description, number, firstAired, lengthInMinutes, posterPath);
 	}
 
 	@Override
@@ -188,6 +232,7 @@ public class Episode
 				", number=" + number +
 				", firstAired=" + firstAired +
 				", lengthInMinutes=" + lengthInMinutes +
+				", posterPath=" + posterPath +
 				", season=[id=" + season.getId() + ", name=" + season.getName() + ", number: " + season.getNumber() + "]" +
 				'}';
 	}
