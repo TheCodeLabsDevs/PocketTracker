@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.model.EpisodeImageType;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
+import de.thecodelabs.pockettracker.utils.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

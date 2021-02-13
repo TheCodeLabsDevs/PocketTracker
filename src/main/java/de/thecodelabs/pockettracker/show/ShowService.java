@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.utils.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +117,9 @@ public class ShowService
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
 
-		StringBuilder bannerFilenameBuilder = new StringBuilder(Optional.ofNullable(file.getOriginalFilename()).orElse(show.getName()));
+		final String fileName = Optional.ofNullable(file.getOriginalFilename()).orElse(show.getName());
+		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
+		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
 		Path bannerPath;
 
 		while(Files.exists(bannerPath = basePath.resolve(showImageType.getPathName()).resolve(bannerFilenameBuilder.toString())))
