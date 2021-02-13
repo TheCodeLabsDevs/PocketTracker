@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Optional;
 
 @Service
@@ -55,7 +56,10 @@ public class EpisodeService
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
 
-		StringBuilder bannerFilenameBuilder = new StringBuilder(Optional.ofNullable(file.getOriginalFilename()).orElse(episode.getName()));
+		final String showName = Helpers.replaceNonAlphaNumericCharacters(episode.getSeason().getShow().getName(), "_");
+		final String fileName = MessageFormat.format("{0}_{1}.jpg", showName, Helpers.getShortCode(episode));
+		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
+		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
 		Path bannerPath;
 
 		while(Files.exists(bannerPath = basePath.resolve(episodeImageType.getPathName()).resolve(bannerFilenameBuilder.toString())))
