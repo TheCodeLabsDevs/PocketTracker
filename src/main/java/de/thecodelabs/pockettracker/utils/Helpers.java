@@ -21,6 +21,6 @@ public class Helpers
 
 	public static String replaceNonAlphaNumericCharacters(String text, String replacement)
 	{
-		return text.replaceAll("[^A-Za-z0-9]", replacement);
+		return text.replaceAll("[^A-Za-z0-9\\.]", replacement);
 	}
 }
