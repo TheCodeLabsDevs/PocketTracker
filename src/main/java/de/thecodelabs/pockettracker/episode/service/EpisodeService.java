@@ -5,6 +5,7 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.model.EpisodeImageType;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.utils.Helpers;
+import de.thecodelabs.utils.io.PathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,9 @@ public class EpisodeService
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
 
+		final String extension = Optional.ofNullable(file.getOriginalFilename()).map(PathUtils::getFileExtension).orElse("jpg");
 		final String showName = Helpers.replaceNonAlphaNumericCharacters(episode.getSeason().getShow().getName(), "_");
-		final String fileName = MessageFormat.format("{0}+{1}.jpg", showName, Helpers.getShortCode(episode));
+		final String fileName = MessageFormat.format("{0}+{1}.{2}", showName, Helpers.getShortCode(episode), extension);
 		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
 		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
 		Path bannerPath;
