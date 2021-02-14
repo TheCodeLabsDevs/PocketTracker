@@ -55,7 +55,7 @@ public class EpisodeService
 	{
 		deleteEpisodeImage(episodeImageType, episode);
 
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
+		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 
 		final String extension = Optional.ofNullable(file.getOriginalFilename()).map(PathUtils::getFileExtension).orElse("jpg");
 		final String showName = Helpers.replaceNonAlphaNumericCharacters(episode.getSeason().getShow().getName(), "_");
@@ -75,7 +75,7 @@ public class EpisodeService
 			return;
 		}
 
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
+		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 		final Path bannerPath = basePath.resolve(episode.getImagePath(episodeImageType));
 
 		try
@@ -85,7 +85,7 @@ public class EpisodeService
 		}
 		catch(IOException e)
 		{
-			LOGGER.error("Fail to delete banner image", e);
+			LOGGER.error("Fail to delete poster image", e);
 		}
 	}
 }

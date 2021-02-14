@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -115,7 +114,7 @@ public class ShowService
 	{
 		deleteShowImage(showImageType, show);
 
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
+		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 
 		final String fileName = Optional.ofNullable(file.getOriginalFilename()).orElse(show.getName());
 		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
@@ -139,7 +138,7 @@ public class ShowService
 			return;
 		}
 
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePath());
+		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 		final Path bannerPath = basePath.resolve(show.getImagePath(showImageType));
 
 		try

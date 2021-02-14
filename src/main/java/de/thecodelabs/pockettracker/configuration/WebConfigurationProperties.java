@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.configuration;
 
+import de.thecodelabs.utils.util.OS;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,16 @@ public class WebConfigurationProperties
 
 	public String getImageResourcePath()
 	{
+		return imageResourcePath;
+	}
+
+	public String getImageResourcePathForOS()
+	{
+		if(OS.isWindows())
+		{
+			return imageResourcePath.replaceFirst("^/(.:/)", "$1");
+		}
+
 		return imageResourcePath;
 	}
 
