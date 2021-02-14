@@ -43,7 +43,7 @@
 
     <@b.row>
         <@f.form name="poster" url="/episode/${episode.id}/edit/POSTER" multipart=true>
-            <@f.file label="show.poster" name="image"/>
+            <@f.file label="episode.poster" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>
     </@b.row>
