@@ -61,14 +61,8 @@ public class EpisodeService
 		final String showName = Helpers.replaceNonAlphaNumericCharacters(episode.getSeason().getShow().getName(), "_");
 		final String fileName = MessageFormat.format("{0}+{1}.{2}", showName, Helpers.getShortCode(episode), extension);
 		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
-		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
-		Path bannerPath;
 
-		while(Files.exists(bannerPath = basePath.resolve(episodeImageType.getPathName()).resolve(bannerFilenameBuilder.toString())))
-		{
-			bannerFilenameBuilder.insert(0, "_");
-		}
-
+		Path bannerPath = basePath.resolve(episodeImageType.getPathName()).resolve(escapedFileName);
 		episode.setImagePath(episodeImageType, basePath.relativize(bannerPath).toString());
 		file.transferTo(bannerPath);
 	}
