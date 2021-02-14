@@ -34,11 +34,7 @@
                         </@b.row>
                     </div>
 
-                    <#if episode.getPosterPath()??>
-                        <div class="col-12 col-md-8 mt-3">
-                    <#else>
-                        <div class="col-12 col-md-8 offset-md-2">
-                    </#if>
+                    <div class="col-12 col-md-8 <#if episode.getPosterPath()??>mt-3<#else>offset-md-2</#if>">
                         <div class="row">
                             <#if episode.getFirstAired()??>
                                 <@showMacros.factItem "fas fa-calendar" episode.getFirstAired()?date('yyy-MM-dd') "Datum"/>
@@ -50,11 +46,7 @@
 
                         <#if episode.getDescription()??>
                             <div class="row mt-3 mt-md-5 mb-4 mb-md-0">
-                            <#if episode.getPosterPath()??>
-                                <div class="col-12 col-md-11">
-                            <#else>
-                                <div class="col-12 col-md-8 offset-md-2">
-                            </#if>
+                                <div class="col-12 <#if episode.getPosterPath()??>col-md-11<#else>col-md-8 offset-md-2</#if>">
                                     <h5>Beschreibung</h5>
                                     ${episode.getDescription()}
                                 </div>
