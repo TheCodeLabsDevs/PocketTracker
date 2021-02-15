@@ -1,43 +1,27 @@
 package de.thecodelabs.pockettracker.backup;
 
-import de.thecodelabs.pockettracker.episode.model.Episode;
-import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.show.model.Show;
-import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
+import de.thecodelabs.pockettracker.backup.model.BackupUserModel;
 
 import java.util.List;
 
 public class Database
 {
-	private final List<Show> shows;
-	private final List<Season> seasons;
-	private final List<Episode> episodes;
-	private final List<User> users;
+	private final List<BackupShowModel> shows;
+	private final List<BackupUserModel> users;
 
-	public Database(List<Show> shows, List<Season> seasons, List<Episode> episodes, List<User> users)
+	public Database(List<BackupShowModel> shows, List<BackupUserModel> users)
 	{
 		this.shows = shows;
-		this.seasons = seasons;
-		this.episodes = episodes;
 		this.users = users;
 	}
 
-	public List<Show> getShows()
+	public List<BackupShowModel> getShows()
 	{
 		return shows;
 	}
 
-	public List<Season> getSeasons()
-	{
-		return seasons;
-	}
-
-	public List<Episode> getEpisodes()
-	{
-		return episodes;
-	}
-
-	public List<User> getUsers()
+	public List<BackupUserModel> getUsers()
 	{
 		return users;
 	}
