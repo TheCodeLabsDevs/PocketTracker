@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -62,9 +63,10 @@ public class PocketTrackerExportService
 		this.objectMapper = objectMapper;
 	}
 
+	@Transactional
 	public void export() throws IOException
 	{
-		LOGGER.info("Exporting database...");
+		LOGGER.info("Start backup...");
 
 		final List<Show> shows = showRepository.findAll();
 		final List<BackupShowModel> backupShowModels = showConverter.toBeans(shows);
@@ -82,12 +84,15 @@ public class PocketTrackerExportService
 			Files.createDirectories(backupLocationPath);
 		}
 
+		LOGGER.info("Cleaning old backups...");
 		deleteOldBackups(basePath);
+
+		LOGGER.info("Create backup at {}", backupLocationPath);
 
 		exportDatabase(backupLocationPath, database);
 		exportImages(backupLocationPath);
 
-		LOGGER.info("Export done");
+		LOGGER.info("Backup done");
 	}
 
 	private void deleteOldBackups(Path backupLocation) throws IOException
