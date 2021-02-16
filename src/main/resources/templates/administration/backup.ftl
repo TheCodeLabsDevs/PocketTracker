@@ -9,7 +9,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-12">
-                <@b.h2 "admin.user.headline"/>
+                <@b.h2 "menu.administration.backup"/>
             </@b.col>
         </@b.row>
 
