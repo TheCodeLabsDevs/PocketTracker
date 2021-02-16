@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
@@ -66,29 +68,30 @@ public class PocketTrackerExportService
 		final List<BackupUserModel> backupUserModels = userConverter.toBeans(users);
 		final Database database = new Database(backupShowModels, backupUserModels);
 
-		exportDatabase(database);
-		exportImages();
-
-		LOGGER.info("Export done");
-	}
-
-	private void exportImages() throws IOException
-	{
-		final Path imagesSourcePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
-		final Path imageBackupPath = Paths.get(backupConfigurationProperties.getLocation(), "images");
-
-		FileUtils.copyDirectory(imagesSourcePath.toFile(), imageBackupPath.toFile());
-	}
-
-	private void exportDatabase(Database database) throws IOException
-	{
-		final Path backupLocationPath = Paths.get(backupConfigurationProperties.getLocation());
+		final String backupFolderName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		final Path backupLocationPath = Paths.get(backupConfigurationProperties.getLocation(), backupFolderName);
 		if(Files.notExists(backupLocationPath))
 		{
 			Files.createDirectories(backupLocationPath);
 		}
 
-		final Path databasePath = backupLocationPath.resolve("database.json");
+		exportDatabase(backupLocationPath, database);
+		exportImages(backupLocationPath);
+
+		LOGGER.info("Export done");
+	}
+
+	private void exportImages(Path basePath) throws IOException
+	{
+		final Path imagesSourcePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
+		final Path imageBackupPath = basePath.resolve("images");
+
+		FileUtils.copyDirectory(imagesSourcePath.toFile(), imageBackupPath.toFile());
+	}
+
+	private void exportDatabase(Path basePath, Database database) throws IOException
+	{
+		final Path databasePath = basePath.resolve("database.json");
 		final BufferedWriter writer = Files.newBufferedWriter(databasePath);
 
 		objectMapper.writer().writeValue(writer, database);
