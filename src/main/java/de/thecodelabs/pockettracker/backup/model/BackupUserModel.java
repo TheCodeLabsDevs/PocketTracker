@@ -14,7 +14,7 @@ public class BackupUserModel
 	private UserRole userRole;
 	@MergeIgnore
 	private List<Integer> shows;
-	// TODO: watchedEpisodes
+	private List<BackupWatchedEpisodeModel> watchedEpisodes;
 
 
 	public Integer getId()
@@ -55,5 +55,15 @@ public class BackupUserModel
 	public void setShows(List<Integer> shows)
 	{
 		this.shows = shows;
+	}
+
+	public List<BackupWatchedEpisodeModel> getWatchedEpisodes()
+	{
+		return watchedEpisodes;
+	}
+
+	public void setWatchedEpisodes(List<BackupWatchedEpisodeModel> watchedEpisodes)
+	{
+		this.watchedEpisodes = watchedEpisodes;
 	}
 }

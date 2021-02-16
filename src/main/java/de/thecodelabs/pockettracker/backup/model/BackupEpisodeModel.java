@@ -1,17 +1,16 @@
 package de.thecodelabs.pockettracker.backup.model;
 
-import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
+import java.time.LocalDate;
 
-import java.util.List;
-
-public class BackupSeasonModel
+public class BackupEpisodeModel
 {
 	private Integer id;
 	private String name;
 	private String description;
 	private Integer number;
-	@MergeIgnore
-	private List<BackupEpisodeModel> episodes;
+	private LocalDate firstAired;
+	private Integer lengthInMinutes;
+	private String posterPath;
 
 	public Integer getId()
 	{
@@ -53,13 +52,33 @@ public class BackupSeasonModel
 		this.number = number;
 	}
 
-	public List<BackupEpisodeModel> getEpisodes()
+	public LocalDate getFirstAired()
 	{
-		return episodes;
+		return firstAired;
 	}
 
-	public void setEpisodes(List<BackupEpisodeModel> episodes)
+	public void setFirstAired(LocalDate firstAired)
 	{
-		this.episodes = episodes;
+		this.firstAired = firstAired;
+	}
+
+	public Integer getLengthInMinutes()
+	{
+		return lengthInMinutes;
+	}
+
+	public void setLengthInMinutes(Integer lengthInMinutes)
+	{
+		this.lengthInMinutes = lengthInMinutes;
+	}
+
+	public String getPosterPath()
+	{
+		return posterPath;
+	}
+
+	public void setPosterPath(String posterPath)
+	{
+		this.posterPath = posterPath;
 	}
 }

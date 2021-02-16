@@ -4,7 +4,6 @@ package de.thecodelabs.pockettracker.episode.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
