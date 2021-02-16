@@ -1,8 +1,10 @@
 package de.thecodelabs.pockettracker.backup.model;
 
 import de.thecodelabs.pockettracker.show.model.ShowType;
+import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class BackupShowModel
 {
@@ -14,6 +16,8 @@ public class BackupShowModel
 	private String posterPath;
 	private ShowType type;
 	private Boolean finished;
+	@MergeIgnore
+	private List<BackupSeasonModel> seasons;
 
 	public Integer getId()
 	{
@@ -93,5 +97,15 @@ public class BackupShowModel
 	public void setFinished(Boolean finished)
 	{
 		this.finished = finished;
+	}
+
+	public List<BackupSeasonModel> getSeasons()
+	{
+		return seasons;
+	}
+
+	public void setSeasons(List<BackupSeasonModel> seasons)
+	{
+		this.seasons = seasons;
 	}
 }
