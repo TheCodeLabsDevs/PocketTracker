@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class BackupConfigurationProperties
 {
 	private String location;
+	private Integer keep;
 
 	public String getLocation()
 	{
@@ -17,5 +18,15 @@ public class BackupConfigurationProperties
 	public void setLocation(String location)
 	{
 		this.location = location;
+	}
+
+	public Integer getKeep()
+	{
+		return keep;
+	}
+
+	public void setKeep(Integer keep)
+	{
+		this.keep = keep;
 	}
 }
