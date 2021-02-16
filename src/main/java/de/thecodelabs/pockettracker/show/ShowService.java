@@ -126,6 +126,11 @@ public class ShowService
 			bannerFilenameBuilder.insert(0, "_");
 		}
 
+		if(Files.notExists(bannerPath.getParent()))
+		{
+			Files.createDirectories(bannerPath.getParent());
+		}
+
 		show.setImagePath(showImageType, basePath.relativize(bannerPath).toString());
 		file.transferTo(bannerPath);
 	}

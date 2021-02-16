@@ -121,7 +121,7 @@ public class EpisodeAdministrationController
 
 		if(multipartFile == null || multipartFile.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			WebRequestUtils.putToast(request, new Toast("toast.image.null", BootstrapColor.WARNING));
 			episodeService.deleteEpisodeImage(type, episode);
 			return "redirect:/episode/" + id + "/edit";
 		}
@@ -132,7 +132,7 @@ public class EpisodeAdministrationController
 		}
 		catch(IOException e)
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
 			LOGGER.error("Fail to change image", e);
 		}
 		return "redirect:/episode/" + id + "/edit";

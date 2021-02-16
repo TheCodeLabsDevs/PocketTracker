@@ -134,7 +134,7 @@ public class ShowAdministrationController
 
 		if(multipartFile == null || multipartFile.isEmpty())
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			WebRequestUtils.putToast(request, new Toast("toast.image.null", BootstrapColor.WARNING));
 			service.deleteShowImage(type, show);
 			return "redirect:/show/" + id + "/edit";
 		}
@@ -145,7 +145,7 @@ public class ShowAdministrationController
 		}
 		catch(IOException e)
 		{
-			WebRequestUtils.putToast(request, new Toast("toast.show.image.null", BootstrapColor.WARNING));
+			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
 			logger.error("Fail to change banner image", e);
 		}
 		return "redirect:/show/" + id + "/edit";
