@@ -7,10 +7,12 @@ import de.thecodelabs.pockettracker.backup.converter.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.BackupUserModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
+import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +36,21 @@ public class PocketTrackerExportService
 	private final ShowConverter showConverter;
 	private final UserConverter userConverter;
 
+	private final WebConfigurationProperties webConfigurationProperties;
 	private final BackupConfigurationProperties backupConfigurationProperties;
+
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public PocketTrackerExportService(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter, UserConverter userConverter, BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
+	public PocketTrackerExportService(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter,
+									  UserConverter userConverter, WebConfigurationProperties webConfigurationProperties,
+									  BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showRepository = showRepository;
 		this.userRepository = userRepository;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
+		this.webConfigurationProperties = webConfigurationProperties;
 		this.backupConfigurationProperties = backupConfigurationProperties;
 		this.objectMapper = objectMapper;
 	}
@@ -60,12 +67,22 @@ public class PocketTrackerExportService
 		final Database database = new Database(backupShowModels, backupUserModels);
 
 		exportDatabase(database);
+		exportImages();
+
 		LOGGER.info("Export done");
+	}
+
+	private void exportImages() throws IOException
+	{
+		final Path imagesSourcePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
+		final Path imageBackupPath = Paths.get(backupConfigurationProperties.getLocation(), "images");
+
+		FileUtils.copyDirectory(imagesSourcePath.toFile(), imageBackupPath.toFile());
 	}
 
 	private void exportDatabase(Database database) throws IOException
 	{
-		final Path backupLocationPath = Paths.get(this.backupConfigurationProperties.getLocation());
+		final Path backupLocationPath = Paths.get(backupConfigurationProperties.getLocation());
 		if(Files.notExists(backupLocationPath))
 		{
 			Files.createDirectories(backupLocationPath);
