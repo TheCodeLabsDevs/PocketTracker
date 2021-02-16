@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.thecodelabs.pockettracker.show.model.ShowType;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
@@ -10,9 +11,13 @@ public class BackupShowModel
 {
 	private Integer id;
 	private String name;
+	@JsonProperty("desc")
 	private String description;
+	@JsonProperty("first")
 	private LocalDate firstAired;
+	@JsonProperty("banner")
 	private String bannerPath;
+	@JsonProperty("poster")
 	private String posterPath;
 	private ShowType type;
 	private Boolean finished;

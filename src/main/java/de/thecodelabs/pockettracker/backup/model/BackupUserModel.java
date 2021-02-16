@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
@@ -14,6 +15,7 @@ public class BackupUserModel
 	private UserRole userRole;
 	@MergeIgnore
 	private List<Integer> shows;
+	@JsonProperty("watched")
 	private List<BackupWatchedEpisodeModel> watchedEpisodes;
 
 

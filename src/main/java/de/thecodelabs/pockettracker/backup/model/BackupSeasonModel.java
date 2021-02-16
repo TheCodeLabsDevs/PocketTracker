@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import java.util.List;
@@ -8,6 +9,7 @@ public class BackupSeasonModel
 {
 	private Integer id;
 	private String name;
+	@JsonProperty("desc")
 	private String description;
 	private Integer number;
 	@MergeIgnore

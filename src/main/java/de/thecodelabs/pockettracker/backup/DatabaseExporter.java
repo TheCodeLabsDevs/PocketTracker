@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.backup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
@@ -14,7 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Component
@@ -28,15 +33,17 @@ public class DatabaseExporter
 	private final ShowConverter showConverter;
 	private final UserConverter userConverter;
 
+	private final BackupConfigurationProperties backupConfigurationProperties;
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public DatabaseExporter(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter, UserConverter userConverter, ObjectMapper objectMapper)
+	public DatabaseExporter(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter, UserConverter userConverter, BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showRepository = showRepository;
 		this.userRepository = userRepository;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
+		this.backupConfigurationProperties = backupConfigurationProperties;
 		this.objectMapper = objectMapper;
 	}
 
@@ -49,11 +56,23 @@ public class DatabaseExporter
 
 		final List<User> users = userRepository.findAll();
 		final List<BackupUserModel> backupUserModels = userConverter.toBeans(users);
-
 		final Database database = new Database(backupShowModels, backupUserModels);
 
-		objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, database);
-
+		saveDatabase(database);
 		LOGGER.info("Export done");
+	}
+
+	private void saveDatabase(Database database) throws IOException
+	{
+		final Path backupLocationPath = Paths.get(this.backupConfigurationProperties.getLocation());
+		if(Files.notExists(backupLocationPath))
+		{
+			Files.createDirectories(backupLocationPath);
+		}
+
+		final Path databasePath = backupLocationPath.resolve("database.json");
+		final BufferedWriter writer = Files.newBufferedWriter(databasePath);
+
+		objectMapper.writer().writeValue(writer, database);
 	}
 }

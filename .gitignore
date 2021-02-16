@@ -1,5 +1,6 @@
 target/
 config/
+backup/
 images/
 password.txt
 build/episodes.db

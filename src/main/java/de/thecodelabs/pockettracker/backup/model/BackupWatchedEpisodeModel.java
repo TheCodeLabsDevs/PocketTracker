@@ -1,10 +1,14 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 
 public class BackupWatchedEpisodeModel
 {
+	@JsonProperty("episode")
 	private Integer episodeId;
+	@JsonProperty("at")
 	private LocalDate watchedAt;
 
 	public Integer getEpisodeId()
