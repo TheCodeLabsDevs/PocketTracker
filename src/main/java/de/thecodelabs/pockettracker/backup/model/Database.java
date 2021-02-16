@@ -1,7 +1,4 @@
-package de.thecodelabs.pockettracker.backup;
-
-import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
-import de.thecodelabs.pockettracker.backup.model.BackupUserModel;
+package de.thecodelabs.pockettracker.backup.model;
 
 import java.util.List;
 

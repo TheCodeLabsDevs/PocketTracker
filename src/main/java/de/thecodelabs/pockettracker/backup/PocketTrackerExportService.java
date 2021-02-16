@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.BackupUserModel;
+import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
@@ -23,9 +24,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Component
-public class DatabaseExporter
+public class PocketTrackerExportService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseExporter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PocketTrackerExportService.class);
 
 	private final ShowRepository showRepository;
 	private final UserRepository userRepository;
@@ -37,7 +38,7 @@ public class DatabaseExporter
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public DatabaseExporter(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter, UserConverter userConverter, BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
+	public PocketTrackerExportService(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter, UserConverter userConverter, BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showRepository = showRepository;
 		this.userRepository = userRepository;
@@ -58,11 +59,11 @@ public class DatabaseExporter
 		final List<BackupUserModel> backupUserModels = userConverter.toBeans(users);
 		final Database database = new Database(backupShowModels, backupUserModels);
 
-		saveDatabase(database);
+		exportDatabase(database);
 		LOGGER.info("Export done");
 	}
 
-	private void saveDatabase(Database database) throws IOException
+	private void exportDatabase(Database database) throws IOException
 	{
 		final Path backupLocationPath = Paths.get(this.backupConfigurationProperties.getLocation());
 		if(Files.notExists(backupLocationPath))

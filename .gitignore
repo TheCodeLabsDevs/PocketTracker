@@ -1,9 +1,9 @@
 target/
-config/
-backup/
-images/
+/config/
+/backup/
+/images/
 password.txt
-build/episodes.db
+/build/episodes.db
 
-client/target
-client/openapi-generator-cli.jar
+/client/target
+/client/openapi-generator-cli.jar

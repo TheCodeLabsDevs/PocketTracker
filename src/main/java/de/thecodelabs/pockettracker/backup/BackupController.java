@@ -17,10 +17,10 @@ import java.io.IOException;
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class BackupController
 {
-	private final DatabaseExporter databaseExporter;
+	private final PocketTrackerExportService databaseExporter;
 
 	@Autowired
-	public BackupController(DatabaseExporter databaseExporter)
+	public BackupController(PocketTrackerExportService databaseExporter)
 	{
 		this.databaseExporter = databaseExporter;
 	}
