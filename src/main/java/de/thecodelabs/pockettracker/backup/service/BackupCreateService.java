@@ -26,6 +26,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE_PATH_NAME;
+import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
+
 @Component
 public class BackupCreateService
 {
@@ -82,14 +85,14 @@ public class BackupCreateService
 	private void exportImages(Path basePath) throws IOException
 	{
 		final Path imagesSourcePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
-		final Path imageBackupPath = basePath.resolve("images");
+		final Path imageBackupPath = basePath.resolve(IMAGE_PATH_NAME);
 
 		FileUtils.copyDirectory(imagesSourcePath.toFile(), imageBackupPath.toFile());
 	}
 
 	private void exportDatabase(Path basePath, Database database) throws IOException
 	{
-		final Path databasePath = basePath.resolve("database.json");
+		final Path databasePath = basePath.resolve(DATABASE_PATH_NAME);
 		final BufferedWriter writer = Files.newBufferedWriter(databasePath);
 
 		objectMapper.writer().writeValue(writer, database);

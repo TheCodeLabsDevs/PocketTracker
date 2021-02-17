@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
@@ -18,17 +19,25 @@ import java.io.IOException;
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class BackupController
 {
-	private final BackupService databaseExporter;
+	private final BackupService backupService;
 
 	@Autowired
-	public BackupController(BackupService databaseExporter)
+	public BackupController(BackupService backupService)
 	{
-		this.databaseExporter = databaseExporter;
+		this.backupService = backupService;
 	}
 
 	@GetMapping
-	public String backup()
+	public String backup(WebRequest request, Model model)
 	{
+		try
+		{
+			model.addAttribute("backups", backupService.getBackups());
+		}
+		catch(IOException e)
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.backup-list.error", BootstrapColor.DANGER, e.getMessage()));
+		}
 		return "administration/backup";
 	}
 
@@ -37,7 +46,7 @@ public class BackupController
 	{
 		try
 		{
-			databaseExporter.createBackup();
+			backupService.createBackup();
 			WebRequestUtils.putToast(request, new Toast("toast.exported", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
