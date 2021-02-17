@@ -26,6 +26,7 @@
                     <@t.headCell label="admin.backup.date"/>
                     <@t.headCell label="admin.backup.includeDatabase"/>
                     <@t.headCell label="admin.backup.includeImages"/>
+                    <@t.headCell label="admin.backup.download"/>
                 </@t.head>
                 <@t.body>
                     <#list backups as backup>
@@ -44,6 +45,9 @@
                                 <#else>
                                     &#10134;
                                 </#if>
+                            </@t.cell>
+                            <@t.cell>
+                                <@t.action icon="fas fa-download" url="/administration/backup/download/${backup.getPathName()}"/>
                             </@t.cell>
                         </@t.row>
                     </#list>

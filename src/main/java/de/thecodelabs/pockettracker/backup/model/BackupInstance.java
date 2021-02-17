@@ -1,5 +1,7 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
@@ -56,5 +58,10 @@ public class BackupInstance
 	public void setImages(Boolean images)
 	{
 		this.images = images;
+	}
+
+	public String getPathName()
+	{
+		return URLEncoder.encode(backupPath.getFileName().toString(), Charset.defaultCharset());
 	}
 }

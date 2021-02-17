@@ -3,11 +3,13 @@ package de.thecodelabs.pockettracker.backup.service;
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.model.BackupInstance;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -21,6 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class BackupService
@@ -71,6 +75,34 @@ public class BackupService
 					.sorted(Comparator.comparing(BackupInstance::getCreateTime).reversed())
 					.collect(Collectors.toList());
 		}
+	}
+
+	public byte[] getBackupBundled(String path) throws IOException
+	{
+		final Path backupPath = Paths.get(backupConfigurationProperties.getLocation()).resolve(path);
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
+
+		try(final Stream<Path> walk = Files.walk(backupPath))
+		{
+			walk.filter(Files::isRegularFile)
+					.forEach(child -> {
+						try
+						{
+							final String pathInZip = backupPath.relativize(child).toString();
+							zipOutputStream.putNextEntry(new ZipEntry(pathInZip));
+							IOUtils.copy(Files.newInputStream(child), zipOutputStream);
+						}
+						catch(IOException e)
+						{
+							LOGGER.error("Error copy file into zip", e);
+						}
+					});
+		}
+
+		zipOutputStream.close();
+		return byteArrayOutputStream.toByteArray();
 	}
 
 	private void deleteOldBackups(Path backupLocation) throws IOException
