@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup;
 
+import de.thecodelabs.pockettracker.backup.service.BackupService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
@@ -17,10 +18,10 @@ import java.io.IOException;
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class BackupController
 {
-	private final PocketTrackerExportService databaseExporter;
+	private final BackupService databaseExporter;
 
 	@Autowired
-	public BackupController(PocketTrackerExportService databaseExporter)
+	public BackupController(BackupService databaseExporter)
 	{
 		this.databaseExporter = databaseExporter;
 	}
@@ -36,7 +37,7 @@ public class BackupController
 	{
 		try
 		{
-			databaseExporter.export();
+			databaseExporter.createBackup();
 			WebRequestUtils.putToast(request, new Toast("toast.exported", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)

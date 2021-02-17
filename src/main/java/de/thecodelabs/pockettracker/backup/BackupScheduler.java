@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup;
 
+import de.thecodelabs.pockettracker.backup.service.BackupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,10 +12,10 @@ import java.io.IOException;
 @ConditionalOnProperty("pockettracker.backup.background-enabled")
 public class BackupScheduler
 {
-	private final PocketTrackerExportService pocketTrackerExportService;
+	private final BackupService pocketTrackerExportService;
 
 	@Autowired
-	public BackupScheduler(PocketTrackerExportService pocketTrackerExportService)
+	public BackupScheduler(BackupService pocketTrackerExportService)
 	{
 		this.pocketTrackerExportService = pocketTrackerExportService;
 	}
@@ -22,6 +23,6 @@ public class BackupScheduler
 	@Scheduled(cron = "#{backupConfigurationProperties.backgroundScheduled}")
 	public void createBackup() throws IOException
 	{
-		pocketTrackerExportService.export();
+		pocketTrackerExportService.createBackup();
 	}
 }
