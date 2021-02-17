@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BackupInstance
 {
@@ -58,6 +59,11 @@ public class BackupInstance
 	public void setImages(Boolean images)
 	{
 		this.images = images;
+	}
+
+	public String getName()
+	{
+		return createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
 	}
 
 	public String getPathName()

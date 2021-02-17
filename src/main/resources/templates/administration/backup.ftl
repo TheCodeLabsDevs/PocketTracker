@@ -31,7 +31,7 @@
                 <@t.body>
                     <#list backups as backup>
                         <@t.row>
-                            <@t.cell value=backup.createTime.toString()/>
+                            <@t.cell value=backup.getName()/>
                             <@t.cell>
                                 <#if backup.database>
                                     &check;
