@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.backup.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
@@ -37,19 +38,21 @@ public class BackupCreateService
 	private final UserConverter userConverter;
 
 	private final WebConfigurationProperties webConfigurationProperties;
+	private final BackupConfigurationProperties backupConfigurationProperties;
 
 	private final ObjectMapper objectMapper;
 
 	@Autowired
 	public BackupCreateService(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter,
 							   UserConverter userConverter, WebConfigurationProperties webConfigurationProperties,
-							   ObjectMapper objectMapper)
+							   BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showRepository = showRepository;
 		this.userRepository = userRepository;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
 		this.webConfigurationProperties = webConfigurationProperties;
+		this.backupConfigurationProperties = backupConfigurationProperties;
 		this.objectMapper = objectMapper;
 	}
 
@@ -68,7 +71,10 @@ public class BackupCreateService
 		LOGGER.info("Create backup at {}", backupLocationPath);
 
 		exportDatabase(backupLocationPath, database);
-		exportImages(backupLocationPath);
+		if(backupConfigurationProperties.getIncludeImages())
+		{
+			exportImages(backupLocationPath);
+		}
 
 		LOGGER.info("Backup done");
 	}

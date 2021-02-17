@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class BackupConfigurationProperties
 {
 	private String location;
-	private Integer keep;
+	private Integer keep = 5;
+	private Boolean includeImages = true;
 
 	private Boolean backgroundEnabled;
 	private String backgroundScheduled;
@@ -51,5 +52,15 @@ public class BackupConfigurationProperties
 	public void setBackgroundScheduled(String backgroundScheduled)
 	{
 		this.backgroundScheduled = backgroundScheduled;
+	}
+
+	public Boolean getIncludeImages()
+	{
+		return includeImages;
+	}
+
+	public void setIncludeImages(Boolean includeImages)
+	{
+		this.includeImages = includeImages;
 	}
 }
