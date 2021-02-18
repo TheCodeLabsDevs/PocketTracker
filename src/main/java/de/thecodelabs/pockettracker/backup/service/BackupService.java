@@ -69,6 +69,7 @@ public class BackupService
 	{
 		backupRestoreService.clearDatabase();
 		backupRestoreService.insertAllData(Paths.get("/Users/tobias/Documents/Programmieren/Projects/PocketTracker/backup/2021-02-17 13-16-30"));
+		LOGGER.info("Backup restore completed");
 	}
 
 	public List<BackupInstance> getBackups() throws IOException

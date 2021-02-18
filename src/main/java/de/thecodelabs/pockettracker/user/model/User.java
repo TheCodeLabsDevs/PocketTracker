@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +16,8 @@ import java.util.Optional;
 public class User
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	private Integer id;
 
 	@NotNull

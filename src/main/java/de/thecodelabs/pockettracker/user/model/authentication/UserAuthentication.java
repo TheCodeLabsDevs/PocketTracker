@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.MessageSourceResolvable;
 
 import javax.persistence.*;
@@ -12,7 +13,8 @@ import javax.persistence.*;
 public class UserAuthentication implements MessageSourceResolvable
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	private Integer id;
 
 	@ManyToOne

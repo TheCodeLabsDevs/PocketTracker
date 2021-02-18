@@ -1,8 +1,6 @@
 package de.thecodelabs.pockettracker.backup.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thecodelabs.pockettracker.backup.converter.EpisodeConverter;
-import de.thecodelabs.pockettracker.backup.converter.SeasonConverter;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
@@ -10,8 +8,6 @@ import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
-import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.service.SeasonService;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
@@ -33,7 +29,6 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,34 +43,27 @@ public class BackupRestoreService
 
 	private final UserService userService;
 	private final ShowService showService;
-	private final SeasonService seasonService;
 	private final EpisodeService episodeService;
 
 	private final DataSource dataSource;
 	private final EntityManager entityManager;
 
 	private final ShowConverter showConverter;
-	private final SeasonConverter seasonConverter;
-	private final EpisodeConverter episodeConverter;
 	private final UserConverter userConverter;
 
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public BackupRestoreService(UserService userService, ShowService showService, SeasonService seasonService,
-								EpisodeService episodeService, DataSource dataSource, EntityManager entityManager,
-								ShowConverter showConverter, SeasonConverter seasonConverter, EpisodeConverter episodeConverter,
+	public BackupRestoreService(UserService userService, ShowService showService, EpisodeService episodeService,
+								DataSource dataSource, EntityManager entityManager, ShowConverter showConverter,
 								UserConverter userConverter, ObjectMapper objectMapper)
 	{
 		this.userService = userService;
 		this.showService = showService;
-		this.seasonService = seasonService;
 		this.episodeService = episodeService;
 		this.dataSource = dataSource;
 		this.entityManager = entityManager;
 		this.showConverter = showConverter;
-		this.seasonConverter = seasonConverter;
-		this.episodeConverter = episodeConverter;
 		this.userConverter = userConverter;
 		this.objectMapper = objectMapper;
 	}
@@ -141,41 +129,7 @@ public class BackupRestoreService
 	{
 		final List<Show> shows = showConverter.toEntities(backupShowModels);
 		showService.createShows(shows);
-
-		final List<Season> seasons = backupShowModels.stream()
-				.flatMap(show -> {
-					final List<Season> entities = seasonConverter.toEntities(show.getSeasons());
-					return entities.stream().map(entity -> {
-						final Optional<Show> showOptional = showService.getShowById(show.getId());
-						if(showOptional.isEmpty())
-						{
-							return null;
-						}
-						entity.setShow(showOptional.get());
-						return entity;
-					}).filter(Objects::nonNull);
-				})
-				.sorted(Comparator.comparing(Season::getId))
-				.collect(Collectors.toList());
-		seasonService.createSeasons(seasons);
-
-		final List<Episode> episodes = backupShowModels.stream()
-				.flatMap(show -> show.getSeasons().stream())
-				.flatMap(season -> {
-					final List<Episode> entities = episodeConverter.toEntities(season.getEpisodes());
-					return entities.stream().map(entity -> {
-						final Optional<Season> seasonOptional = seasonService.getSeasonById(season.getId());
-						if(seasonOptional.isEmpty())
-						{
-							return null;
-						}
-						entity.setSeason(seasonOptional.get());
-						return entity;
-					}).filter(Objects::nonNull);
-				})
-				.sorted(Comparator.comparing(Episode::getId))
-				.collect(Collectors.toList());
-		episodeService.createEpisodes(episodes);
+		LOGGER.info("Restored shows");
 	}
 
 	public void insertUsers(List<BackupUserModel> backupUserModels)
@@ -185,6 +139,7 @@ public class BackupRestoreService
 		{
 			userService.createUser(user);
 		}
+		LOGGER.info("Restored users");
 
 		for(User user : userService.getUsers())
 		{
@@ -209,5 +164,6 @@ public class BackupRestoreService
 				userService.saveUser(user);
 			}
 		}
+		LOGGER.info("Restored user shows and episoded");
 	}
 }

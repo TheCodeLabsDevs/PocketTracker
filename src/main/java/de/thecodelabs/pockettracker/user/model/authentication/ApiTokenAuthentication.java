@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 public class ApiTokenAuthentication
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	private Integer id;
 	private LocalDateTime createDate;
 	private String token;
