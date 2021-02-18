@@ -35,12 +35,15 @@ public class BackupService
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupService.class);
 
 	private final BackupCreateService backupCreateService;
+	private final BackupRestoreService backupRestoreService;
 	private final BackupConfigurationProperties backupConfigurationProperties;
 
 	@Autowired
-	public BackupService(BackupCreateService backupCreateService, BackupConfigurationProperties backupConfigurationProperties)
+	public BackupService(BackupCreateService backupCreateService, BackupRestoreService backupRestoreService,
+						 BackupConfigurationProperties backupConfigurationProperties)
 	{
 		this.backupCreateService = backupCreateService;
+		this.backupRestoreService = backupRestoreService;
 		this.backupConfigurationProperties = backupConfigurationProperties;
 	}
 
@@ -59,6 +62,11 @@ public class BackupService
 		deleteOldBackups(basePath);
 
 		backupCreateService.export(backupLocationPath);
+	}
+
+	public void restoreBackup()
+	{
+		backupRestoreService.clearDatabase();
 	}
 
 	public List<BackupInstance> getBackups() throws IOException
