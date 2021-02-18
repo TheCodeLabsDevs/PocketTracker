@@ -8,6 +8,7 @@ import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -31,7 +32,8 @@ public class Show
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	@JsonView(View.Summary.class)
 	private Integer id;
 

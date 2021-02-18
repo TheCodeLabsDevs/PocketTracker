@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -25,7 +26,8 @@ public class Season
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "custom_generator")
+	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	@JsonView(View.Summary.class)
 	private Integer id;
 
