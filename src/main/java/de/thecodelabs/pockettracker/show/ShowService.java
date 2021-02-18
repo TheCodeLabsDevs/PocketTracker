@@ -90,6 +90,11 @@ public class ShowService
 		return repository.save(show);
 	}
 
+	public void createShows(List<Show> shows)
+	{
+		repository.saveAll(shows);
+	}
+
 	@Transactional
 	public Season addSeasonToShow(Integer showId)
 	{

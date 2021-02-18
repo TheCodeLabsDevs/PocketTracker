@@ -22,6 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/administration/backup")
@@ -87,6 +88,21 @@ public class BackupController
 			e.printStackTrace();
 		}
 
+		return "redirect:/administration/backup";
+	}
+
+	@GetMapping("/restore")
+	public String restoreBackup(WebRequest request)
+	{
+		try
+		{
+			backupService.restoreBackup();
+		}
+		catch(IOException | SQLException e)
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.restore.error", BootstrapColor.DANGER));
+			e.printStackTrace();
+		}
 		return "redirect:/administration/backup";
 	}
 }

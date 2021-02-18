@@ -109,9 +109,27 @@ public class User
 		return shows;
 	}
 
+	public void addShows(List<Show> newShows)
+	{
+		if(this.shows == null)
+		{
+			this.shows = new ArrayList<>();
+		}
+		this.shows.addAll(newShows);
+	}
+
 	public List<WatchedEpisode> getWatchedEpisodes()
 	{
 		return watchedEpisodes;
+	}
+
+	public void addWatchedEpisodes(List<WatchedEpisode> newEpisodes)
+	{
+		if(this.watchedEpisodes == null)
+		{
+			this.watchedEpisodes = new ArrayList<>();
+		}
+		this.watchedEpisodes.addAll(newEpisodes);
 	}
 
 	@Override

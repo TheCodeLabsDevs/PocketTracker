@@ -206,6 +206,11 @@ public class UserService
 		return userRepository.count() > 0;
 	}
 
+	public void saveUser(User user)
+	{
+		userRepository.save(user);
+	}
+
 	public void deleteUser(User user)
 	{
 		userRepository.delete(user);

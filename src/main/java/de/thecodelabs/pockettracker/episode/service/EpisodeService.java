@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +44,11 @@ public class EpisodeService
 	public Optional<Episode> getEpisodeByNumbers(Integer showId, Integer seasonNumber, Integer episodeNumber)
 	{
 		return episodeRepository.findByNumberAndSeasonNumberAndSeasonShowId(episodeNumber, seasonNumber, showId);
+	}
+
+	public void createEpisodes(List<Episode> episodes)
+	{
+		episodeRepository.saveAll(episodes);
 	}
 
 	public void deleteEpisode(Episode episode)

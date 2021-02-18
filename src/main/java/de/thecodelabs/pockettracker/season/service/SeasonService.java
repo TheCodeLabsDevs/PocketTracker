@@ -36,6 +36,11 @@ public class SeasonService
 		return seasonRepository.findAllByShowId(show);
 	}
 
+	public void createSeasons(List<Season> seasons)
+	{
+		seasonRepository.saveAll(seasons);
+	}
+
 	@Transactional
 	public Episode addEpisodeToSeason(Integer seasonId)
 	{

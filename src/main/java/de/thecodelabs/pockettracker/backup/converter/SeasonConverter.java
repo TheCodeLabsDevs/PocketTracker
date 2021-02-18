@@ -35,9 +35,6 @@ public class SeasonConverter implements AbstractConverter<BackupSeasonModel, Sea
 		Season entity = new Season();
 		BeanUtils.merge(bean, entity);
 
-		entity.setEpisodes(episodeConverter.toEntities(bean.getEpisodes()));
-		entity.getEpisodes().forEach(episode -> episode.setSeason(entity));
-
 		return entity;
 	}
 }

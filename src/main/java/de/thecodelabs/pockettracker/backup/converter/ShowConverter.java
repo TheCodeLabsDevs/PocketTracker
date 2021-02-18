@@ -35,9 +35,6 @@ public class ShowConverter implements AbstractConverter<BackupShowModel, Show>
 		Show entity = new Show();
 		BeanUtils.merge(bean, entity);
 
-		entity.setSeasons(seasonConverter.toEntities(bean.getSeasons()));
-		entity.getSeasons().forEach(season -> season.setShow(entity));
-
 		return entity;
 	}
 }
