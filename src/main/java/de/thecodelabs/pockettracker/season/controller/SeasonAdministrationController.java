@@ -121,7 +121,7 @@ public class SeasonAdministrationController
 		final Integer showId = season.getShow().getId();
 		final String seasonName = season.getName();
 
-		userService.deleteSeason(season);
+		userService.deleteWatchedSeason(season);
 		seasonService.deleteSeason(season);
 		WebRequestUtils.putToast(request, new Toast("toast.season.delete", BootstrapColor.SUCCESS, seasonName));
 

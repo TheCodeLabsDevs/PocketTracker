@@ -187,7 +187,7 @@ public class ShowAdministrationController
 		final Show managedShow = managedShowOptional.get();
 		final String showName = managedShow.getName();
 
-		userService.deleteShow(managedShow);
+		userService.deleteWatchedShow(managedShow);
 		service.deleteShow(managedShow);
 
 		WebRequestUtils.putToast(request, new Toast("toast.show.delete", BootstrapColor.SUCCESS, showName));

@@ -344,7 +344,7 @@ public class UserService
 	}
 
 	@Transactional
-	public void deleteShow(Show show)
+	public void deleteWatchedShow(Show show)
 	{
 		final List<User> users = userRepository.findAll();
 		for(User user : users)
@@ -354,12 +354,12 @@ public class UserService
 
 		for(Season season : show.getSeasons())
 		{
-			deleteSeason(season);
+			deleteWatchedSeason(season);
 		}
 	}
 
 	@Transactional
-	public void deleteSeason(Season season)
+	public void deleteWatchedSeason(Season season)
 	{
 		for(Episode episode : season.getEpisodes())
 		{
