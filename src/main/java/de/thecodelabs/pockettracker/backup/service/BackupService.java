@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +65,7 @@ public class BackupService
 		backupCreateService.export(backupLocationPath);
 	}
 
-	public void restoreBackup()
+	public void restoreBackup() throws IOException, SQLException
 	{
 		backupRestoreService.clearDatabase();
 	}
