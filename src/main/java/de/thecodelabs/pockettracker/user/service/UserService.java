@@ -122,6 +122,11 @@ public class UserService
 		return userRepository.findAll().stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
 	}
 
+	public User createUser(User user)
+	{
+		return userRepository.save(user);
+	}
+
 	public User createUser(UserForm userForm)
 	{
 		User user = new User();

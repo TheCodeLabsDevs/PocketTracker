@@ -1,6 +1,8 @@
 package de.thecodelabs.pockettracker.backup.converter.user;
 
 import de.thecodelabs.pockettracker.backup.converter.WatchedEpisodeConverter;
+import de.thecodelabs.pockettracker.backup.model.user.BackupUserGitlabAuthentication;
+import de.thecodelabs.pockettracker.backup.model.user.BackupUserInternalAuthentication;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
@@ -64,6 +66,26 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	{
 		User entity = new User();
 		BeanUtils.merge(bean, entity);
+
+		entity.setAuthentications(bean.getAuthentications().stream().map(model -> {
+			if(model instanceof BackupUserInternalAuthentication)
+			{
+				return internalAuthenticationConverter.toEntity((BackupUserInternalAuthentication) model);
+			}
+			else if(model instanceof BackupUserGitlabAuthentication)
+			{
+				return gitlabAuthenticationConverter.toEntity((BackupUserGitlabAuthentication) model);
+			}
+			else
+			{
+				throw new IllegalArgumentException("Authentication Type: " + model.getClass() + " is not supported");
+			}
+		}).collect(Collectors.toList()));
+		entity.getAuthentications().forEach(userAuthentication -> userAuthentication.setUser(entity));
+
+		entity.setTokens(userTokenConverter.toEntities(bean.getTokens()));
+		entity.getTokens().forEach(token -> token.setUser(entity));
+
 		return entity;
 	}
 }

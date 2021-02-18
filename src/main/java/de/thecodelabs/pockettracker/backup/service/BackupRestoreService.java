@@ -5,6 +5,7 @@ import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
+import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
@@ -114,6 +115,7 @@ public class BackupRestoreService
 
 		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
 		insertShows(database.getShows());
+		insertUsers(database.getUsers());
 	}
 
 	private void insertShows(List<BackupShowModel> backupShowModels)
@@ -122,6 +124,15 @@ public class BackupRestoreService
 		for(Show show : shows)
 		{
 			showService.createShow(show);
+		}
+	}
+
+	private void insertUsers(List<BackupUserModel> backupUserModels)
+	{
+		final List<User> users = userConverter.toEntities(backupUserModels);
+		for(User user : users)
+		{
+			userService.createUser(user);
 		}
 	}
 }
