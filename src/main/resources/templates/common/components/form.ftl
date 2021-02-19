@@ -62,10 +62,10 @@
     </div>
 </#macro>
 
-<#macro file label name id=name size="col-12">
+<#macro file label name id=name size="col-12" accept="">
     <div class="mb-3 ${size}">
         <label for="${id}" class="form-label"><@b.localize label/></label>
-        <input class="form-control" type="file" id="${id}" name="${name}">
+        <input class="form-control" type="file" id="${id}" name="${name}" <#if accept?has_content>accept="${accept}"</#if>>
     </div>
 </#macro>
 

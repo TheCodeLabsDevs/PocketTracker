@@ -4,6 +4,7 @@
 
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
+    <#import "/common/components/form.ftl" as f/>
     <#import "/common/components/table.ftl" as t/>
 
     <@template.head 'Backup'/>
@@ -54,5 +55,18 @@
                 </@t.body>
             </@t.table>
         </#if>
+
+        <@b.separator/>
+
+        <@b.row>
+            <@b.col "col-12">
+                <@b.h2 "admin.backup.restore"/>
+            </@b.col>
+
+            <@f.form name="restoreForm" url="/administration/backup/restore" multipart=true>
+                <@f.file label="admin.backup.upload" name="restore" accept="application/zip"/>
+                <@f.submit classes="float-end"/>
+            </@f.form>
+        </@b.row>
     </@template.body>
 </html>

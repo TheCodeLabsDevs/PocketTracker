@@ -64,13 +64,15 @@ public class BackupService
 		backupCreateService.export(backupLocationPath);
 	}
 
-	public void restoreBackup() throws IOException, SQLException
+	public void restoreBackup(Path zipPath) throws IOException, SQLException
 	{
-		final Path restoreBasePath = extractBackup(Paths.get("/Users/tobias/Downloads/2021-02-17+13-16-30.zip"));
+		final Path restoreBasePath = extractBackup(zipPath);
 
 		backupRestoreService.clearDatabase();
 		backupRestoreService.insertAllData(restoreBasePath);
 		backupRestoreService.copyImages(restoreBasePath);
+
+		Files.delete(zipPath);
 		FileUtils.deleteDirectory(restoreBasePath.toFile());
 
 		LOGGER.info("Backup restore completed");

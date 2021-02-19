@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup;
 
+import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.service.BackupService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -14,14 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 @Controller
@@ -32,11 +34,13 @@ public class BackupController
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupController.class);
 
 	private final BackupService backupService;
+	private final BackupConfigurationProperties backupConfigurationProperties;
 
 	@Autowired
-	public BackupController(BackupService backupService)
+	public BackupController(BackupService backupService, BackupConfigurationProperties backupConfigurationProperties)
 	{
 		this.backupService = backupService;
+		this.backupConfigurationProperties = backupConfigurationProperties;
 	}
 
 	@GetMapping
@@ -91,12 +95,20 @@ public class BackupController
 		return "redirect:/administration/backup";
 	}
 
-	@GetMapping("/restore")
-	public String restoreBackup(WebRequest request)
+	@PostMapping("/restore")
+	public String restoreBackup(WebRequest request, @RequestParam("restore") MultipartFile multipartFile)
 	{
+		if(multipartFile == null || multipartFile.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.restore.upload.error", BootstrapColor.DANGER));
+			return "redirect:/administration/backup";
+		}
 		try
 		{
-			backupService.restoreBackup();
+			final Path restoreZipPath = Paths.get(backupConfigurationProperties.getLocation(), "backup.zip");
+			multipartFile.transferTo(restoreZipPath);
+			backupService.restoreBackup(restoreZipPath);
+			WebRequestUtils.putToast(request, new Toast("toast.restore.done", BootstrapColor.SUCCESS));
 		}
 		catch(IOException | SQLException e)
 		{
