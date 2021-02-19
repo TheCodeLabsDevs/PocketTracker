@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
+import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import de.thecodelabs.pockettracker.show.ShowService;
@@ -14,6 +15,7 @@ import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,6 +38,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE_PATH_NAME;
+import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
 
 @Service
 public class BackupRestoreService
@@ -53,10 +57,12 @@ public class BackupRestoreService
 
 	private final ObjectMapper objectMapper;
 
+	private final WebConfigurationProperties webConfigurationProperties;
+
 	@Autowired
 	public BackupRestoreService(UserService userService, ShowService showService, EpisodeService episodeService,
 								DataSource dataSource, EntityManager entityManager, ShowConverter showConverter,
-								UserConverter userConverter, ObjectMapper objectMapper)
+								UserConverter userConverter, ObjectMapper objectMapper, WebConfigurationProperties webConfigurationProperties)
 	{
 		this.userService = userService;
 		this.showService = showService;
@@ -66,6 +72,7 @@ public class BackupRestoreService
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
 		this.objectMapper = objectMapper;
+		this.webConfigurationProperties = webConfigurationProperties;
 	}
 
 	public void clearDatabase() throws SQLException
@@ -164,6 +171,21 @@ public class BackupRestoreService
 				userService.saveUser(user);
 			}
 		}
-		LOGGER.info("Restored user shows and episoded");
+		LOGGER.info("Restored user shows and episodes");
+	}
+
+	public void copyImages(Path basePath) throws IOException
+	{
+		final Path backupPath = basePath.resolve(IMAGE_PATH_NAME);
+		if(Files.notExists(backupPath))
+		{
+			LOGGER.info("Backup does not contain images");
+			return;
+		}
+
+		final Path targetPath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
+
+		FileUtils.copyDirectory(backupPath.toFile(), targetPath.toFile());
+		LOGGER.info("Restored image resources to {}", targetPath);
 	}
 }

@@ -67,8 +67,11 @@ public class BackupService
 
 	public void restoreBackup() throws IOException, SQLException
 	{
+		final Path basePath = Paths.get("/Users/tobias/Documents/Programmieren/Projects/PocketTracker/backup/2021-02-17 13-16-30");
+
 		backupRestoreService.clearDatabase();
-		backupRestoreService.insertAllData(Paths.get("/Users/tobias/Documents/Programmieren/Projects/PocketTracker/backup/2021-02-17 13-16-30"));
+		backupRestoreService.insertAllData(basePath);
+		backupRestoreService.copyImages(basePath);
 		LOGGER.info("Backup restore completed");
 	}
 
