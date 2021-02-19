@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @Service
@@ -67,11 +66,13 @@ public class BackupService
 
 	public void restoreBackup() throws IOException, SQLException
 	{
-		final Path basePath = Paths.get("/Users/tobias/Documents/Programmieren/Projects/PocketTracker/backup/2021-02-17 13-16-30");
+		final Path restoreBasePath = extractBackup(Paths.get("/Users/tobias/Downloads/2021-02-17+13-16-30.zip"));
 
 		backupRestoreService.clearDatabase();
-		backupRestoreService.insertAllData(basePath);
-		backupRestoreService.copyImages(basePath);
+		backupRestoreService.insertAllData(restoreBasePath);
+		backupRestoreService.copyImages(restoreBasePath);
+		FileUtils.deleteDirectory(restoreBasePath.toFile());
+
 		LOGGER.info("Backup restore completed");
 	}
 
@@ -117,6 +118,44 @@ public class BackupService
 
 		zipOutputStream.close();
 		return byteArrayOutputStream.toByteArray();
+	}
+
+	public Path extractBackup(Path zipPath) throws IOException
+	{
+		final Path restorePath = Paths.get(backupConfigurationProperties.getLocation(), "restore");
+		if(Files.notExists(restorePath))
+		{
+			Files.createDirectories(restorePath);
+		}
+
+		try(final InputStream inputStream = Files.newInputStream(zipPath);
+			final ZipInputStream zipInputStream = new ZipInputStream(inputStream))
+		{
+			ZipEntry entry;
+			while((entry = zipInputStream.getNextEntry()) != null)
+			{
+				LOGGER.info("Extract: {}", entry.getName());
+				final Path targetChildPath = restorePath.resolve(entry.getName());
+				if(!entry.isDirectory())
+				{
+					if(Files.notExists(targetChildPath.getParent()))
+					{
+						Files.createDirectories(targetChildPath.getParent());
+					}
+					if(Files.notExists(targetChildPath))
+					{
+						Files.createFile(targetChildPath);
+					}
+
+					try(final OutputStream outputStream = Files.newOutputStream(targetChildPath))
+					{
+						IOUtils.copy(zipInputStream, outputStream);
+					}
+				}
+			}
+		}
+
+		return restorePath;
 	}
 
 	private void deleteOldBackups(Path backupLocation) throws IOException
