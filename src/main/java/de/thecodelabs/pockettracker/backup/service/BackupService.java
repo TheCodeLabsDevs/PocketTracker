@@ -64,11 +64,16 @@ public class BackupService
 		backupCreateService.export(backupLocationPath);
 	}
 
+	public void clearData() throws SQLException
+	{
+		backupRestoreService.clearDatabase();
+	}
+
 	public void restoreBackup(Path zipPath) throws IOException, SQLException
 	{
 		final Path restoreBasePath = extractBackup(zipPath);
 
-		backupRestoreService.clearDatabase();
+		clearData();
 		backupRestoreService.insertAllData(restoreBasePath);
 		backupRestoreService.copyImages(restoreBasePath);
 

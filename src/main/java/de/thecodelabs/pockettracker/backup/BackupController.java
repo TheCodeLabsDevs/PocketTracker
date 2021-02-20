@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
@@ -93,6 +95,31 @@ public class BackupController
 		}
 
 		return "redirect:/administration/backup";
+	}
+
+	@PostMapping("/clear")
+	public String clearData(WebRequest request, HttpServletRequest httpRequest)
+	{
+		try
+		{
+			backupService.clearData();
+			WebRequestUtils.putToast(request, new Toast("toast.clear.done", BootstrapColor.DANGER));
+		}
+		catch(SQLException e)
+		{
+			LOGGER.error("Failed to delete all data", e);
+			WebRequestUtils.putToast(request, new Toast("toast.clear.error", BootstrapColor.DANGER));
+		}
+
+		try
+		{
+			httpRequest.logout();
+		}
+		catch(ServletException e)
+		{
+			LOGGER.error("Cannot logout user", e);
+		}
+		return "redirect:/";
 	}
 
 	@PostMapping("/restore")
