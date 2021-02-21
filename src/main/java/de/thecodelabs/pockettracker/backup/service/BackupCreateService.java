@@ -76,6 +76,7 @@ public class BackupCreateService
 		exportDatabase(backupLocationPath, database);
 		if(backupConfigurationProperties.getIncludeImages())
 		{
+			LOGGER.info("Exporting images...");
 			exportImages(backupLocationPath);
 		}
 
