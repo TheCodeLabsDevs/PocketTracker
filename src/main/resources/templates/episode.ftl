@@ -13,15 +13,17 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <@b.hasPermission "ADMIN">
-                    <@b.button label="button.edit" url="/episode/" + episode.getId() + "/edit" style="btn-sm btn-outline-primary" classes="float-end"/>
-                </@b.hasPermission>
-
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
                 <h3 class="card-title text-center">
                     ${helpers.getShortCode(episode)} - ${episode.getName()}
                     <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                 </h3>
+
+                <div class="text-center">
+                    <@b.hasPermission "ADMIN">
+                        <@b.button label="button.edit" url="/episode/" + episode.getId() + "/edit" style="btn-sm btn-outline-primary"/>
+                    </@b.hasPermission>
+                </div>
 
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">

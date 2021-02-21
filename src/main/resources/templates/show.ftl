@@ -13,11 +13,14 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <@b.hasPermission "ADMIN">
-                    <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary" classes="float-end"/>
-                </@b.hasPermission>
-
                 <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy}) <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if></h3>
+
+                <div class="text-center">
+                    <@b.hasPermission "ADMIN">
+                        <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary" margin=""/>
+                    </@b.hasPermission>
+                </div>
+
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">
                         <@b.row>
