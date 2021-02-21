@@ -28,6 +28,7 @@
                             <@dropdown name="menu.administration">
                                 <@item name="menu.administration.users" url="/users/administration" subItem=true/>
                                 <@item name="menu.administration.backup" url="/administration/backup" subItem=true/>
+                                <@item name="menu.administration.batch.edit" url="/administration/batchEdit" subItem=true/>
                             </@dropdown>
                         </@b.hasPermission>
                     </ul>
