@@ -348,7 +348,10 @@ public class UserService
 		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.WARNING, BootstrapColor.DARK));
 		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("fas fa-hourglass", MessageFormat.format("{0} Minuten", getTotalPlayedMinutes(user)), BootstrapColor.DANGER, BootstrapColor.LIGHT));
+
+		final Integer totalPlayedMinutes = getTotalPlayedMinutes(user);
+		final String timeStatistics =  MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutes, totalPlayedMinutes/60, totalPlayedMinutes/60/24);
+		statisticItems.add(new StatisticItem("fas fa-hourglass", timeStatistics, BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		return statisticItems;
 	}
