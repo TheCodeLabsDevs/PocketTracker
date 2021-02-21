@@ -39,7 +39,7 @@
                             <#if episode.getFirstAired()??>
                                 <@showMacros.factItem "fas fa-calendar" episode.getFirstAired()?date('yyy-MM-dd') "Datum"/>
                             </#if>
-                            <#if episode.getLengthInMinutes()??>
+                            <#if episode.getLengthInMinutes()?? && episode.getLengthInMinutes() \gt 0>
                                 <@showMacros.factItem "fas fa-hourglass" episode.getLengthInMinutes() "Minuten"/>
                             </#if>
                         </div>
