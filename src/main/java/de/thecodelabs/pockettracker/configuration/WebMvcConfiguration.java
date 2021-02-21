@@ -34,7 +34,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer
 		{
 			registry.addResourceHandler(webConfigurationProperties.getWebResourcesUrl() + "/**")
 					.addResourceLocations("file://" + webConfigurationProperties.getImageResourcePath() +
-							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""));
+							(!webConfigurationProperties.getImageResourcePath().endsWith("/") ? "/" : ""))
+					.setCachePeriod(7 * 24 * 60 * 60); // 1 week
 		}
 
 		if(!registry.hasMappingForPattern(webConfigurationProperties.getApiResourcesUrl() + "/**"))
