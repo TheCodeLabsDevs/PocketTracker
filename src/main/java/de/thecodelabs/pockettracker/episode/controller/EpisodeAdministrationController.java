@@ -71,7 +71,7 @@ public class EpisodeAdministrationController
 	public String episodeEditSubmit(WebRequest request, @PathVariable Integer id,
 									@ModelAttribute("episode") @Validated Episode episode, BindingResult validation)
 	{
-		if(isEpisodeModelInvalide(request, episode, validation))
+		if(isEpisodeModelInvalid(request, episode, validation))
 		{
 			return "redirect:/episode/" + id + "/edit";
 		}
@@ -142,7 +142,7 @@ public class EpisodeAdministrationController
 	Utils
 	 */
 
-	private boolean isEpisodeModelInvalide(WebRequest request, Episode episode, BindingResult validation)
+	private boolean isEpisodeModelInvalid(WebRequest request, Episode episode, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{

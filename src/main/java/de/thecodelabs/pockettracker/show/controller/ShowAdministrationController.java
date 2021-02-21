@@ -65,7 +65,7 @@ public class ShowAdministrationController
 	@Transactional
 	public String createPost(WebRequest request, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(isShowModelInvalide(request, show, validation))
+		if(isShowModelInvalid(request, show, validation))
 		{
 			return "redirect:/show/create";
 		}
@@ -105,7 +105,7 @@ public class ShowAdministrationController
 	@Transactional
 	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(isShowModelInvalide(request, show, validation))
+		if(isShowModelInvalid(request, show, validation))
 		{
 			return "redirect:/show/" + id + "/edit";
 		}
@@ -198,7 +198,7 @@ public class ShowAdministrationController
 	 Utils
 	 */
 
-	private boolean isShowModelInvalide(WebRequest request, Show show, BindingResult validation)
+	private boolean isShowModelInvalid(WebRequest request, Show show, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{

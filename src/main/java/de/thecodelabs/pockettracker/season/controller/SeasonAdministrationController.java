@@ -68,7 +68,7 @@ public class SeasonAdministrationController
 	public String seasonEditSubmit(WebRequest request, @PathVariable Integer id,
 								   @ModelAttribute("season") @Validated Season season, BindingResult validation)
 	{
-		if(isSeasonModelInvalide(request, season, validation))
+		if(isSeasonModelInvalid(request, season, validation))
 		{
 			return "redirect:/season/" + id + "/edit";
 		}
@@ -133,7 +133,7 @@ public class SeasonAdministrationController
 	Utils
 	 */
 
-	private boolean isSeasonModelInvalide(WebRequest request, Season season, BindingResult validation)
+	private boolean isSeasonModelInvalid(WebRequest request, Season season, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
