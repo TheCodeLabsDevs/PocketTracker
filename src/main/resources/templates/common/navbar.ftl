@@ -10,7 +10,7 @@
             <a class="navbar-brand" href="<@s.url "/"/>">
                 <img src="<@s.url "/image/PocketTracker.png"/>" alt="" width="35" height="35"
                      class="d-inline-block align-top">
-                PocketTracker - v1.0.0
+                PocketTracker - v${version}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

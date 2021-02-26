@@ -4,6 +4,7 @@
 
 [#-- @ftlvariable name="_csrf" type="org.springframework.security.web.csrf.CsrfToken" --]
 [#-- @ftlvariable name="oauthEnabled" type="java.lang.Boolean" --]
+[#-- @ftlvariable name="version" type="java.lang.String" --]
 [#-- @ftlvariable name="toast" type="de.thecodelabs.pockettracker.utils.toast.Toast" --]
 [#-- @ftlvariable name="showService" type="de.thecodelabs.pockettracker.show.ShowService" --]
 [#-- @ftlvariable name="showTypes" type="de.thecodelabs.pockettracker.show.model.ShowType[]" --]

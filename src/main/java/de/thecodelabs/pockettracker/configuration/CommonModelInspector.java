@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.configuration;
 
 import de.thecodelabs.pockettracker.authentication.AuthenticationConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 public class CommonModelInspector implements HandlerInterceptor
 {
 	private final AuthenticationConfigurationProperties properties;
+
+	@Value("${pockettracker.version}")
+	private String version;
 
 	@Autowired
 	public CommonModelInspector(AuthenticationConfigurationProperties properties)
@@ -37,5 +41,6 @@ public class CommonModelInspector implements HandlerInterceptor
 		}
 
 		modelAndView.addObject("oauthEnabled", properties.isEnableOAuth());
+		modelAndView.addObject("version", version);
 	}
 }
