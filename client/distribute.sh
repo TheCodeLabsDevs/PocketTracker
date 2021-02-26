@@ -6,4 +6,11 @@ java -jar openapi-generator-cli.jar generate \
   -o $(pwd)/target
 
 cd target
-mvn deploy -DaltDeploymentRepository=release::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-release
+
+VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+if [[ "$VERSION" == *SNAPSHOT ]]
+then
+  mvn deploy -DaltDeploymentRepository=release::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-snapshot
+else
+  mvn deploy -DaltDeploymentRepository=release::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-release
+fi
