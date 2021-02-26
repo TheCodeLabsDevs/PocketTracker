@@ -5,7 +5,6 @@
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
     <#import "/common/macros/show.ftl" as showMacros/>
-    <#import "/users/form.ftl" as form>
 
     <@template.head show.getName()/>
     <@template.body>
