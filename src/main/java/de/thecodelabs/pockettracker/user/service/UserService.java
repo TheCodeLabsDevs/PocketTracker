@@ -5,6 +5,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowType;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.StatisticItem;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
@@ -20,6 +21,7 @@ import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import de.thecodelabs.pockettracker.user.repository.WatchedEpisodeRepository;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -306,9 +308,10 @@ public class UserService
 		}
 	}
 
-	public Integer getTotalPlayedMinutes(User user)
+	public Integer getTotalPlayedMinutes(User user, @Nullable ShowType showType)
 	{
 		return user.getWatchedEpisodes().stream()
+				.filter(watched -> showType == null || watched.getEpisode().getSeason().getShow().getType() == showType)
 				.filter(watched -> watched.getEpisode().getLengthInMinutes() != null)
 				.mapToInt(watched -> watched.getEpisode().getLengthInMinutes())
 				.sum();
@@ -357,14 +360,18 @@ public class UserService
 	public List<StatisticItem> getStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.WARNING, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.INFO, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
 
-		final Integer totalPlayedMinutes = getTotalPlayedMinutes(user);
-		final String timeStatistics = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutes, totalPlayedMinutes / 60, totalPlayedMinutes / 60 / 24);
-		statisticItems.add(new StatisticItem("fas fa-hourglass", timeStatistics, BootstrapColor.DANGER, BootstrapColor.LIGHT));
+		final Integer totalPlayedMinutesTv = getTotalPlayedMinutes(user, ShowType.TV);
+		final String timeStatisticsTv = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesTv, totalPlayedMinutesTv / 60, totalPlayedMinutesTv / 60 / 24);
+		statisticItems.add(new StatisticItem("fas fa-tv", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
+
+		final Integer totalPlayedMinutesAudio = getTotalPlayedMinutes(user, ShowType.AUDIO);
+		final String timeStatisticsAudio = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesAudio, totalPlayedMinutesAudio / 60, totalPlayedMinutesAudio / 60 / 24);
+		statisticItems.add(new StatisticItem("fas fa-music", timeStatisticsAudio, BootstrapColor.WARNING, BootstrapColor.DARK));
 
 		return statisticItems;
 	}
