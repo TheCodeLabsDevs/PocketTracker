@@ -8,7 +8,7 @@ java -jar openapi-generator-cli.jar generate \
 cd target
 
 VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-if [[ "$VERSION" == *SNAPSHOT ]]
+if [[ $VERSION == *"SNAPSHOT" ]]
 then
   echo "Deploy SNAPSHOT"
   mvn deploy -DaltDeploymentRepository=snapshot::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-snapshots
