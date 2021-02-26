@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.model.EpisodeImageType;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.utils.Helpers;
 import de.thecodelabs.utils.io.PathUtils;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,54 @@ public class EpisodeService
 	public Optional<Episode> getEpisodeByNumbers(Integer showId, Integer seasonNumber, Integer episodeNumber)
 	{
 		return episodeRepository.findByNumberAndSeasonNumberAndSeasonShowId(episodeNumber, seasonNumber, showId);
+	}
+
+	public Optional<Episode> getPreviousEpisode(Episode episode)
+	{
+		final Season seasonOfEpisode = episode.getSeason();
+		final Optional<Episode> nextEpisodeOfCurrentSeason = seasonOfEpisode.getEpisodes().stream()
+				.filter(e -> e.getNumber() < episode.getNumber())
+				.max(Comparator.comparing(Episode::getNumber));
+
+		if(nextEpisodeOfCurrentSeason.isPresent())
+		{
+			return nextEpisodeOfCurrentSeason;
+		}
+
+		final Optional<Season> nextSeason = seasonOfEpisode.getShow().getSeasons().stream()
+				.filter(s -> s.getNumber() < seasonOfEpisode.getNumber())
+				.max(Comparator.comparing(Season::getNumber));
+
+		if(nextSeason.isEmpty())
+		{
+			return Optional.empty();
+		}
+
+		return nextSeason.get().getEpisodes().stream().max(Comparator.comparing(Episode::getNumber));
+	}
+
+	public Optional<Episode> getNextEpisode(Episode episode)
+	{
+		final Season seasonOfEpisode = episode.getSeason();
+		final Optional<Episode> nextEpisodeOfCurrentSeason = seasonOfEpisode.getEpisodes().stream()
+				.filter(e -> e.getNumber() > episode.getNumber())
+				.min(Comparator.comparing(Episode::getNumber));
+
+		if(nextEpisodeOfCurrentSeason.isPresent())
+		{
+			return nextEpisodeOfCurrentSeason;
+		}
+
+		final Optional<Season> nextSeason = seasonOfEpisode.getShow().getSeasons().stream()
+				.filter(s -> s.getNumber() > seasonOfEpisode.getNumber())
+				.min(Comparator.comparing(Season::getNumber));
+
+		if(nextSeason.isEmpty())
+		{
+			return Optional.empty();
+		}
+
+		return nextSeason.get().getEpisodes().stream().min(Comparator.comparing(Episode::getNumber));
 	}
 
 	public void createEpisodes(List<Episode> episodes)

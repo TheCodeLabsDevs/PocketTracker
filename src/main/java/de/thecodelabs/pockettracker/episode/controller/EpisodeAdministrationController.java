@@ -63,6 +63,9 @@ public class EpisodeAdministrationController
 
 		model.addAttribute("season", episode.getSeason());
 
+		model.addAttribute("previousEpisode", episodeService.getPreviousEpisode(episode).orElse(null));
+		model.addAttribute("nextEpisode", episodeService.getNextEpisode(episode).orElse(null));
+
 		return "administration/episode/edit";
 	}
 
