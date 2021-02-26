@@ -21,7 +21,7 @@
 
         <#if isUserSpecificView>
             <@b.row>
-                <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() method="GET" rawUrl=true csrf=false>
+                <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
                     <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size="col-12 col-md-6 col-lg-3" classes="float-end"/>
                 </@f.form>
             </@b.row>

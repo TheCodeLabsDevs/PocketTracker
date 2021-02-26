@@ -33,6 +33,9 @@ public class User
 	@NotNull
 	private UserRole userRole;
 
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+	private UserSettings settings;
+
 	@ManyToMany
 	@JoinTable(
 			name = "appuser_shows",
@@ -104,6 +107,16 @@ public class User
 	public void setUserRole(UserRole userRole)
 	{
 		this.userRole = userRole;
+	}
+
+	public UserSettings getSettings()
+	{
+		return settings;
+	}
+
+	public void setSettings(UserSettings settings)
+	{
+		this.settings = settings;
 	}
 
 	public List<Show> getShows()

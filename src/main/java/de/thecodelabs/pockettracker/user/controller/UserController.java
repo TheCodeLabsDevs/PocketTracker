@@ -9,6 +9,7 @@ import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -18,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.text.MessageFormat;
@@ -52,13 +50,22 @@ public class UserController
 		this.episodeRepository = episodeRepository;
 	}
 
-	@GetMapping("/shows")
-	public String getShows(@RequestParam(required = false) ShowSortOption sortOption, Model model)
+	@PostMapping("/shows")
+	@Transactional
+	public String postFilterSubmission(@RequestParam ShowSortOption sortOption)
 	{
-		if(sortOption == null)
-		{
-			sortOption = ShowSortOption.LAST_WATCHED;
-		}
+		final UserSettings settings = userService.getUserSettings();
+		settings.setLastShowSortOption(sortOption);
+
+		return "redirect:/user/shows";
+	}
+
+	@GetMapping("/shows")
+	public String getShows(Model model)
+	{
+		final UserSettings settings = userService.getUserSettings();
+		final ShowSortOption sortOption = Optional.ofNullable(settings.getLastShowSortOption())
+				.orElse(ShowSortOption.LAST_WATCHED);
 
 		final User user = userService.getCurrentUser();
 

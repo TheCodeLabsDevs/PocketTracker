@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.user.StatisticItem;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
+import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
@@ -115,6 +116,18 @@ public class UserService
 	public Optional<User> getUserByUserAuthentication(UserAuthentication userAuthentication)
 	{
 		return userRepository.findUserByAuthenticationsContains(userAuthentication);
+	}
+
+	@Transactional
+	public UserSettings getUserSettings()
+	{
+		final User currentUser = getCurrentUser();
+		if(currentUser.getSettings() == null)
+		{
+			currentUser.setSettings(new UserSettings(currentUser));
+			return userRepository.save(currentUser).getSettings();
+		}
+		return currentUser.getSettings();
 	}
 
 	public List<User> getUsers()
@@ -350,7 +363,7 @@ public class UserService
 		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
 
 		final Integer totalPlayedMinutes = getTotalPlayedMinutes(user);
-		final String timeStatistics =  MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutes, totalPlayedMinutes/60, totalPlayedMinutes/60/24);
+		final String timeStatistics = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutes, totalPlayedMinutes / 60, totalPlayedMinutes / 60 / 24);
 		statisticItems.add(new StatisticItem("fas fa-hourglass", timeStatistics, BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		return statisticItems;
