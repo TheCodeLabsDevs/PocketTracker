@@ -6,7 +6,7 @@
 
     <groupId>de.thecodelabs</groupId>
     <artifactId>PocketTracker</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
