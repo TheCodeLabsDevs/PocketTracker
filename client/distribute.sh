@@ -10,7 +10,9 @@ cd target
 VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 if [[ "$VERSION" == *SNAPSHOT ]]
 then
-  mvn deploy -DaltDeploymentRepository=snapshot::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-snapshot
+  echo "Deploy SNAPSHOT"
+  mvn deploy -DaltDeploymentRepository=snapshot::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-snapshots
 else
+  echo "Deploy RELEASE"
   mvn deploy -DaltDeploymentRepository=release::default::https://maven.thecodelabs.de/artifactory/TheCodeLabs-release
 fi
