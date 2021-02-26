@@ -15,6 +15,8 @@ public class BackupUserModel
 	private List<BackupUserTokenModel> tokens;
 	private UserRole userRole;
 	@MergeIgnore
+	private BackupUserSettingsModel settings;
+	@MergeIgnore
 	private List<Integer> shows;
 	@JsonProperty("watched")
 	private List<BackupWatchedEpisodeModel> watchedEpisodes;
@@ -67,6 +69,16 @@ public class BackupUserModel
 	public void setUserRole(UserRole userRole)
 	{
 		this.userRole = userRole;
+	}
+
+	public BackupUserSettingsModel getSettings()
+	{
+		return settings;
+	}
+
+	public void setSettings(BackupUserSettingsModel settings)
+	{
+		this.settings = settings;
 	}
 
 	public List<Integer> getShows()

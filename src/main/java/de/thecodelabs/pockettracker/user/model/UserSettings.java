@@ -17,7 +17,7 @@ public class UserSettings
 
 	private ShowSortOption lastShowSortOption = ShowSortOption.LAST_WATCHED;
 
-	@OneToOne
+	@OneToOne(mappedBy = "settings")
 	private User user;
 
 	public UserSettings()

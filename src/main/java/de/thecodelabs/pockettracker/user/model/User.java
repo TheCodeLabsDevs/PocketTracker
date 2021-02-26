@@ -33,7 +33,7 @@ public class User
 	@NotNull
 	private UserRole userRole;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToOne(cascade = CascadeType.ALL)
 	private UserSettings settings;
 
 	@ManyToMany

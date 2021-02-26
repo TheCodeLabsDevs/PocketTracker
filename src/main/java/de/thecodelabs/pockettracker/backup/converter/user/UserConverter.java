@@ -21,16 +21,18 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	private final UserTokenConverter userTokenConverter;
 	private final UserInternalAuthenticationConverter internalAuthenticationConverter;
 	private final UserGitlabAuthenticationConverter gitlabAuthenticationConverter;
+	private final UserSettingsConverter userSettingsConverter;
 
 	private final WatchedEpisodeConverter watchedEpisodeConverter;
 
 	@Autowired
 	public UserConverter(UserTokenConverter userTokenConverter, UserInternalAuthenticationConverter internalAuthenticationConverter,
-						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, WatchedEpisodeConverter watchedEpisodeConverter)
+						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, UserSettingsConverter userSettingsConverter, WatchedEpisodeConverter watchedEpisodeConverter)
 	{
 		this.userTokenConverter = userTokenConverter;
 		this.internalAuthenticationConverter = internalAuthenticationConverter;
 		this.gitlabAuthenticationConverter = gitlabAuthenticationConverter;
+		this.userSettingsConverter = userSettingsConverter;
 		this.watchedEpisodeConverter = watchedEpisodeConverter;
 	}
 
@@ -55,6 +57,12 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 			}
 		}).collect(Collectors.toList()));
 		model.setTokens(userTokenConverter.toBeans(entity.getTokens()));
+
+		if(entity.getSettings() != null)
+		{
+			model.setSettings(userSettingsConverter.toBean(entity.getSettings()));
+		}
+
 		model.setShows(entity.getShows().stream().map(Show::getId).collect(Collectors.toList()));
 		model.setWatchedEpisodes(watchedEpisodeConverter.toBeans(entity.getWatchedEpisodes()));
 
@@ -85,6 +93,11 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 
 		entity.setTokens(userTokenConverter.toEntities(bean.getTokens()));
 		entity.getTokens().forEach(token -> token.setUser(entity));
+
+		if(bean.getSettings() != null)
+		{
+			entity.setSettings(userSettingsConverter.toEntity(bean.getSettings()));
+		}
 
 		return entity;
 	}
