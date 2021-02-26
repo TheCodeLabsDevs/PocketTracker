@@ -88,11 +88,12 @@ public class BackupService
 		try(final Stream<Path> stream = Files.list(Paths.get(backupConfigurationProperties.getLocation())))
 		{
 			return stream.map(path -> {
+				final long size = FileUtils.sizeOfDirectory(path.toFile());
 				final LocalDateTime createTime = LocalDateTime.ofInstant(getLastModified(path).toInstant(), ZoneId.systemDefault());
 				final boolean includeDatabase = Files.exists(path.resolve(DATABASE_PATH_NAME));
 				final boolean includeImages = Files.exists(path.resolve(IMAGE_PATH_NAME));
 
-				return new BackupInstance(path, createTime, includeDatabase, includeImages);
+				return new BackupInstance(path, size, createTime, includeDatabase, includeImages);
 			})
 					.sorted(Comparator.comparing(BackupInstance::getCreateTime).reversed())
 					.collect(Collectors.toList());

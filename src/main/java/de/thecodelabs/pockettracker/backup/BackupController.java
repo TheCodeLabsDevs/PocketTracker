@@ -81,7 +81,7 @@ public class BackupController
 	}
 
 	@GetMapping("/export")
-	public String exportDatabase(WebRequest request)
+	public String createBackup(WebRequest request)
 	{
 		try
 		{

@@ -1,5 +1,7 @@
 package de.thecodelabs.pockettracker.backup.model;
 
+import org.apache.commons.io.FileUtils;
+
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -8,14 +10,16 @@ import java.time.format.DateTimeFormatter;
 
 public class BackupInstance
 {
-	private Path backupPath;
-	private LocalDateTime createTime;
-	private Boolean database;
-	private Boolean images;
+	private final Path backupPath;
+	private final long size;
+	private final LocalDateTime createTime;
+	private final boolean database;
+	private final boolean images;
 
-	public BackupInstance(Path backupPath, LocalDateTime createTime, Boolean database, Boolean images)
+	public BackupInstance(Path backupPath, long size, LocalDateTime createTime, boolean database, boolean images)
 	{
 		this.backupPath = backupPath;
+		this.size = size;
 		this.createTime = createTime;
 		this.database = database;
 		this.images = images;
@@ -26,9 +30,9 @@ public class BackupInstance
 		return backupPath;
 	}
 
-	public void setBackupPath(Path backupPath)
+	public long getSize()
 	{
-		this.backupPath = backupPath;
+		return size;
 	}
 
 	public LocalDateTime getCreateTime()
@@ -36,29 +40,14 @@ public class BackupInstance
 		return createTime;
 	}
 
-	public void setCreateTime(LocalDateTime createTime)
-	{
-		this.createTime = createTime;
-	}
-
-	public Boolean getDatabase()
+	public boolean isDatabase()
 	{
 		return database;
 	}
 
-	public void setDatabase(Boolean database)
-	{
-		this.database = database;
-	}
-
-	public Boolean getImages()
+	public boolean isImages()
 	{
 		return images;
-	}
-
-	public void setImages(Boolean images)
-	{
-		this.images = images;
 	}
 
 	public String getName()
@@ -69,5 +58,10 @@ public class BackupInstance
 	public String getPathName()
 	{
 		return URLEncoder.encode(backupPath.getFileName().toString(), Charset.defaultCharset());
+	}
+
+	public String getSizeFormatted()
+	{
+		return FileUtils.byteCountToDisplaySize(size);
 	}
 }

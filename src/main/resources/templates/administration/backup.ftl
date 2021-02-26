@@ -25,6 +25,7 @@
             <@t.table id="backups">
                 <@t.head>
                     <@t.headCell label="admin.backup.date"/>
+                    <@t.headCell label="admin.backup.size"/>
                     <@t.headCell label="admin.backup.includeDatabase"/>
                     <@t.headCell label="admin.backup.includeImages"/>
                     <@t.headCell label="admin.backup.download"/>
@@ -33,6 +34,7 @@
                     <#list backups as backup>
                         <@t.row>
                             <@t.cell value=backup.getName()/>
+                            <@t.cell value=backup.getSizeFormatted()/>
                             <@t.cell>
                                 <#if backup.database>
                                     &check;
