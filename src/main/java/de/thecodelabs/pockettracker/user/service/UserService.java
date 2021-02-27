@@ -357,17 +357,23 @@ public class UserService
 		return completelyWatchedShows;
 	}
 
-	public List<StatisticItem> getStatistics(User user)
+	public List<StatisticItem> getGeneralStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
 		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.INFO, BootstrapColor.DARK));
 		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
+		return statisticItems;
+	}
+
+	public List<StatisticItem> getWatchTimeStatistics(User user)
+	{
+		final List<StatisticItem> statisticItems = new ArrayList<>();
 
 		final Integer totalPlayedMinutesTv = getTotalPlayedMinutes(user, ShowType.TV);
 		final String timeStatisticsTv = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesTv, totalPlayedMinutesTv / 60, totalPlayedMinutesTv / 60 / 24);
-		statisticItems.add(new StatisticItem("fas fa-tv", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-film", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		final Integer totalPlayedMinutesAudio = getTotalPlayedMinutes(user, ShowType.AUDIO);
 		final String timeStatisticsAudio = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesAudio, totalPlayedMinutesAudio / 60, totalPlayedMinutesAudio / 60 / 24);

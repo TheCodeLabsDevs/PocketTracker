@@ -185,7 +185,9 @@ public class UserController
 	{
 		final User user = userService.getCurrentUser();
 		model.addAttribute("currentPage", "Statistiken");
-		model.addAttribute("statisticItems", userService.getStatistics(user));
+		model.addAttribute("statisticItemsGeneral", userService.getGeneralStatistics(user));
+		model.addAttribute("statisticItemsWatchTime", userService.getWatchTimeStatistics(user));
+
 
 		return "statistics";
 	}
