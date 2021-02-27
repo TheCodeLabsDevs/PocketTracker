@@ -21,6 +21,7 @@
             <#if item?index % 2 == 0>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 justify-content-center m-auto">
             </#if>
+
                 <div class="col">
                     <@c.card classes=item.getBackgroundColor().getBackgroundColor() + " " + item.getTextColor().getTextColor()>
                         <@c.body>
@@ -28,6 +29,7 @@
                         </@c.body>
                     </@c.card>
                 </div>
+
             <#if item?index % 2 != 0>
                 </div>
             </#if>

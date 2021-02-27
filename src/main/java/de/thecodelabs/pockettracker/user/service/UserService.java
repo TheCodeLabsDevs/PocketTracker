@@ -363,7 +363,7 @@ public class UserService
 		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.INFO, BootstrapColor.DARK));
 		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("fas fa-film", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("far fa-file", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
 		return statisticItems;
 	}
 
