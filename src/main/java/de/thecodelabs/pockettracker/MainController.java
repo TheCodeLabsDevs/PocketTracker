@@ -54,6 +54,7 @@ public class MainController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
+		model.addAttribute("numberOfAllShows", showService.getAllShows(null).size());
 		model.addAttribute("shows", showService.getAllShows(searchText));
 
 		model.addAttribute("currentPage", "Alle Serien");
