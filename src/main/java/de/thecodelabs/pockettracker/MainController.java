@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -74,8 +77,17 @@ public class MainController
 			return "redirect:/shows";
 		}
 
-		model.addAttribute("show", showOptional.get());
-		model.addAttribute("isAdded", user.getShows().contains(showOptional.get()));
+		final Show show = showOptional.get();
+		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(show, user);
+
+		model.addAttribute("show", show);
+		model.addAttribute("isAdded", user.getShows().contains(show));
+
+		if(latestWatchDate != null)
+		{
+			model.addAttribute("latestWatched", latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+		}
+
 		return "show";
 	}
 

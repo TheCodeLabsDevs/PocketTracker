@@ -12,13 +12,18 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy}) <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if></h3>
+                <h3 class="card-title text-center">${show.getName()} (${show.getFirstAired()?date('yyy-MM-dd')?string.yyyy}) <#if show.getFinished()?? && show.getFinished()>
+                        <i class="fas fa-flag-checkered"></i></#if>
+                </h3>
+                <#if latestWatched??>
+                    <div class="text-center">Zuletzt gesehen: ${latestWatched}</div>
+                </#if>
 
-                <div class="text-center">
-                    <@b.hasPermission "ADMIN">
+                <@b.hasPermission "ADMIN">
+                    <div class="text-center mt-2">
                         <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary" margin=""/>
-                    </@b.hasPermission>
-                </div>
+                    </div>
+                </@b.hasPermission>
 
                 <div class="row mt-3 mt-md-5">
                     <div class="col-12 col-md-4 text-center">

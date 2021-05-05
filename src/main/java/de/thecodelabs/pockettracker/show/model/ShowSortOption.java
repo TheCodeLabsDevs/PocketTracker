@@ -48,7 +48,7 @@ public enum ShowSortOption implements MessageSourceResolvable
 		List<Show> sort(List<Show> shows, User user);
 	}
 
-	private static LocalDate getLatestWatchDate(Show show, User user)
+	public static LocalDate getLatestWatchDate(Show show, User user)
 	{
 		return show.getSeasons().stream()
 				.flatMap(season -> season.getEpisodes().stream())
