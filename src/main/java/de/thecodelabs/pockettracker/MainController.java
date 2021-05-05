@@ -83,7 +83,7 @@ public class MainController
 		model.addAttribute("show", show);
 		model.addAttribute("isAdded", user.getShows().contains(show));
 
-		if(latestWatchDate != null)
+		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
 		{
 			model.addAttribute("latestWatched", latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 		}
