@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.user.model;
 
 
+import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,6 +17,7 @@ public class UserSettings
 	private Integer id;
 
 	private ShowSortOption lastShowSortOption = ShowSortOption.LAST_WATCHED;
+	private ShowFilterOption lastShowFilterOption = ShowFilterOption.ALL_SHOWS;
 
 	@OneToOne(mappedBy = "settings")
 	private User user;
@@ -47,6 +49,16 @@ public class UserSettings
 	public void setLastShowSortOption(ShowSortOption lastShowSortOption)
 	{
 		this.lastShowSortOption = lastShowSortOption;
+	}
+
+	public ShowFilterOption getLastShowFilterOption()
+	{
+		return lastShowFilterOption;
+	}
+
+	public void setLastShowFilterOption(ShowFilterOption lastShowFilterOption)
+	{
+		this.lastShowFilterOption = lastShowFilterOption;
 	}
 
 	public User getUser()

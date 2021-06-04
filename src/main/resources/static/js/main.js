@@ -25,6 +25,11 @@ function changeSortOption() {
         sortOption.addEventListener("change", onChange, false);
     }
 
+    let filterOption = document.getElementById("filterOption");
+    if (filterOption) {
+        filterOption.addEventListener("change", onChange, false);
+    }
+
     function onChange(event) {
         document.getElementById("sortOptionForm").submit();
     }

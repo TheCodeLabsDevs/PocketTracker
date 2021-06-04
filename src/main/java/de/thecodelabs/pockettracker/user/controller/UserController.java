@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserSettings;
@@ -25,6 +26,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW;
 import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_SEARCH_TEXT;
@@ -52,10 +54,11 @@ public class UserController
 
 	@PostMapping("/shows")
 	@Transactional
-	public String postFilterSubmission(@RequestParam ShowSortOption sortOption)
+	public String postFilterSubmission(@RequestParam ShowSortOption sortOption, @RequestParam ShowFilterOption filterOption)
 	{
 		final UserSettings settings = userService.getUserSettings();
 		settings.setLastShowSortOption(sortOption);
+		settings.setLastShowFilterOption(filterOption);
 
 		return "redirect:/user/shows";
 	}
@@ -64,6 +67,8 @@ public class UserController
 	public String getShows(Model model)
 	{
 		final UserSettings settings = userService.getUserSettings();
+		final ShowFilterOption filterOption = Optional.ofNullable(settings.getLastShowFilterOption())
+				.orElse(ShowFilterOption.ALL_SHOWS);
 		final ShowSortOption sortOption = Optional.ofNullable(settings.getLastShowSortOption())
 				.orElse(ShowSortOption.LAST_WATCHED);
 
@@ -76,8 +81,11 @@ public class UserController
 		}
 
 		final List<Show> shows = showService.getAllFavoriteShowsByUser(searchText, user);
-		final List<Show> sortedShows = sortOption.getSorter().sort(shows, user);
+		final Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
+		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, user);
+
 		model.addAttribute("shows", sortedShows);
+		model.addAttribute("currentFilterOption", filterOption);
 		model.addAttribute("currentSortOption", sortOption);
 
 		model.addAttribute("currentPage", "Meine Serien");

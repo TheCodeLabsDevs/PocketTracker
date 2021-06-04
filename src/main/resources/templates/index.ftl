@@ -38,11 +38,13 @@
         </#if>
 
         <#if isUserSpecificView>
-            <@b.row>
-                <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
-                    <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size="col-12 col-md-6 col-lg-3" classes="float-end"/>
-                </@f.form>
-            </@b.row>
+            <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+
+                <div class="d-flex justify-content-end">
+                    <@f.select name="filterOption" options=showFilterOptions value=currentFilterOption.name() size="me-2"/>
+                    <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size=""/>
+                </div>
+            </@f.form>
         </#if>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
