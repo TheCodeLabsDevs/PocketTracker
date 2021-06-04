@@ -9,11 +9,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="<@s.url "/webjars/bootstrap/5.0.0-beta3/css/bootstrap.min.css"/>" rel="stylesheet"/>
+        <link href="<@s.url "/webjars/bootstrap/5.0.1/css/bootstrap.min.css"/>" rel="stylesheet"/>
         <link href="<@s.url "/webjars/font-awesome/5.15.2/css/all.min.css"/>" rel="stylesheet"/>
         <link href="<@s.url "/css/main.css"/>" rel="stylesheet">
 
-        <script src="<@s.url "/webjars/bootstrap/5.0.0-beta3/js/bootstrap.bundle.min.js"/>"></script>
+        <script src="<@s.url "/webjars/bootstrap/5.0.1/js/bootstrap.bundle.min.js"/>"></script>
         <script src="<@s.url "/js/main.js"/>"></script>
 
         <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
