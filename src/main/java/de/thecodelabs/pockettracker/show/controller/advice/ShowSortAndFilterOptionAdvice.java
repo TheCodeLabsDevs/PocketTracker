@@ -11,7 +11,6 @@ public class ShowSortAndFilterOptionAdvice
 
 	@ModelAttribute("showFilterOptions")
 	public ShowFilterOption[] showFilterOptions()
-
 	{
 		return ShowFilterOption.values();
 	}
