@@ -38,9 +38,9 @@ public class User
 
 	@ManyToMany
 	@JoinTable(
-			name = "appuser_shows",
+			name = "appuser_added_shows",
 			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "shows_id"))
+			inverseJoinColumns = @JoinColumn(name = "show_id"))
 	private List<Show> shows;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
