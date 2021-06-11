@@ -12,7 +12,6 @@ import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserSettings;
-import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -114,7 +113,6 @@ public class UserController
 	}
 
 	@GetMapping("/shows/remove/{showId}")
-	@Transactional
 	public String removeShow(WebRequest request, @PathVariable Integer showId)
 	{
 		final Optional<Show> showOptional = showRepository.findById(showId);
@@ -126,16 +124,14 @@ public class UserController
 
 		final User user = userService.getCurrentUser();
 		final Show showToRemove = showOptional.get();
-		final boolean userHadShow = user.getShows().remove(showToRemove);
+		final boolean userHadShow = userService.removeShowFromUser(user, showToRemove);
 		if(!userHadShow)
 		{
 			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", BootstrapColor.WARNING));
 			return "redirect:/user/shows";
 		}
 
-		final List<WatchedEpisode> watchedEpisodesByShow = userService.getWatchedEpisodesByShow(user, showToRemove);
-		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
-
+		userService.removeAllWatchedEpisodesFromUser(user, showToRemove);
 		return "redirect:/user/shows";
 	}
 

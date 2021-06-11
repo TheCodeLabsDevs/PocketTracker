@@ -9,14 +9,12 @@ import de.thecodelabs.pockettracker.show.model.ShowType;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.StatisticItem;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
-import de.thecodelabs.pockettracker.user.model.User;
-import de.thecodelabs.pockettracker.user.model.UserRole;
-import de.thecodelabs.pockettracker.user.model.UserSettings;
-import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
+import de.thecodelabs.pockettracker.user.model.*;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.repository.GitlabAuthenticationRepository;
+import de.thecodelabs.pockettracker.user.repository.UserAddedShowRepository;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import de.thecodelabs.pockettracker.user.repository.WatchedEpisodeRepository;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -48,16 +46,19 @@ public class UserService
 	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
 
 	private final ShowService showService;
+
+	private final UserAddedShowRepository userAddedShowRepository;
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository, WatchedEpisodeRepository watchedEpisodeRepository)
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.showService = showService;
 		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
+		this.userAddedShowRepository = userAddedShowRepository;
 		this.watchedEpisodeRepository = watchedEpisodeRepository;
 	}
 
@@ -388,7 +389,7 @@ public class UserService
 		final List<User> users = userRepository.findAll();
 		for(User user : users)
 		{
-			user.getShows().remove(show);
+			removeShowFromUser(user, show);
 		}
 
 		for(Season season : show.getSeasons())
@@ -411,5 +412,35 @@ public class UserService
 	{
 		final List<WatchedEpisode> watchedEpisodes = episode.getWatchedEpisodes();
 		watchedEpisodeRepository.deleteAll(watchedEpisodes);
+	}
+
+	public boolean removeShowFromUser(User user, Show show)
+	{
+		final List<AddedShow> addedShowList = user.getShows().stream()
+				.filter(addedShow -> addedShow.getShow().equals(show))
+				.collect(Collectors.toList());
+
+		if(addedShowList.isEmpty())
+		{
+			return false;
+		}
+
+		for(AddedShow addedShow : addedShowList)
+		{
+			userAddedShowRepository.delete(addedShow);
+		}
+		return true;
+	}
+
+	public boolean removeAllWatchedEpisodesFromUser(User user, Show show)
+	{
+		final List<WatchedEpisode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
+		if(watchedEpisodesByShow.isEmpty())
+		{
+			return false;
+		}
+
+		watchedEpisodeRepository.deleteAll(watchedEpisodesByShow);
+		return true;
 	}
 }
