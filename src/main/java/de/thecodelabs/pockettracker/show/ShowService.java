@@ -6,7 +6,9 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
+import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import de.thecodelabs.pockettracker.utils.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +26,22 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShowService
 {
 	private static final Logger logger = LoggerFactory.getLogger(ShowService.class);
 
+	private final UserRepository userRepository;
 	private final ShowRepository repository;
 	private final MessageSource messageSource;
 	private final WebConfigurationProperties webConfigurationProperties;
 
 	@Autowired
-	public ShowService(ShowRepository repository, MessageSource messageSource, WebConfigurationProperties webConfigurationProperties)
+	public ShowService(UserRepository userRepository, ShowRepository repository, MessageSource messageSource, WebConfigurationProperties webConfigurationProperties)
 	{
+		this.userRepository = userRepository;
 		this.repository = repository;
 		this.messageSource = messageSource;
 		this.webConfigurationProperties = webConfigurationProperties;
@@ -62,11 +67,18 @@ public class ShowService
 		final List<Show> shows;
 		if(name == null || name.isEmpty())
 		{
-			shows = repository.findAllByFavoriteUsersContainingOrderByNameAsc(user);
+			shows = user.getShows()
+					.stream()
+					.map(AddedShow::getShow)
+					.collect(Collectors.toList());
 		}
 		else
 		{
-			shows = repository.findAllByNameContainingIgnoreCaseAndFavoriteUsersContainingOrderByNameAsc(name, user);
+			shows = user.getShows()
+					.stream()
+					.map(AddedShow::getShow)
+					.filter(show -> show.getName().toLowerCase().contains(name.toLowerCase()))
+					.collect(Collectors.toList());
 		}
 		shows.forEach(this::prepareShow);
 		return shows;

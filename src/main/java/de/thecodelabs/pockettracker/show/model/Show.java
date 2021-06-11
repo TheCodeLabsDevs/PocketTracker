@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.user.model.User;
+import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import org.hibernate.annotations.GenericGenerator;
@@ -74,10 +74,10 @@ public class Show
 	@MergeIgnore
 	private List<Season> seasons = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "shows")
+	@OneToMany(mappedBy = "show")
 	@MergeIgnore
 	@JsonIgnore
-	private List<User> favoriteUsers = new ArrayList<>();
+	private List<AddedShow> favoriteUsers = new ArrayList<>();
 
 	public Show()
 	{
@@ -184,12 +184,12 @@ public class Show
 		this.seasons = seasons;
 	}
 
-	public List<User> getFavoriteUsers()
+	public List<AddedShow> getFavoriteUsers()
 	{
 		return favoriteUsers;
 	}
 
-	public void setFavoriteUsers(List<User> favoriteUsers)
+	public void setFavoriteUsers(List<AddedShow> favoriteUsers)
 	{
 		this.favoriteUsers = favoriteUsers;
 	}

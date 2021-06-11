@@ -1,10 +1,10 @@
 package de.thecodelabs.pockettracker.backup.converter.user;
 
+import de.thecodelabs.pockettracker.backup.converter.AddedShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.WatchedEpisodeConverter;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserGitlabAuthentication;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserInternalAuthentication;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
-import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
@@ -23,16 +23,19 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	private final UserGitlabAuthenticationConverter gitlabAuthenticationConverter;
 	private final UserSettingsConverter userSettingsConverter;
 
+	private final AddedShowConverter addedShowConverter;
 	private final WatchedEpisodeConverter watchedEpisodeConverter;
 
 	@Autowired
 	public UserConverter(UserTokenConverter userTokenConverter, UserInternalAuthenticationConverter internalAuthenticationConverter,
-						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, UserSettingsConverter userSettingsConverter, WatchedEpisodeConverter watchedEpisodeConverter)
+						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, UserSettingsConverter userSettingsConverter,
+						 AddedShowConverter addedShowConverter, WatchedEpisodeConverter watchedEpisodeConverter)
 	{
 		this.userTokenConverter = userTokenConverter;
 		this.internalAuthenticationConverter = internalAuthenticationConverter;
 		this.gitlabAuthenticationConverter = gitlabAuthenticationConverter;
 		this.userSettingsConverter = userSettingsConverter;
+		this.addedShowConverter = addedShowConverter;
 		this.watchedEpisodeConverter = watchedEpisodeConverter;
 	}
 
@@ -63,7 +66,7 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 			model.setSettings(userSettingsConverter.toBean(entity.getSettings()));
 		}
 
-		model.setShows(entity.getShows().stream().map(Show::getId).collect(Collectors.toList()));
+		model.setShows(addedShowConverter.toBeans(entity.getShows()));
 		model.setWatchedEpisodes(watchedEpisodeConverter.toBeans(entity.getWatchedEpisodes()));
 
 		return model;

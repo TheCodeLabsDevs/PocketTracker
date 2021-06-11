@@ -9,6 +9,7 @@ import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
+import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
@@ -107,7 +108,7 @@ public class UserController
 		}
 
 		final User user = userService.getCurrentUser();
-		user.getShows().add(showOptional.get());
+		user.getShows().add(new AddedShow(user, showOptional.get(), false));
 
 		return "redirect:/shows";
 	}
@@ -136,6 +137,23 @@ public class UserController
 		user.getWatchedEpisodes().removeAll(watchedEpisodesByShow);
 
 		return "redirect:/user/shows";
+	}
+
+	@GetMapping("/shows/dislike/{showId}")
+	@Transactional
+	public String dislikeShow(WebRequest request, @PathVariable Integer showId)
+	{
+		final Optional<AddedShow> showOptional = userService.getCurrentUser().getShowById(showId);
+		if(showOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
+			return "redirect:/shows";
+		}
+
+		final AddedShow addedShow = showOptional.get();
+		addedShow.setDisliked(!Optional.ofNullable(addedShow.getDisliked()).orElse(false));
+
+		return "redirect:/show/" + showId;
 	}
 
 	@GetMapping("/season/{seasonId}")

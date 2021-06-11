@@ -37,6 +37,9 @@
                             </@b.col>
                             <@b.col>
                                 <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50 <#if isAdded>d-none</#if>">Hinzufügen</a>
+                                <a href="<@s.url "/user/shows/dislike/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger mt-4 w-50 <#if !isAdded>d-none</#if>">
+                                    Dislike
+                                </a>
                             </@b.col>
                         </@b.row>
                     </div>

@@ -81,7 +81,7 @@ public class MainController
 		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(show, user);
 
 		model.addAttribute("show", show);
-		model.addAttribute("isAdded", user.getShows().contains(show));
+		model.addAttribute("isAdded", user.getShows().stream().anyMatch(addedShow -> addedShow.getShow().equals(show)));
 
 		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
 		{

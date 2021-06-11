@@ -77,10 +77,11 @@ public class AddedShow
 	{
 	}
 
-	public AddedShow(@NotNull User user, @NotNull Show show)
+	public AddedShow(@NotNull User user, @NotNull Show show, Boolean disliked)
 	{
 		this.user = user;
 		this.show = show;
+		this.disliked = disliked;
 
 		this.userId = user.getId();
 		this.showId = show.getId();

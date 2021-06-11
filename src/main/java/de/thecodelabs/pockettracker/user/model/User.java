@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.user.model;
 
-import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import org.hibernate.annotations.GenericGenerator;
@@ -36,12 +35,8 @@ public class User
 	@OneToOne(cascade = CascadeType.ALL)
 	private UserSettings settings;
 
-	@ManyToMany
-	@JoinTable(
-			name = "appuser_added_shows",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "show_id"))
-	private List<Show> shows;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<AddedShow> shows;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<WatchedEpisode> watchedEpisodes;
@@ -119,18 +114,25 @@ public class User
 		this.settings = settings;
 	}
 
-	public List<Show> getShows()
+	public List<AddedShow> getShows()
 	{
 		return shows;
 	}
 
-	public void addShows(List<Show> newShows)
+	public void addShows(List<AddedShow> newShows)
 	{
 		if(this.shows == null)
 		{
 			this.shows = new ArrayList<>();
 		}
 		this.shows.addAll(newShows);
+	}
+
+	public Optional<AddedShow> getShowById(Integer id)
+	{
+		return this.shows.stream()
+				.filter(show -> show.getShow().getId().equals(id))
+				.findFirst();
 	}
 
 	public List<WatchedEpisode> getWatchedEpisodes()
