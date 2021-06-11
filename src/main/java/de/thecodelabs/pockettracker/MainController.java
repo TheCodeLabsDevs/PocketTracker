@@ -8,6 +8,7 @@ import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
+import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,8 @@ public class MainController
 		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(show, user);
 
 		model.addAttribute("show", show);
-		model.addAttribute("isAdded", user.getShows().stream().anyMatch(addedShow -> addedShow.getShow().equals(show)));
+		model.addAttribute("isAdded", user.getShowById(show.getId()).isPresent());
+		model.addAttribute("isDisliked", user.getShowById(show.getId()).map(AddedShow::getDisliked).orElse(false));
 
 		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
 		{

@@ -31,12 +31,12 @@
 
                     <div class="d-flex justify-content-end">
                         <#if isUserSpecific>
-                            <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link">Entfernen</a>
+                            <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@s.message "button.remove"/></a>
                         <#else>
                             <@b.hasPermission "ADMIN">
                                 <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@b.localize "button.edit"/></a>
                             </@b.hasPermission>
-                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if> ms-2">Hinzufügen</a>
+                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userShows?seq_contains(show)>d-none</#if> ms-2"><@s.message "button.add"/></a>
                         </#if>
                     </div>
                 </div>
