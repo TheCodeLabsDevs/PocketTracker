@@ -41,6 +41,15 @@
             <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
 
                 <div class="d-flex justify-content-end">
+                    <a class="btn btn-link" role="button" id="showDislikedShows">
+                        <#if showDislikedShows>
+                            <i class="fas fa-thumbs-down"></i>
+                        <#else>
+                            <i class="far fa-thumbs-down"></i>
+                        </#if>
+                    </a>
+                    <input type="hidden" name="showDislikedShows" value="${showDislikedShows?c}">
+
                     <@f.select name="filterOption" options=showFilterOptions value=currentFilterOption.name() size="me-2"/>
                     <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size=""/>
                 </div>

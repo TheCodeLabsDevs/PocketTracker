@@ -55,11 +55,14 @@ public class UserController
 
 	@PostMapping("/shows")
 	@Transactional
-	public String postFilterSubmission(@RequestParam ShowSortOption sortOption, @RequestParam ShowFilterOption filterOption)
+	public String postFilterSubmission(@RequestParam ShowSortOption sortOption,
+									   @RequestParam ShowFilterOption filterOption,
+									   @RequestParam Boolean showDislikedShows)
 	{
 		final UserSettings settings = userService.getUserSettings();
 		settings.setLastShowSortOption(sortOption);
 		settings.setLastShowFilterOption(filterOption);
+		settings.setShowDislikedShows(showDislikedShows);
 
 		return "redirect:/user/shows";
 	}
@@ -68,6 +71,8 @@ public class UserController
 	public String getShows(Model model)
 	{
 		final UserSettings settings = userService.getUserSettings();
+		final Boolean showDislikedShows = Optional.ofNullable(settings.getShowDislikedShows())
+				.orElse(false);
 		final ShowFilterOption filterOption = Optional.ofNullable(settings.getLastShowFilterOption())
 				.orElse(ShowFilterOption.ALL_SHOWS);
 		final ShowSortOption sortOption = Optional.ofNullable(settings.getLastShowSortOption())
@@ -82,10 +87,17 @@ public class UserController
 		}
 
 		final List<Show> shows = showService.getAllFavoriteShowsByUser(searchText, user);
-		final Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
+		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
+		if(!showDislikedShows)
+		{
+			filteredShows = filteredShows.filter(show -> !user.getShowById(show.getId())
+					.map(AddedShow::getDisliked)
+					.orElse(false));
+		}
 		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, user);
 
 		model.addAttribute("shows", sortedShows);
+		model.addAttribute("showDislikedShows", showDislikedShows);
 		model.addAttribute("currentFilterOption", filterOption);
 		model.addAttribute("currentSortOption", sortOption);
 

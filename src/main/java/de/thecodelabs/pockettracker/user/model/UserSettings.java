@@ -16,6 +16,7 @@ public class UserSettings
 	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	private Integer id;
 
+	private Boolean showDislikedShows = false;
 	private ShowSortOption lastShowSortOption = ShowSortOption.LAST_WATCHED;
 	private ShowFilterOption lastShowFilterOption = ShowFilterOption.ALL_SHOWS;
 
@@ -59,6 +60,16 @@ public class UserSettings
 	public void setLastShowFilterOption(ShowFilterOption lastShowFilterOption)
 	{
 		this.lastShowFilterOption = lastShowFilterOption;
+	}
+
+	public Boolean getShowDislikedShows()
+	{
+		return showDislikedShows;
+	}
+
+	public void setShowDislikedShows(Boolean showDislikedShows)
+	{
+		this.showDislikedShows = showDislikedShows;
 	}
 
 	public User getUser()
