@@ -281,7 +281,7 @@ public class UserService
 
 		watchedEpisodeOptional.ifPresent(watchedEpisode -> {
 			user.getWatchedEpisodes().remove(watchedEpisode);
-			watchedEpisodeRepository.delete(watchedEpisode);
+			watchedEpisodeRepository.deleteWatchedEpisode(watchedEpisode.getEpisode().getId(), watchedEpisode.getUser().getId());
 		});
 	}
 
@@ -411,7 +411,8 @@ public class UserService
 	public void deleteWatchedEpisodes(Episode episode)
 	{
 		final List<WatchedEpisode> watchedEpisodes = episode.getWatchedEpisodes();
-		watchedEpisodeRepository.deleteAll(watchedEpisodes);
+		watchedEpisodes.forEach(e ->
+				watchedEpisodeRepository.deleteWatchedEpisode(e.getEpisode().getId(), e.getUser().getId()));
 	}
 
 	public boolean removeShowFromUser(User user, Show show)
@@ -440,7 +441,8 @@ public class UserService
 			return false;
 		}
 
-		watchedEpisodeRepository.deleteAll(watchedEpisodesByShow);
+		watchedEpisodesByShow.forEach(episode ->
+				watchedEpisodeRepository.deleteWatchedEpisode(episode.getEpisode().getId(), episode.getUser().getId()));
 		return true;
 	}
 }
