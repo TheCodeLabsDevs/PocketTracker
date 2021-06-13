@@ -427,7 +427,7 @@ public class UserService
 
 		for(AddedShow addedShow : addedShowList)
 		{
-			userAddedShowRepository.delete(addedShow);
+			userAddedShowRepository.deleteAddedShow(addedShow.getShow().getId(), addedShow.getUser().getId());
 		}
 		return true;
 	}
