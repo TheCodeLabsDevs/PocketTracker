@@ -26,6 +26,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW;
@@ -89,7 +90,7 @@ public class UserController
 		model.addAttribute("currentSortOption", sortOption);
 
 		model.addAttribute("currentPage", "Meine Serien");
-		model.addAttribute("userShows", user.getShows());
+		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).collect(Collectors.toList()));
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
 		return "index";
