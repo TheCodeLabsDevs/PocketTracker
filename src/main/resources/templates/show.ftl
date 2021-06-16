@@ -39,13 +39,9 @@
                                 <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50 <#if isAdded>d-none</#if>"><@s.message "button.add"/></a>
                                 <#if isAdded>
                                     <#if isDisliked>
-                                        <a href="<@s.url "/user/shows/dislike/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50">
-                                            <@s.message "button.like"/>
-                                        </a>
+                                        <@b.button url="/user/shows/dislike/${show.getId()}" icon="fas fa-thumbs-down" style="btn-danger" classes="mt-4 w-50"/>
                                     <#else>
-                                        <a href="<@s.url "/user/shows/dislike/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger mt-4 w-50">
-                                            <@s.message "button.dislike"/>
-                                        </a>
+                                        <@b.button url="/user/shows/dislike/${show.getId()}" icon="far fa-thumbs-down" style="btn-outline-danger" classes="mt-4 w-50"/>
                                     </#if>
                                 </#if>
                             </@b.col>

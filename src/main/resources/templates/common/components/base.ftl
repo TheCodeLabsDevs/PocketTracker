@@ -56,10 +56,10 @@
     <#if center></div></#if>
 </#macro>
 
-<#macro button label url icon="" classes="" id="" style="btn-primary" margin="mb-4">
+<#macro button label="" url="" icon="" classes="" id="" style="btn-primary" margin="mb-4">
     <a class="btn ${style} ${classes} ${margin}" id="${id}" href="<@s.url url/>" role="button">
         <#if icon?has_content><i class="${icon}"></i></#if>
-        <@localize label/>
+        <#if label?has_content><@localize label/></#if>
     </a>
 </#macro>
 
