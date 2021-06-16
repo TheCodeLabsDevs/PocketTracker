@@ -41,7 +41,7 @@
             <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
 
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-link" role="button" id="showDislikedShows">
+                    <a class="btn <#if showDislikedShows>btn-secondary<#else>btn-outline-secondary</#if> mb-4 me-2" role="button" id="showDislikedShows">
                         <#if showDislikedShows>
                             <i class="fas fa-thumbs-down"></i>
                         <#else>
