@@ -15,6 +15,7 @@ import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
+import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,8 +69,10 @@ public class UserController
 	}
 
 	@GetMapping("/shows")
-	public String getShows(Model model)
+	public String getShows(WebRequest request, Model model)
 	{
+		UserNavigationCoordinator.setUserSpecificNavigation(request, true);
+
 		final UserSettings settings = userService.getUserSettings();
 		final Boolean showDislikedShows = Optional.ofNullable(settings.getShowDislikedShows())
 				.orElse(false);

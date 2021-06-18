@@ -11,6 +11,7 @@ import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -49,8 +51,10 @@ public class MainController
 
 	@SuppressWarnings("squid:S1319")
 	@GetMapping("/shows")
-	public String allShows(Model model)
+	public String allShows(WebRequest request, Model model)
 	{
+		UserNavigationCoordinator.setUserSpecificNavigation(request, false);
+
 		final User user = userService.getCurrentUser();
 
 		String searchText = null;

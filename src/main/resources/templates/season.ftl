@@ -10,7 +10,7 @@
     <@template.body>
         <div class="row mb-4">
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
-                <@b.back_button center=true/>
+                <@b.back_button url="/show/" + season.getShow().getId() center=true/>
                 <h2 class="mb-2 text-truncate">${season.getShow().getName()}</h2>
                 <h4>-${season.getName()}-</h4>
             </div>
