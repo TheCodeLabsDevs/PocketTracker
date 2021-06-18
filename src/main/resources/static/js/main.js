@@ -18,10 +18,12 @@ function handleEpisodeToggles() {
 function changeSortOption() {
     let showDislikedShowsLink = document.getElementById("showDislikedShows");
     let showDislikedShowsInput = document.getElementsByName("showDislikedShows")[0];
-    showDislikedShowsLink.onclick = function () {
-        showDislikedShowsInput.value = !((showDislikedShowsInput.value === 'true'));
-        document.getElementById("sortOptionForm").submit();
-    };
+    if (showDislikedShowsLink) {
+        showDislikedShowsLink.onclick = function () {
+            showDislikedShowsInput.value = !((showDislikedShowsInput.value === 'true'));
+            document.getElementById("sortOptionForm").submit();
+        };
+    }
 
     let sortOption = document.getElementById("sortOption");
     if (sortOption) {
