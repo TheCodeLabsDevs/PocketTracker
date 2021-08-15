@@ -54,7 +54,7 @@ public class Season
 	@MergeIgnore
 	private List<Episode> episodes = new ArrayList<>();
 
-	private Boolean filledCompletely;
+	private Boolean filledCompletely = false;
 
 	public Season()
 	{

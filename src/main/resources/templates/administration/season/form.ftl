@@ -14,6 +14,7 @@
             <@f.input label="season.name" name="name" value=season.name!""/>
             <@f.input label="season.number" name="number" value=season.number!""/>
             <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
+            <@f.switch label="show.season.allDataFilled" name="filledCompletely" value=season.getFilledCompletely()/>
         </@b.row>
         <@b.row>
             <@b.col size="col-6">
