@@ -14,6 +14,7 @@ public class BackupSeasonModel
 	private Integer number;
 	@MergeIgnore
 	private List<BackupEpisodeModel> episodes;
+	private Boolean filledCompletely;
 
 	public Integer getId()
 	{
@@ -63,5 +64,15 @@ public class BackupSeasonModel
 	public void setEpisodes(List<BackupEpisodeModel> episodes)
 	{
 		this.episodes = episodes;
+	}
+
+	public Boolean getFilledCompletely()
+	{
+		return filledCompletely;
+	}
+
+	public void setFilledCompletely(Boolean filledCompletely)
+	{
+		this.filledCompletely = filledCompletely;
 	}
 }

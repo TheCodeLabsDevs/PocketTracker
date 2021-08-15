@@ -4,18 +4,23 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SeasonService
 {
+	private static final Logger logger = LoggerFactory.getLogger(SeasonService.class);
+
 	private final SeasonRepository seasonRepository;
 	private final MessageSource messageSource;
 
@@ -24,6 +29,22 @@ public class SeasonService
 	{
 		this.seasonRepository = seasonRepository;
 		this.messageSource = messageSource;
+
+		updateMissingAttributes();
+	}
+
+	@Transactional
+	public void updateMissingAttributes()
+	{
+		for(Season season : seasonRepository.findAll())
+		{
+			if(season.getFilledCompletely() == null)
+			{
+				season.setFilledCompletely(false);
+				seasonRepository.save(season);
+				logger.debug(MessageFormat.format("Updated season {0}: Set missing attribute \"isFilledCompletely\" to false", season.getId()));
+			}
+		}
 	}
 
 	public Optional<Season> getSeasonById(Integer id)

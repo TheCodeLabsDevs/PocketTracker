@@ -54,6 +54,8 @@ public class Season
 	@MergeIgnore
 	private List<Episode> episodes = new ArrayList<>();
 
+	private Boolean filledCompletely;
+
 	public Season()
 	{
 	}
@@ -64,6 +66,7 @@ public class Season
 		this.description = description;
 		this.number = number;
 		this.show = show;
+		this.filledCompletely = false;
 	}
 
 	public void setId(Integer id)
@@ -126,6 +129,16 @@ public class Season
 		this.episodes = episodes;
 	}
 
+	public Boolean getFilledCompletely()
+	{
+		return filledCompletely;
+	}
+
+	public void setFilledCompletely(Boolean filledCompletely)
+	{
+		this.filledCompletely = filledCompletely;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -136,6 +149,7 @@ public class Season
 				", number=" + number +
 				", show=[id=" + show.getId() + ", name=" + show.getName() + "]" +
 				", episodes=" + episodes +
+				", filledCompletely=" + filledCompletely +
 				'}';
 	}
 }
