@@ -13,7 +13,9 @@ public enum ShowFilterOption implements MessageSourceResolvable
 	VIEWED_COMPLETELY((shows, user) -> shows.stream().filter(show -> isShowComplete(show, user))),
 	NOT_VIEWED_COMPLETELY((shows, user) -> shows.stream().filter(show -> !isShowComplete(show, user))),
 	RUNNING((shows, user) -> shows.stream().filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false))),
-	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false)));
+	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false))),
+	NOT_FILLED_COMPLETELY((shows, user) -> shows.stream().filter(show -> show.getSeasons().stream().anyMatch(season -> !season.getFilledCompletely())));
+
 
 	private final ShowFilter filter;
 
