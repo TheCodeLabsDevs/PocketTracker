@@ -81,6 +81,7 @@
         <@t.head>
             <@t.headCell label="show.season.number"/>
             <@t.headCell label="show.season.name"/>
+            <@t.headCell label="show.season.allDataFilled"/>
             <@t.headCell label="show.season.actions"/>
         </@t.head>
         <@t.body>
@@ -88,6 +89,12 @@
                 <@t.row>
                     <@t.cell value="${season.number}"/>
                     <@t.cell value="${season.name}"/>
+                    <@t.cell>
+                        <#if season.getFilledCompletely()>
+                            <i class="fas fa-check"></i>
+                        </#if>
+                    </@t.cell>
+
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
 
