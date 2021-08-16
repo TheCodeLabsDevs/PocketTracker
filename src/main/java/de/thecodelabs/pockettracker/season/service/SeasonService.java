@@ -12,6 +12,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +30,9 @@ public class SeasonService
 	{
 		this.seasonRepository = seasonRepository;
 		this.messageSource = messageSource;
-
-		updateMissingAttributes();
 	}
 
-	@Transactional
+	@PostConstruct
 	public void updateMissingAttributes()
 	{
 		for(Season season : seasonRepository.findAll())
