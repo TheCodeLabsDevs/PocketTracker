@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM openjdk:17-jdk-bullseye
 
 RUN apt-get update
 RUN apt-get -y install locales
