@@ -91,7 +91,7 @@ public class BackupController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.export.error", BootstrapColor.DANGER));
-			e.printStackTrace();
+			LOGGER.error("Cannot create backup", e);
 		}
 
 		return "redirect:/administration/backup";
@@ -140,7 +140,7 @@ public class BackupController
 		catch(IOException | SQLException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.restore.error", BootstrapColor.DANGER));
-			e.printStackTrace();
+			LOGGER.error("Cannot restore backup", e);
 		}
 		return "redirect:/administration/backup";
 	}
