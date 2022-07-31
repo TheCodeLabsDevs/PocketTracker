@@ -22,8 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -51,7 +50,6 @@ public class BackupRestoreService
 	private final EpisodeService episodeService;
 
 	private final DataSource dataSource;
-	private final EntityManager entityManager;
 
 	private final ShowConverter showConverter;
 	private final UserConverter userConverter;
@@ -62,21 +60,20 @@ public class BackupRestoreService
 
 	@Autowired
 	public BackupRestoreService(UserService userService, ShowService showService, EpisodeService episodeService,
-								DataSource dataSource, EntityManager entityManager, ShowConverter showConverter,
+								DataSource dataSource, ShowConverter showConverter,
 								UserConverter userConverter, ObjectMapper objectMapper, WebConfigurationProperties webConfigurationProperties)
 	{
 		this.userService = userService;
 		this.showService = showService;
 		this.episodeService = episodeService;
 		this.dataSource = dataSource;
-		this.entityManager = entityManager;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
 		this.objectMapper = objectMapper;
 		this.webConfigurationProperties = webConfigurationProperties;
 	}
 
-	public void clearDatabase() throws SQLException
+	public void clearDatabase()
 	{
 		final List<User> users = userService.getUsers();
 		LOGGER.info("Delete {} users", users.size());
@@ -96,34 +93,9 @@ public class BackupRestoreService
 			}
 			showService.deleteShow(show);
 		}
-
-		resetSequences();
 	}
 
-	private void resetSequences() throws SQLException
-	{
-		try(final Connection connection = dataSource.getConnection())
-		{
-			final String productName = connection.getMetaData().getDatabaseProductName();
-			if(productName.equals("PostgreSQL"))
-			{
-				final Query query = entityManager.createNativeQuery("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';");
-				//noinspection unchecked
-				final List<Object> resultList = (List<Object>) query.getResultList();
-				final List<String> sequences = resultList.stream().map(Object::toString).collect(Collectors.toList());
-
-				for(String sequence : sequences)
-				{
-					try(final Statement statement = connection.createStatement())
-					{
-						statement.execute("ALTER SEQUENCE " + sequence + " RESTART WITH 1;");
-					}
-				}
-			}
-		}
-	}
-
-	public void insertAllData(Path basePath) throws IOException
+	public void insertAllData(Path basePath) throws IOException, SQLException
 	{
 		final Path databasePath = basePath.resolve(DATABASE_PATH_NAME);
 		final BufferedReader bufferedReader = Files.newBufferedReader(databasePath);
@@ -131,6 +103,8 @@ public class BackupRestoreService
 		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
 		insertShows(database.getShows());
 		insertUsers(database.getUsers());
+
+		updateSequences();
 	}
 
 	public void insertShows(List<BackupShowModel> backupShowModels)
@@ -181,6 +155,72 @@ public class BackupRestoreService
 			}
 		}
 		LOGGER.info("Restored user shows and episodes");
+	}
+
+	private void updateSequences() throws SQLException
+	{
+		try(final Connection connection = dataSource.getConnection())
+		{
+			final String productName = connection.getMetaData().getDatabaseProductName();
+			if(productName.equals("PostgreSQL"))
+			{
+				final String sqlStatement = """
+						SELECT t.oid::regclass AS table_name,
+						       a.attname AS column_name,
+						       s.relname AS sequence_name
+						FROM pg_class AS t
+						   JOIN pg_attribute AS a
+						      ON a.attrelid = t.oid
+						   JOIN pg_depend AS d
+						      ON d.refobjid = t.oid
+						         AND d.refobjsubid = a.attnum
+						   JOIN pg_class AS s
+						      ON s.oid = d.objid
+						WHERE d.classid = 'pg_catalog.pg_class'::regclass
+						  AND d.refclassid = 'pg_catalog.pg_class'::regclass
+						  AND d.deptype = 'i'
+						  AND t.relkind IN ('r', 'P')
+						  AND s.relkind = 'S';
+						""";
+				try(Statement queryStatement = connection.createStatement())
+				{
+					queryStatement.execute(sqlStatement);
+					try(final ResultSet resultSet = queryStatement.getResultSet())
+					{
+						while(resultSet.next())
+						{
+							final String sequence = resultSet.getString("sequence_name");
+							final String tableName = resultSet.getString("table_name");
+							final String idColumn = resultSet.getString("column_name");
+
+							final Long biggestId = getBiggestId(connection, tableName, idColumn);
+							try(final Statement statement = connection.createStatement())
+							{
+								long targetValue = biggestId != null ? biggestId + 1 : 1;
+								statement.execute(String.format("ALTER SEQUENCE %s RESTART WITH %d;", sequence, targetValue));
+								LOGGER.info("Set sequence {} to value {}", sequence, targetValue);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private Long getBiggestId(Connection connection, String tableName, String idColumn) throws SQLException
+	{
+		try(final Statement statement = connection.createStatement())
+		{
+			statement.execute(String.format("SELECT max(%s) FROM %s", idColumn, tableName));
+			try(final ResultSet resultSet = statement.getResultSet())
+			{
+				if(resultSet.next())
+				{
+					return resultSet.getLong(1);
+				}
+			}
+		}
+		return null;
 	}
 
 	public void copyImages(Path basePath) throws IOException
