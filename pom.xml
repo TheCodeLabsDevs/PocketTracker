@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.7</version>
+        <version>2.7.2</version>
     </parent>
 
     <properties>
@@ -20,7 +20,7 @@
 
         <jlibs.version>3.2.0</jlibs.version>
 
-        <springdoc-openapi-ui.version>1.6.8</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
 
         <freemarker-java8.version>2.0.0</freemarker-java8.version>
         <commons-io.version>2.11.0</commons-io.version>
