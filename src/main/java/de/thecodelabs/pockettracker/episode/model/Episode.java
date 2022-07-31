@@ -181,25 +181,20 @@ public class Episode
 
 	public String getImagePath(EpisodeImageType episodeImageType)
 	{
-		switch(episodeImageType)
+		if(episodeImageType == EpisodeImageType.POSTER)
 		{
-			case POSTER:
-				return getPosterPath();
-			default:
-				throw new UnsupportedOperationException("Image type not implemented");
+			return getPosterPath();
 		}
+		throw new UnsupportedOperationException("Image type not implemented");
 	}
 
 	public void setImagePath(EpisodeImageType episodeImageType, String path)
 	{
-		switch(episodeImageType)
+		if(episodeImageType == EpisodeImageType.POSTER)
 		{
-			case POSTER:
-				setPosterPath(path);
-				break;
-			default:
-				throw new UnsupportedOperationException("Image type not implemented");
+			setPosterPath(path);
 		}
+		throw new UnsupportedOperationException("Image type not implemented");
 	}
 
 	@Override

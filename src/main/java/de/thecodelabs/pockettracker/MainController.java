@@ -25,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController
@@ -67,7 +66,7 @@ public class MainController
 		model.addAttribute("shows", showService.getAllShows(searchText));
 
 		model.addAttribute("currentPage", "Alle Serien");
-		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).collect(Collectors.toList()));
+		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).toList());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
 		return "index";

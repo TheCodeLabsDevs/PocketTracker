@@ -21,7 +21,6 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/administration/batchEdit")
@@ -66,12 +65,13 @@ public class BatchEditController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.batchEdit.showNotExisting.error", BootstrapColor.DANGER, String.valueOf(showId)));
+			return "redirect:/administration/batchEdit";
 		}
 
 		final Show show = showOptional.get();
 		final List<Episode> episodes = show.getSeasons().stream()
 				.flatMap(season -> season.getEpisodes().stream())
-				.collect(Collectors.toList());
+				.toList();
 
 		LOGGER.debug(MessageFormat.format("Batch edit: Set episode length to {0} for show with ID {1} ({2})", lengthInMinutes, showId, show.getName()));
 		for(Episode episode : episodes)

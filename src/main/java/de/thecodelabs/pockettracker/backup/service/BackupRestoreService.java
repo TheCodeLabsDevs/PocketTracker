@@ -35,7 +35,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE_PATH_NAME;
 import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
@@ -140,7 +139,7 @@ public class BackupRestoreService
 						})
 						.filter(Optional::isPresent)
 						.map(Optional::get)
-						.collect(Collectors.toList()));
+						.toList());
 
 				user.addWatchedEpisodes(backupUserModel.getWatchedEpisodes().stream().map(backupWatchedEpisodeModel -> {
 					final Optional<Episode> episodeOptional = episodeService.getEpisodeById(backupWatchedEpisodeModel.getEpisodeId());
@@ -150,7 +149,7 @@ public class BackupRestoreService
 						return null;
 					}
 					return new WatchedEpisode(user, episodeOptional.get(), backupWatchedEpisodeModel.getWatchedAt());
-				}).filter(Objects::nonNull).collect(Collectors.toList()));
+				}).filter(Objects::nonNull).toList());
 				userService.saveUser(user);
 			}
 		}

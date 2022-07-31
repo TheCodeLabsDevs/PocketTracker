@@ -86,9 +86,9 @@ public class ShowAdministrationController
 
 		final Object oldData = WebRequestUtils.popValidationData(request);
 		final Show show;
-		if(oldData instanceof Show)
+		if(oldData instanceof Show oldShow)
 		{
-			show = (Show) oldData;
+			show = oldShow;
 		}
 		else
 		{

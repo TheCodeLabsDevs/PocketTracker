@@ -25,7 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user/settings")
@@ -62,8 +61,8 @@ public class UserSettingsController
 
 		final User user = userOptional.get();
 		model.addAttribute("user", new UserForm(user));
-		model.addAttribute("authentications", user.getAuthentications().stream().sorted(Comparator.comparing(UserAuthentication::getType)).collect(Collectors.toList()));
-		model.addAttribute("isGitlabConnected", user.getAuthentications().stream().anyMatch(provider -> provider instanceof GitlabAuthentication));
+		model.addAttribute("authentications", user.getAuthentications().stream().sorted(Comparator.comparing(UserAuthentication::getType)).toList());
+		model.addAttribute("isGitlabConnected", user.getAuthentications().stream().anyMatch(GitlabAuthentication.class::isInstance));
 
 		return "users/edit";
 	}

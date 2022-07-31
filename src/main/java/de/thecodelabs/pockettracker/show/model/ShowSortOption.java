@@ -7,19 +7,18 @@ import org.springframework.context.MessageSourceResolvable;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum ShowSortOption implements MessageSourceResolvable
 {
 	NAME((shows, user) -> shows
 			.sorted(Comparator.comparing(Show::getName))
-			.collect(Collectors.toList())),
+			.toList()),
 	LAST_WATCHED((shows, user) -> shows
 			.sorted(Comparator.comparing((Show show) -> getLatestWatchDate(show, user))
 					.thenComparing(Show::getName)
 					.reversed())
-			.collect(Collectors.toList()));
+			.toList());
 
 	private final ShowSort sorter;
 

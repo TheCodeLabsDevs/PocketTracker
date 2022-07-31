@@ -12,9 +12,8 @@ public class FreemarkerConfiguration implements BeanPostProcessor
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException
 	{
-		if(bean instanceof FreeMarkerConfigurer)
+		if(bean instanceof FreeMarkerConfigurer configurer)
 		{
-			FreeMarkerConfigurer configurer = (FreeMarkerConfigurer) bean;
 			configurer.getConfiguration().setObjectWrapper(new Java8ObjectWrapper(freemarker.template.Configuration.VERSION_2_3_20));
 		}
 		return bean;

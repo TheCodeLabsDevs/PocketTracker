@@ -77,9 +77,9 @@ public final class BeanUtils
 			return null;
 		}
 
-		if(propertyValue instanceof String)
+		if(propertyValue instanceof String string)
 		{
-			return (String) propertyValue;
+			return string;
 		}
 		return propertyValue.toString();
 	}

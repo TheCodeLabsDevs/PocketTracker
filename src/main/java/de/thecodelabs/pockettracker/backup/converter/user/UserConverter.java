@@ -13,8 +13,6 @@ import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 public class UserConverter implements AbstractConverter<BackupUserModel, User>
 {
@@ -46,19 +44,19 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 		BeanUtils.merge(entity, model);
 
 		model.setAuthentications(entity.getAuthentications().stream().map(e -> {
-			if(e instanceof InternalAuthentication)
+			if(e instanceof InternalAuthentication authentication)
 			{
-				return internalAuthenticationConverter.toBean((InternalAuthentication) e);
+				return internalAuthenticationConverter.toBean(authentication);
 			}
-			else if(e instanceof GitlabAuthentication)
+			else if(e instanceof GitlabAuthentication authentication)
 			{
-				return gitlabAuthenticationConverter.toBean((GitlabAuthentication) e);
+				return gitlabAuthenticationConverter.toBean(authentication);
 			}
 			else
 			{
 				throw new IllegalArgumentException("Authentication Type: " + e.getClass() + " is not supported");
 			}
-		}).collect(Collectors.toList()));
+		}).toList());
 		model.setTokens(userTokenConverter.toBeans(entity.getTokens()));
 
 		if(entity.getSettings() != null)
@@ -79,19 +77,19 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 		BeanUtils.merge(bean, entity);
 
 		entity.setAuthentications(bean.getAuthentications().stream().map(model -> {
-			if(model instanceof BackupUserInternalAuthentication)
+			if(model instanceof BackupUserInternalAuthentication authentication)
 			{
-				return internalAuthenticationConverter.toEntity((BackupUserInternalAuthentication) model);
+				return internalAuthenticationConverter.toEntity(authentication);
 			}
-			else if(model instanceof BackupUserGitlabAuthentication)
+			else if(model instanceof BackupUserGitlabAuthentication authentication)
 			{
-				return gitlabAuthenticationConverter.toEntity((BackupUserGitlabAuthentication) model);
+				return gitlabAuthenticationConverter.toEntity(authentication);
 			}
 			else
 			{
 				throw new IllegalArgumentException("Authentication Type: " + model.getClass() + " is not supported");
 			}
-		}).collect(Collectors.toList()));
+		}).toList());
 		entity.getAuthentications().forEach(userAuthentication -> userAuthentication.setUser(entity));
 
 		entity.setTokens(userTokenConverter.toEntities(bean.getTokens()));

@@ -16,7 +16,7 @@ public class UserNavigationCoordinator
 	public static boolean isUserSpecificNavigation(WebRequest request)
 	{
 		return Optional.ofNullable(request.getAttribute(USER_SPECIFIC_NAVIGATION, RequestAttributes.SCOPE_SESSION))
-				.map(object -> (Boolean) object)
+				.map(Boolean.class::cast)
 				.orElse(true);
 	}
 

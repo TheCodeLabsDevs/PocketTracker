@@ -20,7 +20,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -64,7 +63,7 @@ public class BackupService
 		backupCreateService.export(backupLocationPath);
 	}
 
-	public void clearData() throws SQLException
+	public void clearData()
 	{
 		backupRestoreService.clearDatabase();
 	}
@@ -98,7 +97,7 @@ public class BackupService
 						return new BackupInstance(path, size, createTime, includeDatabase, includeImages);
 					})
 					.sorted(Comparator.comparing(BackupInstance::getCreateTime).reversed())
-					.collect(Collectors.toList());
+					.toList();
 		}
 	}
 
@@ -174,7 +173,7 @@ public class BackupService
 		{
 			final List<Path> backups = stream
 					.sorted(Comparator.comparing(this::getLastModified))
-					.collect(Collectors.toList());
+					.toList();
 
 			if(backups.size() < backupConfigurationProperties.getKeep())
 			{

@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService
@@ -135,7 +134,7 @@ public class UserService
 
 	public List<User> getUsers()
 	{
-		return userRepository.findAll().stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
+		return userRepository.findAll().stream().sorted(Comparator.comparing(User::getId)).toList();
 	}
 
 	public User createUser(User user)
@@ -250,14 +249,14 @@ public class UserService
 	{
 		return user.getWatchedEpisodes().stream()
 				.filter(watched -> watched.getEpisode().getSeason().getShow().equals(show))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	public List<WatchedEpisode> getWatchedEpisodesBySeason(User user, Season season)
 	{
 		return user.getWatchedEpisodes().stream()
 				.filter(watched -> watched.getEpisode().getSeason().equals(season))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	public boolean isWatchedEpisode(User user, Episode episode)
@@ -323,7 +322,7 @@ public class UserService
 		final List<Season> seasonsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
 				.map(watched -> watched.getEpisode().getSeason())
 				.distinct()
-				.collect(Collectors.toList());
+				.toList();
 
 		Integer completelyWatchedSeasons = 0;
 		for(Season season : seasonsWithAtLeastOneEpisodeWatched)
@@ -343,7 +342,7 @@ public class UserService
 		final List<Show> showsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
 				.map(watched -> watched.getEpisode().getSeason().getShow())
 				.distinct()
-				.collect(Collectors.toList());
+				.toList();
 
 		Integer completelyWatchedShows = 0;
 		for(Show show : showsWithAtLeastOneEpisodeWatched)
@@ -419,7 +418,7 @@ public class UserService
 	{
 		final List<AddedShow> addedShowList = user.getShows().stream()
 				.filter(addedShow -> addedShow.getShow().equals(show))
-				.collect(Collectors.toList());
+				.toList();
 
 		if(addedShowList.isEmpty())
 		{

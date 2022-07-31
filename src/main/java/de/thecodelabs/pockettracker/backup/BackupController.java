@@ -100,16 +100,8 @@ public class BackupController
 	@PostMapping("/clear")
 	public String clearData(WebRequest request, HttpServletRequest httpRequest)
 	{
-		try
-		{
-			backupService.clearData();
-			WebRequestUtils.putToast(request, new Toast("toast.clear.done", BootstrapColor.DANGER));
-		}
-		catch(SQLException e)
-		{
-			LOGGER.error("Failed to delete all data", e);
-			WebRequestUtils.putToast(request, new Toast("toast.clear.error", BootstrapColor.DANGER));
-		}
+		backupService.clearData();
+		WebRequestUtils.putToast(request, new Toast("toast.clear.done", BootstrapColor.DANGER));
 
 		try
 		{
