@@ -23,7 +23,7 @@ public class UserAdministrationController
 	{
 		public static final String ADMIN_USER_INDEX = "administration/user/index";
 		public static final String ADMIN_USER_ADD = "administration/user/add";
-		public static final String ADMIN_USER_EDIT = "administration/user/edit";;
+		public static final String ADMIN_USER_EDIT = "administration/user/edit";
 		public static final String REDIRECT_ADMIN_USER_ADD = "redirect:/users/administration/add";
 		public static final String REDIRECT_ADMIN_USERS = "redirect:/users/administration";
 	}
