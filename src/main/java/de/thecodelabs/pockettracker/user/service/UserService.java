@@ -238,11 +238,7 @@ public class UserService
 			return false;
 		}
 
-		if(!userForm.getPassword().equals(userForm.getPasswordRepeat()))
-		{
-			return false;
-		}
-		return true;
+		return userForm.getPassword().equals(userForm.getPasswordRepeat());
 	}
 
 	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, Show show)
