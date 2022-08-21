@@ -35,7 +35,8 @@ public class CommonModelInspector implements HandlerInterceptor
 			return;
 		}
 
-		if(modelAndView.getViewName() == null || modelAndView.getViewName().startsWith("redirect:"))
+		final String viewName = modelAndView.getViewName();
+		if(viewName == null || viewName.startsWith("redirect:"))
 		{
 			return;
 		}
