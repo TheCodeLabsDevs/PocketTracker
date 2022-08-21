@@ -26,9 +26,9 @@ public class WebUtils
 	public static Optional<HttpServletRequest> getCurrentHttpRequest()
 	{
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		if(requestAttributes instanceof ServletRequestAttributes)
+		if(requestAttributes instanceof ServletRequestAttributes servletrequestattributes)
 		{
-			return Optional.of(((ServletRequestAttributes) requestAttributes).getRequest());
+			return Optional.of(servletrequestattributes.getRequest());
 		}
 		logger.debug("Not called in the context of an HTTP request");
 		return Optional.empty();
