@@ -35,6 +35,11 @@ public class UserSettingsController
 	private final UserService userService;
 	private final UserAuthenticationService authenticationService;
 
+	private static class ReturnValues
+	{
+		public static final String REDIRECT_USER_SETTINGS = "redirect:/user/settings";
+	}
+
 	@Autowired
 	public UserSettingsController(UserService userService, UserAuthenticationService authenticationService)
 	{
@@ -77,11 +82,11 @@ public class UserSettingsController
 		catch(PasswordValidationException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.validatePassword", BootstrapColor.DANGER));
-			return "redirect:/user/settings";
+			return ReturnValues.REDIRECT_USER_SETTINGS;
 		}
 
 		WebRequestUtils.putToast(request, new Toast("toast.saved", BootstrapColor.SUCCESS));
-		return "redirect:/user/settings";
+		return ReturnValues.REDIRECT_USER_SETTINGS;
 	}
 
 	@PostMapping("/oauth/{provider}")
@@ -91,7 +96,7 @@ public class UserSettingsController
 		if(result.hasErrors())
 		{
 			WebRequestUtils.putToast(request, new Toast("authentication.provider.gitlab.missingUsername", BootstrapColor.DANGER));
-			return "redirect:/user/settings";
+			return ReturnValues.REDIRECT_USER_SETTINGS;
 		}
 
 		Optional<User> userOptional = userService.getUser(SecurityContextHolder.getContext().getAuthentication());
@@ -110,6 +115,6 @@ public class UserSettingsController
 	public String deleteProvider(@PathVariable Integer id)
 	{
 		authenticationService.deleteAuthenticationProvider(userService.getCurrentUser(), id);
-		return "redirect:/user/settings";
+		return ReturnValues.REDIRECT_USER_SETTINGS;
 	}
 }
