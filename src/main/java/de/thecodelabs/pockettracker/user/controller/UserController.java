@@ -165,7 +165,7 @@ public class UserController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final AddedShow addedShow = showOptional.get();
@@ -184,7 +184,7 @@ public class UserController
 		if(seasonOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Staffel mit der ID \"{0}\"", seasonId), BootstrapColor.DANGER));
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final User user = userService.getCurrentUser();
@@ -201,7 +201,7 @@ public class UserController
 		if(episodeOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), BootstrapColor.DANGER));
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final User user = userService.getCurrentUser();
