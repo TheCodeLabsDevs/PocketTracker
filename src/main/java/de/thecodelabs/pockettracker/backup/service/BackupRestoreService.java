@@ -32,6 +32,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -145,7 +146,7 @@ public class BackupRestoreService
 					final Optional<Episode> episodeOptional = episodeService.getEpisodeById(backupWatchedEpisodeModel.getEpisodeId());
 					if(episodeOptional.isEmpty())
 					{
-						LOGGER.warn("No episode found for id: " + backupWatchedEpisodeModel.getEpisodeId());
+						LOGGER.warn(MessageFormat.format("No episode found for id: {0}", backupWatchedEpisodeModel.getEpisodeId()));
 						return null;
 					}
 					return new WatchedEpisode(user, episodeOptional.get(), backupWatchedEpisodeModel.getWatchedAt());
