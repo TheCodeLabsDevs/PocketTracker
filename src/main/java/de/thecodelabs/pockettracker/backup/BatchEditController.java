@@ -31,6 +31,12 @@ public class BatchEditController
 
 	private final ShowService showService;
 
+	private static class ReturnValues
+	{
+		public static final String BATCH_EDIT = "administration/batchEdit";
+		public static final String REDIRECT_BATCH_EDIT = "redirect:/administration/batchEdit";
+	}
+
 	@Autowired
 	public BatchEditController(ShowService showService)
 	{
@@ -41,7 +47,7 @@ public class BatchEditController
 	@GetMapping
 	public String batchEdit()
 	{
-		return "administration/batchEdit";
+		return ReturnValues.BATCH_EDIT;
 	}
 
 
@@ -52,20 +58,20 @@ public class BatchEditController
 		if(showId == null)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.batchEdit.showNotExisting.missing", BootstrapColor.DANGER));
-			return "redirect:/administration/batchEdit";
+			return ReturnValues.REDIRECT_BATCH_EDIT;
 		}
 
 		if(lengthInMinutes == null)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.batchEdit.lengthInMinutes.missing", BootstrapColor.DANGER));
-			return "redirect:/administration/batchEdit";
+			return ReturnValues.REDIRECT_BATCH_EDIT;
 		}
 
 		final Optional<Show> showOptional = showService.getShowById(showId);
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.batchEdit.showNotExisting.error", BootstrapColor.DANGER, String.valueOf(showId)));
-			return "redirect:/administration/batchEdit";
+			return ReturnValues.REDIRECT_BATCH_EDIT;
 		}
 
 		final Show show = showOptional.get();
@@ -80,7 +86,6 @@ public class BatchEditController
 		}
 
 		WebRequestUtils.putToast(request, new Toast("toast.batchEdit.success", BootstrapColor.SUCCESS, String.valueOf(episodes.size())));
-		return "redirect:/administration/batchEdit";
+		return ReturnValues.REDIRECT_BATCH_EDIT;
 	}
-
 }
