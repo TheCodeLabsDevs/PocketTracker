@@ -19,6 +19,15 @@ public class UserAdministrationController
 {
 	private final UserService userService;
 
+	private static class ReturnValues
+	{
+		public static final String ADMIN_USER_INDEX = "administration/user/index";
+		public static final String ADMIN_USER_ADD = "administration/user/add";
+		public static final String ADMIN_USER_EDIT = "administration/user/edit";;
+		public static final String REDIRECT_ADMIN_USER_ADD = "redirect:/users/administration/add";
+		public static final String REDIRECT_ADMIN_USERS = "redirect:/users/administration";
+	}
+
 	@Autowired
 	public UserAdministrationController(UserService userService)
 	{
@@ -29,14 +38,14 @@ public class UserAdministrationController
 	public String index(Model model)
 	{
 		model.addAttribute("users", userService.getUsers());
-		return "administration/user/index";
+		return ReturnValues.ADMIN_USER_INDEX;
 	}
 
 	@GetMapping("/add")
 	public String addView(Model model)
 	{
 		model.addAttribute("user", new UserForm());
-		return "administration/user/add";
+		return ReturnValues.ADMIN_USER_ADD;
 	}
 
 	@PostMapping("/add")
@@ -49,10 +58,10 @@ public class UserAdministrationController
 		}
 		catch(PasswordValidationException e)
 		{
-			return "redirect:/users/administration/add";
+			return ReturnValues.REDIRECT_ADMIN_USER_ADD;
 		}
 
-		return "redirect:/users/administration";
+		return ReturnValues.REDIRECT_ADMIN_USERS;
 	}
 
 
@@ -66,7 +75,7 @@ public class UserAdministrationController
 		}
 
 		model.addAttribute("user", new UserForm(userOptional.get()));
-		return "administration/user/edit";
+		return ReturnValues.ADMIN_USER_EDIT;
 	}
 
 
@@ -88,7 +97,7 @@ public class UserAdministrationController
 			return "redirect:/users/administration/" + id + "/edit";
 		}
 
-		return "redirect:/users/administration";
+		return ReturnValues.REDIRECT_ADMIN_USERS;
 	}
 
 	@PostMapping("/{id}/delete")
@@ -101,6 +110,6 @@ public class UserAdministrationController
 		}
 
 		userService.deleteUser(userOptional.get());
-		return "redirect:/users/administration";
+		return ReturnValues.REDIRECT_ADMIN_USERS;
 	}
 }
