@@ -38,6 +38,18 @@ public class BackupController
 	private final BackupService backupService;
 	private final BackupConfigurationProperties backupConfigurationProperties;
 
+	private static class ModelAttributes
+	{
+		public static final String BACKUPS = "backups";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String ADMIN_BACKUP = "administration/backup";
+		public static final String REDIRECT_ADMIN_BACKUP = "redirect:/administration/backup";
+		public static final String REDIRECT_ROOT = "redirect:/";
+	}
+
 	@Autowired
 	public BackupController(BackupService backupService, BackupConfigurationProperties backupConfigurationProperties)
 	{
@@ -50,13 +62,13 @@ public class BackupController
 	{
 		try
 		{
-			model.addAttribute("backups", backupService.getBackups());
+			model.addAttribute(ModelAttributes.BACKUPS, backupService.getBackups());
 		}
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.backup-list.error", BootstrapColor.DANGER, e.getMessage()));
 		}
-		return "administration/backup";
+		return ReturnValues.ADMIN_BACKUP;
 	}
 
 	@GetMapping("/download/{path}")
@@ -94,7 +106,7 @@ public class BackupController
 			LOGGER.error("Cannot create backup", e);
 		}
 
-		return "redirect:/administration/backup";
+		return ReturnValues.REDIRECT_ADMIN_BACKUP;
 	}
 
 	@PostMapping("/clear")
@@ -111,7 +123,7 @@ public class BackupController
 		{
 			LOGGER.error("Cannot logout user", e);
 		}
-		return "redirect:/";
+		return ReturnValues.REDIRECT_ROOT;
 	}
 
 	@PostMapping("/restore")
@@ -120,8 +132,9 @@ public class BackupController
 		if(multipartFile == null || multipartFile.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.restore.upload.error", BootstrapColor.DANGER));
-			return "redirect:/administration/backup";
+			return ReturnValues.REDIRECT_ADMIN_BACKUP;
 		}
+
 		try
 		{
 			final Path restoreZipPath = Paths.get(backupConfigurationProperties.getLocation(), "backup.zip");
@@ -134,6 +147,7 @@ public class BackupController
 			WebRequestUtils.putToast(request, new Toast("toast.restore.error", BootstrapColor.DANGER));
 			LOGGER.error("Cannot restore backup", e);
 		}
-		return "redirect:/administration/backup";
+
+		return ReturnValues.REDIRECT_ADMIN_BACKUP;
 	}
 }
