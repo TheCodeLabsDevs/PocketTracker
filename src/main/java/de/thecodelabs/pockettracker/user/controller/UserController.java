@@ -43,6 +43,13 @@ public class UserController
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 
+	private static class ReturnValues
+	{
+		public static final String INDEX = "index";
+		public static final String REDIRECT_USER_SHOWS = "redirect:/user/shows";
+		public static final String REDIRECT_SHOWS = "redirect:/shows";
+	}
+
 	@Autowired
 	public UserController(UserService userService, ShowRepository showRepository, ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
 	{
@@ -64,7 +71,7 @@ public class UserController
 		settings.setLastShowFilterOption(filterOption);
 		settings.setShowDislikedShows(showDislikedShows);
 
-		return "redirect:/user/shows";
+		return ReturnValues.REDIRECT_USER_SHOWS;
 	}
 
 	@GetMapping("/shows")
@@ -107,7 +114,7 @@ public class UserController
 		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).toList());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
-		return "index";
+		return ReturnValues.INDEX;
 	}
 
 	@GetMapping("/shows/add/{showId}")
@@ -118,13 +125,13 @@ public class UserController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final User user = userService.getCurrentUser();
 		user.getShows().add(new AddedShow(user, showOptional.get(), false));
 
-		return "redirect:/shows";
+		return ReturnValues.REDIRECT_SHOWS;
 	}
 
 	@GetMapping("/shows/remove/{showId}")
@@ -134,7 +141,7 @@ public class UserController
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final User user = userService.getCurrentUser();
@@ -143,11 +150,11 @@ public class UserController
 		if(!userHadShow)
 		{
 			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", BootstrapColor.WARNING));
-			return "redirect:/user/shows";
+			return ReturnValues.REDIRECT_USER_SHOWS;
 		}
 
 		userService.removeAllWatchedEpisodesFromUser(user, showToRemove);
-		return "redirect:/user/shows";
+		return ReturnValues.REDIRECT_USER_SHOWS;
 	}
 
 	@GetMapping("/shows/dislike/{showId}")
