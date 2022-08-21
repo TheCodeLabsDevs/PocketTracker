@@ -38,6 +38,30 @@ public class MainController
 	private final EpisodeRepository episodeRepository;
 	private final UserService userService;
 
+	private static class ModelAttributes
+	{
+		public static final String NUMBER_OF_ALL_SHOWS = "numberOfAllShows";
+		public static final String SHOWS = "shows";
+		public static final String USER_SHOWS = "userShows";
+		public static final String CURRENT_PAGE = "currentPage";
+		public static final String SHOW = "show";
+		public static final String IS_ADDED = "isAdded";
+		public static final String IS_DISLIKED = "isDisliked";
+		public static final String LATEST_WATCHED = "latestWatched";
+		public static final String SEASON = "season";
+		public static final String EPISODE = "episode";
+	}
+
+	private static class ReturnValues
+	{
+		public static final String INDEX = "index";
+		public static final String REDIRECT_SHOWS = "redirect:/shows";
+		public static final String REDIRECT_USER_SHOWS = "redirect:/user/shows";
+		public static final String SHOW = "show";
+		public static final String SEASON = "season";
+		public static final String EPISODE = "episode";
+	}
+
 	@Autowired
 	public MainController(ShowService showService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService)
 	{
@@ -62,14 +86,14 @@ public class MainController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		model.addAttribute("numberOfAllShows", showService.getAllShows(null).size());
-		model.addAttribute("shows", showService.getAllShows(searchText));
+		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_SHOWS, showService.getAllShows(null).size());
+		model.addAttribute(ModelAttributes.SHOWS, showService.getAllShows(searchText));
 
-		model.addAttribute("currentPage", "Alle Serien");
-		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).toList());
+		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
+		model.addAttribute(ModelAttributes.USER_SHOWS, user.getShows().stream().map(AddedShow::getShow).toList());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
-		return "index";
+		return ReturnValues.INDEX;
 	}
 
 	@GetMapping("/show/{showId}")
@@ -79,22 +103,22 @@ public class MainController
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
 		{
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		final Show show = showOptional.get();
 		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(show, user);
 
-		model.addAttribute("show", show);
-		model.addAttribute("isAdded", user.getShowById(show.getId()).isPresent());
-		model.addAttribute("isDisliked", user.getShowById(show.getId()).map(AddedShow::getDisliked).orElse(false));
+		model.addAttribute(ModelAttributes.SHOW, show);
+		model.addAttribute(ModelAttributes.IS_ADDED, user.getShowById(show.getId()).isPresent());
+		model.addAttribute(ModelAttributes.IS_DISLIKED, user.getShowById(show.getId()).map(AddedShow::getDisliked).orElse(false));
 
 		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
 		{
-			model.addAttribute("latestWatched", latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+			model.addAttribute(ModelAttributes.LATEST_WATCHED, latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 		}
 
-		return "show";
+		return ReturnValues.SHOW;
 	}
 
 	@GetMapping("/season/{seasonId}")
@@ -103,11 +127,11 @@ public class MainController
 		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
 		if(seasonOptional.isEmpty())
 		{
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
-		model.addAttribute("season", seasonOptional.get());
-		return "season";
+		model.addAttribute(ModelAttributes.SEASON, seasonOptional.get());
+		return ReturnValues.SEASON;
 	}
 
 	@GetMapping("/episode/{episodeId}")
@@ -116,11 +140,11 @@ public class MainController
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())
 		{
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
-		model.addAttribute("episode", episodeOptional.get());
-		return "episode";
+		model.addAttribute(ModelAttributes.EPISODE, episodeOptional.get());
+		return ReturnValues.EPISODE;
 	}
 
 	@PostMapping("/search")
@@ -137,11 +161,11 @@ public class MainController
 
 		if(isUserSpecificView)
 		{
-			return "redirect:/user/shows";
+			return ReturnValues.REDIRECT_USER_SHOWS;
 		}
 		else
 		{
-			return "redirect:/shows";
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 	}
 }
