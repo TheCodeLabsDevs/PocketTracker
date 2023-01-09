@@ -1,10 +1,9 @@
-FROM openjdk:17-jdk-bullseye
+FROM eclipse-temurin:17-jre-alpine
 
-RUN apt-get update
-RUN apt-get -y install locales
-RUN localedef -i de_DE -f UTF-8 de_DE.UTF-8
+RUN apk update && apk upgrade && \
+    rm -rf /var/cache/apk
 
-ARG version=1.6.2
+ARG version=1.6.4
 
 COPY target/PocketTracker-${version}.jar /opt/PocketTracker/PocketTracker.jar
 
