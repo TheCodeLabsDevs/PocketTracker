@@ -15,7 +15,7 @@
                     ${show.getName()}
                 </p>
                 <p class="card-text">
-                   ${show.getSeasons()?size} Staffeln - ${showService.getTotalNumberOfEpisodes(show)} Episoden <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if>
+                   ${show.getSeasons()?size} <@b.localize "index.seasons"/> - ${showService.getTotalNumberOfEpisodes(show)} <@b.localize "index.episodes"/> <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if>
                 </p>
 
                 <#if isUserSpecific>
@@ -27,7 +27,7 @@
                 </#if>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link">Details</a>
+                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link"><@b.localize "button.details"/></a>
 
                     <div class="d-flex justify-content-end">
                         <#if isUserSpecific>
