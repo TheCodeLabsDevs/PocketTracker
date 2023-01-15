@@ -2,7 +2,7 @@
 
 Simply track your watched TV shows and episodes, as well as audio plays and podcasts with PocketTracker
 
-**Screenshot**
+![](/build/screenshots/index.png)
 
 ## Key Features
 
