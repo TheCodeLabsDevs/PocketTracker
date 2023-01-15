@@ -1,0 +1,15 @@
+spring.datasource.url=jdbc:postgresql://127.0.0.1/pockettracker
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.username=pockettracker
+spring.datasource.password=pocketTracker
+
+pockettracker.web.base-url=https://<your-domain.com>
+pockettracker.web.image-resource-path=/opt/PocketTracker/resources
+pockettracker.security.default-password-folder=/opt/PocketTracker/config
+pockettracker.security.enable-o-auth=false
+
+pockettracker.backup.location=/opt/PocketTracker/backup
+pockettracker.backup.keep=5
+pockettracker.backup.include-images=true
+pockettracker.backup.background-enabled=true
+pockettracker.backup.background-scheduled=0 0 0 * * *
