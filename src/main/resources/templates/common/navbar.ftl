@@ -39,7 +39,7 @@
                         <#if isUserSpecificView?? && isUserSpecificView>
                             <input type="hidden" name="isUserSpecificView" value="1"/>
                         </#if>
-                        <input class="form-control" type="search" placeholder="Suche" aria-label="Suche" name="searchText">
+                        <input class="form-control" type="search" placeholder="<@b.localize "search"/>" aria-label="Suche" name="searchText">
                     </@f.form>
                     <div class="text-white mx-md-3 my-2 my-md-0 dropdown">
                         <a href="<@s.url "/user/settings"/>" class="link-light text-decoration-none"><i class="fas fa-user pe-3"></i>${currentUser.name}
