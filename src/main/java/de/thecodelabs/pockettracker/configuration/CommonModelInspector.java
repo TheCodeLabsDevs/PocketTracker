@@ -28,7 +28,7 @@ public class CommonModelInspector implements HandlerInterceptor
 
 	@Override
 	public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-						   @NonNull Object handler, @Nullable ModelAndView modelAndView) throws Exception
+						   @NonNull Object handler, @Nullable ModelAndView modelAndView)
 	{
 		if(modelAndView == null)
 		{

@@ -41,8 +41,7 @@ public class AddedShow
 		public boolean equals(Object o)
 		{
 			if(this == o) return true;
-			if(!(o instanceof AddedShowId)) return false;
-			AddedShowId that = (AddedShowId) o;
+			if(!(o instanceof AddedShowId that)) return false;
 			return Objects.equals(userId, that.userId) && Objects.equals(showId, that.showId);
 		}
 

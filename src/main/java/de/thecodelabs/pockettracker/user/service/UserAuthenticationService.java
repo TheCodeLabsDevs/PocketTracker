@@ -19,7 +19,7 @@ public class UserAuthenticationService
 	}
 
 	@Transactional
-	public boolean deleteAuthenticationProvider(User user, Integer providerId)
+	public void deleteAuthenticationProvider(User user, Integer providerId)
 	{
 		final boolean anyMatch = user.getAuthentications().stream().anyMatch(provider -> provider.getId().equals(providerId));
 		if(!anyMatch)
@@ -29,6 +29,5 @@ public class UserAuthenticationService
 
 		user.getAuthentications().removeIf(provider -> provider.getId().equals(providerId));
 		authenticationRepository.deleteById(providerId);
-		return false;
 	}
 }

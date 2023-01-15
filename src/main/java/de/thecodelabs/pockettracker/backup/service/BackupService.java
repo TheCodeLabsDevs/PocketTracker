@@ -96,7 +96,7 @@ public class BackupService
 
 						return new BackupInstance(path, size, createTime, includeDatabase, includeImages);
 					})
-					.sorted(Comparator.comparing(BackupInstance::getCreateTime).reversed())
+					.sorted(Comparator.comparing(BackupInstance::createTime).reversed())
 					.toList();
 		}
 	}

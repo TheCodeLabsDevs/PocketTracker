@@ -101,8 +101,8 @@ public class BackupRestoreService
 		final BufferedReader bufferedReader = Files.newBufferedReader(databasePath);
 
 		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
-		insertShows(database.getShows());
-		insertUsers(database.getUsers());
+		insertShows(database.shows());
+		insertUsers(database.users());
 
 		updateSequences();
 	}

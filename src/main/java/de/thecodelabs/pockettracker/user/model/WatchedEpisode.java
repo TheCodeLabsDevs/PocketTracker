@@ -43,8 +43,7 @@ public class WatchedEpisode
 		public boolean equals(Object o)
 		{
 			if(this == o) return true;
-			if(!(o instanceof WatchedEpisodeId)) return false;
-			WatchedEpisodeId that = (WatchedEpisodeId) o;
+			if(!(o instanceof WatchedEpisodeId that)) return false;
 			return Objects.equals(userId, that.userId) && Objects.equals(episodeId, that.episodeId);
 		}
 

@@ -140,9 +140,9 @@ public class UserService
 		return userRepository.findAll().stream().sorted(Comparator.comparing(User::getId)).toList();
 	}
 
-	public User createUser(User user)
+	public void createUser(User user)
 	{
-		return userRepository.save(user);
+		userRepository.save(user);
 	}
 
 	public User createUser(UserForm userForm)
@@ -181,7 +181,7 @@ public class UserService
 		userRepository.save(user);
 	}
 
-	public User editUser(User user, UserForm userForm) throws PasswordValidationException
+	public void editUser(User user, UserForm userForm) throws PasswordValidationException
 	{
 		user.setName(userForm.getUsername());
 
@@ -206,7 +206,7 @@ public class UserService
 				addInternalAuthentication(user, userForm);
 			}
 		}
-		return userRepository.save(user);
+		userRepository.save(user);
 	}
 
 	public void editInternalAuthentication(InternalAuthentication authentication, UserForm form) throws PasswordValidationException
@@ -431,16 +431,15 @@ public class UserService
 		return true;
 	}
 
-	public boolean removeAllWatchedEpisodesFromUser(User user, Show show)
+	public void removeAllWatchedEpisodesFromUser(User user, Show show)
 	{
 		final List<WatchedEpisode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
 		if(watchedEpisodesByShow.isEmpty())
 		{
-			return false;
+			return;
 		}
 
 		watchedEpisodesByShow.forEach(episode ->
 				watchedEpisodeRepository.deleteWatchedEpisode(episode.getEpisode().getId(), episode.getUser().getId()));
-		return true;
 	}
 }

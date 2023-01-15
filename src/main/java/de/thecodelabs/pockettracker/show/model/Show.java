@@ -235,8 +235,7 @@ public class Show
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
-		if(!(o instanceof Show)) return false;
-		Show show = (Show) o;
+		if(!(o instanceof Show show)) return false;
 		return Objects.equals(id, show.id);
 	}
 

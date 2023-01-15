@@ -23,9 +23,9 @@
             </#if>
 
                 <div class="col">
-                    <@c.card classes=item.getBackgroundColor().getBackgroundColor() + " " + item.getTextColor().getTextColor()>
+                    <@c.card classes=item.backgroundColor().getBackgroundColor() + " " + item.textColor().getTextColor()>
                         <@c.body>
-                            <@showMacros.factItem item.getIcon() "" item.getText()/>
+                            <@showMacros.factItem item.icon() "" item.text()/>
                         </@c.body>
                     </@c.card>
                 </div>
@@ -42,9 +42,9 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 justify-content-center m-auto">
             <#list statisticItemsWatchTime as item>
                 <div class="col">
-                    <@c.card classes=item.getBackgroundColor().getBackgroundColor() + " " + item.getTextColor().getTextColor()>
+                    <@c.card classes=item.backgroundColor().getBackgroundColor() + " " + item.textColor().getTextColor()>
                         <@c.body>
-                            <@showMacros.factItem item.getIcon() "" item.getText()/>
+                            <@showMacros.factItem item.icon() "" item.text()/>
                         </@c.body>
                     </@c.card>
                 </div>
