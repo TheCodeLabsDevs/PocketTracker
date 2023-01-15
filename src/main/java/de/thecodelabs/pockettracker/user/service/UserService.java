@@ -19,6 +19,8 @@ import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import de.thecodelabs.pockettracker.user.repository.WatchedEpisodeRepository;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +32,6 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,18 +46,20 @@ public class UserService
 	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
 
 	private final ShowService showService;
+	private final MessageSource messageSource;
 
 	private final UserAddedShowRepository userAddedShowRepository;
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	@Autowired
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository)
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository, MessageSource messageSource, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.showService = showService;
 		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
+		this.messageSource = messageSource;
 		this.userAddedShowRepository = userAddedShowRepository;
 		this.watchedEpisodeRepository = watchedEpisodeRepository;
 	}
@@ -356,10 +359,10 @@ public class UserService
 	public List<StatisticItem> getGeneralStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien", user.getShows().size()), BootstrapColor.INFO, BootstrapColor.DARK));
-		statisticItems.add(new StatisticItem("fas fa-tv", MessageFormat.format("{0} Serien komplett", getNumberOfCompletedShows(user)), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("fas fa-folder", MessageFormat.format("{0} Staffeln komplett", getNumberOfCompletedSeasons(user)), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
-		statisticItems.add(new StatisticItem("far fa-file", MessageFormat.format("{0} Episoden", user.getWatchedEpisodes().size()), BootstrapColor.DARK, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows", new Object[]{user.getShows().size()}, LocaleContextHolder.getLocale()), BootstrapColor.INFO, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows.complete", new Object[]{getNumberOfCompletedShows(user)}, LocaleContextHolder.getLocale()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-folder", messageSource.getMessage("statistics.general.seasons.complete", new Object[]{getNumberOfCompletedSeasons(user)}, LocaleContextHolder.getLocale()), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("far fa-file", messageSource.getMessage("statistics.general.episodes", new Object[]{user.getWatchedEpisodes().size()}, LocaleContextHolder.getLocale()), BootstrapColor.DARK, BootstrapColor.LIGHT));
 		return statisticItems;
 	}
 
@@ -368,11 +371,11 @@ public class UserService
 		final List<StatisticItem> statisticItems = new ArrayList<>();
 
 		final Integer totalPlayedMinutesTv = getTotalPlayedMinutes(user, ShowType.TV);
-		final String timeStatisticsTv = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesTv, totalPlayedMinutesTv / 60, totalPlayedMinutesTv / 60 / 24);
+		final String timeStatisticsTv = messageSource.getMessage("statistics.timeBased.tv", new Object[]{totalPlayedMinutesTv, totalPlayedMinutesTv / 60, totalPlayedMinutesTv / 60 / 24}, LocaleContextHolder.getLocale());
 		statisticItems.add(new StatisticItem("fas fa-film", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		final Integer totalPlayedMinutesAudio = getTotalPlayedMinutes(user, ShowType.AUDIO);
-		final String timeStatisticsAudio = MessageFormat.format("{0} Minuten<br>{1} Stunden<br>{2} Tage", totalPlayedMinutesAudio, totalPlayedMinutesAudio / 60, totalPlayedMinutesAudio / 60 / 24);
+		final String timeStatisticsAudio = messageSource.getMessage("statistics.timeBased.audio", new Object[]{totalPlayedMinutesAudio, totalPlayedMinutesAudio / 60, totalPlayedMinutesAudio / 60 / 24}, LocaleContextHolder.getLocale());
 		statisticItems.add(new StatisticItem("fas fa-music", timeStatisticsAudio, BootstrapColor.WARNING, BootstrapColor.DARK));
 
 		return statisticItems;

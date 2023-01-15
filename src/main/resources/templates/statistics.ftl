@@ -11,11 +11,11 @@
     <@template.body>
         <@b.row classes="mb-4">
             <@b.col size="col-sm-12 col-md-8 col-lg-6" classes="mx-auto text-center">
-                <h2>Statistiken</h2>
+                <h2><@b.localize "menu.statistics"/></h2>
             </@b.col>
         </@b.row>
 
-        <h3 class="text-center my-3">Allgemein</h3>
+        <h3 class="text-center my-3"><@b.localize "statistics.general"/></h3>
 
         <#list statisticItemsGeneral as item>
             <#if item?index % 2 == 0>
@@ -37,7 +37,7 @@
 
         <hr class="mt-5"/>
 
-        <h3 class="text-center mt-4 mb-3">Zeitbasiert</h3>
+        <h3 class="text-center mt-4 mb-3"><@b.localize "statistics.timeBased"/></h3>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 justify-content-center m-auto">
             <#list statisticItemsWatchTime as item>
