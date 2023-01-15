@@ -62,7 +62,7 @@
         <div class="fs-5">
             ${value}&nbsp;
             <span class="d-md-none"><br></span>
-            ${description}
+            <@b.localize description/>
         </div>
     </div>
 </#macro>
