@@ -1,5 +1,7 @@
 package de.thecodelabs.pockettracker.configuration;
 
+import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -15,6 +17,14 @@ import java.util.Locale;
 @Component
 public class MessageSourceConfiguration implements WebMvcConfigurer
 {
+	private final GeneralConfigurationProperties generalConfigurationProperties;
+
+	@Autowired
+	public MessageSourceConfiguration(GeneralConfigurationProperties generalConfigurationProperties)
+	{
+		this.generalConfigurationProperties = generalConfigurationProperties;
+	}
+
 	@Bean
 	public MessageSource messageSource()
 	{
@@ -30,7 +40,7 @@ public class MessageSourceConfiguration implements WebMvcConfigurer
 	public LocaleResolver localeResolver()
 	{
 		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-		localeResolver.setDefaultLocale(new Locale("en"));
+		localeResolver.setDefaultLocale(new Locale(generalConfigurationProperties.getLanguage()));
 		localeResolver.setCookieName("locale");
 		localeResolver.setCookieMaxAge(4800);
 		return localeResolver;
