@@ -20,7 +20,7 @@
                         <i class="fas fa-flag-checkered"></i></#if>
                 </h3>
                 <#if latestWatched??>
-                    <div class="text-center">Zuletzt gesehen: ${latestWatched}</div>
+                    <div class="text-center"><@b.localize "show.lastWatched"/> ${latestWatched}</div>
                 </#if>
 
                 <@b.hasPermission "ADMIN">
@@ -66,7 +66,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="collapseHeaderOne">
                                                 <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItemOne" aria-expanded="false" aria-controls="collapseItemOne">
-                                                    Beschreibung
+                                                    <@b.localize "show.description"/>
                                                 </button>
                                             </h2>
                                             <div id="collapseItemOne" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDescription">
