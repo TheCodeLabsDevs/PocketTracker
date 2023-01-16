@@ -87,4 +87,7 @@ restored later.
    3. Adjust the `application.properties` file to your needs
 3. Adjust the line "volume mounts" int the provided `docker-compose.yaml` to match your file paths
 4. Run the provided `docker-compose.yaml` file with `docker-compose up -d`
+5. A default admin account will be created upon first start:
+   1. username: admin
+   2. password: see `/opt/PocketTracker/config/password.txt`
 
