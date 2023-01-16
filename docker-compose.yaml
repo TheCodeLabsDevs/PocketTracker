@@ -13,7 +13,7 @@ services:
       - netDB
 
   pocket_tracker:
-    image: pocket-tracker:1.6.5
+    image: pocket-tracker:1.7.0
     build: .
     restart: unless-stopped
     environment:
