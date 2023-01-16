@@ -1,8 +1,3 @@
-spring.datasource.url=jdbc:postgresql://127.0.0.1/pockettracker
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.username=pockettracker
-spring.datasource.password=pocketTracker
-
 pockettracker.general.language=en
 
 pockettracker.web.base-url=https://<your-domain.com>

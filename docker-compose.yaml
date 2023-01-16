@@ -4,7 +4,7 @@ services:
     image: postgres:14
     environment:
       POSTGRES_DB: pockettracker
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: pockettracker
       POSTGRES_USER: pockettracker
     restart: unless-stopped
     volumes:
@@ -13,14 +13,18 @@ services:
       - netDB
 
   pocket_tracker:
-    image: registry.thecodelabs.de/thecodelabs/pocket-tracker:1.6.5
+    image: pocket-tracker:1.6.5
+    build: .
     restart: unless-stopped
     environment:
-      spring.datasource.password: ${POSTGRES_PASSWORD}
-      TZ: Europe/Berlin
-      LANG: de_DE.UTF-8
-      LANGUAGE: de_DE.UTF-8
-      LC_ALL: de_DE.UTF-8
+      spring.datasource.url: jdbc:postgresql://postgres/pockettracker
+      spring.datasource.driver-class-name: org.postgresql.Driver
+      spring.datasource.username: pockettracker
+      spring.datasource.password: pockettracker
+      TZ: Europe/London
+      LANG: en_EN.UTF-8
+      LANGUAGE: en_EN.UTF-8
+      LC_ALL: en_EN.UTF-8
     volumes:
       - /var/opt/PocketTracker/resources:/opt/PocketTracker/resources
       - /var/opt/PocketTracker/backup:/opt/PocketTracker/backup

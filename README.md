@@ -84,8 +84,7 @@ restored later.
 2. Configure your instance:
    1. Create a new empty folder named `config` 
    2. Copy the file called `application.properties.example` into it and rename it to `application.properties`
-   3. Adjust the `application.properties` file to your needs (All lines starting
-   with `spring.security.oauth2.client.registration.gitlab` are optional)
-3. Adjust the line volume mounts int the provided `docker-compose.yaml` to match your file paths
+   3. Adjust the `application.properties` file to your needs
+3. Adjust the line "volume mounts" int the provided `docker-compose.yaml` to match your file paths
 4. Run the provided `docker-compose.yaml` file with `docker-compose up -d`
 
