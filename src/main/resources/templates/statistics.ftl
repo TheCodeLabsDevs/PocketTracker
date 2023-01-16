@@ -25,7 +25,7 @@
                 <div class="col">
                     <@c.card classes=item.backgroundColor().getBackgroundColor() + " " + item.textColor().getTextColor()>
                         <@c.body>
-                            <@showMacros.factItem item.icon() "" item.text()/>
+                            <@showMacros.factItem icon=item.icon() value="" description=item.text() localizedDescription=false/>
                         </@c.body>
                     </@c.card>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="col">
                     <@c.card classes=item.backgroundColor().getBackgroundColor() + " " + item.textColor().getTextColor()>
                         <@c.body>
-                            <@showMacros.factItem item.icon() "" item.text()/>
+                            <@showMacros.factItem icon=item.icon() value="" description=item.text() localizedDescription=false/>
                         </@c.body>
                     </@c.card>
                 </div>
