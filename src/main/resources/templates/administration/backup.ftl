@@ -36,14 +36,14 @@
                             <@t.cell value=backup.getName()/>
                             <@t.cell value=backup.getSizeFormatted()/>
                             <@t.cell>
-                                <#if backup.database>
+                                <#if backup.database()>
                                     &check;
                                 <#else>
                                     &#10134;
                                 </#if>
                             </@t.cell>
                             <@t.cell>
-                                <#if backup.images>
+                                <#if backup.images()>
                                     &check;
                                 <#else>
                                     &#10134;
