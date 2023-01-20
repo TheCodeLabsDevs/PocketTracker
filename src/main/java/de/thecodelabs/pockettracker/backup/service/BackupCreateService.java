@@ -1,9 +1,13 @@
 package de.thecodelabs.pockettracker.backup.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationRepository;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
+import de.thecodelabs.pockettracker.backup.converter.APIConfigurationConverter;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
+import de.thecodelabs.pockettracker.backup.model.BackupAPIConfigurationModel;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
@@ -36,9 +40,11 @@ public class BackupCreateService
 
 	private final ShowRepository showRepository;
 	private final UserRepository userRepository;
+	private final APIConfigurationRepository apiConfigurationRepository;
 
 	private final ShowConverter showConverter;
 	private final UserConverter userConverter;
+	private final APIConfigurationConverter apiConfigurationConverter;
 
 	private final WebConfigurationProperties webConfigurationProperties;
 	private final BackupConfigurationProperties backupConfigurationProperties;
@@ -46,14 +52,16 @@ public class BackupCreateService
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public BackupCreateService(ShowRepository showRepository, UserRepository userRepository, ShowConverter showConverter,
-							   UserConverter userConverter, WebConfigurationProperties webConfigurationProperties,
+	public BackupCreateService(ShowRepository showRepository, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter,
+							   UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, WebConfigurationProperties webConfigurationProperties,
 							   BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showRepository = showRepository;
 		this.userRepository = userRepository;
+		this.apiConfigurationRepository = apiConfigurationRepository;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
+		this.apiConfigurationConverter = apiConfigurationConverter;
 		this.webConfigurationProperties = webConfigurationProperties;
 		this.backupConfigurationProperties = backupConfigurationProperties;
 		this.objectMapper = objectMapper;
@@ -69,7 +77,11 @@ public class BackupCreateService
 
 		final List<User> users = userRepository.findAll();
 		final List<BackupUserModel> backupUserModels = userConverter.toBeans(users);
-		final Database database = new Database(backupShowModels, backupUserModels);
+
+		final List<APIConfiguration> apiConfigurations = apiConfigurationRepository.findAll();
+		final List<BackupAPIConfigurationModel> backupAPIConfigurationModels = apiConfigurationConverter.toBeans(apiConfigurations);
+
+		final Database database = new Database(backupShowModels, backupUserModels, backupAPIConfigurationModels);
 
 		LOGGER.info("Create backup at {}", backupLocationPath);
 

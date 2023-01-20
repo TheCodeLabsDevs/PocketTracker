@@ -1,8 +1,12 @@
 package de.thecodelabs.pockettracker.backup.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationService;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
+import de.thecodelabs.pockettracker.backup.converter.APIConfigurationConverter;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
+import de.thecodelabs.pockettracker.backup.model.BackupAPIConfigurationModel;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
@@ -48,11 +52,13 @@ public class BackupRestoreService
 	private final UserService userService;
 	private final ShowService showService;
 	private final EpisodeService episodeService;
+	private final APIConfigurationService apiConfigurationService;
 
 	private final DataSource dataSource;
 
 	private final ShowConverter showConverter;
 	private final UserConverter userConverter;
+	private final APIConfigurationConverter apiConfigurationConverter;
 
 	private final ObjectMapper objectMapper;
 
@@ -60,15 +66,17 @@ public class BackupRestoreService
 
 	@Autowired
 	public BackupRestoreService(UserService userService, ShowService showService, EpisodeService episodeService,
-								DataSource dataSource, ShowConverter showConverter,
-								UserConverter userConverter, ObjectMapper objectMapper, WebConfigurationProperties webConfigurationProperties)
+								APIConfigurationService apiConfigurationService, DataSource dataSource, ShowConverter showConverter,
+								UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, ObjectMapper objectMapper, WebConfigurationProperties webConfigurationProperties)
 	{
 		this.userService = userService;
 		this.showService = showService;
 		this.episodeService = episodeService;
+		this.apiConfigurationService = apiConfigurationService;
 		this.dataSource = dataSource;
 		this.showConverter = showConverter;
 		this.userConverter = userConverter;
+		this.apiConfigurationConverter = apiConfigurationConverter;
 		this.objectMapper = objectMapper;
 		this.webConfigurationProperties = webConfigurationProperties;
 	}
@@ -103,6 +111,7 @@ public class BackupRestoreService
 		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
 		insertShows(database.shows());
 		insertUsers(database.users());
+		insertApiConfigurations(database.apiConfigurations());
 
 		updateSequences();
 	}
@@ -155,6 +164,16 @@ public class BackupRestoreService
 			}
 		}
 		LOGGER.info("Restored user shows and episodes");
+	}
+
+	public void insertApiConfigurations(List<BackupAPIConfigurationModel> backupAPIConfigurationModels)
+	{
+		final List<APIConfiguration> apiConfigurations = apiConfigurationConverter.toEntities(backupAPIConfigurationModels);
+		for(APIConfiguration apiConfiguration : apiConfigurations)
+		{
+			apiConfigurationService.createConfiguration(apiConfiguration);
+		}
+		LOGGER.info("Restored API configurations");
 	}
 
 	private void updateSequences() throws SQLException
