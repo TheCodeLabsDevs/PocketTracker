@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.backup;
+package de.thecodelabs.pockettracker.administration.batchedit;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.show.ShowService;
