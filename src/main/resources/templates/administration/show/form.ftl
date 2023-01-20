@@ -34,7 +34,7 @@
     </#if>
 
     <@b.row>
-        <@f.form name="banner" url="/show/${show.id}/edit/BANNER" multipart=true>
+        <@f.form name="banner" url="/show/${show.id?c}/edit/BANNER" multipart=true>
             <@f.file label="show.banner" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>
@@ -46,7 +46,7 @@
     </#if>
 
     <@b.row>
-        <@f.form name="poster" url="/show/${show.id}/edit/POSTER" multipart=true>
+        <@f.form name="poster" url="/show/${show.id?c}/edit/POSTER" multipart=true>
             <@f.file label="show.poster" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>
@@ -66,7 +66,7 @@
     <@m.modal id="addSeasons">
         <@m.header "show.season.add"/>
         <@m.body>
-            <@f.form name="addSeason" url="/show/${show.id}/season/add">
+            <@f.form name="addSeason" url="/show/${show.id?c}/season/add">
                 <@f.input label="show.season.add.count" name="seasonCount" value="1"/>
             </@f.form>
         </@m.body>
@@ -96,9 +96,9 @@
                     </@t.cell>
 
                     <@t.cell>
-                        <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
+                        <@t.action icon="fas fa-pen" url="/season/${season.id?c}/edit" />
 
-                        <#assign modalId = "deleteSeason-${season.id}">
+                        <#assign modalId = "deleteSeason-${season.id?c}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
                         <@delete.modal modalId=modalId title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
                             <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
@@ -120,7 +120,7 @@
         </@b.col>
     </@b.row>
 
-    <@delete.modal modalId="deleteShow" title="show.delete" deleteButton="show.delete" url="/show/${show.id}/delete">
+    <@delete.modal modalId="deleteShow" title="show.delete" deleteButton="show.delete" url="/show/${show.id?c}/delete">
         <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
     </@delete.modal>
 </#macro>

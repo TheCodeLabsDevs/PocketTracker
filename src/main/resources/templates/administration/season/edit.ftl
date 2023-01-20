@@ -11,8 +11,8 @@
     <@template.head 'Episodes'/>
     <@template.body>
         <@b.flex>
-            <@b.back_button url="/show/${show.id}/edit" showLabel=false/>
-            <@b.button url="/season/${season.id}" label="season.view" classes="me-2"/>
+            <@b.back_button url="/show/${show.id?c}/edit" showLabel=false/>
+            <@b.button url="/season/${season.id?c}" label="season.view" classes="me-2"/>
             <@b.h2 title="${show.name} - ${season.name!''}" raw=true/>
         </@b.flex>
 
