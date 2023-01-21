@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -57,8 +58,13 @@ public class APIConfigurationController
 
 	@PostMapping("/create")
 	@Transactional
-	public String create(WebRequest request, @Validated @ModelAttribute("apiConfiguration") APIConfiguration apiConfiguration, BindingResult validation)
+	public String create(WebRequest request, @Validated @ModelAttribute("newApiConfiguration") APIConfiguration apiConfiguration, BindingResult validation)
 	{
+		if(apiConfigurationService.getConfigurationByType(apiConfiguration.getType()).isPresent())
+		{
+			validation.addError(new FieldError("newApiConfiguration", "type", "", false, new String[]{"api.config.warning.already.exists"}, new Object[]{apiConfiguration.getType().name()}, null));
+		}
+
 		if(isApiConfigurationModelInvalid(request, apiConfiguration, validation))
 		{
 			return ReturnValues.REDIRECT_API_OVERVIEW;

@@ -19,7 +19,7 @@
         </@b.row>
 
         <@b.h3 title="api.config.create"/>
-        <@showApiConfigurationForm config=newConfiguration url="/administration/apiConfiguration/create" includeDeleteButton=false/>
+        <@showApiConfigurationForm config=newConfiguration url="/administration/apiConfiguration/create" includeDeleteButton=false formName="newApiConfiguration"/>
 
         <div class="mt-5">
             <@b.h3 title="api.config.configurations"/>
@@ -32,11 +32,11 @@
     </@template.body>
 </html>
 
-<#macro showApiConfigurationForm config url includeDeleteButton=true>
+<#macro showApiConfigurationForm config url includeDeleteButton=true formName="apiConfiguration">
     <@c.card classes="my-4">
         <@c.body>
             <@b.row>
-                <@f.form name="apiConfiguration" url=url rawUrl=true>
+                <@f.form name=formName url=url rawUrl=true>
                     <@b.row>
                         <@f.select label="show.type" name="type" options=apiConfigurationTypes value=config.type/>
                         <@f.input label="api.config.token" name="token" value=config.token!""/>
