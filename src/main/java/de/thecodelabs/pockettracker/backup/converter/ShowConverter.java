@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 public class ShowConverter implements AbstractConverter<BackupShowModel, Show>
 {
 	private final SeasonConverter seasonConverter;
+	private final APIIdentifierConverter apiIdentifierConverter;
 
 	@Autowired
-	public ShowConverter(SeasonConverter seasonConverter)
+	public ShowConverter(SeasonConverter seasonConverter, APIIdentifierConverter apiIdentifierConverter)
 	{
 		this.seasonConverter = seasonConverter;
+		this.apiIdentifierConverter = apiIdentifierConverter;
 	}
 
 	@Override
@@ -25,6 +27,7 @@ public class ShowConverter implements AbstractConverter<BackupShowModel, Show>
 		BeanUtils.merge(entity, model);
 
 		model.setSeasons(seasonConverter.toBeans(entity.getSeasons()));
+		model.setApiIdentifiers(apiIdentifierConverter.toBeans(entity.getApiIdentifiers()));
 
 		return model;
 	}
@@ -37,6 +40,9 @@ public class ShowConverter implements AbstractConverter<BackupShowModel, Show>
 
 		entity.setSeasons(seasonConverter.toEntities(bean.getSeasons()));
 		entity.getSeasons().forEach(season -> season.setShow(entity));
+
+		entity.setApiIdentifiers(apiIdentifierConverter.toEntities(bean.getApiIdentifiers()));
+		entity.getApiIdentifiers().forEach(identifier -> identifier.setShow(entity));
 
 		return entity;
 	}

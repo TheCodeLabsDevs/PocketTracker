@@ -23,6 +23,8 @@ public class BackupShowModel
 	private Boolean finished;
 	@MergeIgnore
 	private List<BackupSeasonModel> seasons;
+	@MergeIgnore
+	private List<BackupAPIIdentifierModel> apiIdentifiers;
 
 	public Integer getId()
 	{
@@ -112,5 +114,15 @@ public class BackupShowModel
 	public void setSeasons(List<BackupSeasonModel> seasons)
 	{
 		this.seasons = seasons;
+	}
+
+	public List<BackupAPIIdentifierModel> getApiIdentifiers()
+	{
+		return apiIdentifiers;
+	}
+
+	public void setApiIdentifiers(List<BackupAPIIdentifierModel> apiIdentifiers)
+	{
+		this.apiIdentifiers = apiIdentifiers;
 	}
 }
