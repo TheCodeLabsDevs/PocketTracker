@@ -21,7 +21,7 @@ public class APIConfigurationService
 
 	public List<APIConfiguration> getAllConfigurations()
 	{
-		return repository.findAllByOrderByNameAsc();
+		return repository.findAllByOrderByTypeAsc();
 	}
 
 	public Optional<APIConfiguration> getConfigurationById(Integer id)

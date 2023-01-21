@@ -7,6 +7,8 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class APIConfigurationController
 {
 	private final APIConfigurationService apiConfigurationService;
+	private final MessageSource messageSource;
 
 	private static class ModelAttributes
 	{
@@ -38,9 +41,10 @@ public class APIConfigurationController
 	}
 
 	@Autowired
-	public APIConfigurationController(APIConfigurationService apiConfigurationService)
+	public APIConfigurationController(APIConfigurationService apiConfigurationService, MessageSource messageSource)
 	{
 		this.apiConfigurationService = apiConfigurationService;
+		this.messageSource = messageSource;
 	}
 
 	@GetMapping
@@ -99,7 +103,7 @@ public class APIConfigurationController
 		final APIConfiguration apiConfiguration = apiConfigurationOptional.get();
 		apiConfigurationService.deleteConfiguration(apiConfiguration);
 
-		WebRequestUtils.putToast(request, new Toast("toast.api.configuration.delete", BootstrapColor.SUCCESS, apiConfiguration.getName()));
+		WebRequestUtils.putToast(request, new Toast("toast.api.configuration.delete", BootstrapColor.SUCCESS, messageSource.getMessage(apiConfiguration.getType().getCodes()[apiConfiguration.getType().ordinal()], new Object[]{}, LocaleContextHolder.getLocale())));
 		return ReturnValues.REDIRECT_API_OVERVIEW;
 	}
 

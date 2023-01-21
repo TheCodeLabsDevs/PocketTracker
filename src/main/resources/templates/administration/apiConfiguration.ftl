@@ -38,7 +38,7 @@
             <@b.row>
                 <@f.form name="apiConfiguration" url=url rawUrl=true>
                     <@b.row>
-                        <@f.input label="api.config.name" name="name" value=config.name!""/>
+                        <@f.select label="show.type" name="type" options=apiConfigurationTypes value=config.type/>
                         <@f.input label="api.config.token" name="token" value=config.token!""/>
 
                         <div class="d-flex justify-content-end">
@@ -53,7 +53,7 @@
 
                 <#if includeDeleteButton>
                     <@delete.modal modalId=modalId title="api.config.delete" deleteButton="api.config.delete" url="/administration/apiConfiguration/${config.id?c}/delete">
-                        <@s.messageArgs code="api.config.delete.message" args=[config.getName()]/>
+                        <@s.messageArgs code="api.config.delete.message" args=[config.getType().name()]/>
                     </@delete.modal>
                 </#if>
             </@b.row>

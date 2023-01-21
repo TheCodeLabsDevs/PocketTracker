@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface APIConfigurationRepository extends JpaRepository<APIConfiguration, Integer>
 {
-	List<APIConfiguration> findAllByOrderByNameAsc();
+	List<APIConfiguration> findAllByOrderByTypeAsc();
 }

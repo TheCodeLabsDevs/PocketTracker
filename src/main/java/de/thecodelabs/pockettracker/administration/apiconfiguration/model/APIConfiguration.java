@@ -28,17 +28,15 @@ public class APIConfiguration
 	@JsonView(View.Summary.class)
 	private Integer id;
 
-	@NotNull
-	@NotEmpty
-	@Size(max = 255)
-	@JsonView(View.Summary.class)
-	private String name = "";
-
 	@Column(length = 4096)
 	@NotEmpty
 	@Size(max = 4096)
 	@JsonView(View.Summary.class)
 	private String token;
+
+	@NotNull
+	@JsonView(View.Summary.class)
+	private APIConfigurationType type;
 
 	public Integer getId()
 	{
@@ -48,16 +46,6 @@ public class APIConfiguration
 	public void setId(Integer id)
 	{
 		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
 	}
 
 	public String getToken()
@@ -70,19 +58,29 @@ public class APIConfiguration
 		this.token = token;
 	}
 
+	public APIConfigurationType getType()
+	{
+		return type;
+	}
+
+	public void setType(APIConfigurationType type)
+	{
+		this.type = type;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		APIConfiguration that = (APIConfiguration) o;
-		return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(token, that.token);
+		return Objects.equals(id, that.id) && Objects.equals(token, that.token) && type == that.type;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(id, name, token);
+		return Objects.hash(id, token, type);
 	}
 
 	@Override
@@ -90,8 +88,8 @@ public class APIConfiguration
 	{
 		return "APIConfiguration{" +
 				"id=" + id +
-				", name='" + name + '\'' +
 				", token='" + token + '\'' +
+				", type=" + type +
 				'}';
 	}
 }
