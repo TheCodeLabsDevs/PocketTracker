@@ -3,7 +3,7 @@ package de.thecodelabs.pockettracker.show.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,7 +31,7 @@ public class APIIdentifier
 
 	@NotNull
 	@JsonView(View.Summary.class)
-	private APIConfigurationType type;
+	private APIType type;
 
 	@Column(length = 4096)
 	@Size(max = 4096)
@@ -48,7 +48,7 @@ public class APIIdentifier
 	{
 	}
 
-	public APIIdentifier(Integer id, APIConfigurationType type, String identifier)
+	public APIIdentifier(Integer id, APIType type, String identifier)
 	{
 		this.id = id;
 		this.type = type;
@@ -65,12 +65,12 @@ public class APIIdentifier
 		return id;
 	}
 
-	public APIConfigurationType getType()
+	public APIType getType()
 	{
 		return type;
 	}
 
-	public void setType(APIConfigurationType type)
+	public void setType(APIType type)
 	{
 		this.type = type;
 	}

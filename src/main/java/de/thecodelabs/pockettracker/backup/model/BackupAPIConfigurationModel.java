@@ -1,11 +1,11 @@
 package de.thecodelabs.pockettracker.backup.model;
 
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 
 public class BackupAPIConfigurationModel
 {
 	private Integer id;
-	private APIConfigurationType type;
+	private APIType type;
 	private String token;
 
 	public Integer getId()
@@ -18,12 +18,12 @@ public class BackupAPIConfigurationModel
 		this.id = id;
 	}
 
-	public APIConfigurationType getType()
+	public APIType getType()
 	{
 		return type;
 	}
 
-	public void setType(APIConfigurationType type)
+	public void setType(APIType type)
 	{
 		this.type = type;
 	}

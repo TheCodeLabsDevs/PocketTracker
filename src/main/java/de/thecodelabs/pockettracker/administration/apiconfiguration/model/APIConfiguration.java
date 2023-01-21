@@ -36,7 +36,7 @@ public class APIConfiguration
 
 	@NotNull
 	@JsonView(View.Summary.class)
-	private APIConfigurationType type;
+	private APIType type;
 
 	public Integer getId()
 	{
@@ -58,12 +58,12 @@ public class APIConfiguration
 		this.token = token;
 	}
 
-	public APIConfigurationType getType()
+	public APIType getType()
 	{
 		return type;
 	}
 
-	public void setType(APIConfigurationType type)
+	public void setType(APIType type)
 	{
 		this.type = type;
 	}

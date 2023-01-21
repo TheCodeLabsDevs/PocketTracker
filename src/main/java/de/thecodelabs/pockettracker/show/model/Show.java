@@ -4,7 +4,7 @@ package de.thecodelabs.pockettracker.show.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -247,7 +247,7 @@ public class Show
 		}
 	}
 
-	public Optional<APIIdentifier> getApiIdentifierByType(APIConfigurationType apiType)
+	public Optional<APIIdentifier> getApiIdentifierByType(APIType apiType)
 	{
 		return apiIdentifiers.stream()
 				.filter(i -> i.getType().equals(apiType))

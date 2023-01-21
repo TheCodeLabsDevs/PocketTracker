@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker.administration.apiconfiguration;
 
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +13,5 @@ public interface APIConfigurationRepository extends JpaRepository<APIConfigurati
 {
 	List<APIConfiguration> findAllByOrderByTypeAsc();
 
-	Optional<APIConfiguration> findByType(APIConfigurationType type);
+	Optional<APIConfiguration> findByType(APIType type);
 }

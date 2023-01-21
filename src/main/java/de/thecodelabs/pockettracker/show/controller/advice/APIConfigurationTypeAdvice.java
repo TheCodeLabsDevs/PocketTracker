@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.show.controller.advice;
 
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class APIConfigurationTypeAdvice
 {
 	@ModelAttribute("apiConfigurationTypes")
-	public APIConfigurationType[] apiConfigurationTypes()
+	public APIType[] apiConfigurationTypes()
 	{
-		return APIConfigurationType.values();
+		return APIType.values();
 	}
 }

@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.administration.apiconfiguration.model;
 
 import org.springframework.context.MessageSourceResolvable;
 
-public enum APIConfigurationType implements MessageSourceResolvable
+public enum APIType implements MessageSourceResolvable
 {
 	TVDB_V3;
 

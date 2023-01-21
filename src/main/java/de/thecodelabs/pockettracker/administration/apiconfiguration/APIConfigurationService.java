@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker.administration.apiconfiguration;
 
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
-import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class APIConfigurationService
 		return repository.findById(id);
 	}
 
-	public Optional<APIConfiguration> getConfigurationByType(APIConfigurationType type)
+	public Optional<APIConfiguration> getConfigurationByType(APIType type)
 	{
 		return repository.findByType(type);
 	}
