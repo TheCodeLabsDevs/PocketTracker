@@ -101,6 +101,14 @@ public class BackupRestoreService
 			}
 			showService.deleteShow(show);
 		}
+
+		final List<APIConfiguration> configurations = apiConfigurationService.getAllConfigurations();
+		LOGGER.info("Delete {} API configurations", configurations.size());
+
+		for(APIConfiguration configuration : configurations)
+		{
+			apiConfigurationService.deleteConfiguration(configuration);
+		}
 	}
 
 	public void insertAllData(Path basePath) throws IOException, SQLException
