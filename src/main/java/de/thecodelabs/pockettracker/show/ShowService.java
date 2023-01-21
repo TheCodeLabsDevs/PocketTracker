@@ -1,9 +1,11 @@
 package de.thecodelabs.pockettracker.show;
 
+import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
@@ -16,12 +18,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +40,7 @@ public class ShowService
 	private final WebConfigurationProperties webConfigurationProperties;
 
 	@Autowired
-	public ShowService(ShowRepository repository, MessageSource messageSource, WebConfigurationProperties webConfigurationProperties)
+	public ShowService(ShowRepository repository, MessageSource messageSource, WebConfigurationProperties webConfigurationProperties, APIIdentifierService apiIdentifierService)
 	{
 		this.repository = repository;
 		this.messageSource = messageSource;
@@ -190,5 +194,25 @@ public class ShowService
 	public void deleteShow(Show show)
 	{
 		repository.delete(show);
+	}
+
+	@Transactional
+	public void addApiIdentifierToShow(Integer showId, APIIdentifier apiIdentifier)
+	{
+		final Optional<Show> showOptional = getShowById(showId);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException("Show not found");
+		}
+
+		final Show show = showOptional.get();
+
+		if(show.getApiIdentifierByType(apiIdentifier.getType()).isPresent())
+		{
+			throw new IllegalArgumentException(MessageFormat.format("Show {} already has an api identifier of type {}", show.getName(), apiIdentifier.getType().name()));
+		}
+
+		apiIdentifier.setShow(show);
+		show.getApiIdentifiers().add(apiIdentifier);
 	}
 }

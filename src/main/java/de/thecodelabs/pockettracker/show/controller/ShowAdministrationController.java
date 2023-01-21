@@ -1,8 +1,10 @@
 package de.thecodelabs.pockettracker.show.controller;
 
+import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
+import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.SeasonsDialogModel;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowImageType;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -36,12 +39,14 @@ public class ShowAdministrationController
 
 	private final UserService userService;
 	private final ShowService service;
+	private final APIIdentifierService apiIdentifierService;
 
 	@Autowired
-	public ShowAdministrationController(UserService userService, ShowService service)
+	public ShowAdministrationController(UserService userService, ShowService service, APIIdentifierService apiIdentifierService)
 	{
 		this.userService = userService;
 		this.service = service;
+		this.apiIdentifierService = apiIdentifierService;
 	}
 
 	@GetMapping("/create")
@@ -192,6 +197,48 @@ public class ShowAdministrationController
 
 		WebRequestUtils.putToast(request, new Toast("toast.show.delete", BootstrapColor.SUCCESS, showName));
 		return "redirect:/shows";
+	}
+
+	@PostMapping("/{showId}/apiIdentifier/add")
+	public String addApiIdentifier(WebRequest request, @PathVariable Integer showId,
+								   @ModelAttribute("newApiIdentifier") @Validated APIIdentifier apiIdentifier, BindingResult validation)
+	{
+		if(validation.hasErrors())
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, apiIdentifier);
+			return "redirect:/show/" + showId + "/edit";
+		}
+
+		try
+		{
+			service.addApiIdentifierToShow(showId, apiIdentifier);
+		}
+		catch(IllegalArgumentException e)
+		{
+			validation.addError(new FieldError("newApiIdentifier", "type", "", false, new String[]{"show.apiIdentifiers.warning.already.exists"}, new Object[]{apiIdentifier.getType()}, null));
+			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
+			WebRequestUtils.putValidationError(request, validation, apiIdentifier);
+		}
+
+		return "redirect:/show/" + showId + "/edit";
+	}
+
+	@PostMapping("/{showId}/apiIdentifier/delete/{id}")
+	public String deleteApiIdentifier(WebRequest request, @PathVariable Integer showId, @PathVariable Integer id)
+	{
+		final Optional<APIIdentifier> identifierOptional = apiIdentifierService.getIdentifierById(id);
+		if(identifierOptional.isEmpty())
+		{
+			throw new NotFoundException("APIIdentifier for id " + id + " not found");
+		}
+
+		final APIIdentifier apiIdentifier = identifierOptional.get();
+		apiIdentifierService.deleteIdentifier(apiIdentifier);
+
+		WebRequestUtils.putToast(request, new Toast("toast.api.identifier.delete", BootstrapColor.SUCCESS, apiIdentifier.getType()));
+
+		return "redirect:/show/" + showId + "/edit";
 	}
 
 	/*

@@ -40,6 +40,12 @@
 
             <@c.card classes="my-4">
                 <@c.body>
+                    <@form.apiIdentifiers show/>
+                </@c.body>
+            </@c.card>
+
+            <@c.card classes="my-4">
+                <@c.body>
                     <@form.showDelete show/>
                 </@c.body>
             </@c.card>

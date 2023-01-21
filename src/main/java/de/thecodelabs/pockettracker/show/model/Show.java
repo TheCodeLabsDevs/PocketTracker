@@ -4,6 +4,7 @@ package de.thecodelabs.pockettracker.show.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfigurationType;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 public class Show
@@ -78,6 +80,10 @@ public class Show
 	@MergeIgnore
 	@JsonIgnore
 	private List<AddedShow> favoriteUsers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
+	@MergeIgnore
+	private List<APIIdentifier> apiIdentifiers = new ArrayList<>();
 
 	public Show()
 	{
@@ -184,6 +190,16 @@ public class Show
 		this.seasons = seasons;
 	}
 
+	public List<APIIdentifier> getApiIdentifiers()
+	{
+		return apiIdentifiers;
+	}
+
+	public void setApiIdentifiers(List<APIIdentifier> apiIdentifiers)
+	{
+		this.apiIdentifiers = apiIdentifiers;
+	}
+
 	public List<AddedShow> getFavoriteUsers()
 	{
 		return favoriteUsers;
@@ -231,6 +247,13 @@ public class Show
 		}
 	}
 
+	public Optional<APIIdentifier> getApiIdentifierByType(APIConfigurationType apiType)
+	{
+		return apiIdentifiers.stream()
+				.filter(i -> i.getType().equals(apiType))
+				.findFirst();
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -258,6 +281,8 @@ public class Show
 				", type=" + type +
 				", finished=" + finished +
 				", seasons=" + seasons +
+				", favoriteUsers=" + favoriteUsers +
+				", apiIdentifiers=" + apiIdentifiers +
 				'}';
 	}
 }

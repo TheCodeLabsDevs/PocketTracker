@@ -110,6 +110,54 @@
     </@t.table>
 </#macro>
 
+<#macro apiIdentifiers show>
+    <@b.row>
+        <@b.col size="col-6">
+            <@b.h3 title="show.apiIdentifiers"/>
+        </@b.col>
+        <@b.col size="col-6">
+            <@m.open label="show.apiIdentifiers.add" modalId="addApiIdentifier" classes="float-end"/>
+        </@b.col>
+    </@b.row>
+
+    <@m.modal id="addApiIdentifier">
+        <@m.header "show.apiIdentifiers.add"/>
+        <@m.body>
+            <@f.form name="newApiIdentifier" url="/show/${show.id?c}/apiIdentifier/add">
+                <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                <@f.input label="show.apiIdentifiers.identifier" name="identifier" value=""/>
+            </@f.form>
+        </@m.body>
+        <@m.footer>
+            <@m.cancelButton/>
+            <@f.submit label="button.add" form="newApiIdentifier" col=false/>
+        </@m.footer>
+    </@m.modal>
+
+    <@t.table id="seasons">
+        <@t.head>
+            <@t.headCell label="show.apiIdentifiers.type"/>
+            <@t.headCell label="show.apiIdentifiers.identifier"/>
+            <@t.headCell label="show.season.actions"/>
+        </@t.head>
+        <@t.body>
+            <#list show.getApiIdentifiers() as apiIdentifier>
+                <@t.row>
+                    <@t.cell value="${apiIdentifier.type}"/>
+                    <@t.cell value="${apiIdentifier.identifier}"/>
+                    <@t.cell>
+                        <#assign modalId = "deleteApiIdentifier-${apiIdentifier.id?c}">
+                        <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
+                        <@delete.modal modalId=modalId title="show.apiIdentifiers.delete" deleteButton="show.apiIdentifiers.delete" url="/show/${show.id?c}/apiIdentifier/delete/${apiIdentifier.id?c}">
+                            <@s.messageArgs code="show.apiIdentifiers.delete.message" args=[apiIdentifier.getType()]/>
+                        </@delete.modal>
+                    </@t.cell>
+                </@t.row>
+            </#list>
+        </@t.body>
+    </@t.table>
+</#macro>
+
 <#macro showDelete show>
     <@b.row>
         <@b.col size="col-12">

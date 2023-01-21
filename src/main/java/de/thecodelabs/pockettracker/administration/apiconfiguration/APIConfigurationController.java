@@ -8,7 +8,6 @@ import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +61,7 @@ public class APIConfigurationController
 	{
 		if(apiConfigurationService.getConfigurationByType(apiConfiguration.getType()).isPresent())
 		{
-			validation.addError(new FieldError("newApiConfiguration", "type", "", false, new String[]{"api.config.warning.already.exists"}, new Object[]{apiConfiguration.getType().name()}, null));
+			validation.addError(new FieldError("newApiConfiguration", "type", "", false, new String[]{"api.config.warning.already.exists"}, new Object[]{apiConfiguration.getType()}, null));
 		}
 
 		if(isApiConfigurationModelInvalid(request, apiConfiguration, validation))
