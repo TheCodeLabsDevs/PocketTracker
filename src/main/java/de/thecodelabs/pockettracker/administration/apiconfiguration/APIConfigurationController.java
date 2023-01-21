@@ -26,7 +26,6 @@ import java.util.Optional;
 public class APIConfigurationController
 {
 	private final APIConfigurationService apiConfigurationService;
-	private final MessageSource messageSource;
 
 	private static class ModelAttributes
 	{
@@ -41,10 +40,9 @@ public class APIConfigurationController
 	}
 
 	@Autowired
-	public APIConfigurationController(APIConfigurationService apiConfigurationService, MessageSource messageSource)
+	public APIConfigurationController(APIConfigurationService apiConfigurationService)
 	{
 		this.apiConfigurationService = apiConfigurationService;
-		this.messageSource = messageSource;
 	}
 
 	@GetMapping
