@@ -109,7 +109,7 @@ public class APIConfigurationController
 		final APIConfiguration apiConfiguration = apiConfigurationOptional.get();
 		apiConfigurationService.deleteConfiguration(apiConfiguration);
 
-		WebRequestUtils.putToast(request, new Toast("toast.api.configuration.delete", BootstrapColor.SUCCESS, messageSource.getMessage(apiConfiguration.getType().getCodes()[apiConfiguration.getType().ordinal()], new Object[]{}, LocaleContextHolder.getLocale())));
+		WebRequestUtils.putToast(request, new Toast("toast.api.configuration.delete", BootstrapColor.SUCCESS, apiConfiguration.getType()));
 		return ReturnValues.REDIRECT_API_OVERVIEW;
 	}
 
