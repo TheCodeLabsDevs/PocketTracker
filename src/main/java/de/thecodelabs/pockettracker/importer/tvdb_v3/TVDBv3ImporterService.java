@@ -1,15 +1,18 @@
 package de.thecodelabs.pockettracker.importer.tvdb_v3;
 
 import com.uwetrottmann.thetvdb.TheTvdb;
-import com.uwetrottmann.thetvdb.entities.Series;
-import com.uwetrottmann.thetvdb.entities.SeriesResponse;
+import com.uwetrottmann.thetvdb.entities.*;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationService;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
+import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
 import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
+import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
+import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.TVDBEpisodeToEpisodeConverter;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +33,16 @@ public class TVDBv3ImporterService implements ShowImporterService
 	private final GeneralConfigurationProperties generalConfigurationProperties;
 
 	private final SeriesToShowConverter showConverter;
+	private final TVDBEpisodeToEpisodeConverter episodeConverter;
 
 	@Autowired
-	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties, SeriesToShowConverter showConverter)
+	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties,
+								 SeriesToShowConverter showConverter, TVDBEpisodeToEpisodeConverter episodeConverter)
 	{
 		this.apiConfigurationService = apiConfigurationService;
 		this.generalConfigurationProperties = generalConfigurationProperties;
 		this.showConverter = showConverter;
+		this.episodeConverter = episodeConverter;
 	}
 
 	protected TheTvdb createApiClient() throws ImporteNotConfiguredException
@@ -50,24 +56,56 @@ public class TVDBv3ImporterService implements ShowImporterService
 	}
 
 	@Override
-	public Show createShow(String identifier) throws ImporteNotConfiguredException, IOException
+	public Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException
 	{
 		final TheTvdb tvdb = createApiClient();
 		final Response<SeriesResponse> response = tvdb.series().series(Integer.parseInt(identifier), generalConfigurationProperties.getLanguage()).execute();
 		final SeriesResponse body = response.body();
-		if(body == null)
+		if(body == null || body.data == null)
 		{
-			throw new RuntimeException("No response from TVDB"); // TODO
+			throw new ImportProcessException("Series data from TVDB is null");
 		}
 		final Series series = body.data;
-		if(series == null)
-		{
-			throw new RuntimeException("No response from TVDB 2"); // TODO
-		}
 
 		final Show show = showConverter.toShow(series);
 		show.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, show)));
 
+		createAllSeasons(tvdb, series.id, show);
 		return show;
+	}
+
+	private void createAllSeasons(TheTvdb tvdb, Integer seriesId, Show show) throws IOException, ImportProcessException
+	{
+		final Response<EpisodesSummaryResponse> response = tvdb.series().episodesSummary(seriesId).execute();
+		final EpisodesSummaryResponse body = response.body();
+		if(body == null || body.data == null || body.data.airedSeasons == null)
+		{
+			throw new ImportProcessException("Episode summary data from TVDB is null");
+		}
+
+		final List<Integer> airedSeasons = body.data.airedSeasons.stream().sorted().toList();
+		for(Integer seasonId : airedSeasons)
+		{
+			createSeasonWithEpisodes(tvdb, seriesId, seasonId, show);
+		}
+	}
+
+	private void createSeasonWithEpisodes(TheTvdb tvdb, Integer seriesId, int seasonId, Show show) throws IOException, ImportProcessException
+	{
+		final Season season = new Season("Staffel " + seasonId, "", seasonId, show);
+		show.addSeason(season);
+
+		final Response<EpisodesResponse> episodesResponse = tvdb.series().episodesQuery(seriesId, null, seasonId, null, null, null, null, null, null, generalConfigurationProperties.getLanguage()).execute();
+		final EpisodesResponse body = episodesResponse.body();
+		if(body == null || body.data == null)
+		{
+			throw new ImportProcessException("Episode data from TVDB is null");
+		}
+
+		final List<Episode> episodes = body.data;
+		for(Episode episode : episodes)
+		{
+			season.addEpisode(episodeConverter.toEpisode(episode, season));
+		}
 	}
 }

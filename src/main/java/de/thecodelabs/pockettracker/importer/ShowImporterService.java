@@ -7,5 +7,5 @@ import java.io.IOException;
 
 public interface ShowImporterService
 {
-	Show createShow(String identifier) throws ImporteNotConfiguredException, IOException;
+	Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException;
 }

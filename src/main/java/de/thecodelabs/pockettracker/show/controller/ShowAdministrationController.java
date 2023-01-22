@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.show.controller;
 import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
 import de.thecodelabs.pockettracker.exceptions.InternalServerException;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.season.model.Season;
@@ -105,6 +106,10 @@ public class ShowAdministrationController
 		catch(ImporteNotConfiguredException | IOException e)
 		{
 			throw new InternalServerException("Cannot import show", e);
+		}
+		catch(ImportProcessException e)
+		{
+			throw new InternalServerException("Display error in UI", e); // TODO: Show error in ui
 		}
 	}
 

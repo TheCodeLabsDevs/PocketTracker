@@ -254,6 +254,15 @@ public class Show
 				.findFirst();
 	}
 
+	public void addSeason(Season season)
+	{
+		if(seasons == null)
+		{
+			seasons = new ArrayList<>();
+		}
+		seasons.add(season);
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

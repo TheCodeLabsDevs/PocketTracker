@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.importer.tvdb_v3;
+package de.thecodelabs.pockettracker.importer.tvdb_v3.converter;
 
 import com.uwetrottmann.thetvdb.entities.Series;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -25,13 +25,13 @@ public class SeriesToShowConverter
 	}
 
 	@Nullable
-	private static LocalDate parseDate(String firstAired)
+	private static LocalDate parseDate(String dateString)
 	{
-		if(firstAired == null)
+		if(dateString == null)
 		{
 			return null;
 		}
-		return LocalDate.parse(firstAired, DateTimeFormatter.ISO_DATE);
+		return LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
 	}
 
 	private static boolean isFinished(String status)

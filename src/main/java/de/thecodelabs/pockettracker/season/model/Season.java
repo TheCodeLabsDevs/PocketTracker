@@ -139,6 +139,15 @@ public class Season
 		this.filledCompletely = filledCompletely;
 	}
 
+	public void addEpisode(Episode episode)
+	{
+		if(episodes == null)
+		{
+			episodes = new ArrayList<>();
+		}
+		episodes.add(episode);
+	}
+
 	@Override
 	public String toString()
 	{
