@@ -5,6 +5,7 @@
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
     <#import "/common/components/form.ftl" as f>
+    <#import "/common/components/modal.ftl" as m>
     <#import "/common/macros/show.ftl" as showMacros/>
 
     <@template.head currentPage/>
@@ -31,7 +32,30 @@
             <@b.hasPermission "ADMIN">
                 <@b.row classes="mb-4">
                     <@b.col>
-                        <@b.button label="button.add" url="/show/create" style="btn-sm btn-primary float-end"/>
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-primary float-end dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <@b.localize "button.add"/>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="<@s.url "/show/create"/>"><@b.localize "button.add.manually"/></a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importApiIdentifierModal"><@b.localize "button.add.importer"/></a></li>
+                            </ul>
+                        </div>
+
+                        <@m.modal id="importApiIdentifierModal">
+                            <@m.header "show.api.create"/>
+                            <@m.body>
+                                <@f.form name="importApiIdentifier" url="/show/createFromApi">
+                                    <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                                    <@f.input label="show.apiIdentifiers.identifier" name="identifier" value=""/>
+                                </@f.form>
+                            </@m.body>
+                            <@m.footer>
+                                <@m.cancelButton/>
+                                <@f.submit label="button.add" form="importApiIdentifier" col=false/>
+                            </@m.footer>
+                        </@m.modal>
                     </@b.col>
                 </@b.row>
             </@b.hasPermission>

@@ -48,6 +48,13 @@ public class APIIdentifier
 	{
 	}
 
+	public APIIdentifier(APIType type, String identifier, Show show)
+	{
+		this.type = type;
+		this.identifier = identifier;
+		this.show = show;
+	}
+
 	public APIIdentifier(Integer id, APIType type, String identifier)
 	{
 		this.id = id;

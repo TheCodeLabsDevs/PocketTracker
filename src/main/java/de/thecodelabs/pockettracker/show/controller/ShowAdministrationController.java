@@ -1,7 +1,10 @@
 package de.thecodelabs.pockettracker.show.controller;
 
 import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
+import de.thecodelabs.pockettracker.exceptions.InternalServerException;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
+import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
@@ -41,12 +44,15 @@ public class ShowAdministrationController
 	private final ShowService service;
 	private final APIIdentifierService apiIdentifierService;
 
+	private final ShowImporterServiceFactory showImporterServiceFactory;
+
 	@Autowired
-	public ShowAdministrationController(UserService userService, ShowService service, APIIdentifierService apiIdentifierService)
+	public ShowAdministrationController(UserService userService, ShowService service, APIIdentifierService apiIdentifierService, ShowImporterServiceFactory showImporterServiceFactory)
 	{
 		this.userService = userService;
 		this.service = service;
 		this.apiIdentifierService = apiIdentifierService;
+		this.showImporterServiceFactory = showImporterServiceFactory;
 	}
 
 	@GetMapping("/create")
@@ -70,7 +76,7 @@ public class ShowAdministrationController
 	@Transactional
 	public String createPost(WebRequest request, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(isShowModelInvalid(request, show, validation))
+		if(isModelInvalid(request, show, validation))
 		{
 			return "redirect:/show/create";
 		}
@@ -78,6 +84,28 @@ public class ShowAdministrationController
 		final Show createdShow = service.createShow(show);
 
 		return "redirect:/show/" + createdShow.getId() + "/edit";
+	}
+
+	@PostMapping("/createFromApi")
+	@Transactional
+	public String createFromApiPost(WebRequest request, @ModelAttribute("newApiIdentifier") @Validated APIIdentifier apiIdentifier, BindingResult validation)
+	{
+		if(isModelInvalid(request, apiIdentifier, validation))
+		{
+			return "redirect:/shows";
+		}
+
+		try
+		{
+			final Show importedShow = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createShow(apiIdentifier.getIdentifier());
+			final Show createdShow = service.createShow(importedShow);
+
+			return "redirect:/show/" + createdShow.getId() + "/edit";
+		}
+		catch(ImporteNotConfiguredException e)
+		{
+			throw new InternalServerException("Cannot import show", e);
+		}
 	}
 
 	@GetMapping("/{id}/edit")
@@ -110,7 +138,7 @@ public class ShowAdministrationController
 	@Transactional
 	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
-		if(isShowModelInvalid(request, show, validation))
+		if(isModelInvalid(request, show, validation))
 		{
 			return "redirect:/show/" + id + "/edit";
 		}
@@ -245,7 +273,7 @@ public class ShowAdministrationController
 	 Utils
 	 */
 
-	private boolean isShowModelInvalid(WebRequest request, Show show, BindingResult validation)
+	private <T> boolean isModelInvalid(WebRequest request, T show, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
