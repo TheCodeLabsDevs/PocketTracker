@@ -1,9 +1,12 @@
 package de.thecodelabs.pockettracker.importer.tvdb_v3;
 
 import com.uwetrottmann.thetvdb.TheTvdb;
+import com.uwetrottmann.thetvdb.entities.Series;
+import com.uwetrottmann.thetvdb.entities.SeriesResponse;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationService;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
+import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
 import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
@@ -12,8 +15,11 @@ import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import retrofit2.Response;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +30,13 @@ public class TVDBv3ImporterService implements ShowImporterService
 	public static final APIType API_TYPE = APIType.TVDB_V3;
 
 	private final APIConfigurationService apiConfigurationService;
+	private final GeneralConfigurationProperties generalConfigurationProperties;
 
 	@Autowired
-	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService)
+	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties)
 	{
 		this.apiConfigurationService = apiConfigurationService;
+		this.generalConfigurationProperties = generalConfigurationProperties;
 	}
 
 	protected TheTvdb createApiClient() throws ImporteNotConfiguredException
@@ -42,11 +50,31 @@ public class TVDBv3ImporterService implements ShowImporterService
 	}
 
 	@Override
-	public Show createShow(String identifier) throws ImporteNotConfiguredException
+	public Show createShow(String identifier) throws ImporteNotConfiguredException, IOException
 	{
 		final TheTvdb tvdb = createApiClient();
-		final Show show = new Show("PLACEHOLDER", "", LocalDate.now(), null, null, ShowType.TV, false);
+		final Response<SeriesResponse> response = tvdb.series().series(Integer.parseInt(identifier), generalConfigurationProperties.getLanguage()).execute();
+		final SeriesResponse body = response.body();
+		if(body == null)
+		{
+			throw new RuntimeException("No response from TVDB"); // TODO
+		}
+		final Series series = body.data;
+		if(series == null)
+		{
+			throw new RuntimeException("No response from TVDB 2"); // TODO
+		}
+
+		final Show show = new Show(
+				series.seriesName,
+				series.overview,
+				series.firstAired != null ? LocalDate.parse(series.firstAired, DateTimeFormatter.ISO_DATE) : null,
+				null,
+				null,
+				ShowType.TV,
+				"ended".equalsIgnoreCase(series.status));
 		show.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, show)));
+
 		return show;
 	}
 }

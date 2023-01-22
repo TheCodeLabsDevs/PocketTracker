@@ -102,7 +102,7 @@ public class ShowAdministrationController
 
 			return "redirect:/show/" + createdShow.getId() + "/edit";
 		}
-		catch(ImporteNotConfiguredException e)
+		catch(ImporteNotConfiguredException | IOException e)
 		{
 			throw new InternalServerException("Cannot import show", e);
 		}
