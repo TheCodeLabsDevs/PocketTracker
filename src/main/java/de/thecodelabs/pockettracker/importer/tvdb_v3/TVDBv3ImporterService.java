@@ -12,14 +12,11 @@ import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredExcepti
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
-import de.thecodelabs.pockettracker.show.model.ShowType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,11 +29,14 @@ public class TVDBv3ImporterService implements ShowImporterService
 	private final APIConfigurationService apiConfigurationService;
 	private final GeneralConfigurationProperties generalConfigurationProperties;
 
+	private final SeriesToShowConverter showConverter;
+
 	@Autowired
-	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties)
+	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties, SeriesToShowConverter showConverter)
 	{
 		this.apiConfigurationService = apiConfigurationService;
 		this.generalConfigurationProperties = generalConfigurationProperties;
+		this.showConverter = showConverter;
 	}
 
 	protected TheTvdb createApiClient() throws ImporteNotConfiguredException
@@ -65,14 +65,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 			throw new RuntimeException("No response from TVDB 2"); // TODO
 		}
 
-		final Show show = new Show(
-				series.seriesName,
-				series.overview,
-				series.firstAired != null ? LocalDate.parse(series.firstAired, DateTimeFormatter.ISO_DATE) : null,
-				null,
-				null,
-				ShowType.TV,
-				"ended".equalsIgnoreCase(series.status));
+		final Show show = showConverter.toShow(series);
 		show.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, show)));
 
 		return show;
