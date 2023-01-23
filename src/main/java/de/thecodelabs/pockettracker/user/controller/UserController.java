@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.user.controller;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
+import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
@@ -222,6 +223,29 @@ public class UserController
 		}
 
 		return "redirect:/season/" + episode.getSeason().getId();
+	}
+
+	@GetMapping("/episode/{episodeId}/toggle/")
+	public void toggleEpisodeWatched(WebRequest request, @PathVariable Integer episodeId)
+	{
+		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
+		if(episodeOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), BootstrapColor.DANGER));
+			throw new NotFoundException();
+		}
+
+		final User user = userService.getCurrentUser();
+
+		final Episode episode = episodeOptional.get();
+		if(userService.isWatchedEpisode(user, episode))
+		{
+			userService.removeWatchedEpisode(user, episode);
+		}
+		else
+		{
+			userService.addWatchedEpisode(user, episode);
+		}
 	}
 
 	@GetMapping("/statistics")

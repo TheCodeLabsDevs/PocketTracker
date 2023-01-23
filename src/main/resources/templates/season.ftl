@@ -41,18 +41,30 @@
             <div class="col-sm-12 col-md-8 col-lg-6 mx-auto">
                 <div class="list-group list-episodes">
                     <#list season.getEpisodes()?sort_by("number") as episode>
-                        <a href="<@s.url "/episode/" + episode.getId()/>" class="list-group-item list-group-item-action w-100 p-3">
+                        <div class="list-group-item list-group-item-action w-100 p-3">
                             <div class="row">
-                                <div class="col-10 fw-bold text-truncate">
+                                <a href="<@s.url "/episode/" + episode.getId()/>" class="col-10 fw-bold text-truncate text-decoration-none text-body">
                                     ${episode.getNumber()} - ${episode.getName()}
-                                </div>
+                                </a>
+
                                 <div class="col-2 d-flex justify-content-end">
                                     <input class="form-check-input episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/season"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </#list>
                 </div>
+            </div>
+        </div>
+
+        <div id="toast-success" class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body"><@b.localize "toast.episode.toggle.status.success"/></div>
+            </div>
+        </div>
+        <div id="toast-danger" class="toast align-items-center text-white bg-danger border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body"><@b.localize "toast.episode.toggle.status.error"/></div>
             </div>
         </div>
     </@template.body>

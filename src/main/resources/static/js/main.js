@@ -1,6 +1,12 @@
 window.addEventListener('load', function (event) {
     handleEpisodeToggles();
     changeSortOption();
+
+    let toastElements = [].slice.call(document.querySelectorAll('.toast'));
+    let toasts = toastElements.map(function(toastEl)
+    {
+        return new bootstrap.Toast(toastEl, {})
+    });
 });
 
 function handleEpisodeToggles() {
@@ -10,8 +16,29 @@ function handleEpisodeToggles() {
     }
 
     function onEpisodeToggle(event) {
-        window.location.href = this.getAttribute('data-url');
-        event.preventDefault();
+        let element = this;
+        let url = element.getAttribute('data-url');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.onload = function()
+        {
+            if(xhr.status === 200)
+            {
+                let toastElement = document.getElementById('toast-success');
+                bootstrap.Toast.getOrCreateInstance(toastElement).show();
+            }
+            else
+            {
+                console.error('Request failed! Status code: ' + xhr.status);
+
+                let toastElement = document.getElementById('toast-danger');
+                bootstrap.Toast.getOrCreateInstance(toastElement).show();
+
+                event.preventDefault();
+            }
+        };
+        xhr.send();
     }
 }
 
