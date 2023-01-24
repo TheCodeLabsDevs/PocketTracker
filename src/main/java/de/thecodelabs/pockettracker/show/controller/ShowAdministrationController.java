@@ -6,6 +6,8 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
+import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
+import de.thecodelabs.pockettracker.importer.model.ShowSearchRequest;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
@@ -32,6 +34,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -85,6 +88,27 @@ public class ShowAdministrationController
 		final Show createdShow = service.createShow(show);
 
 		return "redirect:/show/" + createdShow.getId() + "/edit";
+	}
+
+	@PostMapping("/searchApi")
+	public String searchShowInApiPost(@ModelAttribute ShowSearchRequest searchRequest, Model model)
+	{
+		try
+		{
+			final List<ShowSearchItem> items = showImporterServiceFactory.getImporter(searchRequest.getType())
+					.searchForShow(searchRequest.getSearch());
+			model.addAttribute("items", items);
+			model.addAttribute("type", searchRequest.getType());
+			return "administration/show/api/searchResult";
+		}
+		catch(ImporteNotConfiguredException | IOException e)
+		{
+			throw new InternalServerException("Cannot execute api search", e);
+		}
+		catch(ImportProcessException e)
+		{
+			throw new InternalServerException("Invalid search response", e);
+		}
 	}
 
 	@PostMapping("/createFromApi")

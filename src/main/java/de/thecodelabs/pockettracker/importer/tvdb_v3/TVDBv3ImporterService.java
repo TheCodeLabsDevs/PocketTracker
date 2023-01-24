@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
 import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
+import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.TVDBEpisodeToEpisodeConverter;
 import de.thecodelabs.pockettracker.season.model.Season;
@@ -56,9 +57,27 @@ public class TVDBv3ImporterService implements ShowImporterService
 	}
 
 	@Override
+	public List<ShowSearchItem> searchForShow(String search) throws ImporteNotConfiguredException, ImportProcessException, IOException
+	{
+		final TheTvdb tvdb = createApiClient();
+
+		final Response<SeriesResultsResponse> response = tvdb.search().series(search, null, null, null, generalConfigurationProperties.getLanguage()).execute();
+		final SeriesResultsResponse body = response.body();
+		if(body == null || body.data == null)
+		{
+			throw new ImportProcessException("Search request returned invalid data");
+		}
+
+		return body.data.stream()
+				.map(series -> new ShowSearchItem(series.seriesName, series.firstAired, series.id))
+				.toList();
+	}
+
+	@Override
 	public Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException
 	{
 		final TheTvdb tvdb = createApiClient();
+
 		final Response<SeriesResponse> response = tvdb.series().series(Integer.parseInt(identifier), generalConfigurationProperties.getLanguage()).execute();
 		final SeriesResponse body = response.body();
 		if(body == null || body.data == null)

@@ -23,10 +23,18 @@
     <#if col></div></#if>
 </#macro>
 
+<#macro hidden id value name=id>
+    <input type="hidden" id="${id}" name="${name}" value="${value}">
+</#macro>
+
 <#macro input label name value="" type="text" id=name size="col-6">
     <div class="mb-3 ${size}">
         <label for="${id}" class="form-label"><@b.localize label/></label>
-        <input type="${type}" class="form-control <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}" value="${value}">
+        <input type="${type}" class="form-control
+                <#if hasError(name)>is-invalid</#if>"
+               id="${id}"
+               name="${name}"
+               value="${value}">
         <@inputError fieldName=name/>
     </div>
 </#macro>

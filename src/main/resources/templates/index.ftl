@@ -8,7 +8,9 @@
     <#import "/common/components/modal.ftl" as m>
     <#import "/common/macros/show.ftl" as showMacros/>
 
-    <@template.head currentPage/>
+    <@template.head currentPage>
+        <script src="<@s.url "/js/importer/search.js"/>"></script>
+    </@template.head>
     <@template.body>
         <@b.row classes="mb-3">
             <@b.col classes="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
@@ -43,17 +45,20 @@
                             </ul>
                         </div>
 
-                        <@m.modal id="importApiIdentifierModal">
+                        <@m.modal id="importApiIdentifierModal" modalSize="modal-lg">
                             <@m.header "show.api.create"/>
                             <@m.body>
                                 <@f.form name="importApiIdentifier" url="/show/createFromApi">
-                                    <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                                    <@f.input label="show.apiIdentifiers.identifier" name="identifier" value=""/>
+                                    <@b.row>
+                                        <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                                        <@f.input label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                                    </@b.row>
                                 </@f.form>
+
+                                <div id="searchResultContainer"></div>
                             </@m.body>
                             <@m.footer>
                                 <@m.cancelButton/>
-                                <@f.submit label="button.add" form="importApiIdentifier" col=false/>
                             </@m.footer>
                         </@m.modal>
                     </@b.col>

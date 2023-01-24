@@ -9,3 +9,7 @@
 .z-index-above-stretched-link {
     z-index: 2;
 }
+
+#searchResultTable td {
+    vertical-align: middle;
+}

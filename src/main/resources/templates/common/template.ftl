@@ -21,6 +21,14 @@
         <#nested>
 
         <title>PocketTracker - ${title}</title>
+
+        <#if _csrf??>
+            <meta name="_csrf" content="${_csrf.token}"/>
+            <meta name="_csrf_header" content="${_csrf.headerName}"/>
+        </#if>
+        <script>
+            const baseUrl = '<@s.url "/"/>';
+        </script>
     </head>
 </#macro>
 
