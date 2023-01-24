@@ -26,6 +26,8 @@ function updateSearchRequests(event) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 resultContainer.innerHTML = httpRequest.responseText;
+            } else {
+                resultContainer.innerHTML = 'Error on loading search results';
             }
         }
     };
