@@ -45,12 +45,27 @@
         <img src="<@s.url "/resources/" + show.getPosterPath()/>" class="w-25 mb-4"/>
     </#if>
 
-    <@b.row>
-        <@f.form name="poster" url="/show/${show.id?c}/edit/POSTER" multipart=true>
-            <@f.file label="show.poster" name="image"/>
-            <@f.submit classes="float-end"/>
-        </@f.form>
-    </@b.row>
+    <div class="d-flex flex-row align-items-center">
+        <@b.col size="col-2"classes="px-3 text-center">
+            <h4><@b.localize "show.poster"/></h4>
+        </@b.col>
+        <@b.col size="col-5">
+            <@f.form name="poster" url="/show/${show.id?c}/edit/POSTER" multipart=true>
+                <@f.file label="" name="image"/>
+                <@f.submit classes="float-end"/>
+            </@f.form>
+        </@b.col>
+        <@b.col size="col-2"classes="px-3 text-center">
+            <h4><@b.localize "or"/></h4>
+        </@b.col>
+        <@b.col size="col-3">
+            <a class="btn btn-primary ml-4" id="buttonAddPoster" role="button" data-url="<@s.url "/show/${show.id?c}/posterImages"/>">
+                <@b.localize "show.poster.fromApi"/>
+            </a>
+        </@b.col>
+    </div>
+
+    <div id="modal-container-add-poster"></div>
 </#macro>
 
 <#macro seasons show>

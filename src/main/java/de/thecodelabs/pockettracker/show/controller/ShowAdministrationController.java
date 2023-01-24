@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.show.controller;
 
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
 import de.thecodelabs.pockettracker.exceptions.InternalServerException;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
@@ -34,7 +35,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -296,6 +299,37 @@ public class ShowAdministrationController
 		WebRequestUtils.putToast(request, new Toast("toast.api.identifier.delete", BootstrapColor.SUCCESS, apiIdentifier.getType()));
 
 		return "redirect:/show/" + showId + "/edit";
+	}
+
+	@GetMapping("/{id}/posterImages")
+	public String posterImages(@PathVariable Integer id, Model model)
+	{
+		final Optional<Show> showOptional = service.getShowById(id);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+
+		final Show show = showOptional.get();
+
+		final Map<APIType, List<String>> posterUrlsByApi = new HashMap<>();
+		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
+		{
+			final List<String> posterUrls;
+			try
+			{
+				posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
+				posterUrlsByApi.put(apiIdentifier.getType(), posterUrls);
+			}
+			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		model.addAttribute("posterUrlsByApi", posterUrlsByApi);
+
+		return "administration/show/posterImagesModal";
 	}
 
 	/*

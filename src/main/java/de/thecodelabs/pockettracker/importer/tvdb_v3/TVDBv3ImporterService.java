@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,8 @@ import java.util.Optional;
 public class TVDBv3ImporterService implements ShowImporterService
 {
 	public static final APIType API_TYPE = APIType.TVDB_V3;
+
+	private static final String ARTWORK_BASE_URL = "https://artworks.thetvdb.com/banners";
 
 	private final APIConfigurationService apiConfigurationService;
 	private final GeneralConfigurationProperties generalConfigurationProperties;
@@ -126,5 +130,37 @@ public class TVDBv3ImporterService implements ShowImporterService
 		{
 			season.addEpisode(episodeConverter.toEpisode(episode, season));
 		}
+	}
+
+	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	{
+		return getImageUrlsByType(identifier, "poster");
+	}
+
+	public List<String> getBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	{
+		return getImageUrlsByType(identifier, "series");
+	}
+
+	private List<String> getImageUrlsByType(Integer identifier, String type) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	{
+		final TheTvdb tvdb = createApiClient();
+
+		// local must be "en" otherwise not images will be found
+		final Response<SeriesImageQueryResultResponse> imagesResponse = tvdb.series().imagesQuery(identifier, type, null, null, "en").execute();
+		final SeriesImageQueryResultResponse body = imagesResponse.body();
+		if(body == null || body.data == null)
+		{
+			throw new ImportProcessException("Artwork data from TVDB is null");
+		}
+
+		final List<String> urls = new ArrayList<>();
+		final List<SeriesImageQueryResult> items = body.data;
+		for(SeriesImageQueryResult item : items)
+		{
+			urls.add(MessageFormat.format("{0}/{1}", ARTWORK_BASE_URL, item.fileName));
+		}
+
+		return urls;
 	}
 }

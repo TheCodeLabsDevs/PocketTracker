@@ -12,4 +12,8 @@ public interface ShowImporterService
 	List<ShowSearchItem> searchForShow(String search) throws ImporteNotConfiguredException, ImportProcessException, IOException;
 
 	Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException;
+
+	List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
+
+	List<String> getBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
 }

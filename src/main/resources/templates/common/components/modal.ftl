@@ -17,8 +17,8 @@
 </#macro>
 
 <#macro modal id center=true modalSize="">
-    <div class="modal fade ${modalSize}" id="${id}" tabindex="-1">
-        <div class="modal-dialog <#if center>modal-dialog-centered modal-dialog-scrollable</#if>">
+    <div class="modal fade" id="${id}" tabindex="-1">
+        <div class="modal-dialog <#if center>modal-dialog-centered modal-dialog-scrollable</#if> ${modalSize}">
             <div class="modal-content">
                 <#nested>
             </div>
