@@ -193,6 +193,7 @@ public class Episode
 		if(episodeImageType == EpisodeImageType.POSTER)
 		{
 			setPosterPath(path);
+			return;
 		}
 		throw new UnsupportedOperationException("Image type not implemented");
 	}
