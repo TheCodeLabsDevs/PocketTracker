@@ -43,12 +43,13 @@
 
     <@c.card classes="my-4">
         <@c.body>
-            <@f.form name="user" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+            <#assign objectName="user"/>
+            <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
                 <@b.row>
                     <@b.h4 "authentication.provider.internal"/>
-                    <@f.input label="user.form.username" name="username" value=user.username size="col-12"/>
-                    <@f.input label="user.form.password" name="password" type="password"/>
-                    <@f.input label="user.form.passwordRepeat" name="passwordRepeat" type="password"/>
+                    <@f.input objectName=objectName label="user.form.username" name="username" value=user.username size="col-12"/>
+                    <@f.input objectName=objectName label="user.form.password" name="password" type="password"/>
+                    <@f.input objectName=objectName label="user.form.passwordRepeat" name="passwordRepeat" type="password"/>
 
                     <@f.submit "button.save"/>
                 </@b.row>
@@ -59,10 +60,11 @@
     <#if !isGitlabConnected && oauthEnabled>
         <@c.card classes="my-4">
             <@c.body>
-                <@f.form name="oauth" url="/user/settings/oauth/gitlab">
+                <#assign objectName="oauth"/>
+                <@f.form name=objectName url="/user/settings/oauth/gitlab">
                     <@b.row>
                         <@b.h4 "authentication.provider.gitlab"/>
-                        <@f.input label="user.form.username" name="username" size="col-12"/>
+                        <@f.input objectName=objectName label="user.form.username" name="username" size="col-12"/>
 
                         <@f.submit label="user.form.connectWithGitlab" icon="fab fa-gitlab"/>
                     </@b.row>

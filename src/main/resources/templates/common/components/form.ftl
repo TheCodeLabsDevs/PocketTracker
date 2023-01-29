@@ -27,37 +27,37 @@
     <input type="hidden" id="${id}" name="${name}" value="${value}">
 </#macro>
 
-<#macro input label name value="" type="text" id=name size="col-6">
+<#macro input objectName label name value="" type="text" id=name size="col-6">
     <div class="mb-3 ${size}">
         <label for="${id}" class="form-label"><@b.localize label/></label>
         <input type="${type}" class="form-control
-                <#if hasError(name)>is-invalid</#if>"
+                <#if hasError(objectName, name)>is-invalid</#if>"
                id="${id}"
                name="${name}"
                value="${value}">
-        <@inputError fieldName=name/>
+        <@inputError objectName=objectName fieldName=name/>
     </div>
 </#macro>
 
-<#macro textarea label name value="" type="text" id=name size="col-6">
+<#macro textarea objectName label name value="" type="text" id=name size="col-6">
     <div class="mb-3 ${size}">
         <label for="${id}" class="form-label"><@b.localize label/></label>
-        <textarea class="form-control <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}" rows="4">${value}</textarea>
-        <@inputError fieldName=name/>
+        <textarea class="form-control <#if hasError(objectName, name)>is-invalid</#if>" id="${id}" name="${name}" rows="4">${value}</textarea>
+        <@inputError objectName=objectName fieldName=name/>
     </div>
 </#macro>
 
-<#macro select name options value="" label="" id=name size="col-6" classes="">
+<#macro select objectName name options value="" label="" id=name size="col-6" classes="">
     <div class="mb-3 ${size} ${classes}">
         <#if label?has_content>
             <label for="${id}" class="form-label"><@b.localize label/></label>
         </#if>
-        <select class="form-select <#if hasError(name)>is-invalid</#if>" id="${id}" name="${name}">
+        <select class="form-select <#if hasError(objectName, name)>is-invalid</#if>" id="${id}" name="${name}">
             <#list options as option>
                 <option <#if value == option>selected</#if> value="${option}"><@b.localize option/></option>
             </#list>
         </select>
-        <@inputError fieldName=name/>
+        <@inputError objectName=objectName fieldName=name/>
     </div>
 </#macro>
 
@@ -79,15 +79,15 @@
     </div>
 </#macro>
 
-<#function hasError fieldName>
-    <#if validation?? && validation.hasFieldErrors(fieldName)>
+<#function hasError objectName fieldName>
+    <#if validation?? && validation.getObjectName() == objectName && validation.hasFieldErrors(fieldName)>
         <#return true>
     </#if>
     <#return false/>
 </#function>
 
-<#macro inputError fieldName>
-    <#if hasError(fieldName)>
+<#macro inputError objectName fieldName>
+    <#if hasError(objectName, fieldName)>
         <div class="invalid-feedback">
             <@b.localize validation.getFieldError(fieldName)/>
         </div>

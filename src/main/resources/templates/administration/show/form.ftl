@@ -9,16 +9,17 @@
 <#macro baseDate show>
     <@b.h3 title="show.baseData"/>
 
-    <@f.form name="show" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+    <#assign objectName="show"/>
+    <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>
             <#assign today = .now?string['yyyy-MM-dd']/>
 
-            <@f.input label="show.name" name="name" value=show.name!""/>
-            <@f.input label="show.firstAired" name="firstAired" value=show.getFirstAiredReadable()!today/>
+            <@f.input objectName=objectName label="show.name" name="name" value=show.name!""/>
+            <@f.input objectName=objectName label="show.firstAired" name="firstAired" value=show.getFirstAiredReadable()!today/>
 
-            <@f.textarea label="show.description" name="description" value=show.description!"" size="col-12"/>
+            <@f.textarea objectName=objectName label="show.description" name="description" value=show.description!"" size="col-12"/>
 
-            <@f.select label="show.type" name="type" options=showTypes value=show.type/>
+            <@f.select objectName=objectName label="show.type" name="type" options=showTypes value=show.type/>
             <@f.switch label="show.finished" name="finished" value=show.finished!false/>
 
             <@f.submit classes="float-end"/>
@@ -81,8 +82,9 @@
     <@m.modal id="addSeasons">
         <@m.header "show.season.add"/>
         <@m.body>
-            <@f.form name="addSeason" url="/show/${show.id?c}/season/add">
-                <@f.input label="show.season.add.count" name="seasonCount" value="1"/>
+            <#assign objectName="addSeason"/>
+            <@f.form name=objectName url="/show/${show.id?c}/season/add">
+                <@f.input objectName=objectName label="show.season.add.count" name="seasonCount" value="1"/>
             </@f.form>
         </@m.body>
         <@m.footer>
@@ -138,9 +140,10 @@
     <@m.modal id="addApiIdentifier">
         <@m.header "show.apiIdentifiers.add"/>
         <@m.body>
-            <@f.form name="newApiIdentifier" url="/show/${show.id?c}/apiIdentifier/add">
-                <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                <@f.input label="show.apiIdentifiers.identifier" name="identifier" value=""/>
+            <#assign objectName="newApiIdentifier"/>
+            <@f.form name=objectName url="/show/${show.id?c}/apiIdentifier/add">
+                <@f.select objectName=objectName label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                <@f.input objectName=objectName label="show.apiIdentifiers.identifier" name="identifier" value=""/>
             </@f.form>
         </@m.body>
         <@m.footer>

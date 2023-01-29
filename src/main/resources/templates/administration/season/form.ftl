@@ -9,11 +9,12 @@
 <#macro baseDate season>
     <@b.h3 title="season.baseData"/>
 
-    <@f.form name="season" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+    <#assign objectName="season"/>
+    <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>
-            <@f.input label="season.name" name="name" value=season.name!""/>
-            <@f.input label="season.number" name="number" value=season.number!""/>
-            <@f.textarea label="season.description" name="description" value=season.description!"" size="col-12"/>
+            <@f.input objectName=objectName label="season.name" name="name" value=season.name!""/>
+            <@f.input objectName=objectName label="season.number" name="number" value=season.number!""/>
+            <@f.textarea objectName=objectName label="season.description" name="description" value=season.description!"" size="col-12"/>
             <@f.switch label="show.season.allDataFilled" name="filledCompletely" value=season.getFilledCompletely()/>
         </@b.row>
         <@b.row>
@@ -42,8 +43,9 @@
     <@m.modal id="addEpisodes">
         <@m.header "season.episodes.add"/>
         <@m.body>
-            <@f.form name="addEpisode" url="/season/${season.id?c}/episode/add">
-                <@f.input label="season.episodes.add.count" name="episodeCount" value="1"/>
+            <#assign objectName="addEpisode"/>
+            <@f.form name=objectName url="/season/${season.id?c}/episode/add">
+                <@f.input objectName=objectName label="season.episodes.add.count" name="episodeCount" value="1"/>
             </@f.form>
         </@m.body>
         <@m.footer>

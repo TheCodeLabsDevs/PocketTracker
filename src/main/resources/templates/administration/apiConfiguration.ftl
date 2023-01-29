@@ -38,8 +38,8 @@
             <@b.row>
                 <@f.form name=formName url=url rawUrl=true>
                     <@b.row>
-                        <@f.select label="show.type" name="type" options=apiConfigurationTypes value=config.type/>
-                        <@f.input label="api.config.token" name="token" value=config.token!""/>
+                        <@f.select objectName=formName label="show.type" name="type" options=apiConfigurationTypes value=config.type/>
+                        <@f.input objectName=formName label="api.config.token" name="token" value=config.token!""/>
 
                         <div class="d-flex justify-content-end">
                             <@f.submit size=""/>

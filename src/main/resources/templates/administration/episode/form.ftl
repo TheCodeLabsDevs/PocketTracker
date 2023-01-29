@@ -9,16 +9,17 @@
 <#macro baseDate episode>
     <@b.h3 title="episode.baseData"/>
 
-    <@f.form name="episode" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+    <#assign objectName="episode"/>
+    <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
         <@b.row>
             <#assign today = .now?string['yyyy-MM-dd']/>
 
-            <@f.input label="episode.name" name="name" value=episode.name!""/>
-            <@f.input label="episode.number" name="number" value=episode.number!""/>
-            <@f.textarea label="episode.description" name="description" value=episode.description!"" size="col-12"/>
+            <@f.input objectName=objectName label="episode.name" name="name" value=episode.name!""/>
+            <@f.input objectName=objectName label="episode.number" name="number" value=episode.number!""/>
+            <@f.textarea objectName=objectName label="episode.description" name="description" value=episode.description!"" size="col-12"/>
 
-            <@f.input label="episode.firstAired" name="firstAired" value=episode.getFirstAiredReadable()!today/>
-            <@f.input label="episode.lengthInMinutes" name="lengthInMinutes" value=episode.lengthInMinutes!""/>
+            <@f.input objectName=objectName label="episode.firstAired" name="firstAired" value=episode.getFirstAiredReadable()!today/>
+            <@f.input objectName=objectName label="episode.lengthInMinutes" name="lengthInMinutes" value=episode.lengthInMinutes!""/>
 
         </@b.row>
         <@b.row>

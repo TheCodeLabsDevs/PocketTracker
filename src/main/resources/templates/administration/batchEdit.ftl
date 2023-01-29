@@ -20,9 +20,10 @@
                 <@b.h3 "admin.batchEdit.episodeLength"/>
             </@b.col>
 
-            <@f.form name="batchEditEpisodeLength" url="/administration/batchEdit/episodeLength">
-                <@f.input label="admin.batchEdit.episodeLength.showId" name="showId"/>
-                <@f.input label="admin.batchEdit.episodeLength.lengthInMinutes" name="lengthInMinutes"/>
+            <#assign objectName="batchEditEpisodeLength"/>
+            <@f.form name=objectName url="/administration/batchEdit/episodeLength">
+                <@f.input objectName=objectName label="admin.batchEdit.episodeLength.showId" name="showId"/>
+                <@f.input objectName=objectName label="admin.batchEdit.episodeLength.lengthInMinutes" name="lengthInMinutes"/>
                 <@f.submit icon="fas fa-layer-group" label="admin.batchEdit.episodeLength.submit"/>
             </@f.form>
         </@b.row>

@@ -48,10 +48,11 @@
                         <@m.modal id="importApiIdentifierModal" modalSize="modal-lg">
                             <@m.header "show.api.create"/>
                             <@m.body>
-                                <@f.form name="importApiIdentifier" url="/show/createFromApi">
+                                <#assign objectName="importApiIdentifier"/>
+                                <@f.form name=objectName url="/show/createFromApi">
                                     <@b.row>
-                                        <@f.select label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                                        <@f.input label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                                        <@f.select objectName=objectName label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                                        <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
                                     </@b.row>
                                 </@f.form>
 
@@ -67,7 +68,8 @@
         </#if>
 
         <#if isUserSpecificView>
-            <@f.form name="sortOptionForm" url=springMacroRequestContext.getRequestUri() rawUrl=true>
+            <#assign objectName="sortOptionForm"/>
+            <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
 
                 <div class="d-flex justify-content-end">
                     <a class="btn <#if showDislikedShows>btn-secondary<#else>btn-outline-secondary</#if> mb-4 me-2" role="button" id="showDislikedShows">
@@ -79,8 +81,8 @@
                     </a>
                     <input type="hidden" name="showDislikedShows" value="${showDislikedShows?c}">
 
-                    <@f.select name="filterOption" options=showFilterOptions value=currentFilterOption.name() size="me-2"/>
-                    <@f.select name="sortOption" options=showSortOptions value=currentSortOption.name() size=""/>
+                    <@f.select objectName=objectName name="filterOption" options=showFilterOptions value=currentFilterOption.name() size="me-2"/>
+                    <@f.select objectName=objectName name="sortOption" options=showSortOptions value=currentSortOption.name() size=""/>
                 </div>
             </@f.form>
         </#if>
