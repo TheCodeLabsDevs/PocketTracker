@@ -146,7 +146,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 	{
 		final TheTvdb tvdb = createApiClient();
 
-		// local must be "en" otherwise not images will be found
+		// local must be "en" otherwise no images will be found
 		final Response<SeriesImageQueryResultResponse> imagesResponse = tvdb.series().imagesQuery(identifier, type, null, null, "en").execute();
 		final SeriesImageQueryResultResponse body = imagesResponse.body();
 		if(body == null || body.data == null)

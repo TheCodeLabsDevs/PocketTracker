@@ -45,7 +45,7 @@ import java.util.Optional;
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class ShowAdministrationController
 {
-	private static final Logger logger = LoggerFactory.getLogger(ShowAdministrationController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShowAdministrationController.class);
 
 	private final UserService userService;
 	private final ShowService service;
@@ -211,7 +211,7 @@ public class ShowAdministrationController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
-			logger.error("Fail to change banner image", e);
+			LOGGER.error("Fail to change banner image", e);
 		}
 		return "redirect:/show/" + id + "/edit";
 	}
