@@ -60,7 +60,7 @@
             <h4><@b.localize "or"/></h4>
         </@b.col>
         <@b.col size="col-3">
-            <a class="btn btn-primary ml-4" id="buttonAddPoster" role="button" data-url="<@s.url "/show/${show.id?c}/posterImages"/>">
+            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if>" id="buttonAddPoster" role="button" data-url="<@s.url "/show/${show.id?c}/posterImages"/>">
                 <@b.localize "show.poster.fromApi"/>
             </a>
         </@b.col>

@@ -35,6 +35,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -319,6 +320,7 @@ public class ShowAdministrationController
 			try
 			{
 				posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
+				LOGGER.debug(MessageFormat.format("Found {0} poster images", posterUrls.size()));
 				posterUrlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}
 			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
