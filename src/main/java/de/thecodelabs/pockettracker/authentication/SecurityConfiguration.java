@@ -1,29 +1,31 @@
 package de.thecodelabs.pockettracker.authentication;
 
+import de.thecodelabs.pockettracker.authentication.api.ApiKeyAuthFilter;
+import de.thecodelabs.pockettracker.authentication.api.ApiKeyAuthenticationManager;
+import de.thecodelabs.pockettracker.authentication.api.ApiSecurityConfigurationProperties;
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Optional;
 
 @Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter
+public class SecurityConfiguration
 {
 	private static final String[] PERMIT_ALL = {"/webjars/**", "/css/**", "/js/**", "/lang/**", "/image/**", "/touch_icon.png"};
 	private static final String[] AUTHENTICATED = {"/**"};
 	private static final String LOGIN_PAGE = "/login";
 
-	private final BCryptPasswordEncoder passwordEncoder;
-	private final DatabaseUserDetailService databaseUserDetailService;
 	private final RememberMeService rememberMeService;
 	private final AuthenticationConfigurationProperties configurationProperties;
 
@@ -31,20 +33,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	private final UserService userService;
 
+	private final ApiKeyAuthenticationManager authenticationManager;
+	private final ApiSecurityConfigurationProperties apiConfigurationProperties;
+
 	@Autowired
-	public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DatabaseUserDetailService databaseUserDetailService,
-								 RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties,
-								 UserService userService)
+	public SecurityConfiguration(RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties,
+								 UserService userService, ApiKeyAuthenticationManager authenticationManager,
+								 ApiSecurityConfigurationProperties apiConfigurationProperties)
 	{
-		this.passwordEncoder = passwordEncoder;
-		this.databaseUserDetailService = databaseUserDetailService;
 		this.rememberMeService = rememberMeService;
 		this.configurationProperties = configurationProperties;
 		this.userService = userService;
+		this.authenticationManager = authenticationManager;
+		this.apiConfigurationProperties = apiConfigurationProperties;
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception
+	@Order(2)
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
 		http
 				.csrf()
@@ -96,12 +102,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 					.loginPage(LOGIN_PAGE)
 					.permitAll();
 		}
+		return http.build();
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
+	@Order(1)
+	@Bean
+	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception
 	{
-		auth.userDetailsService(databaseUserDetailService)
-				.passwordEncoder(passwordEncoder);
+		final ApiKeyAuthFilter filter = new ApiKeyAuthFilter(apiConfigurationProperties.getHeaderName());
+		filter.setAuthenticationManager(authenticationManager);
+
+		http
+				.antMatcher("/api/**")
+
+				.csrf()
+				.disable()
+
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+
+				.addFilter(filter)
+				.authorizeRequests().anyRequest().authenticated();
+		return http.build();
 	}
 }
