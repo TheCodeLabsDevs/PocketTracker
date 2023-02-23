@@ -1,9 +1,9 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

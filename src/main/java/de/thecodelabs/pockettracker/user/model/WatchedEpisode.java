@@ -1,10 +1,10 @@
 package de.thecodelabs.pockettracker.user.model;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;

@@ -3,9 +3,8 @@ package de.thecodelabs.pockettracker.user.model;
 
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "appuser_settings")

@@ -1,10 +1,9 @@
 package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.MessageSourceResolvable;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "appuser_authentication")

@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.7</version>
+        <version>3.0.3</version>
     </parent>
 
     <properties>
@@ -23,7 +23,7 @@
         <!-- Dependency overrides -->
         <snakeyaml.version>1.33</snakeyaml.version>
 
-        <springdoc-openapi-ui.version>1.6.13</springdoc-openapi-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.0.2</springdoc-openapi-starter-webmvc-ui.version>
 
         <freemarker-java8.version>2.1.0</freemarker-java8.version>
         <commons-io.version>2.11.0</commons-io.version>
@@ -128,8 +128,8 @@
         <!-- OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${springdoc-openapi-ui.version}</version>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
 
         <!-- Webjars -->

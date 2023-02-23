@@ -56,9 +56,9 @@ public class SecurityConfiguration
 				.csrf()
 				.and()
 
-				.authorizeRequests()
-				.antMatchers(PERMIT_ALL).permitAll()
-				.antMatchers(AUTHENTICATED).authenticated()
+				.authorizeHttpRequests()
+				.requestMatchers(PERMIT_ALL).permitAll()
+				.requestMatchers(AUTHENTICATED).authenticated()
 				.and()
 
 				.formLogin()
@@ -113,7 +113,7 @@ public class SecurityConfiguration
 		filter.setAuthenticationManager(authenticationManager);
 
 		http
-				.antMatcher("/api/**")
+				.securityMatcher("/api/**")
 
 				.csrf()
 				.disable()
@@ -123,7 +123,7 @@ public class SecurityConfiguration
 				.and()
 
 				.addFilter(filter)
-				.authorizeRequests().anyRequest().authenticated();
+				.authorizeHttpRequests().anyRequest().authenticated();
 		return http.build();
 	}
 }

@@ -1,8 +1,7 @@
 package de.thecodelabs.pockettracker.authentication.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class ApiKeyAuthFilter extends AbstractPreAuthenticatedProcessingFilter
 {
