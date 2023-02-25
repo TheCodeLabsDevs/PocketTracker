@@ -47,13 +47,15 @@
     </#if>
 
     <div class="d-flex flex-row align-items-center">
-        <@b.col size="col-2"classes="px-3 text-center">
+        <@b.col size="col-2"classes="px-3">
             <h4><@b.localize "show.poster"/></h4>
         </@b.col>
         <@b.col size="col-5">
             <@f.form name="poster" url="/show/${show.id?c}/edit/POSTER" multipart=true>
-                <@f.file label="" name="image"/>
-                <@f.submit classes="float-end"/>
+                <@b.row>
+                    <@f.file label="" name="image" size="col-9" margin=""/>
+                    <@f.submit size="col-3" margin=""/>
+                </@b.row>
             </@f.form>
         </@b.col>
         <@b.col size="col-2"classes="px-3 text-center">

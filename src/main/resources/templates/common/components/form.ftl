@@ -14,8 +14,8 @@
     </form>
 </#macro>
 
-<#macro submit label="button.save" form="" size="col-12" col=true classes="" style="btn-primary" icon="">
-    <#if col><div class="mb-3 ${size}"></#if>
+<#macro submit label="button.save" form="" size="col-12" col=true classes="" style="btn-primary" icon="" margin="mb-3">
+    <#if col><div class="${margin} ${size}"></#if>
     <button type="submit" <#if form?has_content>form="${form}"</#if> class="btn ${style} ${classes}">
         <#if icon?has_content><i class="${icon}"></i></#if>
         <@b.localize label/>
@@ -70,8 +70,8 @@
     </div>
 </#macro>
 
-<#macro file label name id=name size="col-12" accept="">
-    <div class="mb-3 ${size}">
+<#macro file label name id=name size="col-12" accept="" margin="mb-3">
+    <div class="${margin} ${size}">
         <#if label?has_content>
             <label for="${id}" class="form-label"><@b.localize label/></label>
         </#if>
