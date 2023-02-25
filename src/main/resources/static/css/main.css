@@ -13,3 +13,11 @@
 #searchResultTable td {
     vertical-align: middle;
 }
+
+.image-selectable {
+    max-height: 20rem;
+}
+
+.image-selectable:hover{
+    cursor: pointer;
+}

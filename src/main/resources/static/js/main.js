@@ -100,6 +100,7 @@ function fetchPosterImagesAndShowModal(button)
             modalContainer.innerHTML = xhr.responseText;
             let modal = new bootstrap.Modal(document.getElementById('addPoster'), {});
             modal.show();
+            initImageSelectables();
         }
         else
         {
@@ -107,4 +108,20 @@ function fetchPosterImagesAndShowModal(button)
         }
     };
     xhr.send();
+}
+
+function initImageSelectables()
+{
+    let imageSelectables = document.getElementsByClassName('image-selectable');
+    for(let i = 0; i < imageSelectables.length; i++)
+    {
+        let item = imageSelectables[i];
+        item.addEventListener('click', function()
+        {
+            let form = document.getElementsByName('posterFromApi')[0];
+            let hiddenInput = form.querySelector('input[name="url"]');
+            hiddenInput.value = item.src;
+            form.submit();
+        });
+    }
 }

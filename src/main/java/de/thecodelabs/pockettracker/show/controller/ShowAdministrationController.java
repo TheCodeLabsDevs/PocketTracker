@@ -35,6 +35,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -207,7 +209,7 @@ public class ShowAdministrationController
 
 		try
 		{
-			service.changeShowImage(type, show, multipartFile);
+			service.changeShowImage(type, show, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(show.getName()), multipartFile.getInputStream());
 		}
 		catch(IOException e)
 		{
@@ -329,9 +331,35 @@ public class ShowAdministrationController
 			}
 		}
 
+		model.addAttribute("show", show);
 		model.addAttribute("posterUrlsByApi", posterUrlsByApi);
 
 		return "administration/show/posterImagesModal";
+	}
+
+	@PostMapping("/{showId}/edit/posterFromApi")
+	public String addImageFromApi(WebRequest request, @PathVariable Integer showId, @RequestParam String url)
+	{
+		final Optional<Show> showOptional = service.getShowById(showId);
+		if(showOptional.isEmpty())
+		{
+			return "redirect:/show/" + showId + "/edit";
+		}
+
+		final Show show = showOptional.get();
+
+		service.deleteShowImage(ShowImageType.POSTER, show);
+
+		try(final InputStream dataStream = new URL(url).openStream())
+		{
+			service.changeShowImage(ShowImageType.POSTER, show, show.getName(), dataStream);
+		}
+		catch(IOException e)
+		{
+			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
+			LOGGER.error("Fail to change show image", e);
+		}
+		return "redirect:/show/" + showId + "/edit";
 	}
 
 	/*

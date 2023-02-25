@@ -18,9 +18,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -126,29 +127,28 @@ public class ShowService
 	}
 
 	@Transactional
-	public void changeShowImage(ShowImageType showImageType, Show show, MultipartFile file) throws IOException
+	public void changeShowImage(ShowImageType showImageType, Show show, String fileName, InputStream dataStream) throws IOException
 	{
 		deleteShowImage(showImageType, show);
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 
-		final String fileName = Optional.ofNullable(file.getOriginalFilename()).orElse(show.getName());
 		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
-		StringBuilder bannerFilenameBuilder = new StringBuilder(escapedFileName);
-		Path bannerPath;
+		StringBuilder filenameBuilder = new StringBuilder(escapedFileName);
+		Path destinationPath;
 
-		while(Files.exists(bannerPath = basePath.resolve(showImageType.getPathName()).resolve(bannerFilenameBuilder.toString())))
+		while(Files.exists(destinationPath = basePath.resolve(showImageType.getPathName()).resolve(filenameBuilder.toString())))
 		{
-			bannerFilenameBuilder.insert(0, "_");
+			filenameBuilder.insert(0, "_");
 		}
 
-		if(Files.notExists(bannerPath.getParent()))
+		if(Files.notExists(destinationPath.getParent()))
 		{
-			Files.createDirectories(bannerPath.getParent());
+			Files.createDirectories(destinationPath.getParent());
 		}
 
-		show.setImagePath(showImageType, basePath.relativize(bannerPath).toString());
-		file.transferTo(bannerPath);
+		show.setImagePath(showImageType, basePath.relativize(destinationPath).toString());
+		FileCopyUtils.copy(dataStream, Files.newOutputStream(destinationPath));
 	}
 
 	@Transactional
