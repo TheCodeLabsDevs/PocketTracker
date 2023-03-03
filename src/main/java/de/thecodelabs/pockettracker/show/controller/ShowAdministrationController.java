@@ -210,6 +210,7 @@ public class ShowAdministrationController
 		try
 		{
 			service.changeShowImage(type, show, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(show.getName()), multipartFile.getInputStream());
+			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
 		{
@@ -353,6 +354,7 @@ public class ShowAdministrationController
 		try(final InputStream dataStream = new URL(url).openStream())
 		{
 			service.changeShowImage(ShowImageType.POSTER, show, show.getName(), dataStream);
+			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
 		{
