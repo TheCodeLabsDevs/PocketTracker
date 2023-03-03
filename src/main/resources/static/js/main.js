@@ -9,12 +9,13 @@ window.addEventListener('load', function(event)
         return new bootstrap.Toast(toastEl, {})
     });
 
-    let buttonAddPosterImageFromApi = document.getElementById('buttonAddPoster');
-    if(buttonAddPosterImageFromApi !== null)
+    let buttonsAddImageFromApi = document.getElementsByClassName('buttonAddImage');
+    for(let i = 0; i < buttonsAddImageFromApi.length; i++)
     {
-        buttonAddPosterImageFromApi.addEventListener('click', function()
+        let button = buttonsAddImageFromApi[i];
+        button.addEventListener('click', function()
         {
-            fetchPosterImagesAndShowModal(buttonAddPosterImageFromApi);
+            fetchImagesAndShowModal(button);
         });
     }
 });
@@ -86,7 +87,7 @@ function changeSortOption()
     }
 }
 
-function fetchPosterImagesAndShowModal(button)
+function fetchImagesAndShowModal(button)
 {
     let url = button.getAttribute('data-url');
 
@@ -96,9 +97,9 @@ function fetchPosterImagesAndShowModal(button)
     {
         if(xhr.status === 200)
         {
-            let modalContainer = document.getElementById('modal-container-add-poster');
+            let modalContainer = document.getElementById('modal-container-add-image');
             modalContainer.innerHTML = xhr.responseText;
-            let modal = new bootstrap.Modal(document.getElementById('addPoster'), {});
+            let modal = new bootstrap.Modal(document.getElementById('addImageModal'), {});
             modal.show();
             initImageSelectables();
         }
@@ -118,7 +119,7 @@ function initImageSelectables()
         let item = imageSelectables[i];
         item.addEventListener('click', function()
         {
-            let form = document.getElementsByName('posterFromApi')[0];
+            let form = document.getElementsByName('imageFromApi')[0];
             let hiddenInput = form.querySelector('input[name="url"]');
             hiddenInput.value = item.src;
             form.submit();

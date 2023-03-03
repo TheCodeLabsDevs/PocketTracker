@@ -34,12 +34,28 @@
         <img src="<@s.url "/resources/" + show.getBannerPath()/>" class="w-50 mb-4"/>
     </#if>
 
-    <@b.row>
-        <@f.form name="banner" url="/show/${show.id?c}/edit/BANNER" multipart=true>
-            <@f.file label="show.banner" name="image"/>
-            <@f.submit classes="float-end"/>
-        </@f.form>
-    </@b.row>
+    <div class="d-flex flex-row align-items-center">
+        <@b.col size="col-2"classes="px-3">
+            <h4><@b.localize "show.banner"/></h4>
+        </@b.col>
+        <@b.col size="col-5">
+            <@f.form name="poster" url="/show/${show.id?c}/edit/BANNER" multipart=true>
+                <@b.row>
+                    <@f.file label="" name="image" size="col-9" margin=""/>
+                    <@f.submit size="col-3" margin=""/>
+                </@b.row>
+            </@f.form>
+        </@b.col>
+        <@b.col size="col-2"classes="px-3 text-center">
+            <h4><@b.localize "or"/></h4>
+        </@b.col>
+        <@b.col size="col-3">
+            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id?c}/showImages/BANNER"/>">
+                <@b.localize "show.banner.fromApi"/>
+            </a>
+        </@b.col>
+    </div>
+
     <@b.separator/>
 
     <#if show.getPosterPath()??>
@@ -62,13 +78,13 @@
             <h4><@b.localize "or"/></h4>
         </@b.col>
         <@b.col size="col-3">
-            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if>" id="buttonAddPoster" role="button" data-url="<@s.url "/show/${show.id?c}/posterImages"/>">
+            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id?c}/showImages/POSTER"/>">
                 <@b.localize "show.poster.fromApi"/>
             </a>
         </@b.col>
     </div>
 
-    <div id="modal-container-add-poster"></div>
+    <div id="modal-container-add-image"></div>
 </#macro>
 
 <#macro seasons show>

@@ -15,5 +15,5 @@ public interface ShowImporterService
 
 	List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
 
-	List<String> getBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
+	List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
 }

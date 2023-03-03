@@ -137,7 +137,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return getImageUrlsByType(identifier, "poster");
 	}
 
-	public List<String> getBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	public List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
 	{
 		return getImageUrlsByType(identifier, "series");
 	}

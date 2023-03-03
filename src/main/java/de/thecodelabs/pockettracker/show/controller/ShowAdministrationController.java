@@ -305,8 +305,8 @@ public class ShowAdministrationController
 		return "redirect:/show/" + showId + "/edit";
 	}
 
-	@GetMapping("/{id}/posterImages")
-	public String posterImages(@PathVariable Integer id, Model model)
+	@GetMapping("/{id}/showImages/{type}")
+	public String getShowImages(@PathVariable Integer id, @PathVariable ShowImageType type, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -316,15 +316,22 @@ public class ShowAdministrationController
 
 		final Show show = showOptional.get();
 
-		final Map<APIType, List<String>> posterUrlsByApi = new HashMap<>();
+		final Map<APIType, List<String>> urlsByApi = new HashMap<>();
 		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
 		{
 			final List<String> posterUrls;
 			try
 			{
-				posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
-				LOGGER.debug(MessageFormat.format("Found {0} poster images", posterUrls.size()));
-				posterUrlsByApi.put(apiIdentifier.getType(), posterUrls);
+				if(type == ShowImageType.POSTER)
+				{
+					posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
+				}
+				else
+				{
+					posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowBannerImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
+				}
+				LOGGER.debug(MessageFormat.format("Found {0} image urls", posterUrls.size()));
+				urlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}
 			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
 			{
@@ -333,13 +340,13 @@ public class ShowAdministrationController
 		}
 
 		model.addAttribute("show", show);
-		model.addAttribute("posterUrlsByApi", posterUrlsByApi);
+		model.addAttribute("urlsByApi", urlsByApi);
 
-		return "administration/show/posterImagesModal";
+		return MessageFormat.format("administration/show/{0}ImagesModal", type.name().toLowerCase());
 	}
 
-	@PostMapping("/{showId}/edit/posterFromApi")
-	public String addImageFromApi(WebRequest request, @PathVariable Integer showId, @RequestParam String url)
+	@PostMapping("/{showId}/edit/imageFromApi/{type}")
+	public String addImageFromApi(WebRequest request, @PathVariable Integer showId, @PathVariable ShowImageType type, @RequestParam String url)
 	{
 		final Optional<Show> showOptional = service.getShowById(showId);
 		if(showOptional.isEmpty())
@@ -349,11 +356,11 @@ public class ShowAdministrationController
 
 		final Show show = showOptional.get();
 
-		service.deleteShowImage(ShowImageType.POSTER, show);
+		service.deleteShowImage(type, show);
 
 		try(final InputStream dataStream = new URL(url).openStream())
 		{
-			service.changeShowImage(ShowImageType.POSTER, show, show.getName(), dataStream);
+			service.changeShowImage(type, show, show.getName(), dataStream);
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
