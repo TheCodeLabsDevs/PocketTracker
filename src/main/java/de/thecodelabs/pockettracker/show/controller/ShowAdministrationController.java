@@ -360,7 +360,10 @@ public class ShowAdministrationController
 
 		try(final InputStream dataStream = new URL(url).openStream())
 		{
-			service.changeShowImage(type, show, show.getName(), dataStream);
+			final String fileNameFromUrl = url.substring(url.lastIndexOf('/') + 1);
+			final String fileName = MessageFormat.format("{0}_{1}", show.getName(), fileNameFromUrl);
+
+			service.changeShowImage(type, show, fileName, dataStream);
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
