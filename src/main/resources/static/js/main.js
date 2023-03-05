@@ -15,7 +15,17 @@ window.addEventListener('load', function(event)
         let button = buttonsAddImageFromApi[i];
         button.addEventListener('click', function()
         {
-            fetchImagesAndShowModal(button);
+            fetchAndShowModal(button,'modal-container-add-image', 'addImageModal', initImageSelectables);
+        });
+    }
+
+    let buttonsAddSeasonFromApi = document.getElementsByClassName('buttonAddSeasonFromApi');
+    for(let i = 0; i < buttonsAddSeasonFromApi.length; i++)
+    {
+        let button = buttonsAddSeasonFromApi[i];
+        button.addEventListener('click', function()
+        {
+            fetchAndShowModal(button,'modal-container-add-season', 'importSeasonFromApiModal', function(){});
         });
     }
 });
@@ -87,30 +97,6 @@ function changeSortOption()
     }
 }
 
-function fetchImagesAndShowModal(button)
-{
-    let url = button.getAttribute('data-url');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = function()
-    {
-        if(xhr.status === 200)
-        {
-            let modalContainer = document.getElementById('modal-container-add-image');
-            modalContainer.innerHTML = xhr.responseText;
-            let modal = new bootstrap.Modal(document.getElementById('addImageModal'), {});
-            modal.show();
-            initImageSelectables();
-        }
-        else
-        {
-            console.error('Request failed! Status code: ' + xhr.status);
-        }
-    };
-    xhr.send();
-}
-
 function initImageSelectables()
 {
     let imageSelectables = document.getElementsByClassName('image-selectable');
@@ -125,4 +111,29 @@ function initImageSelectables()
             form.submit();
         });
     }
+}
+
+function fetchAndShowModal(button, modalContainerId, modalId, callbackAfterModalShown)
+{
+    let url = button.getAttribute('data-url');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function()
+    {
+        if(xhr.status === 200)
+        {
+            let modalContainer = document.getElementById(modalContainerId);
+            modalContainer.innerHTML = xhr.responseText;
+            let modal = new bootstrap.Modal(document.getElementById(modalId), {});
+            modal.show();
+
+            callbackAfterModalShown();
+        }
+        else
+        {
+            console.error('Request failed! Status code: ' + xhr.status);
+        }
+    };
+    xhr.send();
 }

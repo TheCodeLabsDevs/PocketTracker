@@ -14,6 +14,7 @@ import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.TVDBEpisodeToEpisodeConverter;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,15 @@ public class TVDBv3ImporterService implements ShowImporterService
 
 	private void createAllSeasons(TheTvdb tvdb, Integer seriesId, Show show) throws IOException, ImportProcessException
 	{
+		final List<Integer> airedSeasons = getAiredSeasons(tvdb, seriesId);
+		for(Integer seasonId : airedSeasons)
+		{
+			createSeasonWithEpisodes(tvdb, seriesId, seasonId, show);
+		}
+	}
+
+	private List<Integer> getAiredSeasons(TheTvdb tvdb, Integer seriesId) throws ImportProcessException, IOException
+	{
 		final Response<EpisodesSummaryResponse> response = tvdb.series().episodesSummary(seriesId).execute();
 		final EpisodesSummaryResponse body = response.body();
 		if(body == null || body.data == null || body.data.airedSeasons == null)
@@ -106,18 +116,11 @@ public class TVDBv3ImporterService implements ShowImporterService
 			throw new ImportProcessException("Episode summary data from TVDB is null");
 		}
 
-		final List<Integer> airedSeasons = body.data.airedSeasons.stream().sorted().toList();
-		for(Integer seasonId : airedSeasons)
-		{
-			createSeasonWithEpisodes(tvdb, seriesId, seasonId, show);
-		}
+		return body.data.airedSeasons.stream().sorted().toList();
 	}
 
-	private void createSeasonWithEpisodes(TheTvdb tvdb, Integer seriesId, int seasonId, Show show) throws IOException, ImportProcessException
+	private List<Episode> getEpisodes(TheTvdb tvdb, Integer seriesId, Integer seasonId) throws ImportProcessException, IOException
 	{
-		final Season season = new Season("Staffel " + seasonId, "", seasonId, show);
-		show.addSeason(season);
-
 		final Response<EpisodesResponse> episodesResponse = tvdb.series().episodesQuery(seriesId, null, seasonId, null, null, null, null, null, null, generalConfigurationProperties.getLanguage()).execute();
 		final EpisodesResponse body = episodesResponse.body();
 		if(body == null || body.data == null)
@@ -125,7 +128,31 @@ public class TVDBv3ImporterService implements ShowImporterService
 			throw new ImportProcessException("Episode data from TVDB is null");
 		}
 
-		final List<Episode> episodes = body.data;
+		return body.data;
+	}
+
+	public List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporteNotConfiguredException, ImportProcessException, IOException
+	{
+		final TheTvdb tvdb = createApiClient();
+
+		final List<SeasonInfo> result = new ArrayList<>();
+
+		final List<Integer> airedSeasons = getAiredSeasons(tvdb, identifier);
+		for(Integer seasonId : airedSeasons)
+		{
+			final List<Episode> episodes = getEpisodes(tvdb, identifier, seasonId);
+			result.add(new SeasonInfo(String.valueOf(seasonId), String.valueOf(seasonId), episodes.size()));
+		}
+
+		return result;
+	}
+
+	private void createSeasonWithEpisodes(TheTvdb tvdb, Integer seriesId, int seasonId, Show show) throws IOException, ImportProcessException
+	{
+		final Season season = new Season("Staffel " + seasonId, "", seasonId, show);
+		show.addSeason(season);
+
+		final List<Episode> episodes = getEpisodes(tvdb, seriesId, seasonId);
 		for(Episode episode : episodes)
 		{
 			season.addEpisode(episodeConverter.toEpisode(episode, season));

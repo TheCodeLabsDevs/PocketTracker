@@ -85,6 +85,7 @@
     </div>
 
     <div id="modal-container-add-image"></div>
+    <div id="modal-container-add-season"></div>
 </#macro>
 
 <#macro seasons show>
@@ -93,7 +94,20 @@
             <@b.h3 title="show.seasons"/>
         </@b.col>
         <@b.col size="col-6">
-            <@m.open label="show.season.add" modalId="addSeasons" classes="float-end"/>
+            <div class="dropdown">
+                <a class="btn btn-sm btn-primary float-end dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <@b.localize "show.season.add"/>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addSeasons"><@b.localize "button.add.manually"/></a></li>
+                    <li>
+                        <a class="dropdown-item buttonAddSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/show/${show.id?c}/seasonsFromApi"/>">
+                            <@b.localize "show.poster.fromApi"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </@b.col>
     </@b.row>
 
@@ -110,7 +124,6 @@
             <@f.submit label="button.add" form="addSeason" col=false/>
         </@m.footer>
     </@m.modal>
-
 
     <@t.table id="seasons">
         <@t.head>

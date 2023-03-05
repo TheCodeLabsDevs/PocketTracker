@@ -374,6 +374,38 @@ public class ShowAdministrationController
 		return "redirect:/show/" + showId + "/edit";
 	}
 
+	@GetMapping("/{id}/seasonsFromApi")
+	public String getSeasonsFromApi(@PathVariable Integer id, Model model)
+	{
+		final Optional<Show> showOptional = service.getShowById(id);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+
+		final Show show = showOptional.get();
+
+		final Map<APIType, List<SeasonInfo>> seasonInfoByApi = new HashMap<>();
+		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
+		{
+			try
+			{
+				final List<SeasonInfo> seasonInfo = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getAllAvailableSeasonInfo(Integer.parseInt(apiIdentifier.getIdentifier()));
+				LOGGER.debug(MessageFormat.format("Found {0} seasons for api {1}", seasonInfo.size(), apiIdentifier.getType()));
+				seasonInfoByApi.put(apiIdentifier.getType(), seasonInfo);
+			}
+			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		model.addAttribute("show", show);
+		model.addAttribute("seasonInfoByApi", seasonInfoByApi);
+
+		return "administration/show/seasonModal";
+	}
+
 	/*
 	 Utils
 	 */
