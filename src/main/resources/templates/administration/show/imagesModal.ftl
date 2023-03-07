@@ -20,7 +20,7 @@
                 </@b.row>
             </#list>
 
-            <@f.form name="imageFromApi" url="/show/${show.id?c}/edit/imageFromApi/${imageType}" classes="hidden">
+            <@f.form name="imageFromApi" url="/show/${show.id}/edit/imageFromApi/${imageType}" classes="hidden">
                 <@f.hidden id="url" value=""/>
             </@f.form>
         </@m.body>

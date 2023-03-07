@@ -306,7 +306,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/showImages/{type}")
-	public String getShowImages(@PathVariable Integer id, @PathVariable ShowImageType type, Model model)
+	public String getAvailableShowImages(@PathVariable Integer id, @PathVariable ShowImageType type, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
