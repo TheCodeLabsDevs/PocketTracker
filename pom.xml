@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
     </parent>
 
     <properties>
@@ -21,7 +21,7 @@
         <jlibs.version>3.2.0</jlibs.version>
 
         <!-- Dependency overrides -->
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
 
         <springdoc-openapi-starter-webmvc-ui.version>2.0.2</springdoc-openapi-starter-webmvc-ui.version>
 
