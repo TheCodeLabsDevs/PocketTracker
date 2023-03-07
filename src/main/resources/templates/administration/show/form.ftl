@@ -103,7 +103,7 @@
                     <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addSeasons"><@b.localize "button.add.manually"/></a></li>
                     <li>
                         <a class="dropdown-item buttonAddSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/show/${show.id?c}/seasonsFromApi"/>">
-                            <@b.localize "show.poster.fromApi"/>
+                            <@b.localize "show.api.season.create"/>
                         </a>
                     </li>
                 </ul>
