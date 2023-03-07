@@ -342,7 +342,7 @@ public class ShowAdministrationController
 		model.addAttribute("show", show);
 		model.addAttribute("urlsByApi", urlsByApi);
 
-		return MessageFormat.format("administration/show/{0}ImagesModal", type.name().toLowerCase());
+		return MessageFormat.format("administration/show/api/{0}ImagesModal", type.name().toLowerCase());
 	}
 
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
