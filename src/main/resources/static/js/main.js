@@ -132,7 +132,23 @@ function fetchAndShowModal(button, modalContainerId, modalId, callbackAfterModal
         }
         else
         {
-            console.error('Request failed! Status code: ' + xhr.status);
+            let modalContainer = document.getElementById(modalContainerId);
+            modalContainer.innerHTML = `
+                <div class="modal fade" id="${modalId}">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ${JSON.parse(xhr.responseText).error}
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>`;
+            let modal = new bootstrap.Modal(document.getElementById(modalId), {});
+            modal.show();
         }
     };
     xhr.send();
