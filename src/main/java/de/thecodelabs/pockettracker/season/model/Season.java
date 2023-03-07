@@ -60,6 +60,11 @@ public class Season
 	{
 	}
 
+	public Season(String name, String description, Integer number)
+	{
+		this(name, description, number, null);
+	}
+
 	public Season(String name, String description, Integer number, Show show)
 	{
 		this.name = name;

@@ -98,12 +98,14 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return show;
 	}
 
-	private void createAllSeasons(TheTvdb tvdb, Integer seriesId, Show show) throws IOException, ImportProcessException
+	private void createAllSeasons(TheTvdb tvdb, Integer seriesId, Show show) throws IOException, ImportProcessException, ImporterNotConfiguredException
 	{
 		final List<Integer> airedSeasons = getAiredSeasons(tvdb, seriesId);
 		for(Integer seasonId : airedSeasons)
 		{
-			createSeasonWithEpisodes(tvdb, seriesId, seasonId, show);
+			final Season season = createSeasonWithEpisodes(seriesId, seasonId);
+			season.setShow(show);
+			show.addSeason(season);
 		}
 	}
 
@@ -147,16 +149,19 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return result;
 	}
 
-	private void createSeasonWithEpisodes(TheTvdb tvdb, Integer seriesId, int seasonId, Show show) throws IOException, ImportProcessException
+	public Season createSeasonWithEpisodes(Integer identifier, int seasonId) throws IOException, ImportProcessException, ImporterNotConfiguredException
 	{
-		final Season season = new Season("Staffel " + seasonId, "", seasonId, show);
-		show.addSeason(season);
+		final TheTvdb tvdb = createApiClient();
 
-		final List<Episode> episodes = getEpisodes(tvdb, seriesId, seasonId);
+		final Season season = new Season("Staffel " + seasonId, "", seasonId);
+
+		final List<Episode> episodes = getEpisodes(tvdb, identifier, seasonId);
 		for(Episode episode : episodes)
 		{
 			season.addEpisode(episodeConverter.toEpisode(episode, season));
 		}
+
+		return season;
 	}
 
 	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException

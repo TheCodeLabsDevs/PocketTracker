@@ -11,10 +11,7 @@ import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchRequest;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
-import de.thecodelabs.pockettracker.show.model.APIIdentifier;
-import de.thecodelabs.pockettracker.show.model.SeasonsDialogModel;
-import de.thecodelabs.pockettracker.show.model.Show;
-import de.thecodelabs.pockettracker.show.model.ShowImageType;
+import de.thecodelabs.pockettracker.show.model.*;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -404,6 +401,44 @@ public class ShowAdministrationController
 		model.addAttribute("seasonInfoByApi", seasonInfoByApi);
 
 		return "administration/show/seasonModal";
+	}
+
+	@Transactional
+	@PostMapping("/{id}/season/addFromApi")
+	public String addSeasonFromApi(WebRequest request, @PathVariable Integer id,
+								   @ModelAttribute("formAddSeasonByApi") @Validated SeasonFromApiDialogModel model)
+	{
+		final Optional<Show> showOptional = service.getShowById(id);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException("Show for id " + id + " not found");
+		}
+
+		final Show show = showOptional.get();
+
+		final Optional<APIIdentifier> apiIdentifierOptional = show.getApiIdentifierByType(model.getApiType());
+		if(apiIdentifierOptional.isEmpty())
+		{
+			throw new IllegalArgumentException("Model does not include api type");
+		}
+
+		final APIIdentifier apiIdentifier = apiIdentifierOptional.get();
+
+		try
+		{
+			final Season season = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createSeasonWithEpisodes(Integer.parseInt(apiIdentifier.getIdentifier()), model.getSeasonId());
+			season.setShow(show);
+			show.addSeason(season);
+			LOGGER.debug(MessageFormat.format("Added season {0} to show {1}", model.getSeasonId(), show.getName()));
+		}
+		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		WebRequestUtils.putToast(request, new Toast("toast.season.added", BootstrapColor.SUCCESS));
+
+		return "redirect:/show/" + id + "/edit";
 	}
 
 	/*
