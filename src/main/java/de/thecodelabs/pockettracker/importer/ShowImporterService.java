@@ -1,6 +1,6 @@
 package de.thecodelabs.pockettracker.importer;
 
-import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
+import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface ShowImporterService
 {
-	List<ShowSearchItem> searchForShow(String search) throws ImporteNotConfiguredException, ImportProcessException, IOException;
+	List<ShowSearchItem> searchForShow(String search) throws ImporterNotConfiguredException, ImportProcessException, IOException;
 
-	Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException;
+	Show createShow(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 
-	List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
+	List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException;
 
-	List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException;
+	List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException;
 
-	List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException;
+	List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 }

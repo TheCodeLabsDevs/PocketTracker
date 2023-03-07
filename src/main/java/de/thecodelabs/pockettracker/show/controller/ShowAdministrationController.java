@@ -5,7 +5,7 @@ import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
 import de.thecodelabs.pockettracker.exceptions.InternalServerException;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
-import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
+import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchRequest;
@@ -107,7 +107,7 @@ public class ShowAdministrationController
 			model.addAttribute("type", searchRequest.getType());
 			return "administration/show/api/searchResult";
 		}
-		catch(ImporteNotConfiguredException | IOException e)
+		catch(ImporterNotConfiguredException | IOException e)
 		{
 			throw new InternalServerException("Cannot execute api search", e);
 		}
@@ -133,7 +133,7 @@ public class ShowAdministrationController
 
 			return "redirect:/show/" + createdShow.getId() + "/edit";
 		}
-		catch(ImporteNotConfiguredException | IOException e)
+		catch(ImporterNotConfiguredException | IOException e)
 		{
 			throw new InternalServerException("Cannot import show", e);
 		}
@@ -333,7 +333,7 @@ public class ShowAdministrationController
 				LOGGER.debug(MessageFormat.format("Found {0} image urls", posterUrls.size()));
 				urlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}
-			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
+			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 			{
 				throw new RuntimeException(e);
 			}
@@ -394,7 +394,7 @@ public class ShowAdministrationController
 				LOGGER.debug(MessageFormat.format("Found {0} seasons for api {1}", seasonInfo.size(), apiIdentifier.getType()));
 				seasonInfoByApi.put(apiIdentifier.getType(), seasonInfo);
 			}
-			catch(ImportProcessException | IOException | ImporteNotConfiguredException e)
+			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 			{
 				throw new RuntimeException(e);
 			}

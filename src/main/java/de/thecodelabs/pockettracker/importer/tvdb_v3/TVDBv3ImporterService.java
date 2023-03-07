@@ -8,7 +8,7 @@ import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APITyp
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
-import de.thecodelabs.pockettracker.importer.factory.ImporteNotConfiguredException;
+import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
@@ -51,18 +51,18 @@ public class TVDBv3ImporterService implements ShowImporterService
 		this.episodeConverter = episodeConverter;
 	}
 
-	protected TheTvdb createApiClient() throws ImporteNotConfiguredException
+	protected TheTvdb createApiClient() throws ImporterNotConfiguredException
 	{
 		final Optional<APIConfiguration> apiConfigurationOptional = apiConfigurationService.getConfigurationByType(API_TYPE);
 		if(apiConfigurationOptional.isEmpty())
 		{
-			throw new ImporteNotConfiguredException("APIConfiguration not found " + API_TYPE);
+			throw new ImporterNotConfiguredException("APIConfiguration not found " + API_TYPE);
 		}
 		return new TheTvdb(apiConfigurationOptional.get().getToken());
 	}
 
 	@Override
-	public List<ShowSearchItem> searchForShow(String search) throws ImporteNotConfiguredException, ImportProcessException, IOException
+	public List<ShowSearchItem> searchForShow(String search) throws ImporterNotConfiguredException, ImportProcessException, IOException
 	{
 		final TheTvdb tvdb = createApiClient();
 
@@ -79,7 +79,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 	}
 
 	@Override
-	public Show createShow(String identifier) throws ImporteNotConfiguredException, IOException, ImportProcessException
+	public Show createShow(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException
 	{
 		final TheTvdb tvdb = createApiClient();
 
@@ -131,7 +131,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return body.data;
 	}
 
-	public List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporteNotConfiguredException, ImportProcessException, IOException
+	public List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporterNotConfiguredException, ImportProcessException, IOException
 	{
 		final TheTvdb tvdb = createApiClient();
 
@@ -159,17 +159,17 @@ public class TVDBv3ImporterService implements ShowImporterService
 		}
 	}
 
-	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		return getImageUrlsByType(identifier, "poster");
 	}
 
-	public List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	public List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		return getImageUrlsByType(identifier, "series");
 	}
 
-	private List<String> getImageUrlsByType(Integer identifier, String type) throws ImportProcessException, IOException, ImporteNotConfiguredException
+	private List<String> getImageUrlsByType(Integer identifier, String type) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		final TheTvdb tvdb = createApiClient();
 
