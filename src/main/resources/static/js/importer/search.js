@@ -38,5 +38,5 @@ function updateSearchRequests(event) {
     httpRequest.setRequestHeader(header, token);
 
     httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    httpRequest.send(`apiIdentifierType=${document.getElementById('apiIdentifierType').value}&search=${searchValue}`);
+    httpRequest.send(`apiIdentifierType=${document.getElementById('apiIdentifierType').value}&search=${searchValue}&targetUrl=${document.getElementById("searchResultContainer").attributes.getNamedItem("data-form-url").value}`);
 }

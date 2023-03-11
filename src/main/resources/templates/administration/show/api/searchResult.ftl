@@ -14,7 +14,7 @@
             <td>${item.firstAired}</td>
             <td>${item.identifier?c}</td>
             <td>
-                <@f.form name="search-${item.identifier?c}" url="/show/createFromApi">
+                <@f.form name="search-${item.identifier?c}" url="${targetUrl}">
                     <@f.hidden id="type" value="${type}"/>
                     <@f.hidden id="identifier" value="${item.identifier?c}"/>
                     <@f.submit label="button.add" form="search-${item.identifier?c}" col=false/>

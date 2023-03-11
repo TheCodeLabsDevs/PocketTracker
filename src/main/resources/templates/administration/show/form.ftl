@@ -172,14 +172,12 @@
         <@m.header "show.apiIdentifiers.add"/>
         <@m.body>
             <#assign objectName="newApiIdentifier"/>
-            <@f.form name=objectName url="/show/${show.id?c}/apiIdentifier/add">
-                <@b.row>
-                    <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                    <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
-                </@b.row>
-            </@f.form>
+            <@b.row>
+                <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+            </@b.row>
 
-            <div id="searchResultContainer"></div>
+            <div id="searchResultContainer" data-form-url="/show/${show.id?c}/apiIdentifier/add"></div>
         </@m.body>
         <@m.footer>
             <@m.cancelButton/>
