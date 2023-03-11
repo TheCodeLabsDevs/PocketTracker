@@ -98,10 +98,10 @@ public class ShowAdministrationController
 	{
 		try
 		{
-			final List<ShowSearchItem> items = showImporterServiceFactory.getImporter(searchRequest.getType())
+			final List<ShowSearchItem> items = showImporterServiceFactory.getImporter(searchRequest.getApiIdentifierType())
 					.searchForShow(searchRequest.getSearch());
 			model.addAttribute("items", items);
-			model.addAttribute("type", searchRequest.getType());
+			model.addAttribute("type", searchRequest.getApiIdentifierType());
 			return "administration/show/api/searchResult";
 		}
 		catch(ImporterNotConfiguredException | IOException e)

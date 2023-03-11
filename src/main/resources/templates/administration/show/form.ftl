@@ -168,18 +168,21 @@
         </@b.col>
     </@b.row>
 
-    <@m.modal id="addApiIdentifier">
+    <@m.modal id="addApiIdentifier" modalSize="modal-lg">
         <@m.header "show.apiIdentifiers.add"/>
         <@m.body>
             <#assign objectName="newApiIdentifier"/>
             <@f.form name=objectName url="/show/${show.id?c}/apiIdentifier/add">
-                <@f.select objectName=objectName label="show.apiIdentifiers.type" name="type" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                <@f.input objectName=objectName label="show.apiIdentifiers.identifier" name="identifier" value=""/>
+                <@b.row>
+                    <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
+                    <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                </@b.row>
             </@f.form>
+
+            <div id="searchResultContainer"></div>
         </@m.body>
         <@m.footer>
             <@m.cancelButton/>
-            <@f.submit label="button.add" form="newApiIdentifier" col=false/>
         </@m.footer>
     </@m.modal>
 

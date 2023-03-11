@@ -12,7 +12,9 @@
         <#if show.name?has_content>${show.name}<#else><@b.localize "show.create"/></#if>
     </#assign>
 
-    <@template.head 'Episodes'/>
+    <@template.head 'Episodes'>
+      <script src="<@s.url "/js/importer/search.js"/>"></script>
+    </@template.head>
     <@template.body>
         <@b.flex>
             <@b.back_button url=back_url showLabel=false/>

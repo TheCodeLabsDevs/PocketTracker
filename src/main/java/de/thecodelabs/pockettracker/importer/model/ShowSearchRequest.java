@@ -6,23 +6,23 @@ import java.util.Objects;
 
 public class ShowSearchRequest
 {
-	private APIType type;
+	private APIType apiIdentifierType;
 	private String search;
 
-	public ShowSearchRequest(APIType type, String search)
+	public ShowSearchRequest(APIType apiIdentifierType, String search)
 	{
-		this.type = type;
+		this.apiIdentifierType = apiIdentifierType;
 		this.search = search;
 	}
 
-	public APIType getType()
+	public APIType getApiIdentifierType()
 	{
-		return type;
+		return apiIdentifierType;
 	}
 
-	public void setType(APIType type)
+	public void setApiIdentifierType(APIType apiIdentifierType)
 	{
-		this.type = type;
+		this.apiIdentifierType = apiIdentifierType;
 	}
 
 	public String getSearch()
@@ -41,20 +41,20 @@ public class ShowSearchRequest
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		ShowSearchRequest that = (ShowSearchRequest) o;
-		return type == that.type && Objects.equals(search, that.search);
+		return apiIdentifierType == that.apiIdentifierType && Objects.equals(search, that.search);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(type, search);
+		return Objects.hash(apiIdentifierType, search);
 	}
 
 	@Override
 	public String toString()
 	{
 		return "ShowSearchRequest{" +
-				"type=" + type +
+				"apiIdentifierType=" + apiIdentifierType +
 				", search='" + search + '\'' +
 				'}';
 	}
