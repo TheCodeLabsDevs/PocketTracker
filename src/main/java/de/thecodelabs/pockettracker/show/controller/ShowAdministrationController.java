@@ -275,6 +275,7 @@ public class ShowAdministrationController
 		try
 		{
 			service.addApiIdentifierToShow(showId, apiIdentifier);
+			WebRequestUtils.putToast(request, new Toast("toast.api.identifier.added", BootstrapColor.SUCCESS, apiIdentifier.getType()));
 		}
 		catch(IllegalArgumentException e)
 		{
