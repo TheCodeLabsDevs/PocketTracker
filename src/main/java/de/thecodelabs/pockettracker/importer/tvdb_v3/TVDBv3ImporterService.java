@@ -18,6 +18,8 @@ import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
 
@@ -41,14 +43,17 @@ public class TVDBv3ImporterService implements ShowImporterService
 	private final SeriesToShowConverter showConverter;
 	private final TVDBEpisodeToEpisodeConverter episodeConverter;
 
+	private final MessageSource messageSource;
+
 	@Autowired
 	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties,
-								 SeriesToShowConverter showConverter, TVDBEpisodeToEpisodeConverter episodeConverter)
+								 SeriesToShowConverter showConverter, TVDBEpisodeToEpisodeConverter episodeConverter, MessageSource messageSource)
 	{
 		this.apiConfigurationService = apiConfigurationService;
 		this.generalConfigurationProperties = generalConfigurationProperties;
 		this.showConverter = showConverter;
 		this.episodeConverter = episodeConverter;
+		this.messageSource = messageSource;
 	}
 
 	protected TheTvdb createApiClient() throws ImporterNotConfiguredException
@@ -153,7 +158,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 	{
 		final TheTvdb tvdb = createApiClient();
 
-		final Season season = new Season("Staffel " + seasonId, "", seasonId);
+		final Season season = new Season(messageSource.getMessage("season.defaultName", new Object[]{seasonId}, LocaleContextHolder.getLocale()), "", seasonId);
 
 		final List<Episode> episodes = getEpisodes(tvdb, identifier, seasonId);
 		for(Episode episode : episodes)
