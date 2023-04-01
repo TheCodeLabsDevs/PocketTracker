@@ -154,6 +154,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return result;
 	}
 
+	@Override
 	public Season createSeasonWithEpisodes(Integer identifier, int seasonId) throws IOException, ImportProcessException, ImporterNotConfiguredException
 	{
 		final TheTvdb tvdb = createApiClient();
@@ -169,11 +170,13 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return season;
 	}
 
+	@Override
 	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		return getImageUrlsByType(identifier, "poster");
 	}
 
+	@Override
 	public List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		return getImageUrlsByType(identifier, "series");
