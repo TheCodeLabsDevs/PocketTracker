@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -315,7 +315,7 @@ public class ShowAdministrationController
 
 		final Show show = showOptional.get();
 
-		final Map<APIType, List<String>> urlsByApi = new HashMap<>();
+		final Map<APIType, List<String>> urlsByApi = new EnumMap<>(APIType.class);
 		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
 		{
 			final List<String> posterUrls;
@@ -384,7 +384,7 @@ public class ShowAdministrationController
 
 		final Show show = showOptional.get();
 
-		final Map<APIType, List<SeasonInfo>> seasonInfoByApi = new HashMap<>();
+		final Map<APIType, List<SeasonInfo>> seasonInfoByApi = new EnumMap<>(APIType.class);
 		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
 		{
 			try
