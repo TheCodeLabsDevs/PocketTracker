@@ -12,6 +12,7 @@ import de.thecodelabs.pockettracker.season.service.SeasonService;
 import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.UpdateSeasonFromApiDialogModel;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -177,6 +178,44 @@ public class SeasonAdministrationController
 		model.addAttribute("episodeInfoByApi", episodeInfoByApi);
 
 		return "administration/show/updateSeasonModal";
+	}
+
+	@Transactional
+	@PostMapping("/{id}/updateFromApi")
+	public String updateFromApi(WebRequest request, @PathVariable Integer id,
+								@ModelAttribute("formUpdateSeasonFromApi") @Validated UpdateSeasonFromApiDialogModel model)
+	{
+		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
+		if(seasonOptional.isEmpty())
+		{
+			throw new NotFoundException("Season for id " + id + " not found");
+		}
+
+		final Season season = seasonOptional.get();
+		final Show show = season.getShow();
+
+		final Optional<APIIdentifier> apiIdentifierOptional = show.getApiIdentifierByType(model.getApiType());
+		if(apiIdentifierOptional.isEmpty())
+		{
+			throw new IllegalArgumentException("Model does not include api type");
+		}
+
+		final APIIdentifier apiIdentifier = apiIdentifierOptional.get();
+
+		// TODO update season
+//		try
+//		{
+////			final Season season = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createSeasonWithEpisodes(Integer.parseInt(apiIdentifier.getIdentifier()), model.getSeasonId());
+//			LOGGER.debug(MessageFormat.format("Updated season {0} of show {1}", season.getNumber(), show.getName()));
+//		}
+//		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
+//		{
+//			throw new RuntimeException(e);
+//		}
+
+		WebRequestUtils.putToast(request, new Toast("toast.season.updated", BootstrapColor.SUCCESS));
+
+		return "redirect:/show/" + show.getId() + "/edit";
 	}
 
 	/*

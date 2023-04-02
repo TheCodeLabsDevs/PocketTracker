@@ -6,12 +6,19 @@
 
 <@m.modal id="updateSeasonFromApiModal" modalSize="modal-lg">
     <div class="modal-header">
-        <h5 class="modal-title"><@b.localize "show.api.season.update.title.start"/> ${season.getNumber()} <@b.localize "show.api.season.update.title.end"/></h5>
+        <h5 class="modal-title"><@s.messageArgs code="show.api.season.update" args=[season.getNumber()]/></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <@m.body>
         <#list episodeInfoByApi as apiType, episodeInfoList>
-            <@b.h3 title=apiType/>
+            <@b.h3 title=apiType>
+                <@f.form name="formUpdateSeasonFromApi" url="/season/${season.id?c}/updateFromApi" classes="ms-5">
+                    <@b.row>
+                        <@f.hidden id="" name="apiType" value=apiType/>
+                        <@f.submit label="button.update.season"/>
+                    </@b.row>
+                </@f.form>
+            </@b.h3>
 
             <@b.row classes="p-3">
                 <#list episodeInfoList as episodeInfo>
