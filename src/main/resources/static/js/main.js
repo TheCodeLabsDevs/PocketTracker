@@ -28,6 +28,16 @@ window.addEventListener('load', function(event)
             fetchAndShowModal(button,'modal-container-add-season', 'importSeasonFromApiModal', function(){});
         });
     }
+
+    let buttonsUpdateSeasonFromApi = document.getElementsByClassName('buttonUpdateSeasonFromApi');
+    for(let i = 0; i < buttonsUpdateSeasonFromApi.length; i++)
+    {
+        let button = buttonsUpdateSeasonFromApi[i];
+        button.addEventListener('click', function()
+        {
+            fetchAndShowModal(button,'modal-container-update-season', 'updateSeasonFromApiModal', function(){});
+        });
+    }
 });
 
 function handleEpisodeToggles()

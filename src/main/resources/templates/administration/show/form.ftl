@@ -86,6 +86,7 @@
 
     <div id="modal-container-add-image"></div>
     <div id="modal-container-add-season"></div>
+    <div id="modal-container-update-season"></div>
 </#macro>
 
 <#macro seasons show>
@@ -145,6 +146,10 @@
 
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/season/${season.id?c}/edit" />
+
+                        <a class="buttonUpdateSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/season/${season.id?c}/episodesFromApi"/>">
+                            <i class="fas fa-rotate"></i>
+                        </a>
 
                         <#assign modalId = "deleteSeason-${season.id?c}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
