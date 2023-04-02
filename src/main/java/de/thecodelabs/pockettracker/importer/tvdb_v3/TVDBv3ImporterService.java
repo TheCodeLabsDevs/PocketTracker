@@ -18,6 +18,8 @@ import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -34,6 +36,8 @@ import java.util.Optional;
 @ImporterType(APIType.TVDB_V3)
 public class TVDBv3ImporterService implements ShowImporterService
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TVDBv3ImporterService.class);
+
 	public static final APIType API_TYPE = APIType.TVDB_V3;
 
 	private static final String ARTWORK_BASE_URL = "https://artworks.thetvdb.com/banners";
@@ -220,5 +224,34 @@ public class TVDBv3ImporterService implements ShowImporterService
 		}
 
 		return urls;
+	}
+
+	@Override
+	public Season updateSeasonFromApi(Integer identifier, Season existingSeason) throws IOException, ImportProcessException, ImporterNotConfiguredException
+	{
+		final TheTvdb tvdb = createApiClient();
+
+		final List<Episode> episodes = getEpisodes(tvdb, identifier, existingSeason.getNumber());
+		for(Episode episode : episodes)
+		{
+			final de.thecodelabs.pockettracker.episode.model.Episode episodeFromApi = episodeConverter.toEpisode(episode, existingSeason);
+			final Optional<de.thecodelabs.pockettracker.episode.model.Episode> existingEpisodeOptional = existingSeason.getEpisodeByNumber(episodeFromApi.getNumber());
+			if(existingEpisodeOptional.isEmpty())
+			{
+				LOGGER.debug("Adding new episode {} to season {} of show {}", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+				existingSeason.addEpisode(episodeFromApi);
+			}
+			else
+			{
+				final de.thecodelabs.pockettracker.episode.model.Episode existingEpisode = existingEpisodeOptional.get();
+				existingEpisode.setName(episodeFromApi.getName());
+				existingEpisode.setDescription(episodeFromApi.getDescription());
+				existingEpisode.setFirstAired(episodeFromApi.getFirstAired());
+
+				LOGGER.debug("Updated existing episode {} from season {} of show {}", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+			}
+		}
+
+		return existingSeason;
 	}
 }

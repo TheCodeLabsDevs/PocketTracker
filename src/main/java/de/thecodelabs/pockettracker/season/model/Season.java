@@ -14,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Season
@@ -151,6 +152,13 @@ public class Season
 			episodes = new ArrayList<>();
 		}
 		episodes.add(episode);
+	}
+
+	public Optional<Episode> getEpisodeByNumber(int episodeNumber)
+	{
+		return episodes.stream()
+				.filter(episode -> episode.getNumber().equals(episodeNumber))
+				.findFirst();
 	}
 
 	@Override

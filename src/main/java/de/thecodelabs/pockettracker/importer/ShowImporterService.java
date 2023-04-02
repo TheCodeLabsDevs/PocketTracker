@@ -25,4 +25,6 @@ public interface ShowImporterService
 	List<EpisodeInfo> getAllAvailableEpisodeInfo(Integer identifier, int seasonNumber) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 
 	Season createSeasonWithEpisodes(Integer identifier, int seasonId) throws IOException, ImportProcessException, ImporterNotConfiguredException;
+
+	Season updateSeasonFromApi(Integer identifier, Season existingSeason) throws IOException, ImportProcessException, ImporterNotConfiguredException;
 }

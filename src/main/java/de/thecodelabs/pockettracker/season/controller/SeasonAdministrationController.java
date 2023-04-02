@@ -202,16 +202,15 @@ public class SeasonAdministrationController
 
 		final APIIdentifier apiIdentifier = apiIdentifierOptional.get();
 
-		// TODO update season
-//		try
-//		{
-////			final Season season = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createSeasonWithEpisodes(Integer.parseInt(apiIdentifier.getIdentifier()), model.getSeasonId());
-//			LOGGER.debug(MessageFormat.format("Updated season {0} of show {1}", season.getNumber(), show.getName()));
-//		}
-//		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
-//		{
-//			throw new RuntimeException(e);
-//		}
+		try
+		{
+			showImporterServiceFactory.getImporter(apiIdentifier.getType()).updateSeasonFromApi(Integer.parseInt(apiIdentifier.getIdentifier()), season);
+			LOGGER.debug(MessageFormat.format("Updated season {0} of show {1}", season.getNumber(), show.getName()));
+		}
+		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		WebRequestUtils.putToast(request, new Toast("toast.season.updated", BootstrapColor.SUCCESS));
 
