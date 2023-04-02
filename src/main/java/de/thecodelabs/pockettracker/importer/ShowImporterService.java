@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.importer;
 import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.Show;
 
@@ -20,6 +21,8 @@ public interface ShowImporterService
 	List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException;
 
 	List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException;
+
+	List<EpisodeInfo> getAllAvailableEpisodeInfo(Integer identifier, int seasonNumber) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 
 	Season createSeasonWithEpisodes(Integer identifier, int seasonId) throws IOException, ImportProcessException, ImporterNotConfiguredException;
 }

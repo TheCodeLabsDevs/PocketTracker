@@ -14,6 +14,7 @@ import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.TVDBEpisodeToEpisodeConverter;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -138,6 +139,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 		return body.data;
 	}
 
+	@Override
 	public List<SeasonInfo> getAllAvailableSeasonInfo(Integer identifier) throws ImporterNotConfiguredException, ImportProcessException, IOException
 	{
 		final TheTvdb tvdb = createApiClient();
@@ -149,6 +151,22 @@ public class TVDBv3ImporterService implements ShowImporterService
 		{
 			final List<Episode> episodes = getEpisodes(tvdb, identifier, seasonId);
 			result.add(new SeasonInfo(String.valueOf(seasonId), String.valueOf(seasonId), episodes.size()));
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<EpisodeInfo> getAllAvailableEpisodeInfo(Integer identifier, int seasonNumber) throws ImporterNotConfiguredException, ImportProcessException, IOException
+	{
+		final TheTvdb tvdb = createApiClient();
+
+		final List<EpisodeInfo> result = new ArrayList<>();
+
+		final List<Episode> episodes = getEpisodes(tvdb, identifier, seasonNumber);
+		for(Episode episode : episodes)
+		{
+			result.add(new EpisodeInfo(episode.episodeName, episode.airedEpisodeNumber));
 		}
 
 		return result;

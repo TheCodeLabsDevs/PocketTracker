@@ -1,15 +1,24 @@
 package de.thecodelabs.pockettracker.season.controller;
 
+import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.importer.ImportProcessException;
+import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
+import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.service.SeasonService;
+import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
+import de.thecodelabs.pockettracker.show.model.APIIdentifier;
+import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,6 +29,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -27,14 +41,18 @@ import java.util.Optional;
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 public class SeasonAdministrationController
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SeasonAdministrationController.class);
+
 	private final SeasonService seasonService;
 	private final UserService userService;
+	private final ShowImporterServiceFactory showImporterServiceFactory;
 
 	@Autowired
-	public SeasonAdministrationController(SeasonService seasonService, UserService userService)
+	public SeasonAdministrationController(SeasonService seasonService, UserService userService, ShowImporterServiceFactory showImporterServiceFactory)
 	{
 		this.seasonService = seasonService;
 		this.userService = userService;
+		this.showImporterServiceFactory = showImporterServiceFactory;
 	}
 
 	@GetMapping("/{id}/edit")
@@ -128,6 +146,38 @@ public class SeasonAdministrationController
 		return "redirect:/show/" + showId + "/edit";
 	}
 
+	@GetMapping("/{id}/episodesFromApi")
+	public String getEpisodesFromApi(@PathVariable Integer id, Model model)
+	{
+		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
+		if(seasonOptional.isEmpty())
+		{
+			throw new NotFoundException("Season for id " + id + " not found");
+		}
+
+		final Season season = seasonOptional.get();
+		final Show show = season.getShow();
+
+		final Map<APIType, List<EpisodeInfo>> episodeInfoByApi = new HashMap<>();
+		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
+		{
+			try
+			{
+				final List<EpisodeInfo> seasonInfo = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getAllAvailableEpisodeInfo(Integer.parseInt(apiIdentifier.getIdentifier()), season.getNumber());
+				LOGGER.debug(MessageFormat.format("Found {0} episodes for season {1} of show {2} for api {3}", seasonInfo.size(), season.getNumber(), show.getName(), apiIdentifier.getType()));
+				episodeInfoByApi.put(apiIdentifier.getType(), seasonInfo);
+			}
+			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		model.addAttribute("season", season);
+		model.addAttribute("episodeInfoByApi", episodeInfoByApi);
+
+		return "administration/show/updateSeasonModal";
+	}
 
 	/*
 	Utils
