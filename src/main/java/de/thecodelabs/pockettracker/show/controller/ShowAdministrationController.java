@@ -329,7 +329,7 @@ public class ShowAdministrationController
 				{
 					posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowBannerImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
 				}
-				LOGGER.debug(MessageFormat.format("Found {0} image urls", posterUrls.size()));
+				LOGGER.debug(MessageFormat.format("Found {0} image urls for show \"{1}\"", posterUrls.size(), show.getName()));
 				urlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
@@ -390,7 +390,7 @@ public class ShowAdministrationController
 			try
 			{
 				final List<SeasonInfo> seasonInfo = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getAllAvailableSeasonInfo(Integer.parseInt(apiIdentifier.getIdentifier()));
-				LOGGER.debug(MessageFormat.format("Found {0} seasons for api {1}", seasonInfo.size(), apiIdentifier.getType()));
+				LOGGER.debug(MessageFormat.format("Found {0} seasons for api {1} for show \"{2}\"", seasonInfo.size(), apiIdentifier.getType(), show.getName()));
 				seasonInfoByApi.put(apiIdentifier.getType(), seasonInfo);
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
@@ -431,7 +431,7 @@ public class ShowAdministrationController
 			final Season season = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createSeasonWithEpisodes(Integer.parseInt(apiIdentifier.getIdentifier()), model.getSeasonId());
 			season.setShow(show);
 			show.addSeason(season);
-			LOGGER.debug(MessageFormat.format("Added season {0} to show {1}", model.getSeasonId(), show.getName()));
+			LOGGER.debug(MessageFormat.format("Added season {0} to show \"{1}\"", model.getSeasonId(), show.getName()));
 		}
 		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 		{

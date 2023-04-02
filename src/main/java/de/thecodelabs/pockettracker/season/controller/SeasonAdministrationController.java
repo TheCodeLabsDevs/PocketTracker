@@ -165,7 +165,7 @@ public class SeasonAdministrationController
 			try
 			{
 				final List<EpisodeInfo> seasonInfo = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getAllAvailableEpisodeInfo(Integer.parseInt(apiIdentifier.getIdentifier()), season.getNumber());
-				LOGGER.debug(MessageFormat.format("Found {0} episodes for season {1} of show {2} for api {3}", seasonInfo.size(), season.getNumber(), show.getName(), apiIdentifier.getType()));
+				LOGGER.debug(MessageFormat.format("Found {0} episodes for season {1} of show \"{2}\" for api {3}", seasonInfo.size(), season.getNumber(), show.getName(), apiIdentifier.getType()));
 				episodeInfoByApi.put(apiIdentifier.getType(), seasonInfo);
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
@@ -205,7 +205,7 @@ public class SeasonAdministrationController
 		try
 		{
 			showImporterServiceFactory.getImporter(apiIdentifier.getType()).updateSeasonFromApi(Integer.parseInt(apiIdentifier.getIdentifier()), season);
-			LOGGER.debug(MessageFormat.format("Updated season {0} of show {1}", season.getNumber(), show.getName()));
+			LOGGER.debug(MessageFormat.format("Updated season {0} of show \"{1}\"", season.getNumber(), show.getName()));
 		}
 		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 		{

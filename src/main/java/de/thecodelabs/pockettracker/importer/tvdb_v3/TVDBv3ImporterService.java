@@ -238,7 +238,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 			final Optional<de.thecodelabs.pockettracker.episode.model.Episode> existingEpisodeOptional = existingSeason.getEpisodeByNumber(episodeFromApi.getNumber());
 			if(existingEpisodeOptional.isEmpty())
 			{
-				LOGGER.debug("Adding new episode {} to season {} of show {}", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+				LOGGER.debug("Adding new episode {} to season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
 				existingSeason.addEpisode(episodeFromApi);
 			}
 			else
@@ -248,7 +248,7 @@ public class TVDBv3ImporterService implements ShowImporterService
 				existingEpisode.setDescription(episodeFromApi.getDescription());
 				existingEpisode.setFirstAired(episodeFromApi.getFirstAired());
 
-				LOGGER.debug("Updated existing episode {} from season {} of show {}", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+				LOGGER.debug("Updated existing episode {} from season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
 			}
 		}
 
