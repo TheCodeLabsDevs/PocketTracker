@@ -147,9 +147,11 @@
                     <@t.cell>
                         <@t.action icon="fas fa-pen" url="/season/${season.id?c}/edit" />
 
-                        <a class="buttonUpdateSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/season/${season.id?c}/episodesFromApi"/>">
-                            <i class="fas fa-rotate"></i>
-                        </a>
+                        <#if show.getApiIdentifiers()?size != 0>
+                            <a class="buttonUpdateSeasonFromApi " data-url="<@s.url "/season/${season.id?c}/episodesFromApi"/>">
+                                <i class="fas fa-rotate"></i>
+                            </a>
+                        </#if>
 
                         <#assign modalId = "deleteSeason-${season.id?c}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
