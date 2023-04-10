@@ -24,9 +24,7 @@ public class ControllerErrorHandler implements ErrorController
 		errorViews.put(HttpStatus.UNAUTHORIZED, "error/401");
 		errorViews.put(HttpStatus.FORBIDDEN, "error/403");
 		errorViews.put(HttpStatus.NOT_FOUND, "error/404");
-		errorViews.put(HttpStatus.LOCKED, "error/423");
 		errorViews.put(HttpStatus.INTERNAL_SERVER_ERROR, "error/500");
-		errorViews.put(HttpStatus.SERVICE_UNAVAILABLE, "error/503");
 	}
 
 	@RequestMapping(path = "/error", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
