@@ -32,10 +32,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/season")
@@ -159,7 +156,7 @@ public class SeasonAdministrationController
 		final Season season = seasonOptional.get();
 		final Show show = season.getShow();
 
-		final Map<APIType, List<EpisodeInfo>> episodeInfoByApi = new HashMap<>();
+		final Map<APIType, List<EpisodeInfo>> episodeInfoByApi = new EnumMap<>(APIType.class);
 		for(APIIdentifier apiIdentifier : show.getApiIdentifiers())
 		{
 			try
