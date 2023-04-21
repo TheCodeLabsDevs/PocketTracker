@@ -73,6 +73,13 @@ be summed up in the statistics.
 You can schedule an automatic backup including the PocketTracker database and all uploaded images. A backup can be
 restored later.
 
+### Import from external APIs (e.g. https://thetvdb.com/)
+PocketTracker allows you to import entire shows or individual seasons from external APIs. In addition, show poster and banner images can be imported too.
+
+Currently supported external APIs:
+- TheTVDB v3
+
+
 ## Available Languages
 
 - English
