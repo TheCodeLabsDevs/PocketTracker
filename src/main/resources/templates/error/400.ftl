@@ -7,6 +7,6 @@
 
     <@template.head "400"/>
     <@template.body>
-        <@errorTemplate.errorView header="error.400.header" message="error.400.message"/>
+        <@errorTemplate.errorView header="error.400.header" message="error.400.message" statusCode=400/>
     </@template.body>
 </html>

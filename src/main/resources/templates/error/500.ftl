@@ -7,6 +7,6 @@
 
     <@template.head "500"/>
     <@template.body>
-        <@errorTemplate.errorView header="error.500.header" message="error.500.message"/>
+        <@errorTemplate.errorView header="error.500.header" message="error.500.message" statusCode=500/>
     </@template.body>
 </html>

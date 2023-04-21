@@ -7,6 +7,6 @@
 
     <@template.head "403"/>
     <@template.body>
-        <@errorTemplate.errorView header="error.403.header" message="error.403.message"/>
+        <@errorTemplate.errorView header="error.403.header" message="error.403.message" statusCode=403/>
     </@template.body>
 </html>
