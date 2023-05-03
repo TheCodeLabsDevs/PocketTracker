@@ -29,7 +29,7 @@
         <commons-io.version>2.11.0</commons-io.version>
 
         <webjars-locator.version>0.46</webjars-locator.version>
-        <font-awesome.version>6.3.0</font-awesome.version>
+        <font-awesome.version>6.4.0</font-awesome.version>
         <bootstrap.version>5.2.3</bootstrap.version>
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
     </properties>
