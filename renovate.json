@@ -1,3 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": ["tobias"],
+  "packageRules": [
+    {
+      "matchPaths": [
+        "**/Dockerfile",
+        "**/docker-compose.yaml"
+      ],
+      "enabled": false
+    }
+  ]
 }
