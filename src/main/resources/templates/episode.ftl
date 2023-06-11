@@ -16,7 +16,7 @@
                 <h2 class="card-title text-center mb-2 text-truncate">${episode.getSeason().getShow().getName()}</h2>
                 <h3 class="card-title text-center">
                     ${helpers.getShortCode(episode)} - ${episode.getName()}
-                    <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle/episode"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
+                    <input class="form-check-input fs-3 ms-2 episodeLink" data-url="<@s.url "/user/episode/" + episode.getId() + "/toggle"/>" type="checkbox" value="" <#if userService.isWatchedEpisode(currentUser, episode)>checked</#if>>
                 </h3>
 
                 <div class="text-center">

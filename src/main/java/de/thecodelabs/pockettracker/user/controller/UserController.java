@@ -195,38 +195,8 @@ public class UserController
 		return "redirect:/season/" + season.getId();
 	}
 
-	@GetMapping("/episode/{episodeId}/toggle/{redirectTo}")
-	public String toggleEpisode(WebRequest request, @PathVariable Integer episodeId, @PathVariable String redirectTo)
-	{
-		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
-		if(episodeOptional.isEmpty())
-		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Episode mit der ID \"{0}\"", episodeId), BootstrapColor.DANGER));
-			return ReturnValues.REDIRECT_SHOWS;
-		}
-
-		final User user = userService.getCurrentUser();
-
-		final Episode episode = episodeOptional.get();
-		if(userService.isWatchedEpisode(user, episode))
-		{
-			userService.removeWatchedEpisode(user, episode);
-		}
-		else
-		{
-			userService.addWatchedEpisode(user, episode);
-		}
-
-		if(redirectTo.equals("episode"))
-		{
-			return "redirect:/episode/" + episode.getId();
-		}
-
-		return "redirect:/season/" + episode.getSeason().getId();
-	}
-
-	@GetMapping("/episode/{episodeId}/toggle/")
-	public void toggleEpisodeWatched(WebRequest request, @PathVariable Integer episodeId)
+	@GetMapping("/episode/{episodeId}/toggle")
+	public String toggleEpisodeWatched(WebRequest request, @PathVariable Integer episodeId, Model model)
 	{
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())
