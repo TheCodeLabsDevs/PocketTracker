@@ -61,6 +61,8 @@ function handleEpisodeToggles()
             {
                 let toastElement = document.getElementById('toast-success');
                 bootstrap.Toast.getOrCreateInstance(toastElement).show();
+
+                document.getElementById('progress-bar-container').innerHTML = xhr.responseText;
             }
             else
             {

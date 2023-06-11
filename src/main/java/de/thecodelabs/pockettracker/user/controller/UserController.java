@@ -216,6 +216,12 @@ public class UserController
 		{
 			userService.addWatchedEpisode(user, episode);
 		}
+
+		final Season season = episode.getSeason();
+
+		model.addAttribute("numberOfElements", userService.getWatchedEpisodesBySeason(user, season).size());
+		model.addAttribute("totalNumberOfElements", season.getEpisodes().size());
+		return "progressBar";
 	}
 
 	@GetMapping("/statistics")

@@ -23,7 +23,7 @@
         </div>
 
         <div class="row mb-4">
-            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center">
+            <div class="col-sm-12 col-md-8 col-lg-6 mx-auto text-center" id="progress-bar-container">
                 <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesBySeason(currentUser, season)?size/>
                 <#assign totalNumberOfEpisodes=season.getEpisodes()?size/>
                 <@showMacros.progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
