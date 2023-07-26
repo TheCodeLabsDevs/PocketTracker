@@ -27,7 +27,7 @@ public class TVDBEpisodeToEpisodeConverter
 	@Nullable
 	private static LocalDate parseDate(String dateString)
 	{
-		if(dateString == null)
+		if(dateString == null || dateString.isEmpty())
 		{
 			return null;
 		}
