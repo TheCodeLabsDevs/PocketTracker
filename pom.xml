@@ -28,7 +28,7 @@
         <freemarker-java8.version>2.1.0</freemarker-java8.version>
         <commons-io.version>2.13.0</commons-io.version>
 
-        <webjars-locator.version>0.46</webjars-locator.version>
+        <webjars-locator.version>0.47</webjars-locator.version>
         <font-awesome.version>6.4.0</font-awesome.version>
         <bootstrap.version>5.3.0</bootstrap.version>
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
