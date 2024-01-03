@@ -30,7 +30,7 @@
 
         <webjars-locator.version>0.47</webjars-locator.version>
         <font-awesome.version>6.5.1</font-awesome.version>
-        <bootstrap.version>5.3.0</bootstrap.version>
+        <bootstrap.version>5.3.2</bootstrap.version>
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
     </properties>
 
