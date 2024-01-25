@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface APIConfigurationRepository extends JpaRepository<APIConfiguration, Integer>
+public interface APIConfigurationRepository extends JpaRepository<APIConfiguration, UUID>
 {
 	List<APIConfiguration> findAllByOrderByTypeAsc();
 

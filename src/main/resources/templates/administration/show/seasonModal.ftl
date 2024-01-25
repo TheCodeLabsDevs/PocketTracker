@@ -12,7 +12,7 @@
 
             <@b.row classes="p-3">
                 <#list seasonInfoList as seasonInfo>
-                    <@f.form name="formAddSeasonByApi" url="/show/${show.id?c}/season/addFromApi">
+                    <@f.form name="formAddSeasonByApi" url="/show/${show.id}/season/addFromApi">
                         <@b.row>
                             <@b.col size="col-10">
                                 <@b.localize "season"/> ${seasonInfo.name()} (${seasonInfo.numberOfEpisodes()} <@b.localize "season.episodes"/>)

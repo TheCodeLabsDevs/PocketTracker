@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class MainController
@@ -97,7 +98,7 @@ public class MainController
 	}
 
 	@GetMapping("/show/{showId}")
-	public String show(Model model, @PathVariable Integer showId)
+	public String show(Model model, @PathVariable UUID showId)
 	{
 		final User user = userService.getCurrentUser();
 		final Optional<Show> showOptional = showRepository.findById(showId);
@@ -122,7 +123,7 @@ public class MainController
 	}
 
 	@GetMapping("/season/{seasonId}")
-	public String season(Model model, @PathVariable Integer seasonId)
+	public String season(Model model, @PathVariable UUID seasonId)
 	{
 		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
 		if(seasonOptional.isEmpty())
@@ -135,7 +136,7 @@ public class MainController
 	}
 
 	@GetMapping("/episode/{episodeId}")
-	public String episode(Model model, @PathVariable Integer episodeId)
+	public String episode(Model model, @PathVariable UUID episodeId)
 	{
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())

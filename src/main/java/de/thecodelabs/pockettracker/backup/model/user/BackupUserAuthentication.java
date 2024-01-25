@@ -3,6 +3,8 @@ package de.thecodelabs.pockettracker.backup.model.user;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.util.UUID;
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = BackupUserInternalAuthentication.class, name = "internal"),
@@ -11,14 +13,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 public abstract class BackupUserAuthentication
 {
-	private Integer id;
+	private UUID id;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

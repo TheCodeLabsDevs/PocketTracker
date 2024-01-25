@@ -4,16 +4,16 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "appuser_settings")
 public class UserSettings
 {
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	private Boolean showDislikedShows = false;
 	private ShowSortOption lastShowSortOption = ShowSortOption.LAST_WATCHED;
@@ -31,12 +31,12 @@ public class UserSettings
 		this.user = user;
 	}
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

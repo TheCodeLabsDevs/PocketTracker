@@ -10,11 +10,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 public class Season
@@ -27,10 +27,9 @@ public class Season
 	}
 
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
-	private Integer id;
+	private UUID id;
 
 	@NotNull
 	@NotEmpty
@@ -75,12 +74,12 @@ public class Season
 		this.filledCompletely = false;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}

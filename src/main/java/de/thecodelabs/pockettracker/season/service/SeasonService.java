@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SeasonService
@@ -46,12 +47,12 @@ public class SeasonService
 		}
 	}
 
-	public Optional<Season> getSeasonById(Integer id)
+	public Optional<Season> getSeasonById(UUID id)
 	{
 		return seasonRepository.findById(id);
 	}
 
-	public List<Season> getSeasonsForShow(Integer show)
+	public List<Season> getSeasonsForShow(UUID show)
 	{
 		return seasonRepository.findAllByShowId(show);
 	}
@@ -62,7 +63,7 @@ public class SeasonService
 	}
 
 	@Transactional
-	public Episode addEpisodeToSeason(Integer seasonId)
+	public Episode addEpisodeToSeason(UUID seasonId)
 	{
 		final Optional<Season> seasonOptional = getSeasonById(seasonId);
 		if(seasonOptional.isEmpty())

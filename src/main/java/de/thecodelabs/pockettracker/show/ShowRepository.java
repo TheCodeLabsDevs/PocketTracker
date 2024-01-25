@@ -6,9 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface ShowRepository extends JpaRepository<Show, Integer>
+public interface ShowRepository extends JpaRepository<Show, UUID>
 {
 	List<Show> findAllByOrderByNameAsc();
 

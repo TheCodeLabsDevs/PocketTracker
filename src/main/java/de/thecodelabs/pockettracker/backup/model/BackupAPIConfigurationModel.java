@@ -2,18 +2,20 @@ package de.thecodelabs.pockettracker.backup.model;
 
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 
+import java.util.UUID;
+
 public class BackupAPIConfigurationModel
 {
-	private Integer id;
+	private UUID id;
 	private APIType type;
 	private String token;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/administration/batchEdit")
@@ -53,7 +54,7 @@ public class BatchEditController
 
 	@Transactional
 	@PostMapping("/episodeLength")
-	public String episodeLength(WebRequest request, @RequestParam(value = "showId", required = false) Integer showId, @RequestParam(value = "lengthInMinutes", required = false) Integer lengthInMinutes)
+	public String episodeLength(WebRequest request, @RequestParam(value = "showId", required = false) UUID showId, @RequestParam(value = "lengthInMinutes", required = false) Integer lengthInMinutes)
 	{
 		if(showId == null)
 		{

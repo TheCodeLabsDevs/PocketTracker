@@ -28,6 +28,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW;
@@ -120,7 +121,7 @@ public class UserController
 
 	@GetMapping("/shows/add/{showId}")
 	@Transactional
-	public String addShow(WebRequest request, @PathVariable Integer showId)
+	public String addShow(WebRequest request, @PathVariable UUID showId)
 	{
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
@@ -136,7 +137,7 @@ public class UserController
 	}
 
 	@GetMapping("/shows/remove/{showId}")
-	public String removeShow(WebRequest request, @PathVariable Integer showId)
+	public String removeShow(WebRequest request, @PathVariable UUID showId)
 	{
 		final Optional<Show> showOptional = showRepository.findById(showId);
 		if(showOptional.isEmpty())
@@ -160,7 +161,7 @@ public class UserController
 
 	@GetMapping("/shows/dislike/{showId}")
 	@Transactional
-	public String dislikeShow(WebRequest request, @PathVariable Integer showId)
+	public String dislikeShow(WebRequest request, @PathVariable UUID showId)
 	{
 		final Optional<AddedShow> showOptional = userService.getCurrentUser().getShowById(showId);
 		if(showOptional.isEmpty())
@@ -178,7 +179,7 @@ public class UserController
 	@GetMapping("/season/{seasonId}")
 	@Transactional
 	public String setSeasonAsWatched(WebRequest request,
-									 @PathVariable Integer seasonId,
+									 @PathVariable UUID seasonId,
 									 @RequestParam(name = "markAsWatched") boolean markAsWatched)
 	{
 		final Optional<Season> seasonOptional = seasonRepository.findById(seasonId);
@@ -196,7 +197,7 @@ public class UserController
 	}
 
 	@GetMapping("/episode/{episodeId}/toggle")
-	public String toggleEpisodeWatched(WebRequest request, @PathVariable Integer episodeId, Model model)
+	public String toggleEpisodeWatched(WebRequest request, @PathVariable UUID episodeId, Model model)
 	{
 		final Optional<Episode> episodeOptional = episodeRepository.findById(episodeId);
 		if(episodeOptional.isEmpty())

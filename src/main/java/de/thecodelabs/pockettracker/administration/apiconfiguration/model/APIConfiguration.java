@@ -1,16 +1,13 @@
 package de.thecodelabs.pockettracker.administration.apiconfiguration.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class APIConfiguration
@@ -23,10 +20,9 @@ public class APIConfiguration
 	}
 
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
-	private Integer id;
+	private UUID id;
 
 	@Column(length = 4096)
 	@NotEmpty
@@ -38,12 +34,12 @@ public class APIConfiguration
 	@JsonView(View.Summary.class)
 	private APIType type;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

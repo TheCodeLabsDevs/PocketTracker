@@ -2,30 +2,29 @@ package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "appuser_token")
 public class ApiTokenAuthentication
 {
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 	private LocalDateTime createDate;
 	private String token;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

@@ -12,7 +12,7 @@
     <@m.body>
         <#list episodeInfoByApi as apiType, episodeInfoList>
             <@b.h3 title=apiType>
-                <@f.form name="formUpdateSeasonFromApi" url="/season/${season.id?c}/updateFromApi" classes="ms-5">
+                <@f.form name="formUpdateSeasonFromApi" url="/season/${season.id}/updateFromApi" classes="ms-5">
                     <@b.row>
                         <@f.hidden id="" name="apiType" value=apiType/>
                         <@f.submit label="button.update.season"/>

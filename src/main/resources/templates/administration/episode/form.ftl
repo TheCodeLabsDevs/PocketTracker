@@ -30,7 +30,7 @@
         </@b.row>
     </@f.form>
 
-    <@delete.modal modalId="deleteEpisode" title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id?c}/delete">
+    <@delete.modal modalId="deleteEpisode" title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id}/delete">
         <@s.messageArgs code="episode.delete.message" args=[episode.getName()]/>
     </@delete.modal>
 </#macro>
@@ -43,7 +43,7 @@
     </#if>
 
     <@b.row>
-        <@f.form name="poster" url="/episode/${episode.id?c}/edit/POSTER" multipart=true>
+        <@f.form name="poster" url="/episode/${episode.id}/edit/POSTER" multipart=true>
             <@f.file label="episode.poster" name="image"/>
             <@f.submit classes="float-end"/>
         </@f.form>

@@ -1,6 +1,8 @@
 <#import "/common/components/base.ftl" as b>
 <#import "/common/components/form.ftl" as f>
 
+<#setting number_format="computer">
+
 <table class="table" id="searchResultTable">
     <tr>
         <th><@b.localize "show.apiIdentifiers.search.name"/></th>
@@ -12,12 +14,12 @@
         <tr>
             <td>${item.name}</td>
             <td>${item.firstAired}</td>
-            <td>${item.identifier?c}</td>
+            <td>${item.identifier}</td>
             <td>
-                <@f.form name="search-${item.identifier?c}" url="${targetUrl}">
+                <@f.form name="search-${item.identifier}" url="${targetUrl}">
                     <@f.hidden id="type" value="${type}"/>
-                    <@f.hidden id="identifier" value="${item.identifier?c}"/>
-                    <@f.submit label="button.add" form="search-${item.identifier?c}" col=false/>
+                    <@f.hidden id="identifier" value="${item.identifier}"/>
+                    <@f.submit label="button.add" form="search-${item.identifier}" col=false/>
                 </@f.form>
             </td>
         </tr>

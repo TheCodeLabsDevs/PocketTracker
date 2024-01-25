@@ -39,7 +39,7 @@
             <h4><@b.localize "show.banner"/></h4>
         </@b.col>
         <@b.col size="col-5">
-            <@f.form name="poster" url="/show/${show.id?c}/edit/BANNER" multipart=true>
+            <@f.form name="poster" url="/show/${show.id}/edit/BANNER" multipart=true>
                 <@b.row>
                     <@f.file label="" name="image" size="col-9" margin=""/>
                     <@f.submit size="col-3" margin=""/>
@@ -50,7 +50,7 @@
             <h4><@b.localize "or"/></h4>
         </@b.col>
         <@b.col size="col-3">
-            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id?c}/showImages/BANNER"/>">
+            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id}/showImages/BANNER"/>">
                 <@b.localize "show.banner.fromApi"/>
             </a>
         </@b.col>
@@ -67,7 +67,7 @@
             <h4><@b.localize "show.poster"/></h4>
         </@b.col>
         <@b.col size="col-5">
-            <@f.form name="poster" url="/show/${show.id?c}/edit/POSTER" multipart=true>
+            <@f.form name="poster" url="/show/${show.id}/edit/POSTER" multipart=true>
                 <@b.row>
                     <@f.file label="" name="image" size="col-9" margin=""/>
                     <@f.submit size="col-3" margin=""/>
@@ -78,7 +78,7 @@
             <h4><@b.localize "or"/></h4>
         </@b.col>
         <@b.col size="col-3">
-            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id?c}/showImages/POSTER"/>">
+            <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id}/showImages/POSTER"/>">
                 <@b.localize "show.poster.fromApi"/>
             </a>
         </@b.col>
@@ -103,7 +103,7 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addSeasons"><@b.localize "button.add.manually"/></a></li>
                     <li>
-                        <a class="dropdown-item buttonAddSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/show/${show.id?c}/seasonsFromApi"/>">
+                        <a class="dropdown-item buttonAddSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/show/${show.id}/seasonsFromApi"/>">
                             <@b.localize "show.api.season.create"/>
                         </a>
                     </li>
@@ -116,7 +116,7 @@
         <@m.header "show.season.add"/>
         <@m.body>
             <#assign objectName="addSeason"/>
-            <@f.form name=objectName url="/show/${show.id?c}/season/add">
+            <@f.form name=objectName url="/show/${show.id}/season/add">
                 <@f.input objectName=objectName label="show.season.add.count" name="seasonCount" value="1"/>
             </@f.form>
         </@m.body>
@@ -145,13 +145,13 @@
                     </@t.cell>
 
                     <@t.cell>
-                        <@t.action icon="fas fa-pen" url="/season/${season.id?c}/edit" />
+                        <@t.action icon="fas fa-pen" url="/season/${season.id}/edit" />
 
                         <#if show.getApiIdentifiers()?size != 0>
-                            <a class="buttonUpdateSeasonFromApi " data-url="<@s.url "/season/${season.id?c}/episodesFromApi"/>"><i class="fas fa-rotate"></i></a>
+                            <a class="buttonUpdateSeasonFromApi " data-url="<@s.url "/season/${season.id}/episodesFromApi"/>"><i class="fas fa-rotate"></i></a>
                         </#if>
 
-                        <#assign modalId = "deleteSeason-${season.id?c}">
+                        <#assign modalId = "deleteSeason-${season.id}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
                         <@delete.modal modalId=modalId title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
                             <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
@@ -182,7 +182,7 @@
                 <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
             </@b.row>
 
-            <div id="searchResultContainer" data-form-url="/show/${show.id?c}/apiIdentifier/add"></div>
+            <div id="searchResultContainer" data-form-url="/show/${show.id}/apiIdentifier/add"></div>
         </@m.body>
         <@m.footer>
             <@m.cancelButton/>
@@ -201,9 +201,9 @@
                     <@t.cell value="${apiIdentifier.type}"/>
                     <@t.cell value="${apiIdentifier.identifier}"/>
                     <@t.cell>
-                        <#assign modalId = "deleteApiIdentifier-${apiIdentifier.id?c}">
+                        <#assign modalId = "deleteApiIdentifier-${apiIdentifier.id}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
-                        <@delete.modal modalId=modalId title="show.apiIdentifiers.delete" deleteButton="show.apiIdentifiers.delete" url="/show/${show.id?c}/apiIdentifier/delete/${apiIdentifier.id?c}">
+                        <@delete.modal modalId=modalId title="show.apiIdentifiers.delete" deleteButton="show.apiIdentifiers.delete" url="/show/${show.id}/apiIdentifier/delete/${apiIdentifier.id?c}">
                             <@s.messageArgs code="show.apiIdentifiers.delete.message" args=[apiIdentifier.getType()]/>
                         </@delete.modal>
                     </@t.cell>
@@ -223,7 +223,7 @@
         </@b.col>
     </@b.row>
 
-    <@delete.modal modalId="deleteShow" title="show.delete" deleteButton="show.delete" url="/show/${show.id?c}/delete">
+    <@delete.modal modalId="deleteShow" title="show.delete" deleteButton="show.delete" url="/show/${show.id}/delete">
         <@s.messageArgs code="show.delete.message" args=[show.getName()]/>
     </@delete.modal>
 </#macro>

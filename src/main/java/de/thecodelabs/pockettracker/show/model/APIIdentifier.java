@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class APIIdentifier
@@ -24,10 +25,9 @@ public class APIIdentifier
 	}
 
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
-	private Integer id;
+	private UUID id;
 
 	@NotNull
 	@JsonView(View.Summary.class)
@@ -55,19 +55,19 @@ public class APIIdentifier
 		this.show = show;
 	}
 
-	public APIIdentifier(Integer id, APIType type, String identifier)
+	public APIIdentifier(UUID id, APIType type, String identifier)
 	{
 		this.id = id;
 		this.type = type;
 		this.identifier = identifier;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}

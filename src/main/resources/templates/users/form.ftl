@@ -19,17 +19,17 @@
                         <@t.content authentication/>
                         <@t.cell>
                             <#if authentications?size gt 1>
-                                <@m.open label="button.logout" modalId="provider-logout-${authentication.id?c}" style="btn-danger"/>
+                                <@m.open label="button.logout" modalId="provider-logout-${authentication.id}" style="btn-danger"/>
 
-                                <@m.modal id="provider-logout-${authentication.id?c}">
+                                <@m.modal id="provider-logout-${authentication.id}">
                                     <@m.header authentication/>
                                     <@m.body>
                                         <@b.localize "authentication.provider.logout"/>
                                     </@m.body>
                                     <@m.footer>
                                         <@m.cancelButton/>
-                                        <@f.form name="provider-${authentication.id?c}" url="/user/settings/provider/${authentication.id}/delete">
-                                            <@f.submit label="button.logout" form="provider-${authentication.id?c}" style="btn-danger" col=false/>
+                                        <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
+                                            <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false/>
                                         </@f.form>
                                     </@m.footer>
                                 </@m.modal>

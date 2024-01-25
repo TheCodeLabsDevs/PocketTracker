@@ -26,7 +26,7 @@
         </div>
         <@b.row>
             <#list apiConfigurations as config>
-                <@showApiConfigurationForm config=config url="/administration/apiConfiguration/${config.id?c}/edit"/>
+                <@showApiConfigurationForm config=config url="/administration/apiConfiguration/${config.id}/edit"/>
             </#list>
         </@b.row>
     </@template.body>
@@ -44,7 +44,7 @@
                         <div class="d-flex justify-content-end">
                             <@f.submit size=""/>
                             <#if includeDeleteButton>
-                                <#assign modalId = "delete-api-configuration-${config.id?c}">
+                                <#assign modalId = "delete-api-configuration-${config.id}">
                                 <@m.open label="api.config.delete" modalId=modalId buttonSize="btn" style="btn-danger ms-3"/>
                             </#if>
                         </div>
@@ -52,7 +52,7 @@
                 </@f.form>
 
                 <#if includeDeleteButton>
-                    <@delete.modal modalId=modalId title="api.config.delete" deleteButton="api.config.delete" url="/administration/apiConfiguration/${config.id?c}/delete">
+                    <@delete.modal modalId=modalId title="api.config.delete" deleteButton="api.config.delete" url="/administration/apiConfiguration/${config.id}/delete">
                         <@s.messageArgs code="api.config.delete.message" args=[config.getType().name()]/>
                     </@delete.modal>
                 </#if>

@@ -4,20 +4,19 @@ import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentica
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 @Table(name = "appuser")
 public class User
 {
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	@NotNull
 	@Column(unique = true)
@@ -41,12 +40,12 @@ public class User
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<WatchedEpisode> watchedEpisodes;
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
@@ -128,7 +127,7 @@ public class User
 		this.shows.addAll(newShows);
 	}
 
-	public Optional<AddedShow> getShowById(Integer id)
+	public Optional<AddedShow> getShowById(UUID id)
 	{
 		return this.shows.stream()
 				.filter(show -> show.getShow().getId().equals(id))
@@ -153,9 +152,9 @@ public class User
 	public String toString()
 	{
 		return "User{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", userRole=" + userRole +
-				'}';
+			   "id=" + id +
+			   ", name='" + name + '\'' +
+			   ", userRole=" + userRole +
+			   '}';
 	}
 }

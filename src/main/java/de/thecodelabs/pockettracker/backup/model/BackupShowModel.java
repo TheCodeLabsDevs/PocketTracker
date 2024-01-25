@@ -6,10 +6,11 @@ import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class BackupShowModel
 {
-	private Integer id;
+	private UUID id;
 	private String name;
 	@JsonProperty("desc")
 	private String description;
@@ -26,12 +27,12 @@ public class BackupShowModel
 	@MergeIgnore
 	private List<BackupAPIIdentifierModel> apiIdentifiers;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

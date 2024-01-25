@@ -33,10 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService
@@ -113,7 +110,7 @@ public class UserService
 		return userRepository.findUserByName(username).filter(user -> user.getAuthentication(InternalAuthentication.class).isPresent());
 	}
 
-	public Optional<User> getUserById(Integer id)
+	public Optional<User> getUserById(UUID id)
 	{
 		return userRepository.findById(id);
 	}

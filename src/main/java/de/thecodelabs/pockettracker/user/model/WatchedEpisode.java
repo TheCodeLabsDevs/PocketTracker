@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "appuser_watched_episodes")
@@ -16,25 +17,25 @@ public class WatchedEpisode
 {
 	public static class WatchedEpisodeId implements Serializable
 	{
-		private Integer userId;
-		private Integer episodeId;
+		private UUID userId;
+		private UUID episodeId;
 
 		public WatchedEpisodeId()
 		{
 		}
 
-		public WatchedEpisodeId(Integer userId, Integer episodeId)
+		public WatchedEpisodeId(UUID userId, UUID episodeId)
 		{
 			this.userId = userId;
 			this.episodeId = episodeId;
 		}
 
-		public Integer getUserId()
+		public UUID getUserId()
 		{
 			return userId;
 		}
 
-		public Integer getEpisodeId()
+		public UUID getEpisodeId()
 		{
 			return episodeId;
 		}
@@ -56,10 +57,10 @@ public class WatchedEpisode
 
 	@Id
 	@Column(name = "user_id")
-	protected Integer userId;
+	protected UUID userId;
 	@Id
 	@Column(name = "episode_id")
-	protected Integer episodeId;
+	protected UUID episodeId;
 
 	@NotNull
 	@ManyToOne

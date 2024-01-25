@@ -35,10 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/show")
@@ -142,7 +139,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/edit")
-	public String editPage(WebRequest request, @PathVariable Integer id, Model model)
+	public String editPage(WebRequest request, @PathVariable UUID id, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -169,7 +166,7 @@ public class ShowAdministrationController
 
 	@PostMapping("/{id}/edit")
 	@Transactional
-	public String editPost(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
+	public String editPost(WebRequest request, @PathVariable UUID id, @Validated @ModelAttribute("show") Show show, BindingResult validation)
 	{
 		if(isModelInvalid(request, show, validation))
 		{
@@ -188,7 +185,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{id}/edit/{type}")
-	public String updateImage(WebRequest request, @PathVariable Integer id, @PathVariable ShowImageType type,
+	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable ShowImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
 		Optional<Show> showOptional = service.getShowById(id);
@@ -219,7 +216,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{id}/season/add")
-	public String addSeasons(WebRequest request, @PathVariable Integer id,
+	public String addSeasons(WebRequest request, @PathVariable UUID id,
 							 @ModelAttribute("addSeason") @Validated SeasonsDialogModel model, BindingResult validation)
 	{
 		if(validation.hasErrors())
@@ -244,7 +241,7 @@ public class ShowAdministrationController
 
 	@PostMapping("/{id}/delete")
 	@Transactional
-	public String deletePost(WebRequest request, @PathVariable Integer id)
+	public String deletePost(WebRequest request, @PathVariable UUID id)
 	{
 		final Optional<Show> managedShowOptional = service.getShowById(id);
 		if(managedShowOptional.isEmpty())
@@ -262,7 +259,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{showId}/apiIdentifier/add")
-	public String addApiIdentifier(WebRequest request, @PathVariable Integer showId,
+	public String addApiIdentifier(WebRequest request, @PathVariable UUID showId,
 								   @ModelAttribute("newApiIdentifier") @Validated APIIdentifier apiIdentifier, BindingResult validation)
 	{
 		if(validation.hasErrors())
@@ -288,7 +285,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{showId}/apiIdentifier/delete/{id}")
-	public String deleteApiIdentifier(WebRequest request, @PathVariable Integer showId, @PathVariable Integer id)
+	public String deleteApiIdentifier(WebRequest request, @PathVariable UUID showId, @PathVariable UUID id)
 	{
 		final Optional<APIIdentifier> identifierOptional = apiIdentifierService.getIdentifierById(id);
 		if(identifierOptional.isEmpty())
@@ -305,7 +302,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/showImages/{type}")
-	public String getAvailableShowImages(@PathVariable Integer id, @PathVariable ShowImageType type, Model model)
+	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable ShowImageType type, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -345,7 +342,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
-	public String addImageFromApi(WebRequest request, @PathVariable Integer showId, @PathVariable ShowImageType type, @RequestParam String url)
+	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable ShowImageType type, @RequestParam String url)
 	{
 		final Optional<Show> showOptional = service.getShowById(showId);
 		if(showOptional.isEmpty())
@@ -374,7 +371,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/seasonsFromApi")
-	public String getSeasonsFromApi(@PathVariable Integer id, Model model)
+	public String getSeasonsFromApi(@PathVariable UUID id, Model model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);
 		if(showOptional.isEmpty())
@@ -407,7 +404,7 @@ public class ShowAdministrationController
 
 	@Transactional
 	@PostMapping("/{id}/season/addFromApi")
-	public String addSeasonFromApi(WebRequest request, @PathVariable Integer id,
+	public String addSeasonFromApi(WebRequest request, @PathVariable UUID id,
 								   @ModelAttribute("formAddSeasonByApi") @Validated SeasonFromApiDialogModel model)
 	{
 		final Optional<Show> showOptional = service.getShowById(id);

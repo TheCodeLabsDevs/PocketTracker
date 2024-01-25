@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class UserAuthenticationService
 {
@@ -19,7 +21,7 @@ public class UserAuthenticationService
 	}
 
 	@Transactional
-	public void deleteAuthenticationProvider(User user, Integer providerId)
+	public void deleteAuthenticationProvider(User user, UUID providerId)
 	{
 		final boolean anyMatch = user.getAuthentications().stream().anyMatch(provider -> provider.getId().equals(providerId));
 		if(!anyMatch)

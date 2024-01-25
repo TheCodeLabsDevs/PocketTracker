@@ -54,7 +54,7 @@ public class SeasonAdministrationController
 	}
 
 	@GetMapping("/{id}/edit")
-	public String seasonEditView(WebRequest request, @PathVariable Integer id, Model model)
+	public String seasonEditView(WebRequest request, @PathVariable UUID id, Model model)
 	{
 		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
 		if(seasonOptional.isEmpty())
@@ -81,7 +81,7 @@ public class SeasonAdministrationController
 
 	@PostMapping("/{id}/edit")
 	@Transactional
-	public String seasonEditSubmit(WebRequest request, @PathVariable Integer id,
+	public String seasonEditSubmit(WebRequest request, @PathVariable UUID id,
 								   @ModelAttribute("season") @Validated Season season, BindingResult validation)
 	{
 		if(isSeasonModelInvalid(request, season, validation))
@@ -101,7 +101,7 @@ public class SeasonAdministrationController
 	}
 
 	@PostMapping("/{id}/episode/add")
-	public String addEpisode(WebRequest request, @PathVariable Integer id,
+	public String addEpisode(WebRequest request, @PathVariable UUID id,
 							 @ModelAttribute("addEpisode") @Validated EpisodesDialogModel model, BindingResult validation)
 	{
 		if(validation.hasErrors())
@@ -125,7 +125,7 @@ public class SeasonAdministrationController
 	}
 
 	@PostMapping("/{id}/delete")
-	public String deleteSeasonSubmit(WebRequest request, @PathVariable Integer id)
+	public String deleteSeasonSubmit(WebRequest request, @PathVariable UUID id)
 	{
 		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
 		if(seasonOptional.isEmpty())
@@ -134,7 +134,7 @@ public class SeasonAdministrationController
 		}
 
 		final Season season = seasonOptional.get();
-		final Integer showId = season.getShow().getId();
+		final UUID showId = season.getShow().getId();
 		final String seasonName = season.getName();
 
 		userService.deleteWatchedSeason(season);
@@ -145,7 +145,7 @@ public class SeasonAdministrationController
 	}
 
 	@GetMapping("/{id}/episodesFromApi")
-	public String getEpisodesFromApi(@PathVariable Integer id, Model model)
+	public String getEpisodesFromApi(@PathVariable UUID id, Model model)
 	{
 		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
 		if(seasonOptional.isEmpty())
@@ -179,7 +179,7 @@ public class SeasonAdministrationController
 
 	@Transactional
 	@PostMapping("/{id}/updateFromApi")
-	public String updateFromApi(WebRequest request, @PathVariable Integer id,
+	public String updateFromApi(WebRequest request, @PathVariable UUID id,
 								@ModelAttribute("formUpdateSeasonFromApi") @Validated UpdateSeasonFromApiDialogModel model)
 	{
 		final Optional<Season> seasonOptional = seasonService.getSeasonById(id);
