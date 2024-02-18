@@ -11,13 +11,22 @@ import java.util.UUID;
 public class ApiTokenAuthentication
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
+
 	private LocalDateTime createDate;
 	private String token;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public UUID getId()
 	{

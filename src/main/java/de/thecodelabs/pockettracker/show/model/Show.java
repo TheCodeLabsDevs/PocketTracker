@@ -30,7 +30,6 @@ public class Show
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
 	private UUID id;
 
@@ -79,6 +78,15 @@ public class Show
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
 	@MergeIgnore
 	private List<APIIdentifier> apiIdentifiers = new ArrayList<>();
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public Show()
 	{

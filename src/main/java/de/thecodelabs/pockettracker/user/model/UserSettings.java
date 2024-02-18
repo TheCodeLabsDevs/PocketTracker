@@ -12,7 +12,6 @@ import java.util.UUID;
 public class UserSettings
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	private Boolean showDislikedShows = false;
@@ -21,6 +20,15 @@ public class UserSettings
 
 	@OneToOne(mappedBy = "settings")
 	private User user;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public UserSettings()
 	{

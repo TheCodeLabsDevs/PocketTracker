@@ -13,11 +13,19 @@ import java.util.UUID;
 public class UserAuthentication implements MessageSourceResolvable
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	@ManyToOne
 	private User user;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public UUID getId()
 	{

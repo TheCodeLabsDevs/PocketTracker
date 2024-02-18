@@ -24,7 +24,6 @@ public class APIIdentifier
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
 	private UUID id;
 
@@ -42,6 +41,15 @@ public class APIIdentifier
 	@JsonIgnore
 	@MergeIgnore
 	private Show show;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public APIIdentifier()
 	{

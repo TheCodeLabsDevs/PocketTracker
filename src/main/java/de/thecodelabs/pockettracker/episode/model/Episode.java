@@ -24,7 +24,6 @@ import java.util.UUID;
 public class Episode
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	@NotNull
@@ -56,6 +55,15 @@ public class Episode
 	@JsonIgnore
 	@MergeIgnore
 	private List<WatchedEpisode> watchedEpisodes;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public Episode()
 	{

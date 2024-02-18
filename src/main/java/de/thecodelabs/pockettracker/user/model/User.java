@@ -15,7 +15,6 @@ import java.util.UUID;
 public class User
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	@NotNull
@@ -39,6 +38,15 @@ public class User
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<WatchedEpisode> watchedEpisodes;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public void setId(UUID id)
 	{
@@ -152,9 +160,9 @@ public class User
 	public String toString()
 	{
 		return "User{" +
-			   "id=" + id +
-			   ", name='" + name + '\'' +
-			   ", userRole=" + userRole +
-			   '}';
+				"id=" + id +
+				", name='" + name + '\'' +
+				", userRole=" + userRole +
+				'}';
 	}
 }

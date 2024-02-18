@@ -27,7 +27,6 @@ public class Season
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	@JsonView(View.Summary.class)
 	private UUID id;
 
@@ -55,6 +54,15 @@ public class Season
 	private List<Episode> episodes = new ArrayList<>();
 
 	private Boolean filledCompletely = false;
+
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
 
 	public Season()
 	{
