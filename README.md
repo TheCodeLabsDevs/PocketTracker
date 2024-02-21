@@ -98,3 +98,21 @@ Currently supported external APIs:
    1. username: admin
    2. password: see `/opt/PocketTracker/config/password.txt`
 
+
+## Upgrading from version 1.7.1 to 1.8.0 or later
+
+⚠️ A database migration is required!
+
+- Backup your database from `https://<your_domain>/administration/backup`
+- Download the backup zip file
+- Extract the zip file
+- Open `build/IdToUuidConverter.py` in a text editor
+   - Change `line 50` to match the path to your `database.json` from the extracted zip
+- Run `python3 build/IdToUuidConverter.py`
+   - Ids will be converted to uuids
+   - The original `database.json` will NOT be manipulated
+   - A `database_converted.json` will be created
+- Create a new zip file with the contents from the original zip file but replace `database.json` with `database_converted.json`
+- Clear your database (all tables, objects, sequences) or create a new one
+- Start PocketTracker
+- Restore the zip file at `https://<your_domain>/administration/backup`

@@ -7,10 +7,11 @@ import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import java.util.List;
+import java.util.UUID;
 
 public class BackupUserModel
 {
-	private Integer id;
+	private UUID id;
 	private String name;
 	private List<BackupUserAuthentication> authentications;
 	private List<BackupUserTokenModel> tokens;
@@ -22,12 +23,12 @@ public class BackupUserModel
 	@JsonProperty("watched")
 	private List<BackupWatchedEpisodeModel> watchedEpisodes;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

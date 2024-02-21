@@ -25,6 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user/settings")
@@ -112,7 +113,7 @@ public class UserSettingsController
 	}
 
 	@PostMapping("/provider/{id}/delete")
-	public String deleteProvider(@PathVariable Integer id)
+	public String deleteProvider(@PathVariable UUID id)
 	{
 		authenticationService.deleteAuthenticationProvider(userService.getCurrentUser(), id);
 		return ReturnValues.REDIRECT_USER_SETTINGS;

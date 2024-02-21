@@ -2,20 +2,22 @@ package de.thecodelabs.pockettracker.backup.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.UUID;
+
 public class BackupAddedShowModel
 {
 	@JsonProperty("show")
-	private Integer showId;
+	private UUID showId;
 
 	@JsonProperty("disliked")
 	private Boolean disliked;
 
-	public Integer getShowId()
+	public UUID getShowId()
 	{
 		return showId;
 	}
 
-	public void setShowId(Integer showId)
+	public void setShowId(UUID showId)
 	{
 		this.showId = showId;
 	}

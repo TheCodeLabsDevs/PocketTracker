@@ -6,9 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface EpisodeRepository extends JpaRepository<Episode, Integer>
+public interface EpisodeRepository extends JpaRepository<Episode, UUID>
 {
-	Optional<Episode> findByNumberAndSeasonNumberAndSeasonShowId(@Param("episodeNumber") Integer episodeNumber, @Param("seasonNumber") Integer seasonNumber, @Param("showId") Integer showId);
+	Optional<Episode> findByNumberAndSeasonNumberAndSeasonShowId(@Param("episodeNumber") Integer episodeNumber, @Param("seasonNumber") Integer seasonNumber, @Param("showId") UUID showId);
 }

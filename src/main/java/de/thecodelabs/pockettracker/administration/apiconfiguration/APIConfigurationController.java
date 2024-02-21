@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/administration/apiConfiguration")
@@ -73,7 +74,7 @@ public class APIConfigurationController
 
 	@PostMapping("/{id}/edit")
 	@Transactional
-	public String edit(WebRequest request, @PathVariable Integer id, @Validated @ModelAttribute("apiConfiguration") APIConfiguration apiConfiguration, BindingResult validation)
+	public String edit(WebRequest request, @PathVariable UUID id, @Validated @ModelAttribute("apiConfiguration") APIConfiguration apiConfiguration, BindingResult validation)
 	{
 		if(isApiConfigurationModelInvalid(request, apiConfiguration, validation))
 		{
@@ -94,7 +95,7 @@ public class APIConfigurationController
 
 	@PostMapping("/{id}/delete")
 	@Transactional
-	public String delete(WebRequest request, @PathVariable Integer id)
+	public String delete(WebRequest request, @PathVariable UUID id)
 	{
 		final Optional<APIConfiguration> apiConfigurationOptional = apiConfigurationService.getConfigurationById(id);
 		if(apiConfigurationOptional.isEmpty())

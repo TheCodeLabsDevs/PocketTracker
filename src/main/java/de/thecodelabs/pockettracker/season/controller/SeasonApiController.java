@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/season")
@@ -27,14 +28,14 @@ public class SeasonApiController
 	@Operation(operationId = "getAllSeasons")
 	@GetMapping
 	@JsonView(Season.View.Summary.class)
-	public List<Season> getAllSeasonsForShow(@RequestParam(name = "showId") Integer showId)
+	public List<Season> getAllSeasonsForShow(@RequestParam(name = "showId") UUID showId)
 	{
 		return seasonService.getSeasonsForShow(showId);
 	}
 
 	@Operation(operationId = "getSeasonById")
 	@GetMapping("/{id}")
-	public Optional<Season> getSeasonById(@PathVariable Integer id)
+	public Optional<Season> getSeasonById(@PathVariable UUID id)
 	{
 		return seasonService.getSeasonById(id);
 	}

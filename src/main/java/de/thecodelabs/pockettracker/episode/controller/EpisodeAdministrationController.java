@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/episode")
@@ -42,7 +43,7 @@ public class EpisodeAdministrationController
 	}
 
 	@GetMapping("/{id}/edit")
-	public String getEpisodeView(WebRequest request, @PathVariable Integer id, Model model)
+	public String getEpisodeView(WebRequest request, @PathVariable UUID id, Model model)
 	{
 		final Optional<Episode> episodeOptional = episodeService.getEpisodeById(id);
 		if(episodeOptional.isEmpty())
@@ -71,7 +72,7 @@ public class EpisodeAdministrationController
 
 	@PostMapping("/{id}/edit")
 	@Transactional
-	public String episodeEditSubmit(WebRequest request, @PathVariable Integer id,
+	public String episodeEditSubmit(WebRequest request, @PathVariable UUID id,
 									@ModelAttribute("episode") @Validated Episode episode, BindingResult validation)
 	{
 		if(isEpisodeModelInvalid(request, episode, validation))
@@ -91,7 +92,7 @@ public class EpisodeAdministrationController
 	}
 
 	@PostMapping("/{id}/delete")
-	public String deleteEpisodeSubmit(WebRequest request, @PathVariable Integer id)
+	public String deleteEpisodeSubmit(WebRequest request, @PathVariable UUID id)
 	{
 		final Optional<Episode> episodeOptional = episodeService.getEpisodeById(id);
 		if(episodeOptional.isEmpty())
@@ -112,7 +113,7 @@ public class EpisodeAdministrationController
 	}
 
 	@PostMapping("/{id}/edit/{type}")
-	public String updateImage(WebRequest request, @PathVariable Integer id, @PathVariable EpisodeImageType type,
+	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable EpisodeImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
 		Optional<Episode> episodeOptional = episodeService.getEpisodeById(id);

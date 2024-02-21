@@ -13,15 +13,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 public class Show
@@ -34,10 +30,8 @@ public class Show
 	}
 
 	@Id
-	@GeneratedValue(generator = "custom_generator")
-	@GenericGenerator(name = "custom_generator", strategy = "de.thecodelabs.pockettracker.utils.CustomIdGenerator")
 	@JsonView(View.Summary.class)
-	private Integer id;
+	private UUID id;
 
 	@NotNull
 	@NotEmpty
@@ -85,6 +79,15 @@ public class Show
 	@MergeIgnore
 	private List<APIIdentifier> apiIdentifiers = new ArrayList<>();
 
+	@PrePersist
+	void prePersists()
+	{
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
+
 	public Show()
 	{
 	}
@@ -100,12 +103,12 @@ public class Show
 		this.finished = finished;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}

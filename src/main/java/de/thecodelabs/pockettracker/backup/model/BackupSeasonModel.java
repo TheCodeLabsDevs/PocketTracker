@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 
 import java.util.List;
+import java.util.UUID;
 
 public class BackupSeasonModel
 {
-	private Integer id;
+	private UUID id;
 	private String name;
 	@JsonProperty("desc")
 	private String description;
@@ -16,12 +17,12 @@ public class BackupSeasonModel
 	private List<BackupEpisodeModel> episodes;
 	private Boolean filledCompletely;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

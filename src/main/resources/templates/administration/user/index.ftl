@@ -32,12 +32,12 @@
                         <@t.cell value=user.name/>
                         <@t.content value=user.userRole/>
                         <@t.cell>
-                            <@t.action icon="fas fa-pen" url="/users/administration/${user.id?c}/edit" />
+                            <@t.action icon="fas fa-pen" url="/users/administration/${user.id}/edit" />
 
                             <#if currentUser.name != user.name>
-                                <#assign modalId = "deleteUser-${user.id?c}">
+                                <#assign modalId = "deleteUser-${user.id}">
                                 <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
-                                <@delete.modal modalId=modalId title="admin.user.delete" url="/users/administration/${user.id?c}/delete">
+                                <@delete.modal modalId=modalId title="admin.user.delete" url="/users/administration/${user.id}/delete">
                                     <@s.messageArgs code="admin.user.delete.message" args=[user.name]/>
                                 </@delete.modal>
                             </#if>

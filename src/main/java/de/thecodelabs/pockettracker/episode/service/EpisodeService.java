@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class EpisodeService
@@ -38,12 +39,12 @@ public class EpisodeService
 		this.webConfigurationProperties = webConfigurationProperties;
 	}
 
-	public Optional<Episode> getEpisodeById(Integer id)
+	public Optional<Episode> getEpisodeById(UUID id)
 	{
 		return episodeRepository.findById(id);
 	}
 
-	public Optional<Episode> getEpisodeByNumbers(Integer showId, Integer seasonNumber, Integer episodeNumber)
+	public Optional<Episode> getEpisodeByNumbers(UUID showId, Integer seasonNumber, Integer episodeNumber)
 	{
 		return episodeRepository.findByNumberAndSeasonNumberAndSeasonShowId(episodeNumber, seasonNumber, showId);
 	}

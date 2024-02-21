@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/episode")
@@ -24,14 +25,14 @@ public class EpisodeApiController
 
 	@Operation(operationId = "getEpisodeById")
 	@GetMapping("/{id}")
-	public Optional<Episode> getEpisodeById(@PathVariable Integer id)
+	public Optional<Episode> getEpisodeById(@PathVariable UUID id)
 	{
 		return episodeService.getEpisodeById(id);
 	}
 
 	@Operation(operationId = "getEpisode")
 	@GetMapping()
-	public Optional<Episode> getEpisodeByNumbers(@RequestParam Integer showId, @RequestParam Integer seasonNumber, @RequestParam Integer episodeNumber)
+	public Optional<Episode> getEpisodeByNumbers(@RequestParam UUID showId, @RequestParam Integer seasonNumber, @RequestParam Integer episodeNumber)
 	{
 		return episodeService.getEpisodeByNumbers(showId, seasonNumber, episodeNumber);
 	}

@@ -1,19 +1,20 @@
 package de.thecodelabs.pockettracker.backup.model.user;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class BackupUserTokenModel
 {
-	private Integer id;
+	private UUID id;
 	private LocalDateTime createDate;
 	private String token;
 
-	public Integer getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}

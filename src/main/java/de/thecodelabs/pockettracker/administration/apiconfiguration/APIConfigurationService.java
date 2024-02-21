@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class APIConfigurationService
@@ -25,7 +26,7 @@ public class APIConfigurationService
 		return repository.findAllByOrderByTypeAsc();
 	}
 
-	public Optional<APIConfiguration> getConfigurationById(Integer id)
+	public Optional<APIConfiguration> getConfigurationById(UUID id)
 	{
 		return repository.findById(id);
 	}

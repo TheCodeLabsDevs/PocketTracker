@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 public interface WatchedEpisodeRepository extends JpaRepository<WatchedEpisode, WatchedEpisode.WatchedEpisodeId>
 {
 	@Transactional
 	@Modifying
 	@Query("DELETE FROM WatchedEpisode episode WHERE episode.episodeId = ?1 and episode.userId = ?2")
-	void deleteWatchedEpisode(@Param("episodeId") Integer episodeId, @Param("userId") Integer userId);
+	void deleteWatchedEpisode(@Param("episodeId") UUID episodeId, @Param("userId") UUID userId);
 }

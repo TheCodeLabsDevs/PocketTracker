@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "appuser_added_shows")
@@ -14,25 +15,25 @@ public class AddedShow
 {
 	public static class AddedShowId implements Serializable
 	{
-		private Integer userId;
-		private Integer showId;
+		private UUID userId;
+		private UUID showId;
 
 		public AddedShowId()
 		{
 		}
 
-		public AddedShowId(Integer userId, Integer showId)
+		public AddedShowId(UUID userId, UUID showId)
 		{
 			this.userId = userId;
 			this.showId = showId;
 		}
 
-		public Integer getUserId()
+		public UUID getUserId()
 		{
 			return userId;
 		}
 
-		public Integer getShowId()
+		public UUID getShowId()
 		{
 			return showId;
 		}
@@ -54,10 +55,10 @@ public class AddedShow
 
 	@Id
 	@Column(name = "user_id")
-	protected Integer userId;
+	protected UUID userId;
 	@Id
 	@Column(name = "show_id")
-	protected Integer showId;
+	protected UUID showId;
 
 	@NotNull
 	@ManyToOne

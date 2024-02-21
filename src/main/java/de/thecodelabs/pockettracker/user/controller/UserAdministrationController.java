@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/users/administration")
@@ -66,7 +67,7 @@ public class UserAdministrationController
 
 
 	@GetMapping("/{id}/edit")
-	public String editView(@PathVariable Integer id, Model model)
+	public String editView(@PathVariable UUID id, Model model)
 	{
 		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
@@ -80,7 +81,7 @@ public class UserAdministrationController
 
 
 	@PostMapping("/{id}/edit")
-	public String editSubmit(@PathVariable Integer id, @ModelAttribute("user") UserForm userForm)
+	public String editSubmit(@PathVariable UUID id, @ModelAttribute("user") UserForm userForm)
 	{
 		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())
@@ -101,7 +102,7 @@ public class UserAdministrationController
 	}
 
 	@PostMapping("/{id}/delete")
-	public String deleteSubmit(@PathVariable Integer id)
+	public String deleteSubmit(@PathVariable UUID id)
 	{
 		final Optional<User> userOptional = userService.getUserById(id);
 		if(userOptional.isEmpty())

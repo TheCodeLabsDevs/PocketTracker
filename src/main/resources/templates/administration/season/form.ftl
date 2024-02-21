@@ -25,7 +25,7 @@
         </@b.row>
     </@f.form>
 
-    <@delete.modal modalId="deleteSeason" title="season.delete" deleteButton="season.delete" url="/season/${season.id?c}/delete">
+    <@delete.modal modalId="deleteSeason" title="season.delete" deleteButton="season.delete" url="/season/${season.id}/delete">
         <@s.messageArgs code="season.delete.message" args=[season.getName()]/>
     </@delete.modal>
 </#macro>
@@ -44,7 +44,7 @@
         <@m.header "season.episodes.add"/>
         <@m.body>
             <#assign objectName="addEpisode"/>
-            <@f.form name=objectName url="/season/${season.id?c}/episode/add">
+            <@f.form name=objectName url="/season/${season.id}/episode/add">
                 <@f.input objectName=objectName label="season.episodes.add.count" name="episodeCount" value="1"/>
             </@f.form>
         </@m.body>
@@ -67,11 +67,11 @@
                     <@t.cell value="${episode.number}"/>
                     <@t.cell value="${episode.name}"/>
                     <@t.cell>
-                        <@t.action icon="fas fa-pen" url="/episode/${episode.id?c}/edit" />
+                        <@t.action icon="fas fa-pen" url="/episode/${episode.id}/edit" />
 
-                        <#assign modalId = "deleteEpisode-${episode.id?c}">
+                        <#assign modalId = "deleteEpisode-${episode.id}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
-                        <@delete.modal modalId=modalId title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id?c}/delete">
+                        <@delete.modal modalId=modalId title="episode.delete" deleteButton="episode.delete" url="/episode/${episode.id}/delete">
                             <@s.messageArgs code="episode.delete.message" args=[episode.getName()]/>
                         </@delete.modal>
                     </@t.cell>

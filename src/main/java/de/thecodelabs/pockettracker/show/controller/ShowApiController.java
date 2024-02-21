@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/show")
@@ -34,7 +35,7 @@ public class ShowApiController
 
 	@Operation(operationId = "getShowById")
 	@GetMapping("/{id}")
-	public Optional<Show> getShowById(@PathVariable Integer id)
+	public Optional<Show> getShowById(@PathVariable UUID id)
 	{
 		return showService.getShowById(id);
 	}

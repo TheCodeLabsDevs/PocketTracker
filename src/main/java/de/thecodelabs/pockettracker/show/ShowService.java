@@ -29,6 +29,7 @@ import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ShowService
@@ -85,7 +86,7 @@ public class ShowService
 	}
 
 
-	public Optional<Show> getShowById(Integer id)
+	public Optional<Show> getShowById(UUID id)
 	{
 		final Optional<Show> showOptional = repository.findById(id);
 		showOptional.ifPresent(this::prepareShow);
@@ -108,7 +109,7 @@ public class ShowService
 	}
 
 	@Transactional
-	public Season addSeasonToShow(Integer showId)
+	public Season addSeasonToShow(UUID showId)
 	{
 		final Optional<Show> showOptional = getShowById(showId);
 		if(showOptional.isEmpty())
@@ -196,7 +197,7 @@ public class ShowService
 	}
 
 	@Transactional
-	public void addApiIdentifierToShow(Integer showId, APIIdentifier apiIdentifier)
+	public void addApiIdentifierToShow(UUID showId, APIIdentifier apiIdentifier)
 	{
 		final Optional<Show> showOptional = getShowById(showId);
 		if(showOptional.isEmpty())
