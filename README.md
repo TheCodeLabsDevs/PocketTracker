@@ -99,7 +99,7 @@ Currently supported external APIs:
    2. password: see `/opt/PocketTracker/config/password.txt`
 
 
-## Upgrading from version 1.7.1 to 1.8.0 or later
+## Upgrading from version 1.9.1 to 1.10.0 or later
 
 ⚠️ A database migration is required!
 
