@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -53,54 +56,48 @@ public class SecurityConfiguration
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
 		http
-				.csrf()
-				.and()
+				.csrf(Customizer.withDefaults())
 
-				.authorizeHttpRequests()
-				.requestMatchers(PERMIT_ALL).permitAll()
-				.requestMatchers(AUTHENTICATED).authenticated()
-				.and()
+				.authorizeHttpRequests(customizer -> customizer
+						.requestMatchers(PERMIT_ALL).permitAll()
+						.requestMatchers(AUTHENTICATED).authenticated())
 
-				.formLogin()
-				.loginPage(LOGIN_PAGE)
-				.permitAll()
-				.and()
+				.formLogin(customizer -> customizer
+						.loginPage(LOGIN_PAGE)
+						.permitAll())
 
-				.rememberMe()
-				.tokenRepository(rememberMeService)
-				.tokenValiditySeconds(configurationProperties.getRememberMeTokenValiditySeconds())
-				.and()
+				.rememberMe(customizer -> customizer
+						.tokenRepository(rememberMeService)
+						.tokenValiditySeconds(configurationProperties.getRememberMeTokenValiditySeconds()))
 
-				.logout()
-				.permitAll()
-				.and();
+				.logout(LogoutConfigurer::permitAll);
 
 		if(configurationProperties.isEnableOAuth())
 		{
 			http
-					.oauth2Login()
-					.successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-						// Create user if missing
-						final Optional<User> userOptional = userService.getUser(authentication);
-						if(userOptional.isEmpty())
-						{
-							try
-							{
-								final UserForm userForm = new UserForm();
-								userForm.setUsername(authentication.getName());
-								final User user = userService.createUser(userForm);
-								userService.addGitlabAuthentication(user, authentication.getName());
-							}
-							catch(Exception e)
-							{
-								throw new BadCredentialsException("Fail to create Gitlab Authentication");
-							}
-						}
+					.oauth2Login(customizer -> customizer
+							.successHandler((httpServletRequest, httpServletResponse, authentication) -> {
+								// Create user if missing
+								final Optional<User> userOptional = userService.getUser(authentication);
+								if(userOptional.isEmpty())
+								{
+									try
+									{
+										final UserForm userForm = new UserForm();
+										userForm.setUsername(authentication.getName());
+										final User user = userService.createUser(userForm);
+										userService.addGitlabAuthentication(user, authentication.getName());
+									}
+									catch(Exception e)
+									{
+										throw new BadCredentialsException("Fail to create Gitlab Authentication");
+									}
+								}
 
-						redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/");
-					})
-					.loginPage(LOGIN_PAGE)
-					.permitAll();
+								redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/");
+							})
+							.loginPage(LOGIN_PAGE)
+							.permitAll());
 		}
 		return http.build();
 	}
@@ -115,15 +112,13 @@ public class SecurityConfiguration
 		http
 				.securityMatcher("/api/**")
 
-				.csrf()
-				.disable()
+				.csrf(AbstractHttpConfigurer::disable)
 
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
+				.sessionManagement(customizer -> customizer
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 				.addFilter(filter)
-				.authorizeHttpRequests().anyRequest().authenticated();
+				.authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated());
 		return http.build();
 	}
 }

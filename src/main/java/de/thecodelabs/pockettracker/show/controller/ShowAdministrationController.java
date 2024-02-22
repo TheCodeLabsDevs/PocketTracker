@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -354,7 +354,7 @@ public class ShowAdministrationController
 
 		service.deleteShowImage(type, show);
 
-		try(final InputStream dataStream = new URL(url).openStream())
+		try(final InputStream dataStream = URI.create(url).toURL().openStream())
 		{
 			final String fileNameFromUrl = url.substring(url.lastIndexOf('/') + 1);
 			final String fileName = MessageFormat.format("{0}_{1}", show.getName(), fileNameFromUrl);
