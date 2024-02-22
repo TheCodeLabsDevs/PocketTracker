@@ -15,9 +15,7 @@
     </parent>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-
+        <java.version>21</java.version>
         <jlibs.version>3.2.0</jlibs.version>
 
         <!-- Dependency overrides -->
@@ -32,6 +30,8 @@
         <font-awesome.version>6.5.1</font-awesome.version>
         <bootstrap.version>5.3.2</bootstrap.version>
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
+
+        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -152,6 +152,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
