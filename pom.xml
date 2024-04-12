@@ -20,6 +20,7 @@
 
         <!-- Dependency overrides -->
         <snakeyaml.version>2.2</snakeyaml.version>
+        <netty.version>4.1.108.Final</netty.version>
 
         <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
 
