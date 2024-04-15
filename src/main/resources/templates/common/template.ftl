@@ -13,7 +13,7 @@
         <link href="<@s.url "/webjars/font-awesome/6.5.2/css/all.min.css"/>" rel="stylesheet"/>
         <link href="<@s.url "/css/main.css"/>" rel="stylesheet">
 
-        <script src="<@s.url "/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"/>"></script>
+        <script src="<@s.url "/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"/>"></script>
         <script src="<@s.url "/js/main.js"/>"></script>
 
         <link rel="apple-touch-icon" href="<@s.url "/touch_icon.png"/>">
