@@ -1,5 +1,9 @@
 window.addEventListener('load', function (event) {
-    document.getElementById("searchShowName").addEventListener('input', debounce(updateSearchRequests));
+    let searchShowNameInput = document.getElementById("searchShowName");
+    if(searchShowNameInput !== null)
+    {
+        searchShowNameInput.addEventListener('input', debounce(updateSearchRequests));
+    }
 });
 
 function debounce(func, delay = 250) {
