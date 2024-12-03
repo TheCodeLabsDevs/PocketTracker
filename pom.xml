@@ -22,7 +22,7 @@
         <snakeyaml.version>2.3</snakeyaml.version>
         <netty.version>4.1.108.Final</netty.version>
 
-        <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
 
         <freemarker-java8.version>3.0.0</freemarker-java8.version>
         <commons-io.version>2.18.0</commons-io.version>
