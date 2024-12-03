@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.importer.tvdb_v3.converter;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.season.model.Season;
-import org.jetbrains.annotations.Nullable;
+import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
