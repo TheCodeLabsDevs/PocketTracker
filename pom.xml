@@ -24,7 +24,7 @@
 
         <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
 
-        <freemarker-java8.version>3.0.0</freemarker-java8.version>
+        <freemarker-java8.version>3.0.1</freemarker-java8.version>
         <commons-io.version>2.18.0</commons-io.version>
 
         <webjars-locator.version>0.52</webjars-locator.version>
