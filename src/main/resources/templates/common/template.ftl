@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link href="<@s.url "/webjars/bootstrap/5.3.3/css/bootstrap.min.css"/>" rel="stylesheet"/>
-        <link href="<@s.url "/webjars/font-awesome/6.7.1/css/all.min.css"/>" rel="stylesheet"/>
+        <link href="<@s.url "/webjars/font-awesome/6.7.2/css/all.min.css"/>" rel="stylesheet"/>
         <link href="<@s.url "/css/main.css"/>" rel="stylesheet">
 
         <script src="<@s.url "/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"/>"></script>
