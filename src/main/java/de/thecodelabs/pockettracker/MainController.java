@@ -217,16 +217,9 @@ public class MainController
 		}
 
 		final Movie movie = movieOptional.get();
-		// TODO
-//		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(movie, user);
 
 		model.addAttribute(ModelAttributes.MOVIE, movie);
 		model.addAttribute(ModelAttributes.IS_ADDED, user.getShowById(movie.getId()).isPresent());
-
-//		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
-//		{
-//			model.addAttribute(ModelAttributes.LATEST_WATCHED, latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-//		}
 
 		return ReturnValues.MOVIE;
 	}

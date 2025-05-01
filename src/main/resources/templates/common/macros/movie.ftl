@@ -15,10 +15,10 @@
                     ${movie.getName()}
                 </p>
 
-                <#if isUserSpecific>
+                <#assign watchedDate = userService.getWatchDateForMovie(currentUser, movie)/>
+                <#if isUserSpecific && watchedDate??>
                     <div class="mb-4">
-<#--                        TODO: -->
-                        <div class="text-center"><@b.localize "movie.lastWatched"/>01.01.1970</div>
+                        <div class="text-center"><@b.localize "movie.lastWatched"/> ${watchedDate}</div>
                     </div>
                 </#if>
 

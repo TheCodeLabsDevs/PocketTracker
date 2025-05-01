@@ -16,9 +16,11 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title text-center">${movie.getName()} (${movie.getReleaseDate()?date('yyy-MM-dd')?string.yyyy})</h3>
-                <#if latestWatched??>
-                    <div class="text-center"><@b.localize "movie.lastWatched"/> ${latestWatched}</div>
+                <h3 class="card-title text-center">${movie.getName()} (${movie.getReleaseDate()?date('yyy-MM-dd')?string["dd.MM.yyyy"]})</h3>
+
+                <#assign watchedDate = userService.getWatchDateForMovie(currentUser, movie)/>
+                <#if watchedDate??>
+                    <div class="text-center"><@b.localize "movie.lastWatched"/> ${watchedDate}</div>
                 </#if>
 
                 <@b.hasPermission "ADMIN">

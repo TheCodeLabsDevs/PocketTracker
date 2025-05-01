@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -467,5 +468,14 @@ public class UserService
 			userAddedMovieRepository.deleteAddedMovie(addedMovie.getMovie().getId(), addedMovie.getUser().getId());
 		}
 		return true;
+	}
+
+	public String getWatchDateForMovie(User user, Movie movie)
+	{
+		return user.getMovies().stream()
+				.filter(m -> m.getMovie().equals(movie))
+				.findFirst()
+				.map(value -> value.getWatchedDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+				.orElse(null);
 	}
 }

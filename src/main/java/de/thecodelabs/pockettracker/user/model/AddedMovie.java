@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -60,6 +61,9 @@ public class AddedMovie
 	@Column(name = "movie_id")
 	protected UUID movieId;
 
+	@Column(name = "watched_date")
+	protected LocalDate watchedDate;
+
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -74,10 +78,11 @@ public class AddedMovie
 	{
 	}
 
-	public AddedMovie(@NotNull User user, @NotNull Movie movie)
+	public AddedMovie(@NotNull User user, @NotNull Movie movie, @NotNull LocalDate watchedDate)
 	{
 		this.user = user;
 		this.movie = movie;
+		this.watchedDate = watchedDate;
 
 		this.userId = user.getId();
 		this.movieId = movie.getId();
@@ -91,5 +96,10 @@ public class AddedMovie
 	public Movie getMovie()
 	{
 		return movie;
+	}
+
+	public LocalDate getWatchedDate()
+	{
+		return watchedDate;
 	}
 }
