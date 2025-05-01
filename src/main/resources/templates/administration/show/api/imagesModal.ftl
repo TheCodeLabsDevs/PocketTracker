@@ -17,8 +17,13 @@
                             <img src="${imageUrl}" class="img-fluid m-3 image-selectable" alt="${imageUrl}"/>
                         </@b.col>
                     </#list>
+
                 </@b.row>
             </#list>
+
+            <#if urlsByApi?size == 0>
+                <h5><@b.localize "show.banner.fromApi.noImages"/></h5>
+            </#if>
 
             <@f.form name="imageFromApi" url="/show/${show.id}/edit/imageFromApi/${imageType}" classes="hidden">
                 <@f.hidden id="url" value=""/>

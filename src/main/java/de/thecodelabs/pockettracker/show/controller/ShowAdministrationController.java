@@ -331,7 +331,7 @@ public class ShowAdministrationController
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 			{
-				throw new RuntimeException(e);
+				LOGGER.error(MessageFormat.format("Error fetching images for show \"{0}\"", show.getName()), e);
 			}
 		}
 
