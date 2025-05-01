@@ -2,12 +2,14 @@ package de.thecodelabs.pockettracker;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
+import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
+import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
@@ -38,6 +40,7 @@ public class MainController
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 	private final UserService userService;
+	private final MovieService movieService;
 
 	private static class ModelAttributes
 	{
@@ -51,6 +54,9 @@ public class MainController
 		public static final String LATEST_WATCHED = "latestWatched";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
+		public static final String NUMBER_OF_ALL_MOVIES = "numberOfAllMovies";
+		public static final String MOVIES = "movies";
+		public static final String USER_MOVIES = "userMovies";
 	}
 
 	private static class ReturnValues
@@ -61,16 +67,18 @@ public class MainController
 		public static final String SHOW = "show";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
+		public static final String MOVIES = "movies";
 	}
 
 	@Autowired
-	public MainController(ShowService showService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService)
+	public MainController(ShowService showService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService, MovieService movieService)
 	{
 		this.showService = showService;
 		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
 		this.userService = userService;
+		this.movieService = movieService;
 	}
 
 	@SuppressWarnings("squid:S1319")
@@ -168,5 +176,29 @@ public class MainController
 		{
 			return ReturnValues.REDIRECT_SHOWS;
 		}
+	}
+
+	@SuppressWarnings("squid:S1319")
+	@GetMapping("/movies")
+	public String allMovies(WebRequest request, Model model)
+	{
+		UserNavigationCoordinator.setUserSpecificNavigation(request, false);
+
+		final User user = userService.getCurrentUser();
+
+		String searchText = null;
+		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
+		{
+			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
+		}
+
+		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_MOVIES, movieService.getAllMovies(null).size());
+		model.addAttribute(ModelAttributes.MOVIES, movieService.getAllMovies(searchText));
+
+		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
+		model.addAttribute(ModelAttributes.USER_MOVIES, user.getMovies().stream().map(AddedMovie::getMovie).toList());
+		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
+
+		return ReturnValues.MOVIES;
 	}
 }

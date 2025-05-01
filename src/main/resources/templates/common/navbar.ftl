@@ -21,8 +21,10 @@
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <@item name="menu.allShows" url="/shows"/>
-                        <@item name="menu.myShows" url="/user/shows"/>
-                        <@item name="menu.statistics" url="/user/statistics"/>
+                        <@item name="menu.allMovies" url="/movies"/>
+                        <@item name="menu.myShows" url="/user/shows" addtionalClasses="ms-3"/>
+                        <@item name="menu.myMovies" url="/user/movies"/>
+                        <@item name="menu.statistics" url="/user/statistics" addtionalClasses="ms-3"/>
 
                         <@b.hasPermission "ADMIN">
                             <@dropdown name="menu.administration">
@@ -65,7 +67,7 @@
     </li>
 </#macro>
 
-<#macro item name url icon="" markAsActiveByName=false subItem=false>
+<#macro item name url icon="" markAsActiveByName=false subItem=false addtionalClasses=''>
     <#assign isActive=false/>
     <#if markAsActiveByName>
         <#if currentPage?? && currentPage == name>
@@ -75,7 +77,7 @@
         <#assign isActive=true/>
     </#if>
 
-    <li class="<#if !subItem>nav-item</#if>">
+    <li class="<#if !subItem>nav-item</#if> ${addtionalClasses}">
         <a class="<#if subItem>dropdown-item<#else>nav-link</#if> <#if isActive>active</#if>" href="<@s.url url/>">
             <#if icon?has_content><i class="${icon}"></i></#if>
             <@b.localize name/>
