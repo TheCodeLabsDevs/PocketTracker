@@ -29,7 +29,7 @@
 
         <webjars-locator.version>0.52</webjars-locator.version>
         <font-awesome.version>6.7.2</font-awesome.version>
-        <bootstrap.version>5.3.3</bootstrap.version>
+        <bootstrap.version>5.3.5</bootstrap.version>
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
 
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
