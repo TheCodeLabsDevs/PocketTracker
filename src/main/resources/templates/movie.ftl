@@ -18,9 +18,8 @@
             <div class="card-body">
                 <h3 class="card-title text-center">${movie.getName()} (${movie.getReleaseDate()?date('yyy-MM-dd')?string["dd.MM.yyyy"]})</h3>
 
-                <#assign watchedDate = userService.getWatchDateForMovie(currentUser, movie)/>
-                <#if watchedDate??>
-                    <div class="text-center"><@b.localize "movie.lastWatched"/> ${watchedDate}</div>
+                <#if userService.getWatchDateForMovie(currentUser, movie)??>
+                    <div class="text-center"><@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}</div>
                 </#if>
 
                 <@b.hasPermission "ADMIN">
