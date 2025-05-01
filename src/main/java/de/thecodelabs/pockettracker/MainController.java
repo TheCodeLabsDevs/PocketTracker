@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.movie.MovieService;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
@@ -57,6 +58,7 @@ public class MainController
 		public static final String NUMBER_OF_ALL_MOVIES = "numberOfAllMovies";
 		public static final String MOVIES = "movies";
 		public static final String USER_MOVIES = "userMovies";
+		public static final String MOVIE = "movie";
 	}
 
 	private static class ReturnValues
@@ -68,6 +70,8 @@ public class MainController
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
 		public static final String MOVIES = "movies";
+		public static final String MOVIE = "movie";
+		public static final String REDIRECT_MOVIES = "redirect:/movies";
 	}
 
 	@Autowired
@@ -200,5 +204,30 @@ public class MainController
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
 		return ReturnValues.MOVIES;
+	}
+
+	@GetMapping("/movie/{movieId}")
+	public String movie(Model model, @PathVariable UUID movieId)
+	{
+		final User user = userService.getCurrentUser();
+		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		if(movieOptional.isEmpty())
+		{
+			return ReturnValues.REDIRECT_MOVIES;
+		}
+
+		final Movie movie = movieOptional.get();
+		// TODO
+//		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(movie, user);
+
+		model.addAttribute(ModelAttributes.MOVIE, movie);
+		model.addAttribute(ModelAttributes.IS_ADDED, user.getShowById(movie.getId()).isPresent());
+
+//		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
+//		{
+//			model.addAttribute(ModelAttributes.LATEST_WATCHED, latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+//		}
+
+		return ReturnValues.MOVIE;
 	}
 }

@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
@@ -53,6 +54,7 @@ public class Movie
 	@JsonSerialize(using = JsonResourcePathSerializer.class)
 	private String posterPath;
 
+	@NotNull
 	@Min(0)
 	private Integer lengthInMinutes;
 
@@ -190,6 +192,15 @@ public class Movie
 		return apiIdentifiers.stream()
 				.filter(i -> i.getType().equals(apiType))
 				.findFirst();
+	}
+
+	public String getReleaseDateReadable()
+	{
+		if(releaseDate == null)
+		{
+			return null;
+		}
+		return releaseDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
 	@Override

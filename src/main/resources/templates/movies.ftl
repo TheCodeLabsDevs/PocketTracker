@@ -6,7 +6,7 @@
     <#import "/common/components/base.ftl" as b/>
     <#import "/common/components/form.ftl" as f>
     <#import "/common/components/modal.ftl" as m>
-    <#import "/common/macros/show.ftl" as showMacros/>
+    <#import "/common/macros/movie.ftl" as movieMacros/>
 
     <@template.head currentPage>
         <script src="<@s.url "/js/importer/search.js"/>"></script>
@@ -78,7 +78,7 @@
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <#list movies![] as movie>
-                <@showMacros.showCard movie userMovies isUserSpecificView/>
+                <@movieMacros.movieCard movie userMovies isUserSpecificView/>
             </#list>
         </div>
     </@template.body>

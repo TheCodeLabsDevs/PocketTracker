@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -13,10 +14,7 @@ import de.thecodelabs.pockettracker.user.model.*;
 import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
-import de.thecodelabs.pockettracker.user.repository.GitlabAuthenticationRepository;
-import de.thecodelabs.pockettracker.user.repository.UserAddedShowRepository;
-import de.thecodelabs.pockettracker.user.repository.UserRepository;
-import de.thecodelabs.pockettracker.user.repository.WatchedEpisodeRepository;
+import de.thecodelabs.pockettracker.user.repository.*;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -48,9 +46,11 @@ public class UserService
 	private final UserAddedShowRepository userAddedShowRepository;
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
+	private final UserAddedMovieRepository userAddedMovieRepository;
+
 	@Autowired
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository, MessageSource messageSource, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository)
+					   GitlabAuthenticationRepository gitlabAuthenticationRepository, MessageSource messageSource, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository, UserAddedMovieRepository userAddedMovieRepository)
 	{
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -59,6 +59,7 @@ public class UserService
 		this.messageSource = messageSource;
 		this.userAddedShowRepository = userAddedShowRepository;
 		this.watchedEpisodeRepository = watchedEpisodeRepository;
+		this.userAddedMovieRepository = userAddedMovieRepository;
 	}
 
 	public Optional<User> getCurrentUserOptional()
@@ -438,5 +439,27 @@ public class UserService
 
 		watchedEpisodesByShow.forEach(episode ->
 				watchedEpisodeRepository.deleteWatchedEpisode(episode.getEpisode().getId(), episode.getUser().getId()));
+	}
+
+	@Transactional
+	public void deleteWatchedMovie(Movie movie)
+	{
+		final List<User> users = userRepository.findAll();
+		for(User user : users)
+		{
+			final List<AddedMovie> addedMovieList = user.getMovies().stream()
+					.filter(addedMovie -> addedMovie.getMovie().equals(movie))
+					.toList();
+
+			if(addedMovieList.isEmpty())
+			{
+				continue;
+			}
+
+			for(AddedMovie addedMovie : addedMovieList)
+			{
+				userAddedMovieRepository.deleteAddedMovie(addedMovie.getMovie().getId(), addedMovie.getUser().getId());
+			}
+		}
 	}
 }
