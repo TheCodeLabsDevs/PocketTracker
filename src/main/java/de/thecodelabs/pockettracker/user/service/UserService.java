@@ -355,6 +355,13 @@ public class UserService
 		return completelyWatchedShows;
 	}
 
+	private Integer getTotalPlayedMovieMinutes(User user)
+	{
+		return user.getMovies().stream()
+				.mapToInt(watched -> watched.getMovie().getLengthInMinutes())
+				.sum();
+	}
+
 	public List<StatisticItem> getGeneralStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
@@ -362,6 +369,7 @@ public class UserService
 		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows.complete", new Object[]{getNumberOfCompletedShows(user)}, LocaleContextHolder.getLocale()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", messageSource.getMessage("statistics.general.seasons.complete", new Object[]{getNumberOfCompletedSeasons(user)}, LocaleContextHolder.getLocale()), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("far fa-file", messageSource.getMessage("statistics.general.episodes", new Object[]{user.getWatchedEpisodes().size()}, LocaleContextHolder.getLocale()), BootstrapColor.DARK, BootstrapColor.LIGHT));
+		statisticItems.add(new StatisticItem("fas fa-film", messageSource.getMessage("statistics.general.movies", new Object[]{user.getMovies().size()}, LocaleContextHolder.getLocale()), BootstrapColor.SECONDARY, BootstrapColor.LIGHT));
 		return statisticItems;
 	}
 
@@ -370,8 +378,10 @@ public class UserService
 		final List<StatisticItem> statisticItems = new ArrayList<>();
 
 		final Integer totalPlayedMinutesTv = getTotalPlayedMinutes(user, ShowType.TV);
-		final String timeStatisticsTv = messageSource.getMessage("statistics.timeBased.tv", new Object[]{totalPlayedMinutesTv, totalPlayedMinutesTv / 60, totalPlayedMinutesTv / 60 / 24}, LocaleContextHolder.getLocale());
-		statisticItems.add(new StatisticItem("fas fa-film", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
+		final Integer totalPlayedMinutesMovies = getTotalPlayedMovieMinutes(user);
+		final Integer totalPlayedMinutes = totalPlayedMinutesTv + totalPlayedMinutesMovies;
+		final String timeStatisticsTv = messageSource.getMessage("statistics.timeBased.tv", new Object[]{totalPlayedMinutes, totalPlayedMinutes / 60, totalPlayedMinutes / 60 / 24}, LocaleContextHolder.getLocale());
+		statisticItems.add(new StatisticItem("fas fa-video", timeStatisticsTv, BootstrapColor.DANGER, BootstrapColor.LIGHT));
 
 		final Integer totalPlayedMinutesAudio = getTotalPlayedMinutes(user, ShowType.AUDIO);
 		final String timeStatisticsAudio = messageSource.getMessage("statistics.timeBased.audio", new Object[]{totalPlayedMinutesAudio, totalPlayedMinutesAudio / 60, totalPlayedMinutesAudio / 60 / 24}, LocaleContextHolder.getLocale());

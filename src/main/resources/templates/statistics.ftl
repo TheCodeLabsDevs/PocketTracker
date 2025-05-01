@@ -30,7 +30,7 @@
                     </@c.card>
                 </div>
 
-            <#if item?index % 2 != 0>
+            <#if (item?index % 2 != 0) || item?is_last>
                 </div>
             </#if>
         </#list>
