@@ -4,6 +4,7 @@ package de.thecodelabs.pockettracker.show.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,6 +43,11 @@ public class APIIdentifier
 	@MergeIgnore
 	private Show show;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	@MergeIgnore
+	private Movie movie;
+
 	@PrePersist
 	void prePersists()
 	{
@@ -60,6 +66,13 @@ public class APIIdentifier
 		this.type = type;
 		this.identifier = identifier;
 		this.show = show;
+	}
+
+	public APIIdentifier(APIType type, String identifier, Movie movie)
+	{
+		this.type = type;
+		this.identifier = identifier;
+		this.movie = movie;
 	}
 
 	public APIIdentifier(UUID id, APIType type, String identifier)
@@ -107,6 +120,16 @@ public class APIIdentifier
 	public void setShow(Show show)
 	{
 		this.show = show;
+	}
+
+	public Movie getMovie()
+	{
+		return movie;
+	}
+
+	public void setMovie(Movie movie)
+	{
+		this.movie = movie;
 	}
 
 	@Override

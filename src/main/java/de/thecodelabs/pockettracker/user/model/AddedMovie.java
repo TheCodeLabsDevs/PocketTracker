@@ -1,0 +1,95 @@
+package de.thecodelabs.pockettracker.user.model;
+
+import de.thecodelabs.pockettracker.movie.model.Movie;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
+
+@Entity
+@Table(name = "appuser_added_movies")
+@IdClass(AddedMovie.AddedMovieId.class)
+public class AddedMovie
+{
+	public static class AddedMovieId implements Serializable
+	{
+		private UUID userId;
+		private UUID movieId;
+
+		public AddedMovieId()
+		{
+		}
+
+		public AddedMovieId(UUID userId, UUID movieId)
+		{
+			this.userId = userId;
+			this.movieId = movieId;
+		}
+
+		public UUID getUserId()
+		{
+			return userId;
+		}
+
+		public UUID getMovieId()
+		{
+			return movieId;
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if(this == o) return true;
+			if(!(o instanceof AddedMovieId that)) return false;
+			return Objects.equals(userId, that.userId) && Objects.equals(movieId, that.movieId);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return Objects.hash(userId, movieId);
+		}
+	}
+
+	@Id
+	@Column(name = "user_id")
+	protected UUID userId;
+	@Id
+	@Column(name = "movie_id")
+	protected UUID movieId;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	private User user;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "movie_id", insertable = false, updatable = false)
+	private Movie movie;
+
+	public AddedMovie()
+	{
+	}
+
+	public AddedMovie(@NotNull User user, @NotNull Movie movie)
+	{
+		this.user = user;
+		this.movie = movie;
+
+		this.userId = user.getId();
+		this.movieId = movie.getId();
+	}
+
+	public User getUser()
+	{
+		return user;
+	}
+
+	public Movie getMovie()
+	{
+		return movie;
+	}
+}

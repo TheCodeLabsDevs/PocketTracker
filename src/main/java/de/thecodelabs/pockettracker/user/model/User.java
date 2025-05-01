@@ -39,6 +39,9 @@ public class User
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<WatchedEpisode> watchedEpisodes;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<AddedMovie> movies;
+
 	@PrePersist
 	void prePersists()
 	{
@@ -154,6 +157,27 @@ public class User
 			this.watchedEpisodes = new ArrayList<>();
 		}
 		this.watchedEpisodes.addAll(newEpisodes);
+	}
+
+	public List<AddedMovie> getMovies()
+	{
+		return movies;
+	}
+
+	public void addMovies(List<AddedMovie> newMovies)
+	{
+		if(this.movies == null)
+		{
+			this.movies = new ArrayList<>();
+		}
+		this.movies.addAll(newMovies);
+	}
+
+	public Optional<AddedMovie> getMovieById(UUID id)
+	{
+		return this.movies.stream()
+				.filter(movie -> movie.getMovie().getId().equals(id))
+				.findFirst();
 	}
 
 	@Override
