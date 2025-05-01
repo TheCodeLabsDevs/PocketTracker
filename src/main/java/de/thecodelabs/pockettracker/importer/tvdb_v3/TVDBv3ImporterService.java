@@ -193,23 +193,41 @@ public class TVDBv3ImporterService implements ShowImporterService
 	}
 
 	@Override
-	public List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
+	public List<String> getShowPosterImageUrls(Integer identifier) throws IOException, ImporterNotConfiguredException
 	{
-		return getImageUrlsByType(identifier, "poster");
+		return getImageUrlsByTypeForAllSupportedLanguages(identifier, "poster");
 	}
 
 	@Override
-	public List<String> getShowBannerImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
+	public List<String> getShowBannerImageUrls(Integer identifier) throws IOException, ImporterNotConfiguredException
 	{
-		return getImageUrlsByType(identifier, "series");
+		return getImageUrlsByTypeForAllSupportedLanguages(identifier, "series");
 	}
 
-	private List<String> getImageUrlsByType(Integer identifier, String type) throws ImportProcessException, IOException, ImporterNotConfiguredException
+	private List<String> getImageUrlsByTypeForAllSupportedLanguages(Integer identifier, String type) throws IOException, ImporterNotConfiguredException
+	{
+		final List<String> urls = new ArrayList<>();
+		for(TVDBv3SupportedLanguage language : TVDBv3SupportedLanguage.values())
+		{
+			try
+			{
+				urls.addAll(getImageUrlsByType(identifier, type, language.getKey()));
+			}
+			catch(ImportProcessException e)
+			{
+				// ignore if no artworks found for particular language
+			}
+		}
+
+		return urls;
+	}
+
+	private List<String> getImageUrlsByType(Integer identifier, String type, String language) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		final TheTvdb tvdb = createApiClient();
 
 		// local must be "en" otherwise no images will be found
-		final Response<SeriesImageQueryResultResponse> imagesResponse = tvdb.series().imagesQuery(identifier, type, null, null, "en").execute();
+		final Response<SeriesImageQueryResultResponse> imagesResponse = tvdb.series().imagesQuery(identifier, type, null, null, language).execute();
 		final SeriesImageQueryResultResponse body = imagesResponse.body();
 		if(body == null || body.data == null)
 		{
