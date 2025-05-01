@@ -219,7 +219,7 @@ public class MainController
 		final Movie movie = movieOptional.get();
 
 		model.addAttribute(ModelAttributes.MOVIE, movie);
-		model.addAttribute(ModelAttributes.IS_ADDED, user.getShowById(movie.getId()).isPresent());
+		model.addAttribute(ModelAttributes.IS_ADDED, user.getMovieById(movie.getId()).isPresent());
 
 		return ReturnValues.MOVIE;
 	}
