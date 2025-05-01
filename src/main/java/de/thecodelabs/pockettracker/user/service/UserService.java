@@ -447,19 +447,25 @@ public class UserService
 		final List<User> users = userRepository.findAll();
 		for(User user : users)
 		{
-			final List<AddedMovie> addedMovieList = user.getMovies().stream()
-					.filter(addedMovie -> addedMovie.getMovie().equals(movie))
-					.toList();
-
-			if(addedMovieList.isEmpty())
-			{
-				continue;
-			}
-
-			for(AddedMovie addedMovie : addedMovieList)
-			{
-				userAddedMovieRepository.deleteAddedMovie(addedMovie.getMovie().getId(), addedMovie.getUser().getId());
-			}
+			removeMovieFromUser(user, movie);
 		}
+	}
+
+	public boolean removeMovieFromUser(User user, Movie movie)
+	{
+		final List<AddedMovie> addedMovieList = user.getMovies().stream()
+				.filter(addedMovie -> addedMovie.getMovie().equals(movie))
+				.toList();
+
+		if(addedMovieList.isEmpty())
+		{
+			return false;
+		}
+
+		for(AddedMovie addedMovie : addedMovieList)
+		{
+			userAddedMovieRepository.deleteAddedMovie(addedMovie.getMovie().getId(), addedMovie.getUser().getId());
+		}
+		return true;
 	}
 }

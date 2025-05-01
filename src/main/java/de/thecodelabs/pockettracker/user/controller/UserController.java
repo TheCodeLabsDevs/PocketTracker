@@ -3,6 +3,8 @@ package de.thecodelabs.pockettracker.user.controller;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.movie.MovieService;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowRepository;
@@ -10,6 +12,7 @@ import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
+import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserSettings;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,22 +48,27 @@ public class UserController
 	private final ShowService showService;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
+	private final MovieService movieService;
 
 	private static class ReturnValues
 	{
 		public static final String INDEX = "index";
 		public static final String REDIRECT_USER_SHOWS = "redirect:/user/shows";
 		public static final String REDIRECT_SHOWS = "redirect:/shows";
+		public static final String REDIRECT_MOVIES = "redirect:/movies";
+		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
+		public static final String MOVIES = "movies";
 	}
 
 	@Autowired
-	public UserController(UserService userService, ShowRepository showRepository, ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository)
+	public UserController(UserService userService, ShowRepository showRepository, ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, MovieService movieService)
 	{
 		this.userService = userService;
 		this.showRepository = showRepository;
 		this.showService = showService;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
+		this.movieService = movieService;
 	}
 
 	@PostMapping("/shows")
@@ -233,7 +242,70 @@ public class UserController
 		model.addAttribute("statisticItemsGeneral", userService.getGeneralStatistics(user));
 		model.addAttribute("statisticItemsWatchTime", userService.getWatchTimeStatistics(user));
 
-
 		return "statistics";
+	}
+
+	@GetMapping("/movies")
+	public String getMovies(WebRequest request, Model model)
+	{
+		UserNavigationCoordinator.setUserSpecificNavigation(request, true);
+
+		final User user = userService.getCurrentUser();
+
+		String searchText = null;
+		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
+		{
+			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
+		}
+
+		final List<Movie> movies = movieService.getAllFavoriteMoviesByUser(searchText, user);
+		final List<Movie> sortedMovies = movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
+
+		model.addAttribute("movies", sortedMovies);
+
+		model.addAttribute("currentPage", "Meine Filme");
+		model.addAttribute("userMovies", user.getMovies().stream().map(AddedMovie::getMovie).toList());
+		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
+
+		return ReturnValues.MOVIES;
+	}
+
+	@GetMapping("/movies/add/{movieId}")
+	@Transactional
+	public String addMovie(WebRequest request, @PathVariable UUID movieId)
+	{
+		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		if(movieOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert kein Film mit der ID \"{0}\"", movieId), BootstrapColor.DANGER));
+			return ReturnValues.REDIRECT_MOVIES;
+		}
+
+		final User user = userService.getCurrentUser();
+		user.getMovies().add(new AddedMovie(user, movieOptional.get()));
+
+		return ReturnValues.REDIRECT_MOVIES;
+	}
+
+	@GetMapping("/movies/remove/{movieId}")
+	public String removeMovie(WebRequest request, @PathVariable UUID movieId)
+	{
+		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		if(movieOptional.isEmpty())
+		{
+			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert kein Film mit der ID \"{0}\"", movieId), BootstrapColor.DANGER));
+			return ReturnValues.REDIRECT_USER_MOVIES;
+		}
+
+		final User user = userService.getCurrentUser();
+		final Movie movieToRemove = movieOptional.get();
+		final boolean userHadShow = userService.removeMovieFromUser(user, movieToRemove);
+		if(!userHadShow)
+		{
+			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte den Film nie hinzugefügt.", BootstrapColor.WARNING));
+			return ReturnValues.REDIRECT_USER_MOVIES;
+		}
+
+		return ReturnValues.REDIRECT_USER_MOVIES;
 	}
 }
