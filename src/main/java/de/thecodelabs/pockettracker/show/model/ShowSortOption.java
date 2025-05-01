@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public enum ShowSortOption implements MessageSourceResolvable
 {
 	NAME((shows, user) -> shows
-			.sorted(Comparator.comparing(Show::getName))
+			.sorted(Comparator.comparing(s -> s.getName().toLowerCase()))
 			.toList()),
 	LAST_WATCHED((shows, user) -> shows
 			.sorted(Comparator.comparing((Show show) -> getLatestWatchDate(show, user))

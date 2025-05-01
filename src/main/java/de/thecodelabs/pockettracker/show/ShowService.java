@@ -60,7 +60,8 @@ public class ShowService
 			shows = repository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name);
 		}
 		shows.forEach(this::prepareShow);
-		return shows;
+
+		return shows.stream().sorted(Comparator.comparing(s -> s.getName().toLowerCase())).toList();
 	}
 
 	public List<Show> getAllFavoriteShowsByUser(String name, User user)
@@ -82,7 +83,7 @@ public class ShowService
 					.toList();
 		}
 		shows.forEach(this::prepareShow);
-		return shows;
+		return shows.stream().sorted(Comparator.comparing(s -> s.getName().toLowerCase())).toList();
 	}
 
 
