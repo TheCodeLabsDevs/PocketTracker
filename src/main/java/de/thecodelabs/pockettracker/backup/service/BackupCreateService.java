@@ -13,6 +13,7 @@ import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.show.ShowRepository;
+import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
@@ -38,7 +39,7 @@ public class BackupCreateService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupCreateService.class);
 
-	private final ShowRepository showRepository;
+	private final ShowService showService;
 	private final UserRepository userRepository;
 	private final APIConfigurationRepository apiConfigurationRepository;
 
@@ -52,11 +53,11 @@ public class BackupCreateService
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public BackupCreateService(ShowRepository showRepository, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter,
+	public BackupCreateService(ShowService showService, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter,
 							   UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, WebConfigurationProperties webConfigurationProperties,
 							   BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
-		this.showRepository = showRepository;
+		this.showService = showService;
 		this.userRepository = userRepository;
 		this.apiConfigurationRepository = apiConfigurationRepository;
 		this.showConverter = showConverter;
@@ -72,7 +73,7 @@ public class BackupCreateService
 	{
 		LOGGER.info("Start backup...");
 
-		final List<Show> shows = showRepository.findAll();
+		final List<Show> shows = showService.getAll(null);
 		final List<BackupShowModel> backupShowModels = showConverter.toBeans(shows);
 
 		final List<User> users = userRepository.findAll();
