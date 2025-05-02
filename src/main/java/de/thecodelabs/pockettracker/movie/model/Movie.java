@@ -104,7 +104,7 @@ public class Movie implements MediaItem
 	{
 		if(Objects.requireNonNull(mediaItemImageType) != MediaItemImageType.POSTER)
 		{
-			throw new UnsupportedOperationException("Image type not implemented");
+			return null;
 		}
 
 		return getPosterPath();
