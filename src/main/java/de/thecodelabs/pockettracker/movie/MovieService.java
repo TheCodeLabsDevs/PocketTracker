@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 public class MovieService extends BaseMediaItemService<Movie>
 {
-	public MovieService(BaseMediaItemRepository<Movie> repository, WebConfigurationProperties webConfigurationProperties)
+	public MovieService(MovieRepository repository, WebConfigurationProperties webConfigurationProperties)
 	{
 		super(repository, webConfigurationProperties);
 	}
