@@ -3,7 +3,7 @@ package de.thecodelabs.pockettracker.season.service;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.reposiroty.SeasonRepository;
+import de.thecodelabs.pockettracker.season.repository.SeasonRepository;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
