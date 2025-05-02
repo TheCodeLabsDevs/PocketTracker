@@ -85,7 +85,7 @@ public class ShowAdministrationController
 			return "redirect:/show/create";
 		}
 
-		final Show createdShow = service.createShow(show);
+		final Show createdShow = service.createItem(show);
 
 		return "redirect:/show/" + createdShow.getId() + "/edit";
 	}
@@ -124,7 +124,7 @@ public class ShowAdministrationController
 		try
 		{
 			final Show importedShow = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createShow(apiIdentifier.getIdentifier());
-			final Show createdShow = service.createShow(importedShow);
+			final Show createdShow = service.createItem(importedShow);
 
 			return "redirect:/show/" + createdShow.getId() + "/edit";
 		}
@@ -141,7 +141,7 @@ public class ShowAdministrationController
 	@GetMapping("/{id}/edit")
 	public String editPage(WebRequest request, @PathVariable UUID id, Model model)
 	{
-		final Optional<Show> showOptional = service.getShowById(id);
+		final Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
@@ -173,7 +173,7 @@ public class ShowAdministrationController
 			return "redirect:/show/" + id + "/edit";
 		}
 
-		final Optional<Show> managedShowOptional = service.getShowById(id);
+		final Optional<Show> managedShowOptional = service.getById(id);
 		if(managedShowOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
@@ -188,7 +188,7 @@ public class ShowAdministrationController
 	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable ShowImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
-		Optional<Show> showOptional = service.getShowById(id);
+		Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
 		{
 			return "redirect:/show/" + id + "/edit";
@@ -198,13 +198,13 @@ public class ShowAdministrationController
 		if(multipartFile == null || multipartFile.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.null", BootstrapColor.WARNING));
-			service.deleteShowImage(type, show);
+			service.deleteImage(type, show);
 			return "redirect:/show/" + id + "/edit";
 		}
 
 		try
 		{
-			service.changeShowImage(type, show, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(show.getName()), multipartFile.getInputStream());
+			service.changeImage(type, show, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(show.getName()), multipartFile.getInputStream());
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
@@ -243,7 +243,7 @@ public class ShowAdministrationController
 	@Transactional
 	public String deletePost(WebRequest request, @PathVariable UUID id)
 	{
-		final Optional<Show> managedShowOptional = service.getShowById(id);
+		final Optional<Show> managedShowOptional = service.getById(id);
 		if(managedShowOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
@@ -252,7 +252,7 @@ public class ShowAdministrationController
 		final String showName = managedShow.getName();
 
 		userService.deleteWatchedShow(managedShow);
-		service.deleteShow(managedShow);
+		service.deleteItem(managedShow);
 
 		WebRequestUtils.putToast(request, new Toast("toast.show.delete", BootstrapColor.SUCCESS, showName));
 		return "redirect:/shows";
@@ -271,7 +271,7 @@ public class ShowAdministrationController
 
 		try
 		{
-			service.addApiIdentifierToShow(showId, apiIdentifier);
+			service.addApiIdentifier(showId, apiIdentifier);
 			WebRequestUtils.putToast(request, new Toast("toast.api.identifier.added", BootstrapColor.SUCCESS, apiIdentifier.getType()));
 		}
 		catch(IllegalArgumentException e)
@@ -304,7 +304,7 @@ public class ShowAdministrationController
 	@GetMapping("/{id}/showImages/{type}")
 	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable ShowImageType type, Model model)
 	{
-		final Optional<Show> showOptional = service.getShowById(id);
+		final Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
@@ -344,7 +344,7 @@ public class ShowAdministrationController
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
 	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable ShowImageType type, @RequestParam String url)
 	{
-		final Optional<Show> showOptional = service.getShowById(showId);
+		final Optional<Show> showOptional = service.getById(showId);
 		if(showOptional.isEmpty())
 		{
 			return "redirect:/show/" + showId + "/edit";
@@ -352,14 +352,14 @@ public class ShowAdministrationController
 
 		final Show show = showOptional.get();
 
-		service.deleteShowImage(type, show);
+		service.deleteImage(type, show);
 
 		try(final InputStream dataStream = URI.create(url).toURL().openStream())
 		{
 			final String fileNameFromUrl = url.substring(url.lastIndexOf('/') + 1);
 			final String fileName = MessageFormat.format("{0}_{1}", show.getName(), fileNameFromUrl);
 
-			service.changeShowImage(type, show, fileName, dataStream);
+			service.changeImage(type, show, fileName, dataStream);
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
@@ -373,7 +373,7 @@ public class ShowAdministrationController
 	@GetMapping("/{id}/seasonsFromApi")
 	public String getSeasonsFromApi(@PathVariable UUID id, Model model)
 	{
-		final Optional<Show> showOptional = service.getShowById(id);
+		final Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");
@@ -407,7 +407,7 @@ public class ShowAdministrationController
 	public String addSeasonFromApi(WebRequest request, @PathVariable UUID id,
 								   @ModelAttribute("formAddSeasonByApi") @Validated SeasonFromApiDialogModel model)
 	{
-		final Optional<Show> showOptional = service.getShowById(id);
+		final Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
 		{
 			throw new NotFoundException("Show for id " + id + " not found");

@@ -99,8 +99,8 @@ public class MainController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_SHOWS, showService.getAllShows(null).size());
-		model.addAttribute(ModelAttributes.SHOWS, showService.getAllShows(searchText));
+		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_SHOWS, showService.getAll(null).size());
+		model.addAttribute(ModelAttributes.SHOWS, showService.getAll(searchText));
 
 		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
 		model.addAttribute(ModelAttributes.USER_SHOWS, user.getShows().stream().map(AddedShow::getShow).toList());

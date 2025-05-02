@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.show;
 
+import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemRepository;
 import de.thecodelabs.pockettracker.show.model.Show;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ShowRepository extends JpaRepository<Show, UUID>
+public interface ShowRepository extends BaseMediaItemRepository<Show>
 {
 	List<Show> findAllByOrderByNameAsc();
 

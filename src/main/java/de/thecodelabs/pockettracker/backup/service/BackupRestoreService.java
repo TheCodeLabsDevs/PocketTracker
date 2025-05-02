@@ -91,15 +91,15 @@ public class BackupRestoreService
 			userService.deleteUser(user);
 		}
 
-		final List<Show> shows = showService.getAllShows(null);
+		final List<Show> shows = showService.getAll(null);
 		LOGGER.info("Delete {} shows", shows.size());
 		for(Show show : shows)
 		{
 			for(ShowImageType type : ShowImageType.values())
 			{
-				showService.deleteShowImage(type, show);
+				showService.deleteImage(type, show);
 			}
-			showService.deleteShow(show);
+			showService.deleteItem(show);
 		}
 
 		final List<APIConfiguration> configurations = apiConfigurationService.getAllConfigurations();
@@ -127,7 +127,7 @@ public class BackupRestoreService
 	public void insertShows(List<BackupShowModel> backupShowModels)
 	{
 		final List<Show> shows = showConverter.toEntities(backupShowModels);
-		showService.createShows(shows);
+		showService.createAll(shows);
 		LOGGER.info("Restored shows");
 	}
 
@@ -148,7 +148,7 @@ public class BackupRestoreService
 				final BackupUserModel backupUserModel = backupUserModelOptional.get();
 				user.addShows(backupUserModel.getShows().stream()
 						.map(model -> {
-							final Optional<Show> showOptional = showService.getShowById(model.getShowId());
+							final Optional<Show> showOptional = showService.getById(model.getShowId());
 							if(showOptional.isEmpty())
 							{
 								return Optional.<AddedShow>empty();

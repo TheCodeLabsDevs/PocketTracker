@@ -30,13 +30,13 @@ public class ShowApiController
 	@JsonView(Show.View.Summary.class)
 	public List<Show> getAllShows(@RequestParam(name = "name", required = false) String name)
 	{
-		return showService.getAllShows(name);
+		return showService.getAll(name);
 	}
 
 	@Operation(operationId = "getShowById")
 	@GetMapping("/{id}")
 	public Optional<Show> getShowById(@PathVariable UUID id)
 	{
-		return showService.getShowById(id);
+		return showService.getById(id);
 	}
 }

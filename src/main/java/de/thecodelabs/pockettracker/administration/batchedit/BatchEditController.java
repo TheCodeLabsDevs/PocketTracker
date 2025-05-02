@@ -68,7 +68,7 @@ public class BatchEditController
 			return ReturnValues.REDIRECT_BATCH_EDIT;
 		}
 
-		final Optional<Show> showOptional = showService.getShowById(showId);
+		final Optional<Show> showOptional = showService.getById(showId);
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.batchEdit.showNotExisting.error", BootstrapColor.DANGER, String.valueOf(showId)));

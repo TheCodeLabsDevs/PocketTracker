@@ -107,7 +107,7 @@ public class UserController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		final List<Show> shows = showService.getAllFavoriteShowsByUser(searchText, user);
+		final List<Show> shows = showService.getAllFavoriteByUser(searchText, user);
 		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
 		if(Boolean.FALSE.equals(showDislikedShows))
 		{
