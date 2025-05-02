@@ -2,8 +2,8 @@ package de.thecodelabs.pockettracker.movie;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.movie.model.Movie;
-import de.thecodelabs.pockettracker.movie.model.MovieImageType;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.User;
@@ -94,9 +94,9 @@ public class MovieService
 	}
 
 	@Transactional
-	public void changeMovieImage(MovieImageType movieImageType, Movie movie, String fileName, InputStream dataStream) throws IOException
+	public void changeMovieImage(MediaItemImageType mediaItemImageType, Movie movie, String fileName, InputStream dataStream) throws IOException
 	{
-		deleteMovieImage(movieImageType, movie);
+		deleteMovieImage(mediaItemImageType, movie);
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 
@@ -104,7 +104,7 @@ public class MovieService
 		StringBuilder filenameBuilder = new StringBuilder(escapedFileName);
 		Path destinationPath;
 
-		while(Files.exists(destinationPath = basePath.resolve(movieImageType.getPathName()).resolve(filenameBuilder.toString())))
+		while(Files.exists(destinationPath = basePath.resolve(mediaItemImageType.getPathName()).resolve(filenameBuilder.toString())))
 		{
 			filenameBuilder.insert(0, "_");
 		}
@@ -114,25 +114,25 @@ public class MovieService
 			Files.createDirectories(destinationPath.getParent());
 		}
 
-		movie.setImagePath(movieImageType, basePath.relativize(destinationPath).toString());
+		movie.setImagePath(mediaItemImageType, basePath.relativize(destinationPath).toString());
 		FileCopyUtils.copy(dataStream, Files.newOutputStream(destinationPath));
 	}
 
 	@Transactional
-	public void deleteMovieImage(MovieImageType movieImageType, Movie movie)
+	public void deleteMovieImage(MediaItemImageType mediaItemImageType, Movie movie)
 	{
-		if(movie.getImagePath(movieImageType) == null)
+		if(movie.getImagePath(mediaItemImageType) == null)
 		{
 			return;
 		}
 
 		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
-		final Path bannerPath = basePath.resolve(movie.getImagePath(movieImageType));
+		final Path bannerPath = basePath.resolve(movie.getImagePath(mediaItemImageType));
 
 		try
 		{
 			Files.deleteIfExists(bannerPath);
-			movie.setImagePath(movieImageType, null);
+			movie.setImagePath(mediaItemImageType, null);
 		}
 		catch(IOException e)
 		{

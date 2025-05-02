@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -99,17 +100,19 @@ public class Movie
 		this.lengthInMinutes = lengthInMinutes;
 	}
 
-	public String getImagePath(MovieImageType movieImageType)
+	public String getImagePath(MediaItemImageType mediaItemImageType)
 	{
-		return switch(movieImageType)
+		if(Objects.requireNonNull(mediaItemImageType) != MediaItemImageType.POSTER)
 		{
-			case POSTER -> getPosterPath();
-		};
+			throw new UnsupportedOperationException("Image type not implemented");
+		}
+
+		return getPosterPath();
 	}
 
-	public void setImagePath(MovieImageType movieImageType, String path)
+	public void setImagePath(MediaItemImageType mediaItemImageType, String path)
 	{
-		if(Objects.requireNonNull(movieImageType) != MovieImageType.POSTER)
+		if(Objects.requireNonNull(mediaItemImageType) != MediaItemImageType.POSTER)
 		{
 			throw new UnsupportedOperationException("Image type not implemented");
 		}

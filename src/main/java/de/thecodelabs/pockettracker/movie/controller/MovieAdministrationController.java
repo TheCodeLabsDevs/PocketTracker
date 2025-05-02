@@ -6,9 +6,9 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.MovieImporterServiceFactory;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
-import de.thecodelabs.pockettracker.movie.model.MovieImageType;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -183,7 +183,7 @@ public class MovieAdministrationController
 	}
 
 	@PostMapping("/{id}/edit/{type}")
-	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable MovieImageType type,
+	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable MediaItemImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
 		Optional<Movie> movieOptional = service.getMovieById(id);
@@ -276,7 +276,7 @@ public class MovieAdministrationController
 	}
 
 	@GetMapping("/{id}/showImages/{type}")
-	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable MovieImageType type, Model model)
+	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable MediaItemImageType type, Model model)
 	{
 		final Optional<Movie> movieOptional = service.getMovieById(id);
 		if(movieOptional.isEmpty())
@@ -309,7 +309,7 @@ public class MovieAdministrationController
 	}
 
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
-	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable MovieImageType type, @RequestParam String url)
+	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable MediaItemImageType type, @RequestParam String url)
 	{
 		final Optional<Movie> movieOptional = service.getMovieById(showId);
 		if(movieOptional.isEmpty())
