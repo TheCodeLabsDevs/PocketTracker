@@ -10,6 +10,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 public class Season
 {
 	public static class View
@@ -64,10 +70,6 @@ public class Season
 		}
 	}
 
-	public Season()
-	{
-	}
-
 	public Season(String name, String description, Integer number)
 	{
 		this(name, description, number, null);
@@ -80,76 +82,6 @@ public class Season
 		this.number = number;
 		this.show = show;
 		this.filledCompletely = false;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
-	public Integer getNumber()
-	{
-		return number;
-	}
-
-	public void setNumber(Integer number)
-	{
-		this.number = number;
-	}
-
-	public Show getShow()
-	{
-		return show;
-	}
-
-	public void setShow(Show show)
-	{
-		this.show = show;
-	}
-
-	public List<Episode> getEpisodes()
-	{
-		return episodes;
-	}
-
-	public void setEpisodes(List<Episode> episodes)
-	{
-		this.episodes = episodes;
-	}
-
-	public Boolean getFilledCompletely()
-	{
-		return filledCompletely;
-	}
-
-	public void setFilledCompletely(Boolean filledCompletely)
-	{
-		this.filledCompletely = filledCompletely;
 	}
 
 	public void addEpisode(Episode episode)
