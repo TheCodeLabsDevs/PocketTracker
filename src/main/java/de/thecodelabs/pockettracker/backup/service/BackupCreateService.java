@@ -16,15 +16,14 @@ import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
-import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +38,7 @@ import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE
 import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
 
 @Component
+@RequiredArgsConstructor
 public class BackupCreateService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupCreateService.class);
@@ -57,24 +57,6 @@ public class BackupCreateService
 	private final BackupConfigurationProperties backupConfigurationProperties;
 
 	private final ObjectMapper objectMapper;
-
-	@Autowired
-	public BackupCreateService(ShowService showService, MovieService movieService, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter, MovieConverter movieConverter,
-							   UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, WebConfigurationProperties webConfigurationProperties,
-							   BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
-	{
-		this.showService = showService;
-		this.movieService = movieService;
-		this.userRepository = userRepository;
-		this.apiConfigurationRepository = apiConfigurationRepository;
-		this.showConverter = showConverter;
-		this.movieConverter = movieConverter;
-		this.userConverter = userConverter;
-		this.apiConfigurationConverter = apiConfigurationConverter;
-		this.webConfigurationProperties = webConfigurationProperties;
-		this.backupConfigurationProperties = backupConfigurationProperties;
-		this.objectMapper = objectMapper;
-	}
 
 	@Transactional
 	public void export(Path backupLocationPath) throws IOException

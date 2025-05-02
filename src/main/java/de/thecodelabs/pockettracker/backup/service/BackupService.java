@@ -2,11 +2,11 @@ package de.thecodelabs.pockettracker.backup.service;
 
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.model.BackupInstance;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -26,6 +26,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @Service
+@RequiredArgsConstructor
 public class BackupService
 {
 	public static final String DATABASE_PATH_NAME = "database.json";
@@ -36,15 +37,6 @@ public class BackupService
 	private final BackupCreateService backupCreateService;
 	private final BackupRestoreService backupRestoreService;
 	private final BackupConfigurationProperties backupConfigurationProperties;
-
-	@Autowired
-	public BackupService(BackupCreateService backupCreateService, BackupRestoreService backupRestoreService,
-						 BackupConfigurationProperties backupConfigurationProperties)
-	{
-		this.backupCreateService = backupCreateService;
-		this.backupRestoreService = backupRestoreService;
-		this.backupConfigurationProperties = backupConfigurationProperties;
-	}
 
 	public void createBackup() throws IOException
 	{

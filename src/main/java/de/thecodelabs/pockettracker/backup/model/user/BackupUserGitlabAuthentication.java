@@ -1,16 +1,11 @@
 package de.thecodelabs.pockettracker.backup.model.user;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BackupUserGitlabAuthentication extends BackupUserAuthentication
 {
 	private String gitlabUsername;
-
-	public String getGitlabUsername()
-	{
-		return gitlabUsername;
-	}
-
-	public void setGitlabUsername(String gitlabUsername)
-	{
-		this.gitlabUsername = gitlabUsername;
-	}
 }

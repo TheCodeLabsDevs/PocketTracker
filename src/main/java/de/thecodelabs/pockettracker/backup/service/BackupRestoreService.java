@@ -13,17 +13,17 @@ import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
-import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -45,6 +45,7 @@ import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE
 import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
 
 @Service
+@RequiredArgsConstructor
 public class BackupRestoreService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupRestoreService.class);
@@ -64,22 +65,6 @@ public class BackupRestoreService
 
 	private final WebConfigurationProperties webConfigurationProperties;
 
-	@Autowired
-	public BackupRestoreService(UserService userService, ShowService showService, EpisodeService episodeService,
-								APIConfigurationService apiConfigurationService, DataSource dataSource, ShowConverter showConverter,
-								UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, ObjectMapper objectMapper, WebConfigurationProperties webConfigurationProperties)
-	{
-		this.userService = userService;
-		this.showService = showService;
-		this.episodeService = episodeService;
-		this.apiConfigurationService = apiConfigurationService;
-		this.dataSource = dataSource;
-		this.showConverter = showConverter;
-		this.userConverter = userConverter;
-		this.apiConfigurationConverter = apiConfigurationConverter;
-		this.objectMapper = objectMapper;
-		this.webConfigurationProperties = webConfigurationProperties;
-	}
 
 	public void clearDatabase()
 	{

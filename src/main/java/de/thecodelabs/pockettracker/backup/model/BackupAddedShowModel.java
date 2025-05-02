@@ -1,9 +1,13 @@
 package de.thecodelabs.pockettracker.backup.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 public class BackupAddedShowModel
 {
 	@JsonProperty("show")
@@ -11,24 +15,4 @@ public class BackupAddedShowModel
 
 	@JsonProperty("disliked")
 	private Boolean disliked;
-
-	public UUID getShowId()
-	{
-		return showId;
-	}
-
-	public void setShowId(UUID showId)
-	{
-		this.showId = showId;
-	}
-
-	public Boolean getDisliked()
-	{
-		return disliked;
-	}
-
-	public void setDisliked(Boolean disliked)
-	{
-		this.disliked = disliked;
-	}
 }
