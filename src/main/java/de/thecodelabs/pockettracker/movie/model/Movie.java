@@ -29,7 +29,6 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
 public class Movie implements MediaItem
 {
@@ -135,5 +134,19 @@ public class Movie implements MediaItem
 			return null;
 		}
 		return releaseDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof Movie movie)) return false;
+		return Objects.equals(id, movie.id);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id);
 	}
 }

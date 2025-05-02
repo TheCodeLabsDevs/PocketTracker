@@ -15,6 +15,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -22,6 +26,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
+@Getter
+@Setter
+@ToString
 public class Show implements MediaItem
 {
 	public static class View
@@ -75,6 +82,8 @@ public class Show implements MediaItem
 	@OneToMany(mappedBy = "show")
 	@MergeIgnore
 	@JsonIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private List<AddedShow> favoriteUsers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
@@ -105,116 +114,6 @@ public class Show implements MediaItem
 		this.finished = finished;
 	}
 
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
-	public LocalDate getFirstAired()
-	{
-		return firstAired;
-	}
-
-	public void setFirstAired(LocalDate firstAired)
-	{
-		this.firstAired = firstAired;
-	}
-
-	public String getBannerPath()
-	{
-		return bannerPath;
-	}
-
-	public void setBannerPath(String imagePath)
-	{
-		this.bannerPath = imagePath;
-	}
-
-	public String getPosterPath()
-	{
-		return posterPath;
-	}
-
-	public void setPosterPath(String posterPath)
-	{
-		this.posterPath = posterPath;
-	}
-
-	public ShowType getType()
-	{
-		return type;
-	}
-
-	public void setType(ShowType type)
-	{
-		this.type = type;
-	}
-
-	public Boolean getFinished()
-	{
-		return finished;
-	}
-
-	public void setFinished(Boolean finished)
-	{
-		this.finished = finished;
-	}
-
-	public List<Season> getSeasons()
-	{
-		return seasons;
-	}
-
-	public void setSeasons(List<Season> seasons)
-	{
-		this.seasons = seasons;
-	}
-
-	public List<APIIdentifier> getApiIdentifiers()
-	{
-		return apiIdentifiers;
-	}
-
-	public void setApiIdentifiers(List<APIIdentifier> apiIdentifiers)
-	{
-		this.apiIdentifiers = apiIdentifiers;
-	}
-
-	public List<AddedShow> getFavoriteUsers()
-	{
-		return favoriteUsers;
-	}
-
-	public void setFavoriteUsers(List<AddedShow> favoriteUsers)
-	{
-		this.favoriteUsers = favoriteUsers;
-	}
-
 	public String getFirstAiredReadable()
 	{
 		if(firstAired == null)
@@ -226,29 +125,20 @@ public class Show implements MediaItem
 
 	public String getImagePath(MediaItemImageType mediaItemImageType)
 	{
-		switch(mediaItemImageType)
+		return switch(mediaItemImageType)
 		{
-			case BANNER:
-				return getBannerPath();
-			case POSTER:
-				return getPosterPath();
-			default:
-				throw new UnsupportedOperationException("Image type not implemented");
-		}
+			case BANNER -> getBannerPath();
+			case POSTER -> getPosterPath();
+		};
 	}
 
 	public void setImagePath(MediaItemImageType mediaItemImageType, String path)
 	{
 		switch(mediaItemImageType)
 		{
-			case BANNER:
-				setBannerPath(path);
-				break;
-			case POSTER:
-				setPosterPath(path);
-				break;
-			default:
-				throw new UnsupportedOperationException("Image type not implemented");
+			case BANNER -> setBannerPath(path);
+			case POSTER -> setPosterPath(path);
+			default -> throw new UnsupportedOperationException("Image type not implemented");
 		}
 	}
 
@@ -280,23 +170,5 @@ public class Show implements MediaItem
 	public int hashCode()
 	{
 		return Objects.hash(id);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Show{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", description='" + description + '\'' +
-				", firstAired=" + firstAired +
-				", bannerPath='" + bannerPath + '\'' +
-				", posterPath='" + posterPath + '\'' +
-				", type=" + type +
-				", finished=" + finished +
-				", seasons=" + seasons +
-				", favoriteUsers=" + favoriteUsers +
-				", apiIdentifiers=" + apiIdentifiers +
-				'}';
 	}
 }
