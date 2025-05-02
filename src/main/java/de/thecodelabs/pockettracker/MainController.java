@@ -5,7 +5,7 @@ import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.repository.SeasonRepository;
+import de.thecodelabs.pockettracker.season.SeasonRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;

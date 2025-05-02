@@ -8,7 +8,7 @@ import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredExcept
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.service.SeasonService;
+import de.thecodelabs.pockettracker.season.SeasonService;
 import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;

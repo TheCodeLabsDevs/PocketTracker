@@ -2,7 +2,7 @@ package de.thecodelabs.pockettracker.season.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.service.SeasonService;
+import de.thecodelabs.pockettracker.season.SeasonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
