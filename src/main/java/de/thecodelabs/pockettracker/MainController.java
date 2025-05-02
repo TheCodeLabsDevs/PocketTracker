@@ -37,7 +37,6 @@ public class MainController
 	public static final String PARAMETER_NAME_SEARCH_TEXT = "searchText";
 
 	private final ShowService showService;
-	private final ShowRepository showRepository;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
 	private final UserService userService;
@@ -75,10 +74,9 @@ public class MainController
 	}
 
 	@Autowired
-	public MainController(ShowService showService, ShowRepository showRepository, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService, MovieService movieService)
+	public MainController(ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService, MovieService movieService)
 	{
 		this.showService = showService;
-		this.showRepository = showRepository;
 		this.seasonRepository = seasonRepository;
 		this.episodeRepository = episodeRepository;
 		this.userService = userService;
@@ -113,7 +111,7 @@ public class MainController
 	public String show(Model model, @PathVariable UUID showId)
 	{
 		final User user = userService.getCurrentUser();
-		final Optional<Show> showOptional = showRepository.findById(showId);
+		final Optional<Show> showOptional = showService.getById(showId);
 		if(showOptional.isEmpty())
 		{
 			return ReturnValues.REDIRECT_SHOWS;
