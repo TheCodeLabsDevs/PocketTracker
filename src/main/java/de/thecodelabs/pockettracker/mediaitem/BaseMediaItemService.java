@@ -2,7 +2,6 @@ package de.thecodelabs.pockettracker.mediaitem;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
-import de.thecodelabs.pockettracker.show.model.ShowImageType;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.utils.Helpers;
 import lombok.AllArgsConstructor;

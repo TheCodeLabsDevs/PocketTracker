@@ -9,6 +9,7 @@ import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredExcept
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchRequest;
+import de.thecodelabs.pockettracker.mediaitem.ShowImageType;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.*;

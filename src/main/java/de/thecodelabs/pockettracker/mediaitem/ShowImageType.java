@@ -1,4 +1,4 @@
-package de.thecodelabs.pockettracker.show.model;
+package de.thecodelabs.pockettracker.mediaitem;
 
 public enum ShowImageType
 {
