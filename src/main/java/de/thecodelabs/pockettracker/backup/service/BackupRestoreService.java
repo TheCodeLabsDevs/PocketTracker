@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationService;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.backup.converter.APIConfigurationConverter;
+import de.thecodelabs.pockettracker.backup.converter.MovieConverter;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupAPIConfigurationModel;
+import de.thecodelabs.pockettracker.backup.model.BackupMovieModel;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
@@ -14,8 +16,11 @@ import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
+import de.thecodelabs.pockettracker.movie.MovieService;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
@@ -52,12 +57,14 @@ public class BackupRestoreService
 
 	private final UserService userService;
 	private final ShowService showService;
+	private final MovieService movieService;
 	private final EpisodeService episodeService;
 	private final APIConfigurationService apiConfigurationService;
 
 	private final DataSource dataSource;
 
 	private final ShowConverter showConverter;
+	private final MovieConverter movieConverter;
 	private final UserConverter userConverter;
 	private final APIConfigurationConverter apiConfigurationConverter;
 
@@ -87,6 +94,17 @@ public class BackupRestoreService
 			showService.deleteItem(show);
 		}
 
+		final List<Movie> movies = movieService.getAll(null);
+		LOGGER.info("Delete {} movies", movies.size());
+		for(Movie movie : movies)
+		{
+			for(MediaItemImageType type : MediaItemImageType.values())
+			{
+				movieService.deleteImage(type, movie);
+			}
+			movieService.deleteItem(movie);
+		}
+
 		final List<APIConfiguration> configurations = apiConfigurationService.getAllConfigurations();
 		LOGGER.info("Delete {} API configurations", configurations.size());
 
@@ -103,6 +121,7 @@ public class BackupRestoreService
 
 		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
 		insertShows(database.shows());
+		insertMovies(database.movies());
 		insertUsers(database.users());
 		insertApiConfigurations(database.apiConfigurations());
 
@@ -114,6 +133,13 @@ public class BackupRestoreService
 		final List<Show> shows = showConverter.toEntities(backupShowModels);
 		showService.createAll(shows);
 		LOGGER.info("Restored shows");
+	}
+
+	public void insertMovies(List<BackupMovieModel> backupMovieModels)
+	{
+		final List<Movie> movies = movieConverter.toEntities(backupMovieModels);
+		movieService.createAll(movies);
+		LOGGER.info("Restored movies");
 	}
 
 	public void insertUsers(List<BackupUserModel> backupUserModels)
@@ -153,10 +179,24 @@ public class BackupRestoreService
 					}
 					return new WatchedEpisode(user, episodeOptional.get(), backupWatchedEpisodeModel.getWatchedAt());
 				}).filter(Objects::nonNull).toList());
+
+				user.addMovies(backupUserModel.getMovies().stream()
+						.map(model -> {
+							final Optional<Movie> movieOptional = movieService.getById(model.getMovieId());
+							if(movieOptional.isEmpty())
+							{
+								return Optional.<AddedMovie>empty();
+							}
+							return Optional.of(new AddedMovie(user, movieOptional.get(), model.getWatchedDate()));
+						})
+						.filter(Optional::isPresent)
+						.map(Optional::get)
+						.toList());
+
 				userService.saveUser(user);
 			}
 		}
-		LOGGER.info("Restored user shows and episodes");
+		LOGGER.info("Restored user shows, episodes and movies");
 	}
 
 	public void insertApiConfigurations(List<BackupAPIConfigurationModel> backupAPIConfigurationModels)
