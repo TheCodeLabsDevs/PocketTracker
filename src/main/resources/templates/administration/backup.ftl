@@ -66,12 +66,12 @@
             </@b.col>
 
             <@f.form name="clearForm" url="/administration/backup/clear" multipart=true>
-                <@f.submit label="button.delete" classes="float-end"/>
+                <@f.submit label="button.database.delete" classes="float-end" style="btn-danger"/>
             </@f.form>
 
             <@f.form name="restoreForm" url="/administration/backup/restore" multipart=true>
                 <@f.file label="admin.backup.upload" name="restore" accept="application/zip"/>
-                <@f.submit label="button.restore" classes="float-end"/>
+                <@f.submit label="button.restore" classes="float-end" style="btn-danger"/>
             </@f.form>
         </@b.row>
     </@template.body>
