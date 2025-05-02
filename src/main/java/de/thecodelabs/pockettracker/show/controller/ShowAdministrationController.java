@@ -9,7 +9,7 @@ import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredExcept
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchRequest;
-import de.thecodelabs.pockettracker.mediaitem.ShowImageType;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.*;
@@ -186,7 +186,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{id}/edit/{type}")
-	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable ShowImageType type,
+	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable MediaItemImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
 		Optional<Show> showOptional = service.getById(id);
@@ -303,7 +303,7 @@ public class ShowAdministrationController
 	}
 
 	@GetMapping("/{id}/showImages/{type}")
-	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable ShowImageType type, Model model)
+	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable MediaItemImageType type, Model model)
 	{
 		final Optional<Show> showOptional = service.getById(id);
 		if(showOptional.isEmpty())
@@ -319,7 +319,7 @@ public class ShowAdministrationController
 			final List<String> posterUrls;
 			try
 			{
-				if(type == ShowImageType.POSTER)
+				if(type == MediaItemImageType.POSTER)
 				{
 					posterUrls = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
 				}
@@ -343,7 +343,7 @@ public class ShowAdministrationController
 	}
 
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
-	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable ShowImageType type, @RequestParam String url)
+	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable MediaItemImageType type, @RequestParam String url)
 	{
 		final Optional<Show> showOptional = service.getById(showId);
 		if(showOptional.isEmpty())

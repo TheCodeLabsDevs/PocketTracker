@@ -4,7 +4,7 @@ public interface MediaItem
 {
 	String getName();
 
-	String getImagePath(ShowImageType showImageType);
+	String getImagePath(MediaItemImageType mediaItemImageType);
 
-	void setImagePath(ShowImageType showImageType, String path);
+	void setImagePath(MediaItemImageType mediaItemImageType, String path);
 }

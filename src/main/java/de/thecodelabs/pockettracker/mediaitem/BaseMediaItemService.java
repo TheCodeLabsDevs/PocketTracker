@@ -71,7 +71,7 @@ public abstract class BaseMediaItemService<T extends MediaItem>
 	}
 
 	@Transactional
-	public void changeImage(ShowImageType mediaImageType, MediaItem item, String fileName, InputStream dataStream) throws IOException
+	public void changeImage(MediaItemImageType mediaImageType, MediaItem item, String fileName, InputStream dataStream) throws IOException
 	{
 		deleteImage(mediaImageType, item);
 
@@ -96,7 +96,7 @@ public abstract class BaseMediaItemService<T extends MediaItem>
 	}
 
 	@Transactional
-	public void deleteImage(ShowImageType mediaImageType, MediaItem item)
+	public void deleteImage(MediaItemImageType mediaImageType, MediaItem item)
 	{
 		if(item.getImagePath(mediaImageType) == null)
 		{

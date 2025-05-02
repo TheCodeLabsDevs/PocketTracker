@@ -1,13 +1,13 @@
 package de.thecodelabs.pockettracker.mediaitem;
 
-public enum ShowImageType
+public enum MediaItemImageType
 {
 	BANNER("banner"),
 	POSTER("poster");
 
 	private final String pathName;
 
-	ShowImageType(String pathName)
+	MediaItemImageType(String pathName)
 	{
 		this.pathName = pathName;
 	}

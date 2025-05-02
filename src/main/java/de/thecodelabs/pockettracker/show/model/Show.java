@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.mediaitem.MediaItem;
-import de.thecodelabs.pockettracker.mediaitem.ShowImageType;
+import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -224,9 +224,9 @@ public class Show implements MediaItem
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 
-	public String getImagePath(ShowImageType showImageType)
+	public String getImagePath(MediaItemImageType mediaItemImageType)
 	{
-		switch(showImageType)
+		switch(mediaItemImageType)
 		{
 			case BANNER:
 				return getBannerPath();
@@ -237,9 +237,9 @@ public class Show implements MediaItem
 		}
 	}
 
-	public void setImagePath(ShowImageType showImageType, String path)
+	public void setImagePath(MediaItemImageType mediaItemImageType, String path)
 	{
-		switch(showImageType)
+		switch(mediaItemImageType)
 		{
 			case BANNER:
 				setBannerPath(path);
