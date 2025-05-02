@@ -47,7 +47,6 @@ public class UserController
 {
 	private final UserService userService;
 
-	private final ShowRepository showRepository;
 	private final ShowService showService;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
@@ -124,7 +123,7 @@ public class UserController
 	@Transactional
 	public String addShow(WebRequest request, @PathVariable UUID showId)
 	{
-		final Optional<Show> showOptional = showRepository.findById(showId);
+		final Optional<Show> showOptional = showService.getById(showId);
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
@@ -140,7 +139,7 @@ public class UserController
 	@GetMapping("/shows/remove/{showId}")
 	public String removeShow(WebRequest request, @PathVariable UUID showId)
 	{
-		final Optional<Show> showOptional = showRepository.findById(showId);
+		final Optional<Show> showOptional = showService.getById(showId);
 		if(showOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));

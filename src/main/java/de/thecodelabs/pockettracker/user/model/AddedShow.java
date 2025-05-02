@@ -3,8 +3,10 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.show.model.Show;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -75,6 +77,7 @@ public class AddedShow
 	private Show show;
 
 	@Column(name = "disliked")
+	@Setter
 	private Boolean disliked;
 
 	public AddedShow(@NotNull User user, @NotNull Show show, Boolean disliked)
