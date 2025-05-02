@@ -196,8 +196,8 @@ public class MainController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_MOVIES, movieService.getAllMovies(null).size());
-		model.addAttribute(ModelAttributes.MOVIES, movieService.getAllMovies(searchText));
+		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_MOVIES, movieService.getAll(null).size());
+		model.addAttribute(ModelAttributes.MOVIES, movieService.getAll(searchText));
 
 		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
 		model.addAttribute(ModelAttributes.USER_MOVIES, user.getMovies().stream().map(AddedMovie::getMovie).toList());
@@ -210,7 +210,7 @@ public class MainController
 	public String movie(Model model, @PathVariable UUID movieId)
 	{
 		final User user = userService.getCurrentUser();
-		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		final Optional<Movie> movieOptional = movieService.getById(movieId);
 		if(movieOptional.isEmpty())
 		{
 			return ReturnValues.REDIRECT_MOVIES;

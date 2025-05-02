@@ -83,7 +83,7 @@ public class MovieAdministrationController
 			return "redirect:/movie/create";
 		}
 
-		final Movie createdMovie = service.createMovie(movie);
+		final Movie createdMovie = service.createItem(movie);
 
 		return "redirect:/movie/" + createdMovie.getId() + "/edit";
 	}
@@ -139,7 +139,7 @@ public class MovieAdministrationController
 	@GetMapping("/{id}/edit")
 	public String editPage(WebRequest request, @PathVariable UUID id, Model model)
 	{
-		final Optional<Movie> movieOptional = service.getMovieById(id);
+		final Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie for id " + id + " not found");
@@ -171,7 +171,7 @@ public class MovieAdministrationController
 			return "redirect:/movie/" + id + "/edit";
 		}
 
-		final Optional<Movie> managedMovieOptional = service.getMovieById(id);
+		final Optional<Movie> managedMovieOptional = service.getById(id);
 		if(managedMovieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie for id " + id + " not found");
@@ -186,7 +186,7 @@ public class MovieAdministrationController
 	public String updateImage(WebRequest request, @PathVariable UUID id, @PathVariable MediaItemImageType type,
 							  @RequestParam("image") MultipartFile multipartFile)
 	{
-		Optional<Movie> movieOptional = service.getMovieById(id);
+		Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())
 		{
 			return "redirect:/movie/" + id + "/edit";
@@ -196,13 +196,13 @@ public class MovieAdministrationController
 		if(multipartFile == null || multipartFile.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.null", BootstrapColor.WARNING));
-			service.deleteMovieImage(type, movie);
+			service.deleteImage(type, movie);
 			return "redirect:/movie/" + id + "/edit";
 		}
 
 		try
 		{
-			service.changeMovieImage(type, movie, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(movie.getName()), multipartFile.getInputStream());
+			service.changeImage(type, movie, Optional.ofNullable(multipartFile.getOriginalFilename()).orElse(movie.getName()), multipartFile.getInputStream());
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
@@ -217,7 +217,7 @@ public class MovieAdministrationController
 	@Transactional
 	public String deletePost(WebRequest request, @PathVariable UUID id)
 	{
-		final Optional<Movie> managedMovieOptional = service.getMovieById(id);
+		final Optional<Movie> managedMovieOptional = service.getById(id);
 		if(managedMovieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie for id " + id + " not found");
@@ -226,7 +226,7 @@ public class MovieAdministrationController
 		final String showName = managedMovie.getName();
 
 		userService.deleteWatchedMovie(managedMovie);
-		service.deleteMovie(managedMovie);
+		service.deleteItem(managedMovie);
 
 		WebRequestUtils.putToast(request, new Toast("toast.movie.delete", BootstrapColor.SUCCESS, showName));
 		return "redirect:/movies";
@@ -245,7 +245,7 @@ public class MovieAdministrationController
 
 		try
 		{
-			service.addApiIdentifierToMovie(showId, apiIdentifier);
+			service.addApiIdentifier(showId, apiIdentifier);
 			WebRequestUtils.putToast(request, new Toast("toast.api.identifier.added", BootstrapColor.SUCCESS, apiIdentifier.getType()));
 		}
 		catch(IllegalArgumentException e)
@@ -278,10 +278,10 @@ public class MovieAdministrationController
 	@GetMapping("/{id}/showImages/{type}")
 	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable MediaItemImageType type, Model model)
 	{
-		final Optional<Movie> movieOptional = service.getMovieById(id);
+		final Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())
 		{
-			throw new NotFoundException("Show for id " + id + " not found");
+			throw new NotFoundException("Movie for id " + id + " not found");
 		}
 
 		final Movie movie = movieOptional.get();
@@ -311,7 +311,7 @@ public class MovieAdministrationController
 	@PostMapping("/{showId}/edit/imageFromApi/{type}")
 	public String addImageFromApi(WebRequest request, @PathVariable UUID showId, @PathVariable MediaItemImageType type, @RequestParam String url)
 	{
-		final Optional<Movie> movieOptional = service.getMovieById(showId);
+		final Optional<Movie> movieOptional = service.getById(showId);
 		if(movieOptional.isEmpty())
 		{
 			return "redirect:/movie/" + showId + "/edit";
@@ -319,14 +319,14 @@ public class MovieAdministrationController
 
 		final Movie movie = movieOptional.get();
 
-		service.deleteMovieImage(type, movie);
+		service.deleteImage(type, movie);
 
 		try(final InputStream dataStream = URI.create(url).toURL().openStream())
 		{
 			final String fileNameFromUrl = url.substring(url.lastIndexOf('/') + 1);
 			final String fileName = MessageFormat.format("{0}_{1}", movie.getName(), fileNameFromUrl);
 
-			service.changeMovieImage(type, movie, fileName, dataStream);
+			service.changeImage(type, movie, fileName, dataStream);
 			WebRequestUtils.putToast(request, new Toast("toast.image.saved", BootstrapColor.SUCCESS));
 		}
 		catch(IOException e)
@@ -341,12 +341,12 @@ public class MovieAdministrationController
 	 Utils
 	 */
 
-	private <T> boolean isModelInvalid(WebRequest request, T show, BindingResult validation)
+	private <T> boolean isModelInvalid(WebRequest request, T movie, BindingResult validation)
 	{
 		if(validation.hasErrors())
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));
-			WebRequestUtils.putValidationError(request, validation, show);
+			WebRequestUtils.putValidationError(request, validation, movie);
 			return true;
 		}
 		return false;

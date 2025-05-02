@@ -2,61 +2,29 @@ package de.thecodelabs.pockettracker.movie;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
-import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
+import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemRepository;
+import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.User;
-import de.thecodelabs.pockettracker.utils.Helpers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class MovieService
+public class MovieService extends BaseMediaItemService<Movie>
 {
-	private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
-
-	private final MovieRepository repository;
-	private final WebConfigurationProperties webConfigurationProperties;
-
-	@Autowired
-	public MovieService(MovieRepository repository, WebConfigurationProperties webConfigurationProperties)
+	public MovieService(BaseMediaItemRepository<Movie> repository, WebConfigurationProperties webConfigurationProperties)
 	{
-		this.repository = repository;
-		this.webConfigurationProperties = webConfigurationProperties;
+		super(repository, webConfigurationProperties);
 	}
 
-	public List<Movie> getAllMovies(String name)
-	{
-		final List<Movie> movies;
-		if(name == null || name.isEmpty())
-		{
-			movies = repository.findAllByOrderByNameAsc();
-		}
-		else
-		{
-			movies = repository.findAllByNameContainingIgnoreCaseOrderByNameAsc(name);
-		}
-
-		return movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
-	}
-
-	public List<Movie> getAllFavoriteMoviesByUser(String name, User user)
+	public List<Movie> getAllFavoriteByUser(String name, User user)
 	{
 		final List<Movie> movies;
 		if(name == null || name.isEmpty())
@@ -74,82 +42,18 @@ public class MovieService
 					.filter(movie -> movie.getName().toLowerCase().contains(name.toLowerCase()))
 					.toList();
 		}
-		return movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
+		return sort(movies);
 	}
 
-
-	public Optional<Movie> getMovieById(UUID id)
+	@Override
+	protected void prepareItem(Movie item)
 	{
-		return repository.findById(id);
-	}
-
-	public Movie createMovie(Movie movie)
-	{
-		return repository.save(movie);
-	}
-
-	public void createMovie(List<Movie> movies)
-	{
-		repository.saveAll(movies);
 	}
 
 	@Transactional
-	public void changeMovieImage(MediaItemImageType mediaItemImageType, Movie movie, String fileName, InputStream dataStream) throws IOException
+	public void addApiIdentifier(UUID movieId, APIIdentifier apiIdentifier)
 	{
-		deleteMovieImage(mediaItemImageType, movie);
-
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
-
-		final String escapedFileName = Helpers.replaceNonAlphaNumericCharacters(fileName, "_");
-		StringBuilder filenameBuilder = new StringBuilder(escapedFileName);
-		Path destinationPath;
-
-		while(Files.exists(destinationPath = basePath.resolve(mediaItemImageType.getPathName()).resolve(filenameBuilder.toString())))
-		{
-			filenameBuilder.insert(0, "_");
-		}
-
-		if(Files.notExists(destinationPath.getParent()))
-		{
-			Files.createDirectories(destinationPath.getParent());
-		}
-
-		movie.setImagePath(mediaItemImageType, basePath.relativize(destinationPath).toString());
-		FileCopyUtils.copy(dataStream, Files.newOutputStream(destinationPath));
-	}
-
-	@Transactional
-	public void deleteMovieImage(MediaItemImageType mediaItemImageType, Movie movie)
-	{
-		if(movie.getImagePath(mediaItemImageType) == null)
-		{
-			return;
-		}
-
-		final Path basePath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
-		final Path bannerPath = basePath.resolve(movie.getImagePath(mediaItemImageType));
-
-		try
-		{
-			Files.deleteIfExists(bannerPath);
-			movie.setImagePath(mediaItemImageType, null);
-		}
-		catch(IOException e)
-		{
-			logger.error("Fail to delete banner image", e);
-		}
-	}
-
-	@Transactional
-	public void deleteMovie(Movie movie)
-	{
-		repository.delete(movie);
-	}
-
-	@Transactional
-	public void addApiIdentifierToMovie(UUID movieId, APIIdentifier apiIdentifier)
-	{
-		final Optional<Movie> movieOptional = getMovieById(movieId);
+		final Optional<Movie> movieOptional = getById(movieId);
 		if(movieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie not found");

@@ -259,7 +259,7 @@ public class UserController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		final List<Movie> movies = movieService.getAllFavoriteMoviesByUser(searchText, user);
+		final List<Movie> movies = movieService.getAllFavoriteByUser(searchText, user);
 		final List<Movie> sortedMovies = movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
 
 		model.addAttribute("movies", sortedMovies);
@@ -275,7 +275,7 @@ public class UserController
 	@Transactional
 	public String addMovie(WebRequest request, @PathVariable UUID movieId)
 	{
-		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		final Optional<Movie> movieOptional = movieService.getById(movieId);
 		if(movieOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert kein Film mit der ID \"{0}\"", movieId), BootstrapColor.DANGER));
@@ -291,7 +291,7 @@ public class UserController
 	@GetMapping("/movies/remove/{movieId}")
 	public String removeMovie(WebRequest request, @PathVariable UUID movieId)
 	{
-		final Optional<Movie> movieOptional = movieService.getMovieById(movieId);
+		final Optional<Movie> movieOptional = movieService.getById(movieId);
 		if(movieOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert kein Film mit der ID \"{0}\"", movieId), BootstrapColor.DANGER));
