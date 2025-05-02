@@ -5,13 +5,17 @@ import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigura
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.converter.APIConfigurationConverter;
+import de.thecodelabs.pockettracker.backup.converter.MovieConverter;
 import de.thecodelabs.pockettracker.backup.converter.ShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.user.UserConverter;
 import de.thecodelabs.pockettracker.backup.model.BackupAPIConfigurationModel;
+import de.thecodelabs.pockettracker.backup.model.BackupMovieModel;
 import de.thecodelabs.pockettracker.backup.model.BackupShowModel;
 import de.thecodelabs.pockettracker.backup.model.Database;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserModel;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
+import de.thecodelabs.pockettracker.movie.MovieService;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -40,10 +44,12 @@ public class BackupCreateService
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupCreateService.class);
 
 	private final ShowService showService;
+	private final MovieService movieService;
 	private final UserRepository userRepository;
 	private final APIConfigurationRepository apiConfigurationRepository;
 
 	private final ShowConverter showConverter;
+	private final MovieConverter movieConverter;
 	private final UserConverter userConverter;
 	private final APIConfigurationConverter apiConfigurationConverter;
 
@@ -53,14 +59,16 @@ public class BackupCreateService
 	private final ObjectMapper objectMapper;
 
 	@Autowired
-	public BackupCreateService(ShowService showService, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter,
+	public BackupCreateService(ShowService showService, MovieService movieService, UserRepository userRepository, APIConfigurationRepository apiConfigurationRepository, ShowConverter showConverter, MovieConverter movieConverter,
 							   UserConverter userConverter, APIConfigurationConverter apiConfigurationConverter, WebConfigurationProperties webConfigurationProperties,
 							   BackupConfigurationProperties backupConfigurationProperties, ObjectMapper objectMapper)
 	{
 		this.showService = showService;
+		this.movieService = movieService;
 		this.userRepository = userRepository;
 		this.apiConfigurationRepository = apiConfigurationRepository;
 		this.showConverter = showConverter;
+		this.movieConverter = movieConverter;
 		this.userConverter = userConverter;
 		this.apiConfigurationConverter = apiConfigurationConverter;
 		this.webConfigurationProperties = webConfigurationProperties;
@@ -76,13 +84,16 @@ public class BackupCreateService
 		final List<Show> shows = showService.getAll(null);
 		final List<BackupShowModel> backupShowModels = showConverter.toBeans(shows);
 
+		final List<Movie> movies = movieService.getAll(null);
+		final List<BackupMovieModel> backupMovieModels = movieConverter.toBeans(movies);
+
 		final List<User> users = userRepository.findAll();
 		final List<BackupUserModel> backupUserModels = userConverter.toBeans(users);
 
 		final List<APIConfiguration> apiConfigurations = apiConfigurationRepository.findAll();
 		final List<BackupAPIConfigurationModel> backupAPIConfigurationModels = apiConfigurationConverter.toBeans(apiConfigurations);
 
-		final Database database = new Database(backupShowModels, backupUserModels, backupAPIConfigurationModels);
+		final Database database = new Database(backupShowModels, backupMovieModels, backupUserModels, backupAPIConfigurationModels);
 
 		LOGGER.info("Create backup at {}", backupLocationPath);
 

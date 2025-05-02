@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.backup.converter.user;
 
+import de.thecodelabs.pockettracker.backup.converter.AddedMovieConverter;
 import de.thecodelabs.pockettracker.backup.converter.AddedShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.WatchedEpisodeConverter;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserGitlabAuthentication;
@@ -22,18 +23,20 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	private final UserSettingsConverter userSettingsConverter;
 
 	private final AddedShowConverter addedShowConverter;
+	private final AddedMovieConverter addedMovieConverter;
 	private final WatchedEpisodeConverter watchedEpisodeConverter;
 
 	@Autowired
 	public UserConverter(UserTokenConverter userTokenConverter, UserInternalAuthenticationConverter internalAuthenticationConverter,
 						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, UserSettingsConverter userSettingsConverter,
-						 AddedShowConverter addedShowConverter, WatchedEpisodeConverter watchedEpisodeConverter)
+						 AddedShowConverter addedShowConverter, AddedMovieConverter addedMovieConverter, WatchedEpisodeConverter watchedEpisodeConverter)
 	{
 		this.userTokenConverter = userTokenConverter;
 		this.internalAuthenticationConverter = internalAuthenticationConverter;
 		this.gitlabAuthenticationConverter = gitlabAuthenticationConverter;
 		this.userSettingsConverter = userSettingsConverter;
 		this.addedShowConverter = addedShowConverter;
+		this.addedMovieConverter = addedMovieConverter;
 		this.watchedEpisodeConverter = watchedEpisodeConverter;
 	}
 
@@ -65,6 +68,7 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 		}
 
 		model.setShows(addedShowConverter.toBeans(entity.getShows()));
+		model.setMovies(addedMovieConverter.toBeans(entity.getMovies()));
 		model.setWatchedEpisodes(watchedEpisodeConverter.toBeans(entity.getWatchedEpisodes()));
 
 		return model;
