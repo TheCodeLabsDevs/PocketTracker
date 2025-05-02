@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.apiidentifier;
 
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,15 +10,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class APIIdentifierService
 {
 	private final APIIdentifierRepository repository;
-
-	@Autowired
-	public APIIdentifierService(APIIdentifierRepository repository)
-	{
-		this.repository = repository;
-	}
 
 	public Optional<APIIdentifier> getIdentifierById(UUID id)
 	{

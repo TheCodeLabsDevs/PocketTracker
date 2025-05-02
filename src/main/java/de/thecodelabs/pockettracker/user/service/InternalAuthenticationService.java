@@ -2,21 +2,16 @@ package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.repository.InternalAuthenticationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InternalAuthenticationService
 {
 	private final InternalAuthenticationRepository repository;
-
-	@Autowired
-	public InternalAuthenticationService(InternalAuthenticationRepository repository)
-	{
-		this.repository = repository;
-	}
 
 	public Optional<InternalAuthentication> getInternalAuthenticationByRememberMeSeries(String series)
 	{

@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.authentication.api;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,15 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ApiKeyAuthenticationManager implements AuthenticationManager
 {
 	private final UserService userService;
-
-	@Autowired
-	public ApiKeyAuthenticationManager(UserService userService)
-	{
-		this.userService = userService;
-	}
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException

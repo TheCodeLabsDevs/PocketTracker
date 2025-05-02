@@ -12,6 +12,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -20,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 public class Episode
 {
@@ -87,86 +93,6 @@ public class Episode
 		this.posterPath = posterPath;
 	}
 
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
-	public Integer getNumber()
-	{
-		return number;
-	}
-
-	public void setNumber(Integer number)
-	{
-		this.number = number;
-	}
-
-	public LocalDate getFirstAired()
-	{
-		return firstAired;
-	}
-
-	public void setFirstAired(LocalDate firstAired)
-	{
-		this.firstAired = firstAired;
-	}
-
-	public Integer getLengthInMinutes()
-	{
-		return lengthInMinutes;
-	}
-
-	public void setLengthInMinutes(Integer lengthInMinutes)
-	{
-		this.lengthInMinutes = lengthInMinutes;
-	}
-
-	public Season getSeason()
-	{
-		return season;
-	}
-
-	public void setSeason(Season season)
-	{
-		this.season = season;
-	}
-
-	public String getPosterPath()
-	{
-		return posterPath;
-	}
-
-	public void setPosterPath(String posterPath)
-	{
-		this.posterPath = posterPath;
-	}
-
 	public String getFirstAiredReadable()
 	{
 		if(firstAired == null)
@@ -174,16 +100,6 @@ public class Episode
 			return null;
 		}
 		return firstAired.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	}
-
-	public List<WatchedEpisode> getWatchedEpisodes()
-	{
-		return watchedEpisodes;
-	}
-
-	public void setWatchedEpisodes(List<WatchedEpisode> watchedEpisodes)
-	{
-		this.watchedEpisodes = watchedEpisodes;
 	}
 
 	public String getImagePath(EpisodeImageType episodeImageType)

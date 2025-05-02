@@ -18,6 +18,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/season")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@RequiredArgsConstructor
 public class SeasonAdministrationController
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SeasonAdministrationController.class);
@@ -44,14 +46,6 @@ public class SeasonAdministrationController
 	private final SeasonService seasonService;
 	private final UserService userService;
 	private final ShowImporterServiceFactory showImporterServiceFactory;
-
-	@Autowired
-	public SeasonAdministrationController(SeasonService seasonService, UserService userService, ShowImporterServiceFactory showImporterServiceFactory)
-	{
-		this.seasonService = seasonService;
-		this.userService = userService;
-		this.showImporterServiceFactory = showImporterServiceFactory;
-	}
 
 	@GetMapping("/{id}/edit")
 	public String seasonEditView(WebRequest request, @PathVariable UUID id, Model model)

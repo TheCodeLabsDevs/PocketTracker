@@ -4,11 +4,17 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "appuser_settings")
+@NoArgsConstructor
 public class UserSettings
 {
 	@Id
@@ -30,61 +36,7 @@ public class UserSettings
 		}
 	}
 
-	public UserSettings()
-	{
-	}
-
 	public UserSettings(User user)
-	{
-		this.user = user;
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public ShowSortOption getLastShowSortOption()
-	{
-		return lastShowSortOption;
-	}
-
-	public void setLastShowSortOption(ShowSortOption lastShowSortOption)
-	{
-		this.lastShowSortOption = lastShowSortOption;
-	}
-
-	public ShowFilterOption getLastShowFilterOption()
-	{
-		return lastShowFilterOption;
-	}
-
-	public void setLastShowFilterOption(ShowFilterOption lastShowFilterOption)
-	{
-		this.lastShowFilterOption = lastShowFilterOption;
-	}
-
-	public Boolean getShowDislikedShows()
-	{
-		return showDislikedShows;
-	}
-
-	public void setShowDislikedShows(Boolean showDislikedShows)
-	{
-		this.showDislikedShows = showDislikedShows;
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public void setUser(User user)
 	{
 		this.user = user;
 	}

@@ -10,6 +10,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,13 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/episode")
+@RequiredArgsConstructor
 public class EpisodeAdministrationController
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EpisodeAdministrationController.class);
 
 	private final EpisodeService episodeService;
 	private final UserService userService;
-
-	@Autowired
-	public EpisodeAdministrationController(EpisodeService episodeService, UserService userService)
-	{
-		this.episodeService = episodeService;
-		this.userService = userService;
-	}
 
 	@GetMapping("/{id}/edit")
 	public String getEpisodeView(WebRequest request, @PathVariable UUID id, Model model)

@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,17 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfiguration implements WebMvcConfigurer
 {
 	private final WebConfigurationProperties webConfigurationProperties;
 	private final CommonModelInspector commonModelInspector;
-
-	@Autowired
-	public WebMvcConfiguration(WebConfigurationProperties webConfigurationProperties, CommonModelInspector commonModelInspector)
-	{
-		this.webConfigurationProperties = webConfigurationProperties;
-		this.commonModelInspector = commonModelInspector;
-	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry)

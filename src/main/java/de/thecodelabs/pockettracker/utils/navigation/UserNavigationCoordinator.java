@@ -1,17 +1,15 @@
 package de.thecodelabs.pockettracker.utils.navigation;
 
+import lombok.NoArgsConstructor;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
 
+@NoArgsConstructor
 public class UserNavigationCoordinator
 {
 	public static final String USER_SPECIFIC_NAVIGATION = "isUserSpecificView";
-
-	private UserNavigationCoordinator()
-	{
-	}
 
 	public static boolean isUserSpecificNavigation(WebRequest request)
 	{

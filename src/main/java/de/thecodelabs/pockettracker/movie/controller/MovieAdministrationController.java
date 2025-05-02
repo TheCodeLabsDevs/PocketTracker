@@ -15,6 +15,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/movie")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@RequiredArgsConstructor
 public class MovieAdministrationController
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MovieAdministrationController.class);
@@ -47,15 +49,6 @@ public class MovieAdministrationController
 	private final APIIdentifierService apiIdentifierService;
 
 	private final MovieImporterServiceFactory movieImporterServiceFactory;
-
-	@Autowired
-	public MovieAdministrationController(UserService userService, MovieService service, APIIdentifierService apiIdentifierService, MovieImporterServiceFactory movieImporterServiceFactory)
-	{
-		this.userService = userService;
-		this.service = service;
-		this.apiIdentifierService = apiIdentifierService;
-		this.movieImporterServiceFactory = movieImporterServiceFactory;
-	}
 
 	@GetMapping("/create")
 	public String createPage(WebRequest request, Model model)

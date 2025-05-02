@@ -2,7 +2,6 @@ package de.thecodelabs.pockettracker.movie;
 
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
-import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemRepository;
 import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;

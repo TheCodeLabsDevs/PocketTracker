@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.configuration;
 
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,15 +17,10 @@ import java.time.Duration;
 import java.util.Locale;
 
 @Component
+@RequiredArgsConstructor
 public class MessageSourceConfiguration implements WebMvcConfigurer
 {
 	private final GeneralConfigurationProperties generalConfigurationProperties;
-
-	@Autowired
-	public MessageSourceConfiguration(GeneralConfigurationProperties generalConfigurationProperties)
-	{
-		this.generalConfigurationProperties = generalConfigurationProperties;
-	}
 
 	@Bean
 	public MessageSource messageSource()

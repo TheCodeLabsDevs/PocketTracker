@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/administration/apiConfiguration")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@RequiredArgsConstructor
 public class APIConfigurationController
 {
 	private final APIConfigurationService apiConfigurationService;
@@ -37,12 +39,6 @@ public class APIConfigurationController
 	{
 		public static final String API_OVERVIEW = "administration/apiConfiguration";
 		public static final String REDIRECT_API_OVERVIEW = "redirect:/administration/apiConfiguration";
-	}
-
-	@Autowired
-	public APIConfigurationController(APIConfigurationService apiConfigurationService)
-	{
-		this.apiConfigurationService = apiConfigurationService;
 	}
 
 	@GetMapping

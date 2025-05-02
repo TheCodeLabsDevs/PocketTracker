@@ -3,6 +3,8 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "appuser_added_movies")
 @IdClass(AddedMovie.AddedMovieId.class)
+@Getter
+@NoArgsConstructor
 public class AddedMovie
 {
 	public static class AddedMovieId implements Serializable
@@ -74,10 +78,6 @@ public class AddedMovie
 	@JoinColumn(name = "movie_id", insertable = false, updatable = false)
 	private Movie movie;
 
-	public AddedMovie()
-	{
-	}
-
 	public AddedMovie(@NotNull User user, @NotNull Movie movie, @NotNull LocalDate watchedDate)
 	{
 		this.user = user;
@@ -86,20 +86,5 @@ public class AddedMovie
 
 		this.userId = user.getId();
 		this.movieId = movie.getId();
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public Movie getMovie()
-	{
-		return movie;
-	}
-
-	public LocalDate getWatchedDate()
-	{
-		return watchedDate;
 	}
 }

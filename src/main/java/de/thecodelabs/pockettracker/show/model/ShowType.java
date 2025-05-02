@@ -7,7 +7,6 @@ public enum ShowType implements MessageSourceResolvable
 	TV,
 	AUDIO;
 
-
 	@Override
 	public String[] getCodes()
 	{

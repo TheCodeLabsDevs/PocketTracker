@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.authentication;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,15 +16,10 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component
+@RequiredArgsConstructor
 public class DatabaseUserDetailService implements UserDetailsService
 {
 	private final UserService userService;
-
-	@Autowired
-	public DatabaseUserDetailService(UserService userService)
-	{
-		this.userService = userService;
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws AuthenticationException

@@ -8,11 +8,18 @@ import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.util.Objects;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
+@EqualsAndHashCode
+@ToString
 public class APIConfiguration
 {
 	public static class View
@@ -44,60 +51,4 @@ public class APIConfiguration
 			id = UUID.randomUUID();
 		}
 	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public String getToken()
-	{
-		return token;
-	}
-
-	public void setToken(String token)
-	{
-		this.token = token;
-	}
-
-	public APIType getType()
-	{
-		return type;
-	}
-
-	public void setType(APIType type)
-	{
-		this.type = type;
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		APIConfiguration that = (APIConfiguration) o;
-		return Objects.equals(id, that.id) && Objects.equals(token, that.token) && type == that.type;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(id, token, type);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "APIConfiguration{" +
-				"id=" + id +
-				", token='" + token + '\'' +
-				", type=" + type +
-				'}';
-	}
 }
-

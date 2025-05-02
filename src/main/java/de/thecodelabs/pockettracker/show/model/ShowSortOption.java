@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.show.model;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
+import lombok.Getter;
 import org.springframework.context.MessageSourceResolvable;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Getter
 public enum ShowSortOption implements MessageSourceResolvable
 {
 	NAME((shows, user) -> shows
@@ -25,11 +27,6 @@ public enum ShowSortOption implements MessageSourceResolvable
 	ShowSortOption(ShowSort sorter)
 	{
 		this.sorter = sorter;
-	}
-
-	public ShowSort getSorter()
-	{
-		return sorter;
 	}
 
 	@Override

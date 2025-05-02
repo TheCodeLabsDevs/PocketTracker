@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/users/administration")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@RequiredArgsConstructor
 public class UserAdministrationController
 {
 	private final UserService userService;
@@ -27,12 +29,6 @@ public class UserAdministrationController
 		public static final String ADMIN_USER_EDIT = "administration/user/edit";
 		public static final String REDIRECT_ADMIN_USER_ADD = "redirect:/users/administration/add";
 		public static final String REDIRECT_ADMIN_USERS = "redirect:/users/administration";
-	}
-
-	@Autowired
-	public UserAdministrationController(UserService userService)
-	{
-		this.userService = userService;
 	}
 
 	@GetMapping

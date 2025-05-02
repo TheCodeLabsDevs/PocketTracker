@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.authentication.api.ApiSecurityConfigurationP
 import de.thecodelabs.pockettracker.user.controller.UserForm;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.Optional;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration
 {
 	private static final String[] PERMIT_ALL = {"/webjars/**", "/css/**", "/js/**", "/lang/**", "/image/**", "/touch_icon.png"};
@@ -38,18 +40,6 @@ public class SecurityConfiguration
 
 	private final ApiKeyAuthenticationManager authenticationManager;
 	private final ApiSecurityConfigurationProperties apiConfigurationProperties;
-
-	@Autowired
-	public SecurityConfiguration(RememberMeService rememberMeService, AuthenticationConfigurationProperties configurationProperties,
-								 UserService userService, ApiKeyAuthenticationManager authenticationManager,
-								 ApiSecurityConfigurationProperties apiConfigurationProperties)
-	{
-		this.rememberMeService = rememberMeService;
-		this.configurationProperties = configurationProperties;
-		this.userService = userService;
-		this.authenticationManager = authenticationManager;
-		this.apiConfigurationProperties = apiConfigurationProperties;
-	}
 
 	@Order(2)
 	@Bean

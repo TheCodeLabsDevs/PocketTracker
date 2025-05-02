@@ -1,5 +1,8 @@
 package de.thecodelabs.pockettracker.episode.model;
 
+import lombok.Getter;
+
+@Getter
 public enum EpisodeImageType
 {
 	POSTER("episodePoster");
@@ -11,8 +14,4 @@ public enum EpisodeImageType
 		this.pathName = pathName;
 	}
 
-	public String getPathName()
-	{
-		return pathName;
-	}
 }

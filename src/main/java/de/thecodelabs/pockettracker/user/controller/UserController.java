@@ -21,6 +21,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,7 @@ import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_SEARCH_
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController
 {
 	private final UserService userService;
@@ -59,17 +61,6 @@ public class UserController
 		public static final String REDIRECT_MOVIES = "redirect:/movies";
 		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
 		public static final String MOVIES = "movies";
-	}
-
-	@Autowired
-	public UserController(UserService userService, ShowRepository showRepository, ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, MovieService movieService)
-	{
-		this.userService = userService;
-		this.showRepository = showRepository;
-		this.showService = showService;
-		this.seasonRepository = seasonRepository;
-		this.episodeRepository = episodeRepository;
-		this.movieService = movieService;
 	}
 
 	@PostMapping("/shows")

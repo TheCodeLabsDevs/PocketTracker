@@ -3,6 +3,8 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.show.model.Show;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "appuser_added_shows")
 @IdClass(AddedShow.AddedShowId.class)
+@Getter
+@NoArgsConstructor
 public class AddedShow
 {
 	public static class AddedShowId implements Serializable
@@ -73,10 +77,6 @@ public class AddedShow
 	@Column(name = "disliked")
 	private Boolean disliked;
 
-	public AddedShow()
-	{
-	}
-
 	public AddedShow(@NotNull User user, @NotNull Show show, Boolean disliked)
 	{
 		this.user = user;
@@ -85,25 +85,5 @@ public class AddedShow
 
 		this.userId = user.getId();
 		this.showId = show.getId();
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public Show getShow()
-	{
-		return show;
-	}
-
-	public Boolean getDisliked()
-	{
-		return disliked;
-	}
-
-	public void setDisliked(Boolean disliked)
-	{
-		this.disliked = disliked;
 	}
 }

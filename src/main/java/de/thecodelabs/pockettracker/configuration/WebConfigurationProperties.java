@@ -1,9 +1,13 @@
 package de.thecodelabs.pockettracker.configuration;
 
 import de.thecodelabs.utils.util.OS;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+@Setter
+@Getter
 @Component
 @ConfigurationProperties("pockettracker.web")
 public class WebConfigurationProperties
@@ -14,21 +18,6 @@ public class WebConfigurationProperties
 	private String apiResourcesUrl = "/api/resources";
 	private String webResourcesUrl = "/resources";
 
-	public String getBaseUrl()
-	{
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl)
-	{
-		this.baseUrl = baseUrl;
-	}
-
-	public String getImageResourcePath()
-	{
-		return imageResourcePath;
-	}
-
 	public String getImageResourcePathForOS()
 	{
 		if(OS.isWindows())
@@ -37,30 +26,5 @@ public class WebConfigurationProperties
 		}
 
 		return imageResourcePath;
-	}
-
-	public void setImageResourcePath(String imageResourcePath)
-	{
-		this.imageResourcePath = imageResourcePath;
-	}
-
-	public String getApiResourcesUrl()
-	{
-		return apiResourcesUrl;
-	}
-
-	public void setApiResourcesUrl(String apiResourcesUrl)
-	{
-		this.apiResourcesUrl = apiResourcesUrl;
-	}
-
-	public String getWebResourcesUrl()
-	{
-		return webResourcesUrl;
-	}
-
-	public void setWebResourcesUrl(String webResourcesUrl)
-	{
-		this.webResourcesUrl = webResourcesUrl;
 	}
 }

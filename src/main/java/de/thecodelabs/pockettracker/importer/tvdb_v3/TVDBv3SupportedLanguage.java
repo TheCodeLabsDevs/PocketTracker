@@ -1,5 +1,8 @@
 package de.thecodelabs.pockettracker.importer.tvdb_v3;
 
+import lombok.Getter;
+
+@Getter
 public enum TVDBv3SupportedLanguage
 {
 	ENGLISH("en"),
@@ -12,8 +15,4 @@ public enum TVDBv3SupportedLanguage
 		this.key = key;
 	}
 
-	public String getKey()
-	{
-		return key;
-	}
 }

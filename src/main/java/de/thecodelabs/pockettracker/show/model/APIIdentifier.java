@@ -10,11 +10,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
-import java.util.Objects;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 public class APIIdentifier
 {
 	public static class View
@@ -41,11 +46,15 @@ public class APIIdentifier
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	@MergeIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private Show show;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	@MergeIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	private Movie movie;
 
 	@PrePersist
@@ -55,10 +64,6 @@ public class APIIdentifier
 		{
 			id = UUID.randomUUID();
 		}
-	}
-
-	public APIIdentifier()
-	{
 	}
 
 	public APIIdentifier(APIType type, String identifier, Show show)
@@ -80,80 +85,5 @@ public class APIIdentifier
 		this.id = id;
 		this.type = type;
 		this.identifier = identifier;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public APIType getType()
-	{
-		return type;
-	}
-
-	public void setType(APIType type)
-	{
-		this.type = type;
-	}
-
-	public String getIdentifier()
-	{
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier)
-	{
-		this.identifier = identifier;
-	}
-
-	public Show getShow()
-	{
-		return show;
-	}
-
-	public void setShow(Show show)
-	{
-		this.show = show;
-	}
-
-	public Movie getMovie()
-	{
-		return movie;
-	}
-
-	public void setMovie(Movie movie)
-	{
-		this.movie = movie;
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		APIIdentifier that = (APIIdentifier) o;
-		return Objects.equals(id, that.id) && type == that.type && Objects.equals(identifier, that.identifier);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(id, type, identifier);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "APIIdentifier{" +
-				"id=" + id +
-				", type=" + type +
-				", identifier='" + identifier + '\'' +
-				'}';
 	}
 }

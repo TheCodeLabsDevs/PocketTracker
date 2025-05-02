@@ -2,6 +2,7 @@ package de.thecodelabs.pockettracker.importer.factory;
 
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ShowImporterServiceFactory
 {
 	private final List<ShowImporterService> showImporterServices;
-
-	@Autowired
-	public ShowImporterServiceFactory(List<ShowImporterService> showImporterServices)
-	{
-		this.showImporterServices = showImporterServices;
-	}
 
 	public ShowImporterService getImporter(APIType type)
 	{

@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserRole;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.utils.util.RandomUtils;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
+@RequiredArgsConstructor
 public class InitialUserCreator
 {
 	private static final int DEFAULT_PASSWORD_LENGTH = 20;
@@ -27,13 +29,6 @@ public class InitialUserCreator
 
 	private final UserService userService;
 	private final AuthenticationConfigurationProperties configurationProperties;
-
-	@Autowired
-	public InitialUserCreator(UserService userService, AuthenticationConfigurationProperties configurationProperties)
-	{
-		this.userService = userService;
-		this.configurationProperties = configurationProperties;
-	}
 
 	@EventListener
 	public void applicationStarted(ApplicationStartedEvent event) throws PasswordValidationException

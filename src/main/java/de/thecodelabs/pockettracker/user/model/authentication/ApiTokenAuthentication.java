@@ -2,10 +2,14 @@ package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "appuser_token")
 public class ApiTokenAuthentication
@@ -26,45 +30,5 @@ public class ApiTokenAuthentication
 		{
 			id = UUID.randomUUID();
 		}
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public LocalDateTime getCreateDate()
-	{
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate)
-	{
-		this.createDate = createDate;
-	}
-
-	public String getToken()
-	{
-		return token;
-	}
-
-	public void setToken(String token)
-	{
-		this.token = token;
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public void setUser(User user)
-	{
-		this.user = user;
 	}
 }

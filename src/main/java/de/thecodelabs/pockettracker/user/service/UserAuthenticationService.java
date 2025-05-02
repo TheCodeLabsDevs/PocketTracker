@@ -3,22 +3,17 @@ package de.thecodelabs.pockettracker.user.service;
 import de.thecodelabs.pockettracker.exceptions.ForbiddenException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.repository.UserAuthenticationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserAuthenticationService
 {
 	private final UserAuthenticationRepository authenticationRepository;
-
-	@Autowired
-	public UserAuthenticationService(UserAuthenticationRepository authenticationRepository)
-	{
-		this.authenticationRepository = authenticationRepository;
-	}
 
 	@Transactional
 	public void deleteAuthenticationProvider(User user, UUID providerId)

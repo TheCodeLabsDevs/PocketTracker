@@ -2,10 +2,14 @@ package de.thecodelabs.pockettracker.user.model.authentication;
 
 import de.thecodelabs.pockettracker.user.model.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.MessageSourceResolvable;
 
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "appuser_authentication")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -25,26 +29,6 @@ public class UserAuthentication implements MessageSourceResolvable
 		{
 			id = UUID.randomUUID();
 		}
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public void setUser(User user)
-	{
-		this.user = user;
 	}
 
 	@Override

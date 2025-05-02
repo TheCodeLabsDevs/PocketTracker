@@ -14,6 +14,7 @@ import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController
 {
 	public static final String PARAMETER_NAME_IS_USER_SPECIFIC_VIEW = "isUserSpecificView";
@@ -70,16 +72,6 @@ public class MainController
 		public static final String MOVIES = "movies";
 		public static final String MOVIE = "movie";
 		public static final String REDIRECT_MOVIES = "redirect:/movies";
-	}
-
-	@Autowired
-	public MainController(ShowService showService, SeasonRepository seasonRepository, EpisodeRepository episodeRepository, UserService userService, MovieService movieService)
-	{
-		this.showService = showService;
-		this.seasonRepository = seasonRepository;
-		this.episodeRepository = episodeRepository;
-		this.userService = userService;
-		this.movieService = movieService;
 	}
 
 	@SuppressWarnings("squid:S1319")

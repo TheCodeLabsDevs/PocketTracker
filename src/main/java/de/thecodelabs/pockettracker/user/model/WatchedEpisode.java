@@ -3,6 +3,9 @@ package de.thecodelabs.pockettracker.user.model;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -13,6 +16,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "appuser_watched_episodes")
 @IdClass(WatchedEpisode.WatchedEpisodeId.class)
+@Getter
+@NoArgsConstructor
 public class WatchedEpisode
 {
 	public static class WatchedEpisodeId implements Serializable
@@ -72,12 +77,9 @@ public class WatchedEpisode
 	@JoinColumn(name = "episode_id", insertable = false, updatable = false)
 	private Episode episode;
 
+	@Setter
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate watchedAt;
-
-	public WatchedEpisode()
-	{
-	}
 
 	public WatchedEpisode(@NotNull User user, @NotNull Episode episode, LocalDate watchedAt)
 	{
@@ -87,25 +89,5 @@ public class WatchedEpisode
 
 		this.userId = user.getId();
 		this.episodeId = episode.getId();
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public Episode getEpisode()
-	{
-		return episode;
-	}
-
-	public LocalDate getWatchedAt()
-	{
-		return watchedAt;
-	}
-
-	public void setWatchedAt(LocalDate watchedAt)
-	{
-		this.watchedAt = watchedAt;
 	}
 }

@@ -16,6 +16,7 @@ import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentica
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import de.thecodelabs.pockettracker.user.repository.*;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -35,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserService
 {
 	private final UserRepository userRepository;
@@ -48,20 +50,6 @@ public class UserService
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	private final UserAddedMovieRepository userAddedMovieRepository;
-
-	@Autowired
-	public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ShowService showService,
-					   GitlabAuthenticationRepository gitlabAuthenticationRepository, MessageSource messageSource, UserAddedShowRepository userAddedShowRepository, WatchedEpisodeRepository watchedEpisodeRepository, UserAddedMovieRepository userAddedMovieRepository)
-	{
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.showService = showService;
-		this.gitlabAuthenticationRepository = gitlabAuthenticationRepository;
-		this.messageSource = messageSource;
-		this.userAddedShowRepository = userAddedShowRepository;
-		this.watchedEpisodeRepository = watchedEpisodeRepository;
-		this.userAddedMovieRepository = userAddedMovieRepository;
-	}
 
 	public Optional<User> getCurrentUserOptional()
 	{

@@ -3,6 +3,7 @@ package de.thecodelabs.pockettracker.configuration;
 import de.thecodelabs.pockettracker.authentication.AuthenticationConfigurationProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -12,18 +13,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
+@RequiredArgsConstructor
 public class CommonModelInspector implements HandlerInterceptor
 {
 	private final AuthenticationConfigurationProperties properties;
 
 	@Value("${pockettracker.version}")
 	private String version;
-
-	@Autowired
-	public CommonModelInspector(AuthenticationConfigurationProperties properties)
-	{
-		this.properties = properties;
-	}
 
 	@Override
 	public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,

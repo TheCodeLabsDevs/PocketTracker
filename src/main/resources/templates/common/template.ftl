@@ -60,7 +60,7 @@
     <#import "/common/components/base.ftl" as b>
 
     <#if toast??>
-        <div class="alert ${toast.getColor().getToastColor()} alert-dismissible fade show" role="alert">
+        <div class="alert ${toast.color().getToastColor()} alert-dismissible fade show" role="alert">
             <@b.localize toast/>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

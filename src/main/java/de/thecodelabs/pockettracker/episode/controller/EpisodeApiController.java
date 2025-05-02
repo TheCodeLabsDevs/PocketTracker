@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.service.EpisodeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,15 +14,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/episode")
 @Tag(name = "Episode")
+@RequiredArgsConstructor
 public class EpisodeApiController
 {
 	private final EpisodeService episodeService;
-
-	@Autowired
-	public EpisodeApiController(EpisodeService episodeService)
-	{
-		this.episodeService = episodeService;
-	}
 
 	@Operation(operationId = "getEpisodeById")
 	@GetMapping("/{id}")

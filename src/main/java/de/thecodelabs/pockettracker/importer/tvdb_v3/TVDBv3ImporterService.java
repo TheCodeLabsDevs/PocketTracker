@@ -18,9 +18,9 @@ import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,7 @@ import java.util.Optional;
 
 @Service
 @ImporterType(APIType.TVDB_V3)
+@RequiredArgsConstructor
 public class TVDBv3ImporterService implements ShowImporterService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TVDBv3ImporterService.class);
@@ -49,17 +50,6 @@ public class TVDBv3ImporterService implements ShowImporterService
 	private final TVDBEpisodeToEpisodeConverter episodeConverter;
 
 	private final MessageSource messageSource;
-
-	@Autowired
-	public TVDBv3ImporterService(APIConfigurationService apiConfigurationService, GeneralConfigurationProperties generalConfigurationProperties,
-								 SeriesToShowConverter showConverter, TVDBEpisodeToEpisodeConverter episodeConverter, MessageSource messageSource)
-	{
-		this.apiConfigurationService = apiConfigurationService;
-		this.generalConfigurationProperties = generalConfigurationProperties;
-		this.showConverter = showConverter;
-		this.episodeConverter = episodeConverter;
-		this.messageSource = messageSource;
-	}
 
 	protected TheTvdb createApiClient() throws ImporterNotConfiguredException
 	{

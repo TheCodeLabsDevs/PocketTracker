@@ -6,6 +6,7 @@ import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/administration/batchEdit")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@RequiredArgsConstructor
 public class BatchEditController
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchEditController.class);
@@ -37,13 +39,6 @@ public class BatchEditController
 		public static final String BATCH_EDIT = "administration/batchEdit";
 		public static final String REDIRECT_BATCH_EDIT = "redirect:/administration/batchEdit";
 	}
-
-	@Autowired
-	public BatchEditController(ShowService showService)
-	{
-		this.showService = showService;
-	}
-
 
 	@GetMapping
 	public String batchEdit()

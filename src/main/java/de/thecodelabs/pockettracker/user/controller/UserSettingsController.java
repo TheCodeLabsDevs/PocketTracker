@@ -12,6 +12,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/user/settings")
+@RequiredArgsConstructor
 public class UserSettingsController
 {
 	private static final Logger logger = LoggerFactory.getLogger(UserSettingsController.class);
@@ -39,13 +41,6 @@ public class UserSettingsController
 	private static class ReturnValues
 	{
 		public static final String REDIRECT_USER_SETTINGS = "redirect:/user/settings";
-	}
-
-	@Autowired
-	public UserSettingsController(UserService userService, UserAuthenticationService authenticationService)
-	{
-		this.userService = userService;
-		this.authenticationService = authenticationService;
 	}
 
 	@GetMapping

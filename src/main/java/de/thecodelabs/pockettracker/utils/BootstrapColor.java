@@ -1,7 +1,10 @@
 package de.thecodelabs.pockettracker.utils;
 
+import lombok.Getter;
+
 import java.text.MessageFormat;
 
+@Getter
 public enum BootstrapColor
 {
 	PRIMARY("primary"),
@@ -23,11 +26,6 @@ public enum BootstrapColor
 	BootstrapColor(String styleClass)
 	{
 		this.styleClass = styleClass;
-	}
-
-	public String getStyleClass()
-	{
-		return styleClass;
 	}
 
 	public String getTextColor()

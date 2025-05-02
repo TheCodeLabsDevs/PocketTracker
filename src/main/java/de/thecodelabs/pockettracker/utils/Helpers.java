@@ -1,6 +1,7 @@
 package de.thecodelabs.pockettracker.utils;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;

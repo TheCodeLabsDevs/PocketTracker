@@ -11,10 +11,12 @@ import de.thecodelabs.pockettracker.user.model.authentication.GitlabAuthenticati
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.utils.beans.AbstractConverter;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserConverter implements AbstractConverter<BackupUserModel, User>
 {
 	private final UserTokenConverter userTokenConverter;
@@ -25,20 +27,6 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	private final AddedShowConverter addedShowConverter;
 	private final AddedMovieConverter addedMovieConverter;
 	private final WatchedEpisodeConverter watchedEpisodeConverter;
-
-	@Autowired
-	public UserConverter(UserTokenConverter userTokenConverter, UserInternalAuthenticationConverter internalAuthenticationConverter,
-						 UserGitlabAuthenticationConverter gitlabAuthenticationConverter, UserSettingsConverter userSettingsConverter,
-						 AddedShowConverter addedShowConverter, AddedMovieConverter addedMovieConverter, WatchedEpisodeConverter watchedEpisodeConverter)
-	{
-		this.userTokenConverter = userTokenConverter;
-		this.internalAuthenticationConverter = internalAuthenticationConverter;
-		this.gitlabAuthenticationConverter = gitlabAuthenticationConverter;
-		this.userSettingsConverter = userSettingsConverter;
-		this.addedShowConverter = addedShowConverter;
-		this.addedMovieConverter = addedMovieConverter;
-		this.watchedEpisodeConverter = watchedEpisodeConverter;
-	}
 
 	@Override
 	public BackupUserModel toBean(User entity)

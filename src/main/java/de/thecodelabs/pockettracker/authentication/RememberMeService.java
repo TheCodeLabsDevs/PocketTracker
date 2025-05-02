@@ -4,6 +4,7 @@ import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentication;
 import de.thecodelabs.pockettracker.user.service.InternalAuthenticationService;
 import de.thecodelabs.pockettracker.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -16,17 +17,11 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RememberMeService implements PersistentTokenRepository
 {
 	private final UserService userService;
 	private final InternalAuthenticationService internalAuthenticationService;
-
-	@Autowired
-	public RememberMeService(UserService userService, InternalAuthenticationService internalAuthenticationService)
-	{
-		this.userService = userService;
-		this.internalAuthenticationService = internalAuthenticationService;
-	}
 
 	@Override
 	@Transactional

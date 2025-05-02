@@ -1,12 +1,14 @@
 package de.thecodelabs.pockettracker.show.model;
 
 import de.thecodelabs.pockettracker.user.model.User;
+import lombok.Getter;
 import org.springframework.context.MessageSourceResolvable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@Getter
 public enum ShowFilterOption implements MessageSourceResolvable
 {
 	ALL_SHOWS((shows, user) -> shows.stream()),
@@ -22,11 +24,6 @@ public enum ShowFilterOption implements MessageSourceResolvable
 	ShowFilterOption(ShowFilter filter)
 	{
 		this.filter = filter;
-	}
-
-	public ShowFilter getFilter()
-	{
-		return filter;
 	}
 
 	@Override

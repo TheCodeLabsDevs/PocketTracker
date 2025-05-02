@@ -4,6 +4,8 @@ import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentica
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "appuser")
+@Getter
+@Setter
 public class User
 {
 	@Id
@@ -51,31 +55,6 @@ public class User
 		}
 	}
 
-	public void setId(UUID id)
-	{
-		this.id = id;
-	}
-
-	public UUID getId()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public List<UserAuthentication> getAuthentications()
-	{
-		return authentications;
-	}
-
 	public <T extends UserAuthentication> Optional<T> getAuthentication(Class<T> type)
 	{
 		return authentications.stream()
@@ -87,46 +66,6 @@ public class User
 	public void addAuthentication(UserAuthentication userAuthentication)
 	{
 		this.authentications.add(userAuthentication);
-	}
-
-	public void setAuthentications(List<UserAuthentication> authentications)
-	{
-		this.authentications = authentications;
-	}
-
-	public List<ApiTokenAuthentication> getTokens()
-	{
-		return tokens;
-	}
-
-	public void setTokens(List<ApiTokenAuthentication> tokens)
-	{
-		this.tokens = tokens;
-	}
-
-	public UserRole getUserRole()
-	{
-		return userRole;
-	}
-
-	public void setUserRole(UserRole userRole)
-	{
-		this.userRole = userRole;
-	}
-
-	public UserSettings getSettings()
-	{
-		return settings;
-	}
-
-	public void setSettings(UserSettings settings)
-	{
-		this.settings = settings;
-	}
-
-	public List<AddedShow> getShows()
-	{
-		return shows;
 	}
 
 	public void addShows(List<AddedShow> newShows)
@@ -145,11 +84,6 @@ public class User
 				.findFirst();
 	}
 
-	public List<WatchedEpisode> getWatchedEpisodes()
-	{
-		return watchedEpisodes;
-	}
-
 	public void addWatchedEpisodes(List<WatchedEpisode> newEpisodes)
 	{
 		if(this.watchedEpisodes == null)
@@ -157,11 +91,6 @@ public class User
 			this.watchedEpisodes = new ArrayList<>();
 		}
 		this.watchedEpisodes.addAll(newEpisodes);
-	}
-
-	public List<AddedMovie> getMovies()
-	{
-		return movies;
 	}
 
 	public void addMovies(List<AddedMovie> newMovies)
