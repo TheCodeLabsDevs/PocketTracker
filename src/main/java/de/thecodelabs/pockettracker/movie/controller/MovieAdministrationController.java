@@ -271,7 +271,7 @@ public class MovieAdministrationController
 	}
 
 	@GetMapping("/{id}/showImages/{type}")
-	public String getAvailableShowImages(@PathVariable UUID id, @PathVariable MediaItemImageType type, Model model)
+	public String getAvailableImages(@PathVariable UUID id, @PathVariable MediaItemImageType type, Model model)
 	{
 		final Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())

@@ -4,7 +4,7 @@
 <#import "/common/components/form.ftl" as f/>
 
 
-<#macro imagesModal show id title imageType>
+<#macro imagesModal movie id title imageType>
     <@m.modal id=id modalSize="modal-xl">
         <@m.header title/>
         <@m.body>
@@ -18,14 +18,13 @@
                         </@b.col>
                     </#list>
 
+                    <#if imageUrls?size == 0>
+                        <h5><@b.localize "show.banner.fromApi.noImages"/></h5>
+                    </#if>
                 </@b.row>
             </#list>
 
-            <#if urlsByApi?size == 0>
-                <h5><@b.localize "show.banner.fromApi.noImages"/></h5>
-            </#if>
-
-            <@f.form name="imageFromApi" url="/show/${show.id}/edit/imageFromApi/${imageType}" classes="hidden">
+            <@f.form name="imageFromApi" url="/movie/${movie.id}/edit/imageFromApi/${imageType}" classes="hidden">
                 <@f.hidden id="url" value=""/>
             </@f.form>
         </@m.body>
