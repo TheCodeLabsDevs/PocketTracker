@@ -287,7 +287,7 @@ public class MovieAdministrationController
 			final List<String> posterUrls;
 			try
 			{
-				posterUrls = movieImporterServiceFactory.getImporter(apiIdentifier.getType()).getShowPosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
+				posterUrls = movieImporterServiceFactory.getImporter(apiIdentifier.getType()).getMoviePosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
 				LOGGER.debug(MessageFormat.format("Found {0} image urls for movie \"{1}\"", posterUrls.size(), movie.getName()));
 				urlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}

@@ -298,4 +298,10 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 		movie.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, movie)));
 		return movie;
 	}
+
+	@Override
+	public List<String> getMoviePosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
+	{
+		return createMovieApiClient().getArtworkUrls(identifier);
+	}
 }

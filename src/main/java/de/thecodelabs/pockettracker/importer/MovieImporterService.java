@@ -18,5 +18,5 @@ public interface MovieImporterService
 
 	Movie createMovie(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 
-	List<String> getShowPosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException;
+	List<String> getMoviePosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException;
 }

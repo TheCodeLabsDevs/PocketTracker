@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -21,6 +22,7 @@ import java.util.stream.StreamSupport;
 public class TVDBv3MovieAPIClient
 {
 	private static final String BASE_URL = "https://api.thetvdb.com";
+	private static final String ARTWORK_BASE_URL = "https://artworks.thetvdb.com";
 
 	private final APIConfiguration apiConfiguration;
 	private final GeneralConfigurationProperties generalConfigurationProperties;
@@ -65,29 +67,15 @@ public class TVDBv3MovieAPIClient
 	{
 		try
 		{
-			final String token = getToken();
-			final URL url = URI.create(BASE_URL + "/movies/" + idToSearch).toURL();
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("Authorization", "Bearer " + token);
-			connection.setRequestProperty("Accept", "application/json");
-			connection.setRequestProperty("Accept-Language", generalConfigurationProperties.getLanguage());
-
-			final TVDBv3SupportedLanguage languageFromSettings = TVDBv3SupportedLanguage.fromKey(generalConfigurationProperties.getLanguage());
-
-			final JsonNode response = mapper.readTree(connection.getInputStream());
-			if(response.has("error"))
+			final Optional<JsonNode> responseOptional = getMovieById(idToSearch);
+			if(responseOptional.isEmpty())
 			{
-				if(response.get("error").asText().contains("not found"))
-				{
-					return Optional.empty();
-				}
-
-				throw new ImportProcessException("Error searching for movie " + idToSearch);
+				return Optional.empty();
 			}
 
-			final JsonNode data = response.get("data");
+			final JsonNode data = responseOptional.get().get("data");
 
+			final TVDBv3SupportedLanguage languageFromSettings = TVDBv3SupportedLanguage.fromKey(generalConfigurationProperties.getLanguage());
 			Optional<JsonNode> translationOptional = getTranslationByLanguageLongKey(data, languageFromSettings);
 			if(translationOptional.isEmpty())
 			{
@@ -124,5 +112,52 @@ public class TVDBv3MovieAPIClient
 				.filter(item -> item.get("country").asText().equals("global"))
 				.map(item -> item.get("date").asText())
 				.findFirst().orElse(null);
+	}
+
+	public List<String> getArtworkUrls(Integer identifier) throws ImportProcessException
+	{
+		try
+		{
+			final Optional<JsonNode> responseOptional = getMovieById(String.valueOf(identifier));
+			if(responseOptional.isEmpty())
+			{
+				return List.of();
+			}
+
+			final JsonNode data = responseOptional.get().get("data");
+
+			return StreamSupport.stream(data.get("artworks").spliterator(), false)
+					.filter(item -> item.get("artwork_type").asText().equals("Poster"))
+					.map(item -> ARTWORK_BASE_URL + item.get("url").asText())
+					.toList();
+		}
+		catch(IOException e)
+		{
+			throw new ImportProcessException("Error searching for movie " + identifier);
+		}
+	}
+
+	private Optional<JsonNode> getMovieById(String id) throws ImportProcessException, IOException
+	{
+		final String token = getToken();
+		final URL url = URI.create(BASE_URL + "/movies/" + id).toURL();
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
+		connection.setRequestProperty("Authorization", "Bearer " + token);
+		connection.setRequestProperty("Accept", "application/json");
+		connection.setRequestProperty("Accept-Language", generalConfigurationProperties.getLanguage());
+
+		final JsonNode response = mapper.readTree(connection.getInputStream());
+		if(response.has("error"))
+		{
+			if(response.get("error").asText().contains("not found"))
+			{
+				return Optional.empty();
+			}
+
+			throw new ImportProcessException("Error searching for movie " + id);
+		}
+
+		return Optional.of(response);
 	}
 }
