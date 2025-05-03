@@ -73,7 +73,7 @@
             <#assign objectName="newApiIdentifier"/>
             <@b.row>
                 <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value="" url="movie/searchApi"/>
+                <@f.input objectName=objectName label="movie.apiIdentifiers.search" name="searchShowName" value="" url="movie/searchApi"/>
             </@b.row>
 
             <div id="searchResultContainer" data-form-url="/movie/${movie.id}/apiIdentifier/add"></div>

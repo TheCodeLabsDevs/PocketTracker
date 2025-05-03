@@ -21,7 +21,6 @@ import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,32 +104,32 @@ public class MovieAdministrationController
 			throw new InternalServerException("Invalid search response", e);
 		}
 	}
-//
-//	@PostMapping("/createFromApi")
-//	@Transactional
-//	public String createFromApiPost(WebRequest request, @ModelAttribute("newApiIdentifier") @Validated APIIdentifier apiIdentifier, BindingResult validation)
-//	{
-//		if(isModelInvalid(request, apiIdentifier, validation))
-//		{
-//			return "redirect:/shows";
-//		}
-//
-//		try
-//		{
-//			final Show importedShow = showImporterServiceFactory.getImporter(apiIdentifier.getType()).createShow(apiIdentifier.getIdentifier());
-//			final Show createdShow = service.createShow(importedShow);
-//
-//			return "redirect:/show/" + createdShow.getId() + "/edit";
-//		}
-//		catch(ImporterNotConfiguredException | IOException e)
-//		{
-//			throw new InternalServerException("Cannot import show", e);
-//		}
-//		catch(ImportProcessException e)
-//		{
-//			throw new InternalServerException("Display error in UI", e); // TODO: Show error in ui
-//		}
-//	}
+
+	@PostMapping("/createFromApi")
+	@Transactional
+	public String createFromApiPost(WebRequest request, @ModelAttribute("newApiIdentifier") @Validated APIIdentifier apiIdentifier, BindingResult validation)
+	{
+		if(isModelInvalid(request, apiIdentifier, validation))
+		{
+			return "redirect:/movies";
+		}
+
+		try
+		{
+			final Movie importedMovie = movieImporterServiceFactory.getImporter(apiIdentifier.getType()).createMovie(apiIdentifier.getIdentifier());
+			final Movie createdMovie = service.createItem(importedMovie);
+
+			return "redirect:/movie/" + createdMovie.getId() + "/edit";
+		}
+		catch(ImporterNotConfiguredException | IOException e)
+		{
+			throw new InternalServerException("Cannot import movie", e);
+		}
+		catch(ImportProcessException e)
+		{
+			throw new InternalServerException("Display error in UI", e); // TODO: Show error in ui
+		}
+	}
 
 	@GetMapping("/{id}/edit")
 	public String editPage(WebRequest request, @PathVariable UUID id, Model model)

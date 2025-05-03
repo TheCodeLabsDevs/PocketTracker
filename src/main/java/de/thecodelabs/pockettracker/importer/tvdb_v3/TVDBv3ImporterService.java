@@ -279,13 +279,23 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 	@Override
 	public List<MovieSearchItem> searchForMovie(String idToSearch) throws ImporterNotConfiguredException, ImportProcessException
 	{
-		return createMovieApiClient().searchForMovie(idToSearch);
+		final Optional<MovieSearchItem> ssearchItemOptional = createMovieApiClient().searchForMovie(idToSearch);
+		return ssearchItemOptional.map(List::of).orElseGet(List::of);
 	}
 
 	@Override
 	public Movie createMovie(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException
 	{
-		return null;
-	}
+		final Optional<MovieSearchItem> ssearchItemOptional = createMovieApiClient().searchForMovie(identifier);
+		if(ssearchItemOptional.isEmpty())
+		{
+			throw new ImportProcessException("No movie found for identifier " + identifier);
+		}
 
+		final MovieSearchItem searchItem = ssearchItemOptional.get();
+
+		final Movie movie = new Movie(searchItem.getName(), searchItem.getDescription(), searchItem.getParsedDate(), null, searchItem.getLengthInMinutes());
+		movie.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, movie)));
+		return movie;
+	}
 }

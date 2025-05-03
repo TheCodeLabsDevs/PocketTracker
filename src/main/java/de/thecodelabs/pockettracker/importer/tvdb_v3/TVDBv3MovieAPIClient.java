@@ -14,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -62,7 +61,7 @@ public class TVDBv3MovieAPIClient
 		}
 	}
 
-	public List<MovieSearchItem> searchForMovie(String idToSearch) throws ImportProcessException
+	public Optional<MovieSearchItem> searchForMovie(String idToSearch) throws ImportProcessException
 	{
 		try
 		{
@@ -81,7 +80,7 @@ public class TVDBv3MovieAPIClient
 			{
 				if(response.get("error").asText().contains("not found"))
 				{
-					return List.of();
+					return Optional.empty();
 				}
 
 				throw new ImportProcessException("Error searching for movie " + idToSearch);
@@ -96,13 +95,15 @@ public class TVDBv3MovieAPIClient
 			}
 
 			String name = null;
+			String description = null;
 			if(translationOptional.isPresent())
 			{
 				final JsonNode translation = translationOptional.get();
 				name = translation.get("name").asText();
+				description = translation.get("overview").asText();
 			}
 
-			return List.of(new MovieSearchItem(name, getReleaseDate(data), data.get("id").asInt()));
+			return Optional.of(new MovieSearchItem(name, description, getReleaseDate(data), data.get("id").asInt(), data.get("runtime").asInt()));
 		}
 		catch(IOException e)
 		{

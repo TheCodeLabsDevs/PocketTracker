@@ -46,15 +46,15 @@
                         </div>
 
                         <@m.modal id="importApiIdentifierModal" modalSize="modal-lg">
-                            <@m.header "show.api.create"/>
+                            <@m.header "movie.api.create"/>
                             <@m.body>
                                 <#assign objectName="importApiIdentifier"/>
                                   <@b.row>
                                       <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                                      <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                                      <@f.input objectName=objectName label="movie.apiIdentifiers.search" name="searchShowName" value="" url="movie/searchApi"/>
                                   </@b.row>
 
-                                <div id="searchResultContainer" data-form-url="/show/createFromApi"></div>
+                                <div id="searchResultContainer" data-form-url="/movie/createFromApi"></div>
                             </@m.body>
                             <@m.footer>
                                 <@m.cancelButton/>

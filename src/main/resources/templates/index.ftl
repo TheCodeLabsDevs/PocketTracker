@@ -51,7 +51,7 @@
                                 <#assign objectName="importApiIdentifier"/>
                                   <@b.row>
                                       <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                                      <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                                      <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value="" url="show/searchApi"/>
                                   </@b.row>
 
                                 <div id="searchResultContainer" data-form-url="/show/createFromApi"></div>
