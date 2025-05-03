@@ -8,7 +8,7 @@
 
     <#import "form.ftl" as form/>
 
-    <@template.head 'Episodes'/>
+    <@template.head helpers.getShortCode(episode) + " - " + episode.getName()/>
     <@template.body>
         <@b.flex>
             <@b.back_button url="/season/${season.id}/edit" showLabel=false/>
