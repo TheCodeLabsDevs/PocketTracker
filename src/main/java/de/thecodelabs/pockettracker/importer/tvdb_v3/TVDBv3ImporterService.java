@@ -7,12 +7,15 @@ import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APICon
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
+import de.thecodelabs.pockettracker.importer.MovieImporterService;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
 import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterType;
+import de.thecodelabs.pockettracker.importer.model.MovieSearchItem;
 import de.thecodelabs.pockettracker.importer.model.ShowSearchItem;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.SeriesToShowConverter;
 import de.thecodelabs.pockettracker.importer.tvdb_v3.converter.TVDBEpisodeToEpisodeConverter;
+import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
@@ -35,7 +38,7 @@ import java.util.Optional;
 @Service
 @ImporterType(APIType.TVDB_V3)
 @RequiredArgsConstructor
-public class TVDBv3ImporterService implements ShowImporterService
+public class TVDBv3ImporterService implements ShowImporterService, MovieImporterService
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TVDBv3ImporterService.class);
 
@@ -59,6 +62,16 @@ public class TVDBv3ImporterService implements ShowImporterService
 			throw new ImporterNotConfiguredException("APIConfiguration not found " + API_TYPE);
 		}
 		return new TheTvdb(apiConfigurationOptional.get().getToken());
+	}
+
+	protected TVDBv3MovieAPIClient createMovieApiClient() throws ImporterNotConfiguredException
+	{
+		final Optional<APIConfiguration> apiConfigurationOptional = apiConfigurationService.getConfigurationByType(API_TYPE);
+		if(apiConfigurationOptional.isEmpty())
+		{
+			throw new ImporterNotConfiguredException("APIConfiguration not found " + API_TYPE);
+		}
+		return new TVDBv3MovieAPIClient(apiConfigurationOptional.get(), generalConfigurationProperties);
 	}
 
 	@Override
@@ -262,4 +275,17 @@ public class TVDBv3ImporterService implements ShowImporterService
 
 		return existingSeason;
 	}
+
+	@Override
+	public List<MovieSearchItem> searchForMovie(String idToSearch) throws ImporterNotConfiguredException, ImportProcessException
+	{
+		return createMovieApiClient().searchForMovie(idToSearch);
+	}
+
+	@Override
+	public Movie createMovie(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException
+	{
+		return null;
+	}
+
 }

@@ -2,10 +2,13 @@ package de.thecodelabs.pockettracker.movie.controller;
 
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.apiidentifier.APIIdentifierService;
+import de.thecodelabs.pockettracker.exceptions.InternalServerException;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.MovieImporterServiceFactory;
+import de.thecodelabs.pockettracker.importer.model.MovieSearchItem;
+import de.thecodelabs.pockettracker.importer.model.MovieSearchRequest;
 import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
@@ -81,27 +84,27 @@ public class MovieAdministrationController
 		return "redirect:/movie/" + createdMovie.getId() + "/edit";
 	}
 
-//	@PostMapping("/searchApi")
-//	public String searchShowInApiPost(@ModelAttribute ShowSearchRequest searchRequest, Model model)
-//	{
-//		try
-//		{
-//			final List<ShowSearchItem> items = showImporterServiceFactory.getImporter(searchRequest.apiIdentifierType())
-//					.searchForShow(searchRequest.search());
-//			model.addAttribute("items", items);
-//			model.addAttribute("type", searchRequest.apiIdentifierType());
-//			model.addAttribute("targetUrl", searchRequest.targetUrl());
-//			return "administration/show/api/searchResult";
-//		}
-//		catch(ImporterNotConfiguredException | IOException e)
-//		{
-//			throw new InternalServerException("Cannot execute api search", e);
-//		}
-//		catch(ImportProcessException e)
-//		{
-//			throw new InternalServerException("Invalid search response", e);
-//		}
-//	}
+	@PostMapping("/searchApi")
+	public String searchMovieInApiPost(@ModelAttribute MovieSearchRequest searchRequest, Model model)
+	{
+		try
+		{
+			final List<MovieSearchItem> items = movieImporterServiceFactory.getImporter(searchRequest.apiIdentifierType())
+					.searchForMovie(searchRequest.search());
+			model.addAttribute("items", items);
+			model.addAttribute("type", searchRequest.apiIdentifierType());
+			model.addAttribute("targetUrl", searchRequest.targetUrl());
+			return "administration/movie/api/searchResult";
+		}
+		catch(ImporterNotConfiguredException | IOException e)
+		{
+			throw new InternalServerException("Cannot execute api search", e);
+		}
+		catch(ImportProcessException e)
+		{
+			throw new InternalServerException("Invalid search response", e);
+		}
+	}
 //
 //	@PostMapping("/createFromApi")
 //	@Transactional

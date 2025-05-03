@@ -7,9 +7,9 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
-public class ShowSearchItem
+public class MovieSearchItem
 {
 	private String name;
-	private String firstAired;
+	private String releaseDate;
 	private Integer identifier;
 }

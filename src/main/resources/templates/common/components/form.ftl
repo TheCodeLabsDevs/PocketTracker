@@ -27,14 +27,16 @@
     <input type="hidden" id="${id}" name="${name}" value="${value}">
 </#macro>
 
-<#macro input objectName label name value="" type="text" id=name size="col-6">
+<#macro input objectName label name value="" type="text" id=name size="col-6" url="">
     <div class="mb-3 ${size}">
         <label for="${id}" class="form-label"><@b.localize label/></label>
         <input type="${type}" class="form-control
                 <#if hasError(objectName, name)>is-invalid</#if>"
                id="${id}"
                name="${name}"
-               value="${value}">
+               value="${value}"
+                <#if url?has_content>data-url="${url}"</#if>
+        >
         <@inputError objectName=objectName fieldName=name/>
     </div>
 </#macro>

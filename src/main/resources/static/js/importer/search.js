@@ -35,7 +35,7 @@ function updateSearchRequests(event) {
             }
         }
     };
-    httpRequest.open('POST', `${baseUrl}show/searchApi`, true);
+    httpRequest.open('POST', `${baseUrl}` + event.target.dataset.url, true);
 
     let token = document.querySelector("meta[name='_csrf']").attributes["content"].value;
     let header = document.querySelector("meta[name='_csrf_header']").attributes["content"].value;

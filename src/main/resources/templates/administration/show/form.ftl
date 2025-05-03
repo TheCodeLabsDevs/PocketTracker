@@ -179,7 +179,7 @@
             <#assign objectName="newApiIdentifier"/>
             <@b.row>
                 <@f.select objectName=objectName label="show.apiIdentifiers.type" name="apiIdentifierType" options=apiConfigurationTypes value=apiConfigurationTypes[0]/>
-                <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value=""/>
+                <@f.input objectName=objectName label="show.apiIdentifiers.search" name="searchShowName" value="" url="show/searchApi"/>
             </@b.row>
 
             <div id="searchResultContainer" data-form-url="/show/${show.id}/apiIdentifier/add"></div>
@@ -189,7 +189,7 @@
         </@m.footer>
     </@m.modal>
 
-    <@t.table id="seasons">
+    <@t.table id="apiIdentifiers">
         <@t.head>
             <@t.headCell label="show.apiIdentifiers.type"/>
             <@t.headCell label="show.apiIdentifiers.identifier"/>
@@ -203,7 +203,7 @@
                     <@t.cell>
                         <#assign modalId = "deleteApiIdentifier-${apiIdentifier.id}">
                         <@m.openIcon icon="fas fa-trash" modalId=modalId classes="link-danger"/>
-                        <@delete.modal modalId=modalId title="show.apiIdentifiers.delete" deleteButton="show.apiIdentifiers.delete" url="/show/${show.id}/apiIdentifier/delete/${apiIdentifier.id?c}">
+                        <@delete.modal modalId=modalId title="show.apiIdentifiers.delete" deleteButton="show.apiIdentifiers.delete" url="/show/${show.id}/apiIdentifier/delete/${apiIdentifier.id}">
                             <@s.messageArgs code="show.apiIdentifiers.delete.message" args=[apiIdentifier.getType()]/>
                         </@delete.modal>
                     </@t.cell>

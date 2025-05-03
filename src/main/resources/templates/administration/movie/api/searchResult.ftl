@@ -6,14 +6,14 @@
 <table class="table" id="searchResultTable">
     <tr>
         <th><@b.localize "show.apiIdentifiers.search.name"/></th>
-        <th><@b.localize "show.apiIdentifiers.search.firstAired"/></th>
+        <th><@b.localize "show.apiIdentifiers.search.releaseDate"/></th>
         <th><@b.localize "show.apiIdentifiers.search.identifier"/></th>
         <th></th>
     </tr>
     <#list items as item>
         <tr>
             <td>${item.name}</td>
-            <td>${item.firstAired}</td>
+            <td><#if item.releaseDate??>${item.releaseDate}</#if></td>
             <td>${item.identifier}</td>
             <td>
                 <@f.form name="search-${item.identifier}" url="${targetUrl}">
