@@ -20,9 +20,9 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item name="menu.myShows" url="/user/shows" additionalClasses="ms-3"/>
+                        <@item name="menu.myShows" url="/user/shows"/>
                         <@item name="menu.myMovies" url="/user/movies"/>
-                        <@item name="menu.statistics" url="/user/statistics" additionalClasses="ms-3"/>
+                        <@item name="menu.statistics" url="/user/statistics"/>
 
                         <@b.hasPermission "ADMIN">
                             <@dropdown name="menu.administration">
