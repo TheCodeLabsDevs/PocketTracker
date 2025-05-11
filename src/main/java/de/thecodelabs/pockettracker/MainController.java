@@ -72,6 +72,7 @@ public class MainController
 		public static final String MOVIES = "movies";
 		public static final String MOVIE = "movie";
 		public static final String REDIRECT_MOVIES = "redirect:/movies";
+		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
 	}
 
 	@SuppressWarnings("squid:S1319")
@@ -152,6 +153,7 @@ public class MainController
 	@PostMapping("/search")
 	public String search(@RequestParam("searchText") String searchText,
 						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView,
+						 @RequestParam(value = "isShowPage", required = false) Boolean isShowPage,
 						 RedirectAttributes redirectAttributes)
 	{
 		if(isUserSpecificView == null)
@@ -159,15 +161,34 @@ public class MainController
 			isUserSpecificView = false;
 		}
 
+		if(isShowPage == null)
+		{
+			isShowPage = false;
+		}
+
 		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_TEXT, searchText);
 
-		if(isUserSpecificView)
+		if(isShowPage)
 		{
-			return ReturnValues.REDIRECT_USER_SHOWS;
+			if(isUserSpecificView)
+			{
+				return ReturnValues.REDIRECT_USER_SHOWS;
+			}
+			else
+			{
+				return ReturnValues.REDIRECT_SHOWS;
+			}
 		}
 		else
 		{
-			return ReturnValues.REDIRECT_SHOWS;
+			if(isUserSpecificView)
+			{
+				return ReturnValues.REDIRECT_USER_MOVIES;
+			}
+			else
+			{
+				return ReturnValues.REDIRECT_MOVIES;
+			}
 		}
 	}
 

@@ -113,6 +113,7 @@ public class UserController
 		model.addAttribute("currentSortOption", sortOption);
 
 		model.addAttribute("currentPage", "Meine Serien");
+		model.addAttribute("isShowPage", true);
 		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).toList());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
@@ -255,6 +256,7 @@ public class UserController
 		model.addAttribute("movies", sortedMovies);
 
 		model.addAttribute("currentPage", "Meine Filme");
+		model.addAttribute("isShowPage", false);
 		model.addAttribute("userMovies", user.getMovies().stream().map(AddedMovie::getMovie).toList());
 		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
