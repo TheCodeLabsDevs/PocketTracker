@@ -15,23 +15,24 @@
                     ${movie.getName()}
                 </p>
 
-                <#if userService.getWatchDateForMovie(currentUser, movie)??>
-                    <div class="mb-4">
-                        <div class="text-center"><@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}</div>
-                    </div>
-                </#if>
-
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<@s.url "/movie/" + movie.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link"><@b.localize "button.details"/></a>
+                    <a href="<@s.url "/movie/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-primary stretched-link"><i class="fas fa-info"></i></a>
+
+                    <#if userService.getWatchDateForMovie(currentUser, movie)??>
+                        <div class="text-center text-body-secondary last-watched">
+                            <@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}
+                        </div>
+                    </#if>
 
                     <div class="d-flex justify-content-end">
+                        <@b.hasPermission "ADMIN">
+                            <a href="<@s.url "/movie/" + movie.getId() + "/edit"/>" role="button" class="button-square btn btn-sm btn-outline-secondary z-index-above-stretched-link"><i class="fas fa-edit"></i></a>
+                        </@b.hasPermission>
+
                         <#if userService.isMovieAdded(currentUser, movie.id)>
-                            <a href="<@s.url "/user/movies/remove/" + movie.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@s.message "button.remove"/></a>
+                            <a href="<@s.url "/user/movies/remove/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="fas fa-heart"></i></a>
                         <#else>
-                            <@b.hasPermission "ADMIN">
-                                <a href="<@s.url "/movie/" + movie.getId() + "/edit"/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@b.localize "button.edit"/></a>
-                            </@b.hasPermission>
-                            <a href="<@s.url "/user/movies/add/" + movie.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userService.isMovieAdded(currentUser, movie.id)>d-none</#if> ms-2"><@s.message "button.add"/></a>
+                            <a href="<@s.url "/user/movies/add/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="far fa-heart"></i></a>
                         </#if>
                     </div>
                 </div>

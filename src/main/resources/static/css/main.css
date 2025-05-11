@@ -21,3 +21,12 @@
 .image-selectable:hover {
     cursor: pointer;
 }
+
+.button-square {
+    width: 2rem;
+    height: 2rem;
+}
+
+.last-watched {
+    font-size: 0.75rem;
+}
