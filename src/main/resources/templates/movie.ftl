@@ -47,24 +47,11 @@
 
                         <div class="row mt-3 mt-md-5 mb-4 mb-md-0">
                             <div class="col-12 col-md-11">
-                                <div class="accordion" id="accordionDescription">
-                                    <div class="accordion-item">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="collapseHeaderOne">
-                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItemOne" aria-expanded="false" aria-controls="collapseItemOne">
-                                                    <@b.localize "movie.description"/>
-                                                </button>
-                                            </h2>
-                                            <div id="collapseItemOne" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDescription">
-                                                <div class="accordion-body">
-                                                    <#if movie.getDescription()??>
-                                                        ${movie.getDescription()}
-                                                    </#if>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <h4><@b.localize "movie.description"/></h4>
+                                <#if movie.getDescription()??>
+                                    ${movie.getDescription()}
+                                </#if>
                             </div>
                         </div>
                     </div>
