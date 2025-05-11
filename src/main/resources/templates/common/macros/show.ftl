@@ -25,16 +25,17 @@
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-primary stretched-link"><@b.localize "button.details"/></a>
+                    <a href="<@s.url "/show/" + show.getId()/>" role="button" class="button-square btn btn-sm btn-outline-primary stretched-link"><i class="fas fa-info"></i></a>
 
                     <div class="d-flex justify-content-end">
+                        <@b.hasPermission "ADMIN">
+                            <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="button-square btn btn-sm btn-outline-secondary z-index-above-stretched-link"><i class="fas fa-edit"></i></a>
+                        </@b.hasPermission>
+
                         <#if userService.isShowAdded(currentUser, show.id)>
-                            <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@s.message "button.remove"/></a>
+                            <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="fas fa-heart"></i></a>
                         <#else>
-                            <@b.hasPermission "ADMIN">
-                                <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="btn btn-sm btn-outline-danger z-index-above-stretched-link"><@b.localize "button.edit"/></a>
-                            </@b.hasPermission>
-                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success z-index-above-stretched-link <#if userService.isShowAdded(currentUser, show.id)>d-none</#if> ms-2"><@s.message "button.add"/></a>
+                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="far fa-heart"></i></a>
                         </#if>
                     </div>
                 </div>
