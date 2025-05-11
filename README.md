@@ -1,6 +1,6 @@
 # PocketTracker
 
-Simply track your watched TV shows and episodes, as well as audio plays and podcasts with PocketTracker
+Simply track your watched movies, TV shows and episodes, as well as audio plays and podcasts with PocketTracker
 
 ![](/build/screenshots/index.png)
 
@@ -62,6 +62,16 @@ Get some interesting statistics about your watch behaviour:
 
 If you have watched a few episodes of a show, but the show does not convince you, you can dislike it, so that it no
 longer appears on your home page.
+
+### Track your watched movies
+
+Add movies and fill them with all the information you need:
+
+- name
+- description
+- release date
+- duration
+- poster image
 
 ### Track radio plays and podcasts
 
