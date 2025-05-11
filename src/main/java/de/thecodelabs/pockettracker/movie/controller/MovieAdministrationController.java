@@ -12,6 +12,7 @@ import de.thecodelabs.pockettracker.importer.model.MovieSearchRequest;
 import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
+import de.thecodelabs.pockettracker.movie.model.UpdateMoveFromApiDialogModel;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
@@ -51,6 +52,7 @@ public class MovieAdministrationController
 	private final APIIdentifierService apiIdentifierService;
 
 	private final MovieImporterServiceFactory movieImporterServiceFactory;
+	private final MovieService movieService;
 
 	@GetMapping("/create")
 	public String createPage(WebRequest request, Model model)
@@ -330,6 +332,62 @@ public class MovieAdministrationController
 			LOGGER.error("Fail to change movie image", e);
 		}
 		return "redirect:/movie/" + showId + "/edit";
+	}
+
+	@GetMapping("/{id}/updateFromApiModal")
+	public String updateFromApiModal(@PathVariable UUID id, Model model)
+	{
+		final Optional<Movie> movieOptional = movieService.getById(id);
+		if(movieOptional.isEmpty())
+		{
+			throw new NotFoundException("Movie for id " + id + " not found");
+		}
+
+		final Movie movie = movieOptional.get();
+
+		final List<APIType> apiTypes = movie.getApiIdentifiers().stream()
+				.map(APIIdentifier::getType)
+				.toList();
+
+		model.addAttribute("movie", movie);
+		model.addAttribute("apiTypes", apiTypes);
+
+		return "administration/movie/updateMovieModal";
+	}
+
+	@Transactional
+	@PostMapping("/{id}/updateFromApi")
+	public String updateFromApi(WebRequest request, @PathVariable UUID id,
+								@ModelAttribute("formUpdateMovieFromApi") @Validated UpdateMoveFromApiDialogModel model)
+	{
+		final Optional<Movie> movieOptional = movieService.getById(id);
+		if(movieOptional.isEmpty())
+		{
+			throw new NotFoundException("Movie for id " + id + " not found");
+		}
+
+		final Movie movie = movieOptional.get();
+
+		final Optional<APIIdentifier> apiIdentifierOptional = movie.getApiIdentifierByType(model.getApiType());
+		if(apiIdentifierOptional.isEmpty())
+		{
+			throw new IllegalArgumentException("Model does not include api type");
+		}
+
+		final APIIdentifier apiIdentifier = apiIdentifierOptional.get();
+
+		try
+		{
+			movieImporterServiceFactory.getImporter(apiIdentifier.getType()).updateMovie(apiIdentifier.getIdentifier(), movie);
+		}
+		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		WebRequestUtils.putToast(request, new Toast("toast.movie.updated", BootstrapColor.SUCCESS));
+
+		return "redirect:/movie/" + movie.getId() + "/edit";
 	}
 
 	/*

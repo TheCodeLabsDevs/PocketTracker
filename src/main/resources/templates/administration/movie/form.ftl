@@ -20,7 +20,15 @@
 
             <@f.textarea objectName=objectName label="movie.description" name="description" value=movie.description!"" size="col-12"/>
 
-            <@f.submit classes="float-end"/>
+            <div class="mb-3 col-12">
+                <@f.submit classes="float-end" col=false/>
+
+                <#if movie.getApiIdentifiers()?size != 0>
+                    <a class="buttonUpdateMovieFromApi btn btn-secondary float-end me-3" data-url="<@s.url "/movie/${movie.id}/updateFromApiModal"/>">
+                        <i class="fas fa-rotate"></i> <@b.localize "button.update.movie"/>
+                    </a>
+                </#if>
+            </div>
         </@b.row>
     </@f.form>
 </#macro>
@@ -55,6 +63,7 @@
     </div>
 
     <div id="modal-container-add-image"></div>
+    <div id="modal-container-update-movie"></div>
 </#macro>
 
 <#macro apiIdentifiers movie>

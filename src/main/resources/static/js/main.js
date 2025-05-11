@@ -38,6 +38,16 @@ window.addEventListener('load', function(event)
             fetchAndShowModal(button,'modal-container-update-season', 'updateSeasonFromApiModal', function(){});
         });
     }
+
+    let buttonsUpdateMovieFromApi = document.getElementsByClassName('buttonUpdateMovieFromApi');
+    for(let i = 0; i < buttonsUpdateMovieFromApi.length; i++)
+    {
+        let button = buttonsUpdateMovieFromApi[i];
+        button.addEventListener('click', function()
+        {
+            fetchAndShowModal(button,'modal-container-update-movie', 'updateMovieFromApiModal', function(){});
+        });
+    }
 });
 
 function handleEpisodeToggles()

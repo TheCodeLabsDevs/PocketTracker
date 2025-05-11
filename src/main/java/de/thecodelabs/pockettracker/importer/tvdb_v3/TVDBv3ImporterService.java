@@ -279,20 +279,20 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 	@Override
 	public List<MovieSearchItem> searchForMovie(String idToSearch) throws ImporterNotConfiguredException, ImportProcessException
 	{
-		final Optional<MovieSearchItem> ssearchItemOptional = createMovieApiClient().searchForMovie(idToSearch);
-		return ssearchItemOptional.map(List::of).orElseGet(List::of);
+		final Optional<MovieSearchItem> searchItemOptional = createMovieApiClient().searchForMovie(idToSearch);
+		return searchItemOptional.map(List::of).orElseGet(List::of);
 	}
 
 	@Override
 	public Movie createMovie(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException
 	{
-		final Optional<MovieSearchItem> ssearchItemOptional = createMovieApiClient().searchForMovie(identifier);
-		if(ssearchItemOptional.isEmpty())
+		final Optional<MovieSearchItem> searchItemOptional = createMovieApiClient().searchForMovie(identifier);
+		if(searchItemOptional.isEmpty())
 		{
 			throw new ImportProcessException("No movie found for identifier " + identifier);
 		}
 
-		final MovieSearchItem searchItem = ssearchItemOptional.get();
+		final MovieSearchItem searchItem = searchItemOptional.get();
 
 		final Movie movie = new Movie(searchItem.getName(), searchItem.getDescription(), searchItem.getParsedDate(), null, searchItem.getLengthInMinutes());
 		movie.setApiIdentifiers(List.of(new APIIdentifier(API_TYPE, identifier, movie)));
@@ -303,5 +303,19 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 	public List<String> getMoviePosterImageUrls(Integer identifier) throws ImportProcessException, IOException, ImporterNotConfiguredException
 	{
 		return createMovieApiClient().getArtworkUrls(identifier);
+	}
+
+	@Override
+	public Movie updateMovie(String identifier, Movie existingMovie) throws IOException, ImportProcessException, ImporterNotConfiguredException
+	{
+		final Movie movieFromApi = createMovie(identifier);
+
+		existingMovie.setName(movieFromApi.getName());
+		existingMovie.setDescription(movieFromApi.getDescription());
+		existingMovie.setLengthInMinutes(movieFromApi.getLengthInMinutes());
+		existingMovie.setReleaseDate(movieFromApi.getReleaseDate());
+		LOGGER.debug("Updated existing movie {} from API", existingMovie.getId());
+
+		return existingMovie;
 	}
 }
