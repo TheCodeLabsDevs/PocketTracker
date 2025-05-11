@@ -5,9 +5,8 @@ import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
-import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
-import de.thecodelabs.pockettracker.show.ShowRepository;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
@@ -19,10 +18,8 @@ import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
-import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -37,7 +34,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_IS_USER_SPECIFIC_VIEW;
 import static de.thecodelabs.pockettracker.MainController.PARAMETER_NAME_SEARCH_TEXT;
 
 @Controller
@@ -55,8 +51,7 @@ public class UserController
 	private static class ReturnValues
 	{
 		public static final String INDEX = "index";
-		public static final String REDIRECT_USER_SHOWS = "redirect:/user/shows";
-		public static final String REDIRECT_SHOWS = "redirect:/shows";
+		public static final String REDIRECT_SHOWS = "redirect:/user/shows";
 		public static final String REDIRECT_MOVIES = "redirect:/movies";
 		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
 		public static final String MOVIES = "movies";
@@ -73,14 +68,12 @@ public class UserController
 		settings.setLastShowFilterOption(filterOption);
 		settings.setShowDislikedShows(showDislikedShows);
 
-		return ReturnValues.REDIRECT_USER_SHOWS;
+		return ReturnValues.REDIRECT_SHOWS;
 	}
 
 	@GetMapping("/shows")
-	public String getShows(WebRequest request, Model model)
+	public String getShows(Model model)
 	{
-		UserNavigationCoordinator.setUserSpecificNavigation(request, true);
-
 		final UserSettings settings = userService.getUserSettings();
 		final Boolean showDislikedShows = Optional.ofNullable(settings.getShowDislikedShows())
 				.orElse(false);
@@ -97,7 +90,7 @@ public class UserController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		final List<Show> shows = showService.getAllFavoriteByUser(searchText, user);
+		final List<Show> shows = showService.getAll(searchText);
 		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
 		if(Boolean.FALSE.equals(showDislikedShows))
 		{
@@ -111,11 +104,9 @@ public class UserController
 		model.addAttribute("showDislikedShows", showDislikedShows);
 		model.addAttribute("currentFilterOption", filterOption);
 		model.addAttribute("currentSortOption", sortOption);
-
+		model.addAttribute("numberOfAllShows", showService.getAll(null).size());
 		model.addAttribute("currentPage", "Meine Serien");
 		model.addAttribute("isShowPage", true);
-		model.addAttribute("userShows", user.getShows().stream().map(AddedShow::getShow).toList());
-		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
 		return ReturnValues.INDEX;
 	}
@@ -153,11 +144,11 @@ public class UserController
 		if(!userHadShow)
 		{
 			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", BootstrapColor.WARNING));
-			return ReturnValues.REDIRECT_USER_SHOWS;
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 
 		userService.removeAllWatchedEpisodesFromUser(user, showToRemove);
-		return ReturnValues.REDIRECT_USER_SHOWS;
+		return ReturnValues.REDIRECT_SHOWS;
 	}
 
 	@GetMapping("/shows/dislike/{showId}")
@@ -238,10 +229,8 @@ public class UserController
 	}
 
 	@GetMapping("/movies")
-	public String getMovies(WebRequest request, Model model)
+	public String getMovies(Model model)
 	{
-		UserNavigationCoordinator.setUserSpecificNavigation(request, true);
-
 		final User user = userService.getCurrentUser();
 
 		String searchText = null;
@@ -258,7 +247,6 @@ public class UserController
 		model.addAttribute("currentPage", "Meine Filme");
 		model.addAttribute("isShowPage", false);
 		model.addAttribute("userMovies", user.getMovies().stream().map(AddedMovie::getMovie).toList());
-		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, true);
 
 		return ReturnValues.MOVIES;
 	}

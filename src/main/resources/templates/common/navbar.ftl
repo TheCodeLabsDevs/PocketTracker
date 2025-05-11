@@ -20,7 +20,6 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item name="menu.allShows" url="/shows"/>
                         <@item name="menu.allMovies" url="/movies"/>
                         <@item name="menu.myShows" url="/user/shows" additionalClasses="ms-3"/>
                         <@item name="menu.myMovies" url="/user/movies"/>
@@ -39,9 +38,6 @@
                     <div class="me-auto"></div>
 
                     <@f.form name="logout-form" url="/search" classes="d-flex mt-3 mb-2 my-md-0 me-md-3">
-                        <#if isUserSpecificView?? && isUserSpecificView>
-                            <input type="hidden" name="isUserSpecificView" value="1"/>
-                        </#if>
                         <#if isShowPage?? && isShowPage>
                             <input type="hidden" name="isShowPage" value="1"/>
                         </#if>

@@ -231,6 +231,11 @@ public class UserService
 		return userForm.getPassword().equals(userForm.getPasswordRepeat());
 	}
 
+	public boolean isShowAdded(User user, UUID showId)
+	{
+		return user.getShowById(showId).isPresent();
+	}
+
 	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, Show show)
 	{
 		return user.getWatchedEpisodes().stream()

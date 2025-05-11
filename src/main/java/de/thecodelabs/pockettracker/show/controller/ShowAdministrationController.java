@@ -72,7 +72,7 @@ public class ShowAdministrationController
 		{
 			model.addAttribute("show", new Show());
 		}
-		model.addAttribute("back_url", "/shows");
+		model.addAttribute("back_url", "/user/shows");
 
 		return "administration/show/edit";
 	}
@@ -119,7 +119,7 @@ public class ShowAdministrationController
 	{
 		if(isModelInvalid(request, apiIdentifier, validation))
 		{
-			return "redirect:/shows";
+			return "redirect:/user/shows";
 		}
 
 		try
@@ -256,7 +256,7 @@ public class ShowAdministrationController
 		service.deleteItem(managedShow);
 
 		WebRequestUtils.putToast(request, new Toast("toast.show.delete", BootstrapColor.SUCCESS, showName));
-		return "redirect:/shows";
+		return "redirect:/user/shows";
 	}
 
 	@PostMapping("/{showId}/apiIdentifier/add")

@@ -8,11 +8,7 @@
 
     <@template.head show.getName()/>
     <@template.body>
-        <#if isUserSpecificViewNavigationTarget>
-            <@b.back_button url="/user/shows" center=true/>
-        <#else>
-            <@b.back_button url="/shows" center=true/>
-        </#if>
+        <@b.back_button url="/user/shows" center=true/>
 
         <div class="card shadow-sm">
             <div class="card-body">

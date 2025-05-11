@@ -4,8 +4,8 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
-import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.SeasonRepository;
+import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
@@ -13,16 +13,13 @@ import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
-import de.thecodelabs.pockettracker.utils.navigation.UserNavigationCoordinator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -34,7 +31,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MainController
 {
-	public static final String PARAMETER_NAME_IS_USER_SPECIFIC_VIEW = "isUserSpecificView";
 	public static final String PARAMETER_NAME_SEARCH_TEXT = "searchText";
 
 	private final ShowService showService;
@@ -63,9 +59,7 @@ public class MainController
 
 	private static class ReturnValues
 	{
-		public static final String INDEX = "index";
-		public static final String REDIRECT_SHOWS = "redirect:/shows";
-		public static final String REDIRECT_USER_SHOWS = "redirect:/user/shows";
+		public static final String REDIRECT_SHOWS = "redirect:/user/shows";
 		public static final String SHOW = "show";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
@@ -73,30 +67,6 @@ public class MainController
 		public static final String MOVIE = "movie";
 		public static final String REDIRECT_MOVIES = "redirect:/movies";
 		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
-	}
-
-	@SuppressWarnings("squid:S1319")
-	@GetMapping("/shows")
-	public String allShows(WebRequest request, Model model)
-	{
-		UserNavigationCoordinator.setUserSpecificNavigation(request, false);
-
-		final User user = userService.getCurrentUser();
-
-		String searchText = null;
-		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
-		{
-			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
-		}
-
-		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_SHOWS, showService.getAll(null).size());
-		model.addAttribute(ModelAttributes.SHOWS, showService.getAll(searchText));
-
-		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
-		model.addAttribute(ModelAttributes.USER_SHOWS, user.getShows().stream().map(AddedShow::getShow).toList());
-		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
-
-		return ReturnValues.INDEX;
 	}
 
 	@GetMapping("/show/{showId}")
@@ -152,15 +122,9 @@ public class MainController
 
 	@PostMapping("/search")
 	public String search(@RequestParam("searchText") String searchText,
-						 @RequestParam(value = "isUserSpecificView", required = false) Boolean isUserSpecificView,
 						 @RequestParam(value = "isShowPage", required = false) Boolean isShowPage,
 						 RedirectAttributes redirectAttributes)
 	{
-		if(isUserSpecificView == null)
-		{
-			isUserSpecificView = false;
-		}
-
 		if(isShowPage == null)
 		{
 			isShowPage = false;
@@ -170,34 +134,18 @@ public class MainController
 
 		if(isShowPage)
 		{
-			if(isUserSpecificView)
-			{
-				return ReturnValues.REDIRECT_USER_SHOWS;
-			}
-			else
-			{
-				return ReturnValues.REDIRECT_SHOWS;
-			}
+			return ReturnValues.REDIRECT_SHOWS;
 		}
 		else
 		{
-			if(isUserSpecificView)
-			{
-				return ReturnValues.REDIRECT_USER_MOVIES;
-			}
-			else
-			{
-				return ReturnValues.REDIRECT_MOVIES;
-			}
+			return ReturnValues.REDIRECT_USER_MOVIES;
 		}
 	}
 
 	@SuppressWarnings("squid:S1319")
 	@GetMapping("/movies")
-	public String allMovies(WebRequest request, Model model)
+	public String allMovies(Model model)
 	{
-		UserNavigationCoordinator.setUserSpecificNavigation(request, false);
-
 		final User user = userService.getCurrentUser();
 
 		String searchText = null;
@@ -209,9 +157,8 @@ public class MainController
 		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_MOVIES, movieService.getAll(null).size());
 		model.addAttribute(ModelAttributes.MOVIES, movieService.getAll(searchText));
 
-		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Serien");
+		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Filme");
 		model.addAttribute(ModelAttributes.USER_MOVIES, user.getMovies().stream().map(AddedMovie::getMovie).toList());
-		model.addAttribute(PARAMETER_NAME_IS_USER_SPECIFIC_VIEW, false);
 
 		return ReturnValues.MOVIES;
 	}

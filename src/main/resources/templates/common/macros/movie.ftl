@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as s/>
 <#import "/common/components/base.ftl" as b/>
 
-<#macro movieCard movie userMovies isUserSpecific>
+<#macro movieCard movie userMovies>
     <div class="col">
         <div class="card shadow-sm">
             <#if movie.getPosterPath()??>
@@ -15,7 +15,7 @@
                     ${movie.getName()}
                 </p>
 
-                <#if isUserSpecific && userService.getWatchDateForMovie(currentUser, movie)??>
+                <#if userService.getWatchDateForMovie(currentUser, movie)??>
                     <div class="mb-4">
                         <div class="text-center"><@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}</div>
                     </div>
