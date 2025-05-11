@@ -11,7 +11,7 @@
             </#if>
 
             <div class="card-body">
-                <p class="card-text fw-bold">
+                <p class="card-text fw-bold movie-name">
                     ${movie.getName()}
                 </p>
 

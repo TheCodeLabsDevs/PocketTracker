@@ -30,3 +30,7 @@
 .last-watched {
     font-size: 0.75rem;
 }
+
+.movie-name {
+    height: 3rem;
+}
