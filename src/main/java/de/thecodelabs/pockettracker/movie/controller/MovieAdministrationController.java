@@ -52,7 +52,6 @@ public class MovieAdministrationController
 	private final APIIdentifierService apiIdentifierService;
 
 	private final MovieImporterServiceFactory movieImporterServiceFactory;
-	private final MovieService movieService;
 
 	@GetMapping("/create")
 	public String createPage(WebRequest request, Model model)
@@ -337,7 +336,7 @@ public class MovieAdministrationController
 	@GetMapping("/{id}/updateFromApiModal")
 	public String updateFromApiModal(@PathVariable UUID id, Model model)
 	{
-		final Optional<Movie> movieOptional = movieService.getById(id);
+		final Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie for id " + id + " not found");
@@ -360,7 +359,7 @@ public class MovieAdministrationController
 	public String updateFromApi(WebRequest request, @PathVariable UUID id,
 								@ModelAttribute("formUpdateMovieFromApi") @Validated UpdateMoveFromApiDialogModel model)
 	{
-		final Optional<Movie> movieOptional = movieService.getById(id);
+		final Optional<Movie> movieOptional = service.getById(id);
 		if(movieOptional.isEmpty())
 		{
 			throw new NotFoundException("Movie for id " + id + " not found");
