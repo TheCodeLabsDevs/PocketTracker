@@ -11,19 +11,29 @@ import java.util.stream.Stream;
 @Getter
 public enum ShowFilterOption implements MessageSourceResolvable
 {
-	ALL_SHOWS((shows, user) -> shows.stream()),
-	VIEWED_COMPLETELY((shows, user) -> shows.stream().filter(show -> isShowComplete(show, user))),
-	NOT_VIEWED_COMPLETELY((shows, user) -> shows.stream().filter(show -> !isShowComplete(show, user))),
-	RUNNING((shows, user) -> shows.stream().filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false))),
-	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false))),
-	NOT_FILLED_COMPLETELY((shows, user) -> shows.stream().filter(show -> show.getSeasons().stream().anyMatch(season -> !season.getFilledCompletely())));
+	ALL_SHOWS((shows, user) -> shows.stream(), 0),
+	VIEWED_COMPLETELY((shows, user) -> shows.stream()
+			.filter(show -> isFavoriteShow(show, user))
+			.filter(show -> isShowComplete(show, user)), 3),
+	NOT_VIEWED_COMPLETELY((shows, user) -> shows.stream()
+			.filter(show -> isFavoriteShow(show, user))
+			.filter(show -> !isShowComplete(show, user)), 4),
+	RUNNING((shows, user) -> shows.stream().filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false)), 5),
+	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false)), 6),
+	NOT_FILLED_COMPLETELY((shows, user) -> shows.stream().filter(show -> show.getSeasons().stream().anyMatch(season -> !season.getFilledCompletely())), 7),
+	FAVORITE((shows, user) -> shows.stream()
+			.filter(show -> isFavoriteShow(show, user)), 1),
+	NOT_FAVORITE((shows, user) -> shows.stream()
+			.filter(show -> !isFavoriteShow(show, user)), 2);
 
 
 	private final ShowFilter filter;
+	private final int order;
 
-	ShowFilterOption(ShowFilter filter)
+	ShowFilterOption(ShowFilter filter, int order)
 	{
 		this.filter = filter;
+		this.order = order;
 	}
 
 	@Override
@@ -48,5 +58,10 @@ public enum ShowFilterOption implements MessageSourceResolvable
 				.sum();
 
 		return watchedEpisodes == totalEpisodes;
+	}
+
+	public static boolean isFavoriteShow(Show show, User user)
+	{
+		return user.getShowById(show.getId()).isPresent();
 	}
 }
