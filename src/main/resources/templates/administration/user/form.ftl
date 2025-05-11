@@ -14,7 +14,7 @@
                     <@f.input objectName=objectName label="user.form.password" name="password" type="password"/>
                     <@f.input objectName=objectName label="user.form.passwordRepeat" name="passwordRepeat" type="password"/>
 
-                    <@f.submit "button.save"/>
+                    <@f.submit label="button.save" icon="fas fa-pencil"/>
                 </@b.row>
             </@c.body>
         </@c.card>

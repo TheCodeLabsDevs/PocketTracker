@@ -22,7 +22,7 @@
             <@f.select objectName=objectName label="show.type" name="type" options=showTypes value=show.type/>
             <@f.switch label="show.finished" name="finished" value=show.finished!false/>
 
-            <@f.submit classes="float-end"/>
+            <@f.submit classes="float-end" icon="fas fa-save"/>
         </@b.row>
     </@f.form>
 </#macro>
@@ -42,7 +42,7 @@
             <@f.form name="poster" url="/show/${show.id}/edit/BANNER" multipart=true>
                 <@b.row>
                     <@f.file label="" name="image" size="col-9" margin=""/>
-                    <@f.submit size="col-3" margin=""/>
+                    <@f.submit size="col-3" margin="" icon="fas fa-save"/>
                 </@b.row>
             </@f.form>
         </@b.col>
@@ -51,6 +51,7 @@
         </@b.col>
         <@b.col size="col-3">
             <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id}/showImages/BANNER"/>">
+                <i class="fas fa-wand-magic-sparkles"></i>
                 <@b.localize "show.banner.fromApi"/>
             </a>
         </@b.col>
@@ -70,7 +71,7 @@
             <@f.form name="poster" url="/show/${show.id}/edit/POSTER" multipart=true>
                 <@b.row>
                     <@f.file label="" name="image" size="col-9" margin=""/>
-                    <@f.submit size="col-3" margin=""/>
+                    <@f.submit size="col-3" margin="" icon="fas fa-save"/>
                 </@b.row>
             </@f.form>
         </@b.col>
@@ -79,6 +80,7 @@
         </@b.col>
         <@b.col size="col-3">
             <a class="btn btn-primary ml-4 <#if show.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/show/${show.id}/showImages/POSTER"/>">
+                <i class="fas fa-wand-magic-sparkles"></i>
                 <@b.localize "show.poster.fromApi"/>
             </a>
         </@b.col>
@@ -97,13 +99,15 @@
         <@b.col size="col-6">
             <div class="dropdown">
                 <a class="btn btn-sm btn-primary float-end dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-add"></i>
                     <@b.localize "show.season.add"/>
                 </a>
 
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addSeasons"><@b.localize "button.add.manually"/></a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addSeasons"><i class="fas fa-pencil me-2"></i><@b.localize "button.add.manually"/></a></li>
                     <li>
                         <a class="dropdown-item buttonAddSeasonFromApi <#if show.getApiIdentifiers()?size == 0>disabled</#if>" data-url="<@s.url "/show/${show.id}/seasonsFromApi"/>">
+                            <i class="fas fa-wand-magic-sparkles me-2"></i>
                             <@b.localize "show.api.season.create"/>
                         </a>
                     </li>
@@ -122,7 +126,7 @@
         </@m.body>
         <@m.footer>
             <@m.cancelButton/>
-            <@f.submit label="button.add" form="addSeason" col=false/>
+            <@f.submit label="button.add" form="addSeason" col=false icon="fas fa-add"/>
         </@m.footer>
     </@m.modal>
 
@@ -169,7 +173,7 @@
             <@b.h3 title="show.apiIdentifiers"/>
         </@b.col>
         <@b.col size="col-6">
-            <@m.open label="show.apiIdentifiers.add" modalId="addApiIdentifier" classes="float-end"/>
+            <@m.open label="show.apiIdentifiers.add" modalId="addApiIdentifier" classes="float-end" icon="fas fa-add"/>
         </@b.col>
     </@b.row>
 
@@ -219,7 +223,7 @@
             <@b.h3 title="show.delete"/>
         </@b.col>
         <@b.col size="col-12">
-            <@m.open label="show.delete" modalId="deleteShow" style="btn-danger" buttonSize=""/>
+            <@m.open label="show.delete" modalId="deleteShow" style="btn-danger" buttonSize="" icon="fas fa-trash"/>
         </@b.col>
     </@b.row>
 

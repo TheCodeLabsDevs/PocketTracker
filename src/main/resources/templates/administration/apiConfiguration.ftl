@@ -14,7 +14,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-12 mb-3">
-                <@b.h2 "menu.administration.apis"/>
+                <h2> <i class="fas fa-plug"></i> <@b.localize "menu.administration.apis"/></h2>
             </@b.col>
         </@b.row>
 
@@ -42,10 +42,10 @@
                         <@f.input objectName=formName label="api.config.token" name="token" value=config.token!""/>
 
                         <div class="d-flex justify-content-end">
-                            <@f.submit size=""/>
+                            <@f.submit size="" icon="fas fa-save"/>
                             <#if includeDeleteButton>
                                 <#assign modalId = "delete-api-configuration-${config.id}">
-                                <@m.open label="api.config.delete" modalId=modalId buttonSize="btn" style="btn-danger ms-3"/>
+                                <@m.open label="api.config.delete" modalId=modalId buttonSize="btn" style="btn-danger ms-3" icon="fas fa-trash"/>
                             </#if>
                         </div>
                     </@b.row>

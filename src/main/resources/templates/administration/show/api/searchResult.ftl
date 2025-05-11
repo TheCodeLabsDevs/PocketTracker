@@ -19,7 +19,7 @@
                 <@f.form name="search-${item.identifier}" url="${targetUrl}">
                     <@f.hidden id="type" value="${type}"/>
                     <@f.hidden id="identifier" value="${item.identifier}"/>
-                    <@f.submit label="button.add" form="search-${item.identifier}" col=false/>
+                    <@f.submit label="button.add" form="search-${item.identifier}" col=false icon="fas fa-add"/>
                 </@f.form>
             </td>
         </tr>

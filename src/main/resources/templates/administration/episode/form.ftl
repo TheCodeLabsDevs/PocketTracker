@@ -24,9 +24,9 @@
         </@b.row>
         <@b.row>
             <@b.col size="col-6">
-                <@m.open label="episode.delete" modalId="deleteEpisode" buttonSize="btn" style="btn-danger"/>
+                <@m.open label="episode.delete" modalId="deleteEpisode" buttonSize="btn" style="btn-danger" icon="fas fa-trash"/>
             </@b.col>
-            <@f.submit classes="float-end" size="col-6"/>
+            <@f.submit classes="float-end" size="col-6" icon="fas fa-save"/>
         </@b.row>
     </@f.form>
 
@@ -45,7 +45,7 @@
     <@b.row>
         <@f.form name="poster" url="/episode/${episode.id}/edit/POSTER" multipart=true>
             <@f.file label="episode.poster" name="image"/>
-            <@f.submit classes="float-end"/>
+            <@f.submit classes="float-end" icon="fas fa-save"/>
         </@f.form>
     </@b.row>
 </#macro>

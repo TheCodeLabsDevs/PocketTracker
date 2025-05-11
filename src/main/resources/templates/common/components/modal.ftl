@@ -1,7 +1,8 @@
 <#import "/common/components/base.ftl" as b/>
 
-<#macro open label modalId style="btn-primary" classes="mb-4" buttonSize="btn-sm">
+<#macro open label modalId style="btn-primary" classes="mb-4" buttonSize="btn-sm" icon="">
     <button type="button" class="btn ${buttonSize} ${style} ${classes}" data-bs-toggle="modal" data-bs-target="#${modalId}">
+        <#if icon?has_content><i class="${icon}"></i></#if>
         <@b.localize label/>
     </button>
 </#macro>
@@ -13,7 +14,7 @@
 </#macro>
 
 <#macro cancelButton label="button.cancel" style="btn-secondary">
-    <button type="button" class="btn ${style}" data-bs-dismiss="modal"><@b.localize label/></button>
+    <button type="button" class="btn ${style}" data-bs-dismiss="modal"><i class="fas fa-times"></i> <@b.localize label/></button>
 </#macro>
 
 <#macro modal id center=true modalSize="">

@@ -20,16 +20,16 @@
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
                 <#if currentUser??>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <@item name="menu.myShows" url="/user/shows"/>
-                        <@item name="menu.myMovies" url="/user/movies"/>
-                        <@item name="menu.statistics" url="/user/statistics"/>
+                        <@item icon="fas fa-tv" name="menu.myShows" url="/user/shows"/>
+                        <@item icon="fas fa-film" name="menu.myMovies" url="/user/movies"/>
+                        <@item icon="fas fa-chart-line" name="menu.statistics" url="/user/statistics"/>
 
                         <@b.hasPermission "ADMIN">
-                            <@dropdown name="menu.administration">
-                                <@item name="menu.administration.users" url="/users/administration" subItem=true/>
-                                <@item name="menu.administration.backup" url="/administration/backup" subItem=true/>
-                                <@item name="menu.administration.batch.edit" url="/administration/batchEdit" subItem=true/>
-                                <@item name="menu.administration.apis" url="/administration/apiConfiguration" subItem=true/>
+                            <@dropdown icon="fas fa-screwdriver-wrench" name="menu.administration">
+                                <@item icon="fas fa-users" name="menu.administration.users" url="/users/administration" subItem=true/>
+                                <@item icon="fas fa-download" name="menu.administration.backup" url="/administration/backup" subItem=true/>
+                                <@item icon="fas fa-layer-group" name="menu.administration.batch.edit" url="/administration/batchEdit" subItem=true/>
+                                <@item icon="fas fa-plug" name="menu.administration.apis" url="/administration/apiConfiguration" subItem=true/>
                             </@dropdown>
                         </@b.hasPermission>
                     </ul>
@@ -47,16 +47,17 @@
                         </a>
                     </div>
 
-                    <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                    <a class="btn btn-primary" onclick="document.getElementById('logout-form').submit();"><i class="fas fa-arrow-right-from-bracket"></i> Logout</a>
                 </#if>
             </div>
         </div>
     </nav>
 </#macro>
 
-<#macro dropdown name>
+<#macro dropdown name icon="">
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <#if icon?has_content><i class="${icon}"></i></#if>
             <@b.localize name/>
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

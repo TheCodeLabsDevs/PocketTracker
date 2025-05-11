@@ -11,7 +11,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-12">
-                <@b.h2 "menu.administration.backup"/>
+                <h2> <i class="fas fa-download"></i> <@b.localize "menu.administration.backup"/></h2>
             </@b.col>
         </@b.row>
 
@@ -62,16 +62,16 @@
 
         <@b.row>
             <@b.col "col-12">
-                <@b.h2 "admin.backup.restore"/>
+                <h2><i class="fas fa-upload"></i> <@b.localize "admin.backup.restore"/></h2>
             </@b.col>
 
             <@f.form name="clearForm" url="/administration/backup/clear" multipart=true>
-                <@f.submit label="button.database.delete" classes="float-end" style="btn-danger"/>
+                <@f.submit label="button.database.delete" classes="float-end" style="btn-danger" icon="fas fa-trash"/>
             </@f.form>
 
             <@f.form name="restoreForm" url="/administration/backup/restore" multipart=true>
                 <@f.file label="admin.backup.upload" name="restore" accept="application/zip"/>
-                <@f.submit label="button.restore" classes="float-end" style="btn-danger"/>
+                <@f.submit label="button.restore" classes="float-end" style="btn-danger" icon="fas fa-upload"/>
             </@f.form>
         </@b.row>
     </@template.body>

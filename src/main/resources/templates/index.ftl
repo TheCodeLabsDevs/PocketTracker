@@ -23,12 +23,13 @@
                 <@b.col>
                     <div class="dropdown">
                         <a class="btn btn-sm btn-primary float-end dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-add"></i>
                             <@b.localize "button.add"/>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<@s.url "/show/create"/>"><@b.localize "button.add.manually"/></a></li>
-                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importApiIdentifierModal"><@b.localize "button.add.importer"/></a></li>
+                            <li><a class="dropdown-item" href="<@s.url "/show/create"/>"><i class="fas fa-pencil me-2"></i><@b.localize "button.add.manually"/></a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importApiIdentifierModal"><i class="fas fa-wand-magic-sparkles me-2"></i><@b.localize "button.add.importer"/></a></li>
                         </ul>
                     </div>
 

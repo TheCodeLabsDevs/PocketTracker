@@ -10,7 +10,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "Profil bearbeiten" true/>
+                <h2> <i class="fas fa-user"></i> <@b.localize "title.profile"/></h2>
             </@b.col>
         </@b.row>
 

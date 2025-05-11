@@ -8,7 +8,7 @@
 <#macro form user authentications isGitlabConnected>
     <@c.card classes="my-4">
         <@c.body>
-            <@b.h4 "authentication.provider.headline"/>
+            <h4><i class="fas fa-id-card"></i> <@b.localize "authentication.provider.headline"/></h4>
             <@t.table id="provider">
                 <@t.head>
                     <@t.headCell "authentication.provider.table.provider"/>
@@ -19,7 +19,7 @@
                         <@t.content authentication/>
                         <@t.cell>
                             <#if authentications?size gt 1>
-                                <@m.open label="button.logout" modalId="provider-logout-${authentication.id}" style="btn-danger"/>
+                                <@m.open label="button.logout" modalId="provider-logout-${authentication.id}" style="btn-danger" icon="fas fa-arrow-right-from-bracket"/>
 
                                 <@m.modal id="provider-logout-${authentication.id}">
                                     <@m.header authentication/>
@@ -29,7 +29,7 @@
                                     <@m.footer>
                                         <@m.cancelButton/>
                                         <@f.form name="provider-${authentication.id}" url="/user/settings/provider/${authentication.id}/delete">
-                                            <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false/>
+                                            <@f.submit label="button.logout" form="provider-${authentication.id}" style="btn-danger" col=false icon="fas fa-arrow-right-from-bracket"/>
                                         </@f.form>
                                     </@m.footer>
                                 </@m.modal>
@@ -51,7 +51,7 @@
                     <@f.input objectName=objectName label="user.form.password" name="password" type="password"/>
                     <@f.input objectName=objectName label="user.form.passwordRepeat" name="passwordRepeat" type="password"/>
 
-                    <@f.submit "button.save"/>
+                    <@f.submit icon="fas fa-save"/>
                 </@b.row>
             </@f.form>
         </@c.body>
@@ -63,7 +63,7 @@
                 <#assign objectName="oauth"/>
                 <@f.form name=objectName url="/user/settings/oauth/gitlab">
                     <@b.row>
-                        <@b.h4 "authentication.provider.gitlab"/>
+                        <h4><i class="fab fa-gitlab"></i> <@b.localize "authentication.provider.gitlab"/></h4>
                         <@f.input objectName=objectName label="user.form.username" name="username" size="col-12"/>
 
                         <@f.submit label="user.form.connectWithGitlab" icon="fab fa-gitlab"/>

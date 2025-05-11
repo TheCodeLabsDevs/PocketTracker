@@ -19,9 +19,9 @@
         </@b.row>
         <@b.row>
             <@b.col size="col-6">
-                <@m.open label="season.delete" modalId="deleteSeason" buttonSize="btn" style="btn-danger"/>
+                <@m.open label="season.delete" modalId="deleteSeason" buttonSize="btn" style="btn-danger" icon="fas fa-trash"/>
             </@b.col>
-            <@f.submit classes="float-end" size="col-6"/>
+            <@f.submit classes="float-end" size="col-6" icon="fas fa-save"/>
         </@b.row>
     </@f.form>
 
@@ -36,7 +36,7 @@
             <@b.h3 title="season.episodes"/>
         </@b.col>
         <@b.col size="col-6">
-            <@m.open label="season.episodes.add" modalId="addEpisodes" classes="float-end"/>
+            <@m.open label="season.episodes.add" modalId="addEpisodes" classes="float-end" icon="fas fa-add"/>
         </@b.col>
     </@b.row>
 
@@ -50,7 +50,7 @@
         </@m.body>
         <@m.footer>
             <@m.cancelButton/>
-            <@f.submit label="button.add" form="addEpisode" col=false/>
+            <@f.submit label="button.add" form="addEpisode" col=false icon="fas fa-add"/>
         </@m.footer>
     </@m.modal>
 

@@ -21,7 +21,7 @@
 
                 <@b.hasPermission "ADMIN">
                     <div class="text-center mt-2">
-                        <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary" margin=""/>
+                        <@b.button label="button.edit" url="/show/" + show.getId() + "/edit" style="btn-sm btn-outline-primary" margin="" icon="fas fa-pencil"/>
                     </div>
                 </@b.hasPermission>
 

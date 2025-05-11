@@ -11,7 +11,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-12">
-                <@b.h2 "menu.administration.batch.edit"/>
+                <h2> <i class="fas fa-layer-group"></i> <@b.localize "menu.administration.batch.edit"/></h2>
             </@b.col>
         </@b.row>
 

@@ -21,7 +21,7 @@
             <@f.textarea objectName=objectName label="movie.description" name="description" value=movie.description!"" size="col-12"/>
 
             <div class="mb-3 col-12">
-                <@f.submit classes="float-end" col=false/>
+                <@f.submit classes="float-end" col=false icon="fas fa-save"/>
 
                 <#if movie.getApiIdentifiers()?size != 0>
                     <a class="buttonUpdateMovieFromApi btn btn-secondary float-end me-3" data-url="<@s.url "/movie/${movie.id}/updateFromApiModal"/>">
@@ -48,7 +48,7 @@
             <@f.form name="poster" url="/movie/${movie.id}/edit/POSTER" multipart=true>
                 <@b.row>
                     <@f.file label="" name="image" size="col-9" margin=""/>
-                    <@f.submit size="col-3" margin=""/>
+                    <@f.submit size="col-3" margin="" icon="fas fa-save"/>
                 </@b.row>
             </@f.form>
         </@b.col>
@@ -57,6 +57,7 @@
         </@b.col>
         <@b.col size="col-3">
             <a class="btn btn-primary ml-4 <#if movie.getApiIdentifiers()?size == 0>disabled</#if> buttonAddImage" role="button" data-url="<@s.url "/movie/${movie.id}/showImages/POSTER"/>">
+                <i class="fas fa-wand-magic-sparkles"></i>
                 <@b.localize "show.poster.fromApi"/>
             </a>
         </@b.col>
@@ -72,7 +73,7 @@
             <@b.h3 title="show.apiIdentifiers"/>
         </@b.col>
         <@b.col size="col-6">
-            <@m.open label="show.apiIdentifiers.add" modalId="addApiIdentifier" classes="float-end"/>
+            <@m.open label="show.apiIdentifiers.add" modalId="addApiIdentifier" classes="float-end" icon="fas fa-add"/>
         </@b.col>
     </@b.row>
 
@@ -122,7 +123,7 @@
             <@b.h3 title="movie.delete"/>
         </@b.col>
         <@b.col size="col-12">
-            <@m.open label="movie.delete" modalId="deleteMovie" style="btn-danger" buttonSize=""/>
+            <@m.open label="movie.delete" modalId="deleteMovie" style="btn-danger" buttonSize="" icon="fas fa-trash"/>
         </@b.col>
     </@b.row>
 

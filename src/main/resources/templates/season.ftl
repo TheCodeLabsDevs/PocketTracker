@@ -18,7 +18,7 @@
 
         <div class="text-center">
             <@b.hasPermission "ADMIN">
-                <@b.button label="button.edit" url="/season/" + season.getId() + "/edit" style="btn-sm btn-outline-primary"/>
+                <@b.button label="button.edit" url="/season/" + season.getId() + "/edit" style="btn-sm btn-outline-primary" icon="fas fa-pencil"/>
             </@b.hasPermission>
         </div>
 

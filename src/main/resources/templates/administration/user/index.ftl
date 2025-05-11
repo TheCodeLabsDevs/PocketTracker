@@ -13,7 +13,7 @@
     <@template.body>
         <@b.row>
             <@b.col "col-8">
-                <@b.h2 "admin.user.headline"/>
+                <h2> <i class="fas fa-users"></i> <@b.localize "menu.administration.users"/></h2>
             </@b.col>
             <@b.col "col-4">
                 <@b.button label="button.add" url="/users/administration/add" icon="fas fa-plus" classes="float-end"/>

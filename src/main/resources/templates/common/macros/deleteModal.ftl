@@ -12,7 +12,7 @@
         <@m.footer>
             <@m.cancelButton/>
             <@f.form name="${modalId}-form" url=url>
-                <@f.submit label=deleteButton col=false style="btn-danger"/>
+                <@f.submit label=deleteButton col=false style="btn-danger" icon="fas fa-trash"/>
             </@f.form>
         </@m.footer>
     </@m.modal>

@@ -14,12 +14,12 @@
                 <#list seasonInfoList as seasonInfo>
                     <@f.form name="formAddSeasonByApi" url="/show/${show.id}/season/addFromApi">
                         <@b.row>
-                            <@b.col size="col-10">
+                            <@b.col size="col-9">
                                 <@b.localize "season"/> ${seasonInfo.name()} (${seasonInfo.numberOfEpisodes()} <@b.localize "season.episodes"/>)
                             </@b.col>
                             <@f.hidden id="" name="apiType" value=apiType/>
                             <@f.hidden id="" name="seasonId" value=seasonInfo.id()/>
-                            <@f.submit size="col-2" label="button.add"/>
+                            <@f.submit size="col-3" label="button.add" icon="fas fa-add"/>
                         </@b.row>
                     </@f.form>
                 </#list>

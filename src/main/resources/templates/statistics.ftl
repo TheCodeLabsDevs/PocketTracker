@@ -11,7 +11,7 @@
     <@template.body>
         <@b.row classes="mb-4">
             <@b.col size="col-sm-12 col-md-8 col-lg-6" classes="mx-auto text-center">
-                <h2><@b.localize "menu.statistics"/></h2>
+                <h2><i class="fas fa-chart-line"></i> <@b.localize "menu.statistics"/></h2>
             </@b.col>
         </@b.row>
 

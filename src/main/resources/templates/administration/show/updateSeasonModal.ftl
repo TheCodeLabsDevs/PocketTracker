@@ -15,7 +15,7 @@
                 <@f.form name="formUpdateSeasonFromApi" url="/season/${season.id}/updateFromApi" classes="ms-5">
                     <@b.row>
                         <@f.hidden id="" name="apiType" value=apiType/>
-                        <@f.submit label="button.update.season"/>
+                        <@f.submit label="button.update.season" icon="fas fa-rotate"/>
                     </@b.row>
                 </@f.form>
             </@b.h3>

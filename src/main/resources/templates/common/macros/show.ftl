@@ -29,7 +29,7 @@
 
                     <div class="d-flex justify-content-end">
                         <@b.hasPermission "ADMIN">
-                            <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="button-square btn btn-sm btn-outline-secondary z-index-above-stretched-link"><i class="fas fa-edit"></i></a>
+                            <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="button-square btn btn-sm btn-outline-secondary z-index-above-stretched-link"><i class="fas fa-pencil"></i></a>
                         </@b.hasPermission>
 
                         <#if userService.isShowAdded(currentUser, show.id)>

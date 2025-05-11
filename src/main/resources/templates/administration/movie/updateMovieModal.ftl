@@ -15,7 +15,7 @@
                 <@f.form name="formUpdateMovieFromApi" url="/movie/${movie.id}/updateFromApi" classes="ms-5">
                     <@b.row>
                         <@f.hidden id="" name="apiType" value=apiType/>
-                        <@f.submit label="button.update.movie.specific"/>
+                        <@f.submit label="button.update.movie.specific" icon="fas fa-rotate"/>
                     </@b.row>
                 </@f.form>
             </@b.h3>
