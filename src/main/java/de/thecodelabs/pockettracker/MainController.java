@@ -9,7 +9,6 @@ import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
-import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
@@ -41,19 +40,12 @@ public class MainController
 
 	private static class ModelAttributes
 	{
-		public static final String NUMBER_OF_ALL_SHOWS = "numberOfAllShows";
-		public static final String SHOWS = "shows";
-		public static final String USER_SHOWS = "userShows";
-		public static final String CURRENT_PAGE = "currentPage";
 		public static final String SHOW = "show";
 		public static final String IS_ADDED = "isAdded";
 		public static final String IS_DISLIKED = "isDisliked";
 		public static final String LATEST_WATCHED = "latestWatched";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
-		public static final String NUMBER_OF_ALL_MOVIES = "numberOfAllMovies";
-		public static final String MOVIES = "movies";
-		public static final String USER_MOVIES = "userMovies";
 		public static final String MOVIE = "movie";
 	}
 
@@ -63,10 +55,8 @@ public class MainController
 		public static final String SHOW = "show";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
-		public static final String MOVIES = "movies";
 		public static final String MOVIE = "movie";
-		public static final String REDIRECT_MOVIES = "redirect:/movies";
-		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
+		public static final String REDIRECT_MOVIES = "redirect:/user/movies";
 	}
 
 	@GetMapping("/show/{showId}")
@@ -138,29 +128,8 @@ public class MainController
 		}
 		else
 		{
-			return ReturnValues.REDIRECT_USER_MOVIES;
+			return ReturnValues.REDIRECT_MOVIES;
 		}
-	}
-
-	@SuppressWarnings("squid:S1319")
-	@GetMapping("/movies")
-	public String allMovies(Model model)
-	{
-		final User user = userService.getCurrentUser();
-
-		String searchText = null;
-		if(model.containsAttribute(PARAMETER_NAME_SEARCH_TEXT))
-		{
-			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
-		}
-
-		model.addAttribute(ModelAttributes.NUMBER_OF_ALL_MOVIES, movieService.getAll(null).size());
-		model.addAttribute(ModelAttributes.MOVIES, movieService.getAll(searchText));
-
-		model.addAttribute(ModelAttributes.CURRENT_PAGE, "Alle Filme");
-		model.addAttribute(ModelAttributes.USER_MOVIES, user.getMovies().stream().map(AddedMovie::getMovie).toList());
-
-		return ReturnValues.MOVIES;
 	}
 
 	@GetMapping("/movie/{movieId}")

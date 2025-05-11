@@ -481,4 +481,9 @@ public class UserService
 				.map(value -> value.getWatchedDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
 				.orElse(null);
 	}
+
+	public boolean isMovieAdded(User user, UUID movieId)
+	{
+		return user.getMovieById(movieId).isPresent();
+	}
 }

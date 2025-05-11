@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user.controller;
 
+import de.thecodelabs.pockettracker.MainController;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
@@ -52,8 +53,7 @@ public class UserController
 	{
 		public static final String INDEX = "index";
 		public static final String REDIRECT_SHOWS = "redirect:/user/shows";
-		public static final String REDIRECT_MOVIES = "redirect:/movies";
-		public static final String REDIRECT_USER_MOVIES = "redirect:/user/movies";
+		public static final String REDIRECT_MOVIES = "redirect:/user/movies";
 		public static final String MOVIES = "movies";
 	}
 
@@ -239,14 +239,14 @@ public class UserController
 			searchText = (String) model.getAttribute(PARAMETER_NAME_SEARCH_TEXT);
 		}
 
-		final List<Movie> movies = movieService.getAllFavoriteByUser(searchText, user);
+		final List<Movie> movies = movieService.getAll(searchText);
 		final List<Movie> sortedMovies = movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
 
 		model.addAttribute("movies", sortedMovies);
 
 		model.addAttribute("currentPage", "Meine Filme");
 		model.addAttribute("isShowPage", false);
-		model.addAttribute("userMovies", user.getMovies().stream().map(AddedMovie::getMovie).toList());
+		model.addAttribute("numberOfAllMovies", movieService.getAll(null).size());
 
 		return ReturnValues.MOVIES;
 	}
@@ -275,7 +275,7 @@ public class UserController
 		if(movieOptional.isEmpty())
 		{
 			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert kein Film mit der ID \"{0}\"", movieId), BootstrapColor.DANGER));
-			return ReturnValues.REDIRECT_USER_MOVIES;
+			return ReturnValues.REDIRECT_MOVIES;
 		}
 
 		final User user = userService.getCurrentUser();
@@ -284,9 +284,9 @@ public class UserController
 		if(!userHadShow)
 		{
 			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte den Film nie hinzugefügt.", BootstrapColor.WARNING));
-			return ReturnValues.REDIRECT_USER_MOVIES;
+			return ReturnValues.REDIRECT_MOVIES;
 		}
 
-		return ReturnValues.REDIRECT_USER_MOVIES;
+		return ReturnValues.REDIRECT_MOVIES;
 	}
 }

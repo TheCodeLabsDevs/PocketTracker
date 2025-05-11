@@ -65,7 +65,7 @@ public class MovieAdministrationController
 		{
 			model.addAttribute("movie", new Movie());
 		}
-		model.addAttribute("back_url", "/movies");
+		model.addAttribute("back_url", "/user/movies");
 
 		return "administration/movie/edit";
 	}
@@ -112,7 +112,7 @@ public class MovieAdministrationController
 	{
 		if(isModelInvalid(request, apiIdentifier, validation))
 		{
-			return "redirect:/movies";
+			return "redirect:/user/movies";
 		}
 
 		try
@@ -225,7 +225,7 @@ public class MovieAdministrationController
 		service.deleteItem(managedMovie);
 
 		WebRequestUtils.putToast(request, new Toast("toast.movie.delete", BootstrapColor.SUCCESS, showName));
-		return "redirect:/movies";
+		return "redirect:/user/movies";
 	}
 
 	@PostMapping("/{showId}/apiIdentifier/add")
