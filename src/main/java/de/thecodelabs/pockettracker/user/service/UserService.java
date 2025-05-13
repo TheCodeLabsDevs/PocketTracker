@@ -17,7 +17,6 @@ import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication
 import de.thecodelabs.pockettracker.user.repository.*;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.Nullable;
@@ -46,7 +45,7 @@ public class UserService
 	private final ShowService showService;
 	private final MessageSource messageSource;
 
-	private final UserAddedShowRepository userAddedShowRepository;
+	private final HiddenShowRepository hiddenShowRepository;
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	private final UserAddedMovieRepository userAddedMovieRepository;
@@ -231,11 +230,6 @@ public class UserService
 		return userForm.getPassword().equals(userForm.getPasswordRepeat());
 	}
 
-	public boolean isShowAdded(User user, UUID showId)
-	{
-		return user.getShowById(showId).isPresent();
-	}
-
 	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, Show show)
 	{
 		return user.getWatchedEpisodes().stream()
@@ -358,7 +352,7 @@ public class UserService
 	public List<StatisticItem> getGeneralStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows", new Object[]{user.getShows().size()}, LocaleContextHolder.getLocale()), BootstrapColor.INFO, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows", new Object[]{user.getHiddenShows().size()}, LocaleContextHolder.getLocale()), BootstrapColor.INFO, BootstrapColor.DARK));
 		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows.complete", new Object[]{getNumberOfCompletedShows(user)}, LocaleContextHolder.getLocale()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", messageSource.getMessage("statistics.general.seasons.complete", new Object[]{getNumberOfCompletedSeasons(user)}, LocaleContextHolder.getLocale()), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("far fa-file", messageSource.getMessage("statistics.general.episodes", new Object[]{user.getWatchedEpisodes().size()}, LocaleContextHolder.getLocale()), BootstrapColor.DARK, BootstrapColor.LIGHT));
@@ -389,7 +383,7 @@ public class UserService
 		final List<User> users = userRepository.findAll();
 		for(User user : users)
 		{
-			removeShowFromUser(user, show);
+			removeHiddenShowFromUser(user, show);
 		}
 
 		for(Season season : show.getSeasons())
@@ -415,22 +409,21 @@ public class UserService
 				watchedEpisodeRepository.deleteWatchedEpisode(e.getEpisode().getId(), e.getUser().getId()));
 	}
 
-	public boolean removeShowFromUser(User user, Show show)
+	public void removeHiddenShowFromUser(User user, Show show)
 	{
-		final List<AddedShow> addedShowList = user.getShows().stream()
-				.filter(addedShow -> addedShow.getShow().equals(show))
+		final List<HiddenShow> hiddenShows = user.getHiddenShows().stream()
+				.filter(s -> s.getShow().equals(show))
 				.toList();
 
-		if(addedShowList.isEmpty())
+		if(hiddenShows.isEmpty())
 		{
-			return false;
+			return;
 		}
 
-		for(AddedShow addedShow : addedShowList)
+		for(HiddenShow hiddenShow : hiddenShows)
 		{
-			userAddedShowRepository.deleteAddedShow(addedShow.getShow().getId(), addedShow.getUser().getId());
+			hiddenShowRepository.deleteHiddenShow(hiddenShow.getShow().getId(), hiddenShow.getUser().getId());
 		}
-		return true;
 	}
 
 	public void removeAllWatchedEpisodesFromUser(User user, Show show)
@@ -485,5 +478,14 @@ public class UserService
 	public boolean isMovieAdded(User user, UUID movieId)
 	{
 		return user.getMovieById(movieId).isPresent();
+	}
+
+	public void toggleShowHidden(Show show)
+	{
+		final User currentUser = getCurrentUser();
+		final Optional<HiddenShow> hiddenShowOptional = currentUser.getHiddenShows().stream().filter(s -> s.getShow().equals(show)).findFirst();
+		hiddenShowOptional.ifPresent(hiddenShow -> hiddenShowRepository.deleteHiddenShow(show.getId(), currentUser.getId()));
+
+		hiddenShowRepository.save(new HiddenShow(currentUser, show));
 	}
 }

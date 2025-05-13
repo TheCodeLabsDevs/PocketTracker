@@ -9,7 +9,7 @@ import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
+import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class MainController
 	{
 		public static final String SHOW = "show";
 		public static final String IS_ADDED = "isAdded";
-		public static final String IS_DISLIKED = "isDisliked";
+		public static final String IS_HIDDEN = "isHidden";
 		public static final String LATEST_WATCHED = "latestWatched";
 		public static final String SEASON = "season";
 		public static final String EPISODE = "episode";
@@ -73,8 +73,7 @@ public class MainController
 		final LocalDate latestWatchDate = ShowSortOption.getLatestWatchDate(show, user);
 
 		model.addAttribute(ModelAttributes.SHOW, show);
-		model.addAttribute(ModelAttributes.IS_ADDED, user.getShowById(show.getId()).isPresent());
-		model.addAttribute(ModelAttributes.IS_DISLIKED, user.getShowById(show.getId()).map(AddedShow::getDisliked).orElse(false));
+		model.addAttribute(ModelAttributes.IS_HIDDEN, user.isShowHidden(show.getId()));
 
 		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
 		{

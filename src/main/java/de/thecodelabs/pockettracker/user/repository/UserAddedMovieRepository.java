@@ -1,7 +1,6 @@
 package de.thecodelabs.pockettracker.user.repository;
 
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

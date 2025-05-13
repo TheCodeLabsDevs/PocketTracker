@@ -8,7 +8,7 @@ import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APITyp
 import de.thecodelabs.pockettracker.mediaitem.MediaItem;
 import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
+import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
 import de.thecodelabs.pockettracker.utils.json.JsonResourcePathSerializer;
 import jakarta.persistence.*;
@@ -84,7 +84,7 @@ public class Show implements MediaItem
 	@JsonIgnore
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	private List<AddedShow> favoriteUsers = new ArrayList<>();
+	private List<HiddenShow> favoriteUsers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
 	@MergeIgnore

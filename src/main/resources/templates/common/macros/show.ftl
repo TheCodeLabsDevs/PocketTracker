@@ -31,12 +31,6 @@
                         <@b.hasPermission "ADMIN">
                             <a href="<@s.url "/show/" + show.getId() + "/edit"/>" role="button" class="button-square btn btn-sm btn-outline-secondary z-index-above-stretched-link"><i class="fas fa-pencil"></i></a>
                         </@b.hasPermission>
-
-                        <#if userService.isShowAdded(currentUser, show.id)>
-                            <a href="<@s.url "/user/shows/remove/" + show.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="fas fa-heart"></i></a>
-                        <#else>
-                            <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="far fa-heart"></i></a>
-                        </#if>
                     </div>
                 </div>
             </div>

@@ -7,9 +7,8 @@ import de.thecodelabs.pockettracker.mediaitem.BaseMediaItemService;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
+import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.user.model.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,16 +36,16 @@ public class ShowService extends BaseMediaItemService<Show>
 		final List<Show> shows;
 		if(name == null || name.isEmpty())
 		{
-			shows = user.getShows()
+			shows = user.getHiddenShows()
 					.stream()
-					.map(AddedShow::getShow)
+					.map(HiddenShow::getShow)
 					.toList();
 		}
 		else
 		{
-			shows = user.getShows()
+			shows = user.getHiddenShows()
 					.stream()
-					.map(AddedShow::getShow)
+					.map(HiddenShow::getShow)
 					.filter(show -> show.getName().toLowerCase().contains(name.toLowerCase()))
 					.toList();
 		}

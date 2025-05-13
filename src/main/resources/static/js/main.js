@@ -90,13 +90,13 @@ function handleEpisodeToggles()
 
 function changeSortOption()
 {
-    let showDislikedShowsLink = document.getElementById("showDislikedShows");
-    let showDislikedShowsInput = document.getElementsByName("showDislikedShows")[0];
-    if(showDislikedShowsLink)
+    let showHiddenShowsLink = document.getElementById("showHiddenShows");
+    let showHiddenShowsInput = document.getElementsByName("showHiddenShows")[0];
+    if(showHiddenShowsLink)
     {
-        showDislikedShowsLink.onclick = function()
+        showHiddenShowsLink.onclick = function()
         {
-            showDislikedShowsInput.value = !((showDislikedShowsInput.value === 'true'));
+            showHiddenShowsInput.value = !((showHiddenShowsInput.value === 'true'));
             document.getElementById("sortOptionForm").submit();
         };
     }

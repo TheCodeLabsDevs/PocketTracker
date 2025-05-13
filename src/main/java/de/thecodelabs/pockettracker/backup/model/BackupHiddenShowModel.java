@@ -8,11 +8,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class BackupAddedShowModel
+public class BackupHiddenShowModel
 {
 	@JsonProperty("show")
 	private UUID showId;
-
-	@JsonProperty("disliked")
-	private Boolean disliked;
 }

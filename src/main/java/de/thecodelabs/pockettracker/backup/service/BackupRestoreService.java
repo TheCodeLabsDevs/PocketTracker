@@ -21,7 +21,7 @@ import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
+import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
@@ -157,14 +157,14 @@ public class BackupRestoreService
 			if(backupUserModelOptional.isPresent())
 			{
 				final BackupUserModel backupUserModel = backupUserModelOptional.get();
-				user.addShows(backupUserModel.getShows().stream()
+				user.addAllHiddenShows(backupUserModel.getHiddenShows().stream()
 						.map(model -> {
 							final Optional<Show> showOptional = showService.getById(model.getShowId());
 							if(showOptional.isEmpty())
 							{
-								return Optional.<AddedShow>empty();
+								return Optional.<HiddenShow>empty();
 							}
-							return Optional.of(new AddedShow(user, showOptional.get(), model.getDisliked()));
+							return Optional.of(new HiddenShow(user, showOptional.get()));
 						})
 						.filter(Optional::isPresent)
 						.map(Optional::get)

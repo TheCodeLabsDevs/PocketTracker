@@ -1,5 +1,6 @@
 package de.thecodelabs.pockettracker.user.model;
 
+import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import jakarta.persistence.*;
@@ -38,7 +39,7 @@ public class User
 	private UserSettings settings;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<AddedShow> shows;
+	private List<HiddenShow> hiddenShows;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<WatchedEpisode> watchedEpisodes;
@@ -68,20 +69,18 @@ public class User
 		this.authentications.add(userAuthentication);
 	}
 
-	public void addShows(List<AddedShow> newShows)
+	public void addAllHiddenShows(List<HiddenShow> newHiddenShows)
 	{
-		if(this.shows == null)
+		if(this.hiddenShows == null)
 		{
-			this.shows = new ArrayList<>();
+			this.hiddenShows = new ArrayList<>();
 		}
-		this.shows.addAll(newShows);
+		this.hiddenShows.addAll(newHiddenShows);
 	}
 
-	public Optional<AddedShow> getShowById(UUID id)
+	public boolean isShowHidden(UUID id)
 	{
-		return this.shows.stream()
-				.filter(show -> show.getShow().getId().equals(id))
-				.findFirst();
+		return this.hiddenShows.stream().anyMatch(show -> show.getShow().getId().equals(id));
 	}
 
 	public void addWatchedEpisodes(List<WatchedEpisode> newEpisodes)

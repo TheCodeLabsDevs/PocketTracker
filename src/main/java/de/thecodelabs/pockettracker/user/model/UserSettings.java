@@ -20,9 +20,9 @@ public class UserSettings
 	@Id
 	private UUID id;
 
-	private Boolean showDislikedShows = false;
 	private ShowSortOption lastShowSortOption = ShowSortOption.LAST_WATCHED;
 	private ShowFilterOption lastShowFilterOption = ShowFilterOption.ALL_SHOWS;
+	private Boolean showHiddenShows = false;
 
 	@OneToOne(mappedBy = "settings")
 	private User user;

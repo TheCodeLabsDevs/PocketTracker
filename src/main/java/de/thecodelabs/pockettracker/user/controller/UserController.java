@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.user.controller;
 
-import de.thecodelabs.pockettracker.MainController;
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
@@ -13,7 +12,6 @@ import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.UserSettings;
 import de.thecodelabs.pockettracker.user.service.UserService;
@@ -61,12 +59,12 @@ public class UserController
 	@Transactional
 	public String postFilterSubmission(@RequestParam ShowSortOption sortOption,
 									   @RequestParam ShowFilterOption filterOption,
-									   @RequestParam Boolean showDislikedShows)
+									   @RequestParam Boolean showHiddenShows)
 	{
 		final UserSettings settings = userService.getUserSettings();
 		settings.setLastShowSortOption(sortOption);
 		settings.setLastShowFilterOption(filterOption);
-		settings.setShowDislikedShows(showDislikedShows);
+		settings.setShowHiddenShows(showHiddenShows);
 
 		return ReturnValues.REDIRECT_SHOWS;
 	}
@@ -75,7 +73,7 @@ public class UserController
 	public String getShows(Model model)
 	{
 		final UserSettings settings = userService.getUserSettings();
-		final Boolean showDislikedShows = Optional.ofNullable(settings.getShowDislikedShows())
+		final Boolean showHiddenShows = Optional.ofNullable(settings.getShowHiddenShows())
 				.orElse(false);
 		final ShowFilterOption filterOption = Optional.ofNullable(settings.getLastShowFilterOption())
 				.orElse(ShowFilterOption.ALL_SHOWS);
@@ -92,16 +90,14 @@ public class UserController
 
 		final List<Show> shows = showService.getAll(searchText);
 		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
-		if(Boolean.FALSE.equals(showDislikedShows))
+		if(Boolean.FALSE.equals(showHiddenShows))
 		{
-			filteredShows = filteredShows.filter(show -> !user.getShowById(show.getId())
-					.map(AddedShow::getDisliked)
-					.orElse(false));
+			filteredShows = filteredShows.filter(show -> !user.isShowHidden(show.getId()));
 		}
 		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, user);
 
 		model.addAttribute("shows", sortedShows);
-		model.addAttribute("showDislikedShows", showDislikedShows);
+		model.addAttribute("showHiddenShows", showHiddenShows);
 		model.addAttribute("currentFilterOption", filterOption);
 		model.addAttribute("currentSortOption", sortOption);
 		model.addAttribute("numberOfAllShows", showService.getAll(null).size());
@@ -111,9 +107,9 @@ public class UserController
 		return ReturnValues.INDEX;
 	}
 
-	@GetMapping("/shows/add/{showId}")
+	@GetMapping("/shows/toggleShowHidden/{showId}")
 	@Transactional
-	public String addShow(WebRequest request, @PathVariable UUID showId)
+	public String toggleShowHidden(WebRequest request, @PathVariable UUID showId)
 	{
 		final Optional<Show> showOptional = showService.getById(showId);
 		if(showOptional.isEmpty())
@@ -122,48 +118,7 @@ public class UserController
 			return ReturnValues.REDIRECT_SHOWS;
 		}
 
-		final User user = userService.getCurrentUser();
-		user.getShows().add(new AddedShow(user, showOptional.get(), false));
-
-		return ReturnValues.REDIRECT_SHOWS;
-	}
-
-	@GetMapping("/shows/remove/{showId}")
-	public String removeShow(WebRequest request, @PathVariable UUID showId)
-	{
-		final Optional<Show> showOptional = showService.getById(showId);
-		if(showOptional.isEmpty())
-		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
-			return ReturnValues.REDIRECT_SHOWS;
-		}
-
-		final User user = userService.getCurrentUser();
-		final Show showToRemove = showOptional.get();
-		final boolean userHadShow = userService.removeShowFromUser(user, showToRemove);
-		if(!userHadShow)
-		{
-			WebRequestUtils.putToast(request, new Toast("Der Nutzer hatte die Serie nie hinzugefügt.", BootstrapColor.WARNING));
-			return ReturnValues.REDIRECT_SHOWS;
-		}
-
-		userService.removeAllWatchedEpisodesFromUser(user, showToRemove);
-		return ReturnValues.REDIRECT_SHOWS;
-	}
-
-	@GetMapping("/shows/dislike/{showId}")
-	@Transactional
-	public String dislikeShow(WebRequest request, @PathVariable UUID showId)
-	{
-		final Optional<AddedShow> showOptional = userService.getCurrentUser().getShowById(showId);
-		if(showOptional.isEmpty())
-		{
-			WebRequestUtils.putToast(request, new Toast(MessageFormat.format("Es existiert keine Serie mit der ID \"{0}\"", showId), BootstrapColor.DANGER));
-			return ReturnValues.REDIRECT_SHOWS;
-		}
-
-		final AddedShow addedShow = showOptional.get();
-		addedShow.setDisliked(!Optional.ofNullable(addedShow.getDisliked()).orElse(false));
+		userService.toggleShowHidden(showOptional.get());
 
 		return "redirect:/show/" + showId;
 	}

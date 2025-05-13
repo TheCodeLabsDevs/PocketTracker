@@ -1,9 +1,7 @@
 package de.thecodelabs.pockettracker.backup.converter;
 
 import de.thecodelabs.pockettracker.backup.model.BackupAddedMovieModel;
-import de.thecodelabs.pockettracker.backup.model.BackupAddedShowModel;
 import de.thecodelabs.pockettracker.user.model.AddedMovie;
-import de.thecodelabs.pockettracker.user.model.AddedShow;
 import de.thecodelabs.pockettracker.utils.beans.AbstractConverter;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import org.springframework.stereotype.Service;

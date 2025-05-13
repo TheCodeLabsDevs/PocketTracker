@@ -1,7 +1,7 @@
 package de.thecodelabs.pockettracker.backup.converter.user;
 
 import de.thecodelabs.pockettracker.backup.converter.AddedMovieConverter;
-import de.thecodelabs.pockettracker.backup.converter.AddedShowConverter;
+import de.thecodelabs.pockettracker.backup.converter.HiddenShowConverter;
 import de.thecodelabs.pockettracker.backup.converter.WatchedEpisodeConverter;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserGitlabAuthentication;
 import de.thecodelabs.pockettracker.backup.model.user.BackupUserInternalAuthentication;
@@ -12,7 +12,6 @@ import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentica
 import de.thecodelabs.pockettracker.utils.beans.AbstractConverter;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +23,7 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 	private final UserGitlabAuthenticationConverter gitlabAuthenticationConverter;
 	private final UserSettingsConverter userSettingsConverter;
 
-	private final AddedShowConverter addedShowConverter;
+	private final HiddenShowConverter hiddenShowConverter;
 	private final AddedMovieConverter addedMovieConverter;
 	private final WatchedEpisodeConverter watchedEpisodeConverter;
 
@@ -55,7 +54,7 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 			model.setSettings(userSettingsConverter.toBean(entity.getSettings()));
 		}
 
-		model.setShows(addedShowConverter.toBeans(entity.getShows()));
+		model.setHiddenShows(hiddenShowConverter.toBeans(entity.getHiddenShows()));
 		model.setMovies(addedMovieConverter.toBeans(entity.getMovies()));
 		model.setWatchedEpisodes(watchedEpisodeConverter.toBeans(entity.getWatchedEpisodes()));
 

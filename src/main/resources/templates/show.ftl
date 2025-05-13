@@ -36,13 +36,10 @@
                                 </#if>
                             </@b.col>
                             <@b.col>
-                                <a href="<@s.url "/user/shows/add/" + show.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50 <#if isAdded>d-none</#if>"><@s.message "button.add"/></a>
-                                <#if isAdded>
-                                    <#if isDisliked>
-                                        <@b.button url="/user/shows/dislike/${show.getId()}" icon="fas fa-thumbs-down" style="btn-danger" classes="mt-4 w-50"/>
-                                    <#else>
-                                        <@b.button url="/user/shows/dislike/${show.getId()}" icon="far fa-thumbs-down" style="btn-outline-danger" classes="mt-4 w-50"/>
-                                    </#if>
+                                <#if isHidden>
+                                    <@b.button url="/user/shows/toggleShowHidden/${show.getId()}" icon="fas fa-eye-slash" style="btn-danger" classes="mt-4 w-50" label="button.hidden"/>
+                                <#else>
+                                    <@b.button url="/user/shows/toggleShowHidden/${show.getId()}" icon="fas fa-eye-slash" style="btn-outline-danger" classes="mt-4 w-50" label="button.hide"/>
                                 </#if>
                             </@b.col>
                         </@b.row>
