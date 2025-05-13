@@ -30,8 +30,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MainController
 {
-	public static final String PARAMETER_NAME_SEARCH_TEXT = "searchText";
-
 	private final ShowService showService;
 	private final SeasonRepository seasonRepository;
 	private final EpisodeRepository episodeRepository;
@@ -57,6 +55,7 @@ public class MainController
 		public static final String EPISODE = "episode";
 		public static final String MOVIE = "movie";
 		public static final String REDIRECT_MOVIES = "redirect:/user/movies";
+		public static final String SEARCH = "search";
 	}
 
 	@GetMapping("/show/{showId}")
@@ -110,25 +109,13 @@ public class MainController
 	}
 
 	@PostMapping("/search")
-	public String search(@RequestParam("searchText") String searchText,
-						 @RequestParam(value = "isShowPage", required = false) Boolean isShowPage,
-						 RedirectAttributes redirectAttributes)
+	public String search(@RequestParam("searchText") String searchText,  Model model)
 	{
-		if(isShowPage == null)
-		{
-			isShowPage = false;
-		}
+		userService.prepareShowsModel(model, searchText);
+		userService.prepareMoviesModel(model, searchText);
 
-		redirectAttributes.addFlashAttribute(PARAMETER_NAME_SEARCH_TEXT, searchText);
-
-		if(isShowPage)
-		{
-			return ReturnValues.REDIRECT_SHOWS;
-		}
-		else
-		{
-			return ReturnValues.REDIRECT_MOVIES;
-		}
+		model.addAttribute("currentPage", "Suche");
+		return ReturnValues.SEARCH;
 	}
 
 	@GetMapping("/movie/{movieId}")

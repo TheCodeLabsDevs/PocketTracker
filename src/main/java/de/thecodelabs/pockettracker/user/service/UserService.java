@@ -2,10 +2,13 @@ package de.thecodelabs.pockettracker.user.service;
 
 import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
+import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
+import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
+import de.thecodelabs.pockettracker.show.model.ShowSortOption;
 import de.thecodelabs.pockettracker.show.model.ShowType;
 import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.StatisticItem;
@@ -29,10 +32,12 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +54,8 @@ public class UserService
 	private final WatchedEpisodeRepository watchedEpisodeRepository;
 
 	private final UserAddedMovieRepository userAddedMovieRepository;
+
+	private final MovieService movieService;
 
 	public Optional<User> getCurrentUserOptional()
 	{
@@ -487,5 +494,44 @@ public class UserService
 		hiddenShowOptional.ifPresent(hiddenShow -> hiddenShowRepository.deleteHiddenShow(show.getId(), currentUser.getId()));
 
 		hiddenShowRepository.save(new HiddenShow(currentUser, show));
+	}
+
+	@Transactional
+	public void prepareShowsModel(Model model, String searchText)
+	{
+		final UserSettings settings = getUserSettings();
+		final Boolean showHiddenShows = Optional.ofNullable(settings.getShowHiddenShows())
+				.orElse(false);
+		final ShowFilterOption filterOption = Optional.ofNullable(settings.getLastShowFilterOption())
+				.orElse(ShowFilterOption.ALL_SHOWS);
+		final ShowSortOption sortOption = Optional.ofNullable(settings.getLastShowSortOption())
+				.orElse(ShowSortOption.LAST_WATCHED);
+
+		final User user = getCurrentUser();
+
+		final List<Show> shows = showService.getAll(searchText);
+		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
+		if(Boolean.FALSE.equals(showHiddenShows))
+		{
+			filteredShows = filteredShows.filter(show -> !user.isShowHidden(show.getId()));
+		}
+		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, user);
+
+		model.addAttribute("shows", sortedShows);
+		model.addAttribute("showHiddenShows", showHiddenShows);
+		model.addAttribute("currentFilterOption", filterOption);
+		model.addAttribute("currentSortOption", sortOption);
+		model.addAttribute("numberOfAllShows", showService.getAll(null).size());
+		model.addAttribute("currentPage", "Meine Serien");
+	}
+
+	public void prepareMoviesModel(Model model, String searchText)
+	{
+		final List<Movie> movies = movieService.getAll(searchText);
+		final List<Movie> sortedMovies = movies.stream().sorted(Comparator.comparing(m -> m.getName().toLowerCase())).toList();
+
+		model.addAttribute("movies", sortedMovies);
+		model.addAttribute("currentPage", "Meine Filme");
+		model.addAttribute("numberOfAllMovies", movieService.getAll(null).size());
 	}
 }
