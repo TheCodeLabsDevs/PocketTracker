@@ -30,9 +30,9 @@
                         </@b.hasPermission>
 
                         <#if userService.isMovieAdded(currentUser, movie.id)>
-                            <a href="<@s.url "/user/movies/remove/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="fas fa-heart"></i></a>
+                            <a href="<@s.url "/user/movies/remove/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-success z-index-above-stretched-link ms-2"><i class="fas fa-check"></i></a>
                         <#else>
-                            <a href="<@s.url "/user/movies/add/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="far fa-heart"></i></a>
+                            <a href="<@s.url "/user/movies/add/" + movie.getId()/>" role="button" class="button-square btn btn-sm btn-outline-success z-index-above-stretched-link ms-2"><i class="fas fa-check"></i></a>
                         </#if>
                     </div>
                 </div>
