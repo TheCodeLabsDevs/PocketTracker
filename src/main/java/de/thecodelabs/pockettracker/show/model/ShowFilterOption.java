@@ -18,13 +18,16 @@ public enum ShowFilterOption implements MessageSourceResolvable
 	NOT_VIEWED_COMPLETELY((shows, user) -> shows.stream()
 			.filter(show -> isFavoriteShow(show, user))
 			.filter(show -> !isShowComplete(show, user)), 4),
-	RUNNING((shows, user) -> shows.stream().filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false)), 5),
-	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false)), 6),
-	NOT_FILLED_COMPLETELY((shows, user) -> shows.stream().filter(show -> show.getSeasons().stream().anyMatch(season -> !season.getFilledCompletely())), 7),
+	RUNNING((shows, user) -> shows.stream().filter(show -> !Optional.ofNullable(show.getFinished()).orElse(false)), 6),
+	NOT_RUNNING((shows, user) -> shows.stream().filter(show -> Optional.ofNullable(show.getFinished()).orElse(false)), 7),
+	NOT_FILLED_COMPLETELY((shows, user) -> shows.stream().filter(show -> show.getSeasons().stream().anyMatch(season -> !season.getFilledCompletely())), 8),
 	FAVORITE((shows, user) -> shows.stream()
 			.filter(show -> isFavoriteShow(show, user)), 1),
 	NOT_FAVORITE((shows, user) -> shows.stream()
-			.filter(show -> !isFavoriteShow(show, user)), 2);
+			.filter(show -> !isFavoriteShow(show, user)), 2),
+	NEVER_VIEWED((shows, user) -> shows.stream()
+			.filter(show -> !isFavoriteShow(show, user))
+			.filter(show -> getNumberOfWatchedEpisodes(show, user) == 0), 5);
 
 
 	private final ShowFilter filter;
@@ -49,15 +52,20 @@ public enum ShowFilterOption implements MessageSourceResolvable
 
 	public static boolean isShowComplete(Show show, User user)
 	{
-		long watchedEpisodes = user.getWatchedEpisodes().stream()
-				.filter(watchedEpisode -> watchedEpisode.getEpisode().getSeason().getShow().equals(show))
-				.count();
+		final long watchedEpisodes = getNumberOfWatchedEpisodes(show, user);
 
 		long totalEpisodes = show.getSeasons().stream()
 				.mapToLong(season -> season.getEpisodes().size())
 				.sum();
 
 		return watchedEpisodes == totalEpisodes;
+	}
+
+	private static long getNumberOfWatchedEpisodes(Show show, User user)
+	{
+		return user.getWatchedEpisodes().stream()
+				.filter(watchedEpisode -> watchedEpisode.getEpisode().getSeason().getShow().equals(show))
+				.count();
 	}
 
 	public static boolean isFavoriteShow(Show show, User user)
