@@ -34,9 +34,6 @@
                                     <img src="<@s.url "/image/placeholder_poster.jpg"/>" class="img-fluid w-50"/>
                                 </#if>
                             </@b.col>
-                            <@b.col>
-                                <a href="<@s.url "/user/movies/add/" + movie.getId()/>" role="button" class="btn btn-sm btn-outline-success mt-4 w-50 <#if isAdded>d-none</#if>"><@s.message "button.add"/></a>
-                            </@b.col>
                         </@b.row>
                     </div>
 
