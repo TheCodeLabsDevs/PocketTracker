@@ -56,11 +56,11 @@
         <@f.form name=objectName url=springMacroRequestContext.getRequestUri() rawUrl=true>
 
             <div class="d-flex justify-content-end">
-                <a class="btn <#if showHiddenShows>btn-secondary<#else>btn-outline-secondary</#if> mb-4 me-2" role="button" id="showHiddenShows">
+                <a class="btn <#if showHiddenShows>btn-secondary<#else>btn-outline-secondary</#if> mb-4 me-2" role="button" id="showHiddenShows" data-bs-toggle="tooltip" data-bs-placement="bottom"
                     <#if showHiddenShows>
-                        <i class="fas fa-thumbs-down"></i>
+                        data-bs-title="<@b.localize "button.hidden.hide"/>"><i class="fas fa-eye"></i>
                     <#else>
-                        <i class="far fa-thumbs-down"></i>
+                        data-bs-title="<@b.localize "button.hidden.show"/>"><i class="far fa-eye-slash"></i>
                     </#if>
                 </a>
                 <input type="hidden" name="showHiddenShows" value="${showHiddenShows?c}">
