@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -66,6 +67,7 @@ public class AddedMovie
 	protected UUID movieId;
 
 	@Column(name = "watched_date")
+	@Setter
 	protected LocalDate watchedDate;
 
 	@NotNull

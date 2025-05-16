@@ -5,6 +5,8 @@
     <#import "/common/template.ftl" as template>
     <#import "/common/components/base.ftl" as b/>
     <#import "/common/macros/movie.ftl" as movieMacros/>
+    <#import "/common/components/modal.ftl" as m>
+    <#import "/common/components/form.ftl" as f>
 
     <@template.head movie.getName()/>
     <@template.body>
@@ -15,7 +17,29 @@
                 <h3 class="card-title text-center">${movie.getName()} (${movie.getReleaseDate()?date('yyy-MM-dd')?string["dd.MM.yyyy"]})</h3>
 
                 <#if userService.getWatchDateForMovie(currentUser, movie)??>
-                    <div class="text-center"><@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}</div>
+                    <div class="text-center d-flex align-items-center justify-content-center">
+                        <@b.localize "movie.lastWatched"/> ${userService.getWatchDateForMovie(currentUser, movie)}
+                        <button type="button" class="btn btn-flat text-primary" data-bs-toggle="modal" data-bs-target="#modal-edit-last-watched-date">
+                            <i class="fas fa-calendar-alt"></i> <@b.localize "button.edit.lastWatchedDate"/>
+                        </button>
+                    </div>
+
+                    <@m.modal id='modal-edit-last-watched-date'>
+                        <@f.form name="modal-edit-last-watched-date-form" url='/movie/' + movie.getId() + '/updateLastWatchedDate'>
+                            <@m.header 'movie.modal.lastWatched.edit.title'/>
+                            <@m.body>
+                                <@b.row>
+                                    <@b.col>
+                                        <@f.input objectName='lastWatchedDate' label="movie.lastWatched" name="lastWatchedDate" type="date" value="${userService.getWatchDateForMovieISO(currentUser, movie)}"/>
+                                    </@b.col>
+                                </@b.row>
+                            </@m.body>
+                            <@m.footer>
+                                <@m.cancelButton/>
+                                <@f.submit label='button.save' col=false style="btn-primary" icon="fas fa-save"/>
+                            </@m.footer>
+                        </@f.form>
+                    </@m.modal>
                 </#if>
 
                 <@b.hasPermission "ADMIN">
@@ -24,7 +48,7 @@
                     </div>
                 </@b.hasPermission>
 
-                <div class="row mt-3 mt-md-5">
+                <div class="row mt-3 mt-md-5 mb-5">
                     <div class="col-12 col-md-4 text-center">
                         <@b.row>
                             <@b.col>

@@ -483,6 +483,15 @@ public class UserService
 				.orElse(null);
 	}
 
+	public String getWatchDateForMovieISO(User user, Movie movie)
+	{
+		return user.getMovies().stream()
+				.filter(m -> m.getMovie().equals(movie))
+				.findFirst()
+				.map(value -> value.getWatchedDate().format(DateTimeFormatter.ISO_DATE))
+				.orElse(null);
+	}
+
 	public boolean isMovieAdded(User user, UUID movieId)
 	{
 		return user.getMovieById(movieId).isPresent();

@@ -14,6 +14,7 @@ import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.movie.model.UpdateMoveFromApiDialogModel;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
+import de.thecodelabs.pockettracker.user.model.AddedMovie;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
@@ -21,6 +22,7 @@ import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -385,6 +388,23 @@ public class MovieAdministrationController
 		WebRequestUtils.putToast(request, new Toast("toast.movie.updated", BootstrapColor.SUCCESS));
 
 		return "redirect:/movie/" + movie.getId() + "/edit";
+	}
+
+	@PostMapping("/{id}/updateLastWatchedDate")
+	@Transactional
+	public String updateLastWatchedDate(@PathVariable UUID id,
+										@RequestParam ("lastWatchedDate")
+										@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate lastWatchedDate)
+	{
+		final Optional<AddedMovie> addedMovieOptional = userService.getCurrentUser().getMovieById(id);
+		if(addedMovieOptional.isEmpty())
+		{
+			throw new NotFoundException("Movie for id " + id + " not found");
+		}
+
+		addedMovieOptional.get().setWatchedDate(lastWatchedDate);
+
+		return "redirect:/movie/" + id;
 	}
 
 	/*
