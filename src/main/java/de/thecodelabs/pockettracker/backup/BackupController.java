@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,9 @@ import java.sql.SQLException;
 @Controller
 @RequestMapping("/administration/backup")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
+@Slf4j
 public class BackupController
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BackupController.class);
-
 	private final BackupService backupService;
 	private final BackupConfigurationProperties backupConfigurationProperties;
 
@@ -87,7 +87,7 @@ public class BackupController
 		}
 		catch(IOException e)
 		{
-			LOGGER.error("Error exporting backup", e);
+			log.error("Error exporting backup", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -103,7 +103,7 @@ public class BackupController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.export.error", BootstrapColor.DANGER));
-			LOGGER.error("Cannot create backup", e);
+			log.error("Cannot create backup", e);
 		}
 
 		return ReturnValues.REDIRECT_ADMIN_BACKUP;
@@ -121,7 +121,7 @@ public class BackupController
 		}
 		catch(ServletException e)
 		{
-			LOGGER.error("Cannot logout user", e);
+			log.error("Cannot logout user", e);
 		}
 		return ReturnValues.REDIRECT_ROOT;
 	}
@@ -145,7 +145,7 @@ public class BackupController
 		catch(IOException | SQLException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.restore.error", BootstrapColor.DANGER));
-			LOGGER.error("Cannot restore backup", e);
+			log.error("Cannot restore backup", e);
 		}
 
 		return ReturnValues.REDIRECT_ADMIN_BACKUP;

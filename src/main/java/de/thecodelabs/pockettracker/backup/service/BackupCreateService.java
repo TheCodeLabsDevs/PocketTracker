@@ -21,6 +21,7 @@ import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +37,13 @@ import java.util.List;
 
 import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE_PATH_NAME;
 import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BackupCreateService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BackupCreateService.class);
-
 	private final ShowService showService;
 	private final MovieService movieService;
 	private final UserRepository userRepository;
@@ -61,7 +62,7 @@ public class BackupCreateService
 	@Transactional
 	public void export(Path backupLocationPath) throws IOException
 	{
-		LOGGER.info("Start backup...");
+		log.info("Start backup...");
 
 		final List<Show> shows = showService.getAll(null);
 		final List<BackupShowModel> backupShowModels = showConverter.toBeans(shows);
@@ -77,16 +78,16 @@ public class BackupCreateService
 
 		final Database database = new Database(backupShowModels, backupMovieModels, backupUserModels, backupAPIConfigurationModels);
 
-		LOGGER.info("Create backup at {}", backupLocationPath);
+		log.info("Create backup at {}", backupLocationPath);
 
 		exportDatabase(backupLocationPath, database);
-		if(Boolean.TRUE.equals(backupConfigurationProperties.getIncludeImages()))
+		if(isTrue(backupConfigurationProperties.getIncludeImages()))
 		{
-			LOGGER.info("Exporting images...");
+			log.info("Exporting images...");
 			exportImages(backupLocationPath);
 		}
 
-		LOGGER.info("Backup done");
+		log.info("Backup done");
 	}
 
 	private void exportImages(Path basePath) throws IOException

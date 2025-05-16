@@ -20,8 +20,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +42,9 @@ import java.util.*;
 @RequestMapping("/movie")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 @RequiredArgsConstructor
+@Slf4j
 public class MovieAdministrationController
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MovieAdministrationController.class);
-
 	private final UserService userService;
 	private final MovieService service;
 	private final APIIdentifierService apiIdentifierService;
@@ -204,7 +202,7 @@ public class MovieAdministrationController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
-			LOGGER.error("Fail to change banner image", e);
+			log.error("Fail to change banner image", e);
 		}
 		return "redirect:/movie/" + id + "/edit";
 	}
@@ -289,12 +287,12 @@ public class MovieAdministrationController
 			try
 			{
 				posterUrls = movieImporterServiceFactory.getImporter(apiIdentifier.getType()).getMoviePosterImageUrls(Integer.parseInt(apiIdentifier.getIdentifier()));
-				LOGGER.debug(MessageFormat.format("Found {0} image urls for movie \"{1}\"", posterUrls.size(), movie.getName()));
+				log.debug("Found {} image urls for movie \"{}\"", posterUrls.size(), movie.getName());
 				urlsByApi.put(apiIdentifier.getType(), posterUrls);
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 			{
-				LOGGER.error(MessageFormat.format("Error fetching images for show \"{0}\"", movie.getName()), e);
+				log.error(MessageFormat.format("Error fetching images for show \"{0}\"", movie.getName()), e);
 			}
 		}
 
@@ -328,7 +326,7 @@ public class MovieAdministrationController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
-			LOGGER.error("Fail to change movie image", e);
+			log.error("Fail to change movie image", e);
 		}
 		return "redirect:/movie/" + showId + "/edit";
 	}

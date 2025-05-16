@@ -11,9 +11,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -30,10 +28,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/episode")
 @RequiredArgsConstructor
+@Slf4j
 public class EpisodeAdministrationController
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(EpisodeAdministrationController.class);
-
 	private final EpisodeService episodeService;
 	private final UserService userService;
 
@@ -132,7 +129,7 @@ public class EpisodeAdministrationController
 		catch(IOException e)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.image.error", BootstrapColor.WARNING));
-			LOGGER.error("Fail to change image", e);
+			log.error("Fail to change image", e);
 		}
 		return "redirect:/episode/" + id + "/edit";
 	}

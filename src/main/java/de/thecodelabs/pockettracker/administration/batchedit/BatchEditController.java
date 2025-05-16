@@ -7,9 +7,7 @@ import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,10 +25,9 @@ import java.util.UUID;
 @RequestMapping("/administration/batchEdit")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 @RequiredArgsConstructor
+@Slf4j
 public class BatchEditController
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BatchEditController.class);
-
 	private final ShowService showService;
 
 	private static class ReturnValues
@@ -75,7 +71,7 @@ public class BatchEditController
 				.flatMap(season -> season.getEpisodes().stream())
 				.toList();
 
-		LOGGER.debug(MessageFormat.format("Batch edit: Set episode length to {0} for show with ID {1} ({2})", lengthInMinutes, showId, show.getName()));
+		log.debug("Batch edit: Set episode length to {} for show with ID {} ({})", lengthInMinutes, showId, show.getName());
 		for(Episode episode : episodes)
 		{
 			episode.setLengthInMinutes(lengthInMinutes);

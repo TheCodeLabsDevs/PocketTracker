@@ -39,6 +39,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static org.apache.commons.lang3.BooleanUtils.isFalse;
+
 @Service
 @RequiredArgsConstructor
 public class UserService
@@ -116,7 +118,6 @@ public class UserService
 		return userRepository.findUserByAuthenticationsContains(userAuthentication);
 	}
 
-	@Transactional
 	public UserSettings getUserSettings()
 	{
 		final User currentUser = getCurrentUser();
@@ -300,7 +301,7 @@ public class UserService
 		}
 	}
 
-	public Integer getTotalPlayedMinutes(User user, @Nullable ShowType showType)
+	public int getTotalPlayedMinutes(User user, @Nullable ShowType showType)
 	{
 		return user.getWatchedEpisodes().stream()
 				.filter(watched -> showType == null || watched.getEpisode().getSeason().getShow().getType() == showType)
@@ -309,14 +310,14 @@ public class UserService
 				.sum();
 	}
 
-	public Integer getNumberOfCompletedSeasons(User user)
+	public int getNumberOfCompletedSeasons(User user)
 	{
 		final List<Season> seasonsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
 				.map(watched -> watched.getEpisode().getSeason())
 				.distinct()
 				.toList();
 
-		Integer completelyWatchedSeasons = 0;
+		int completelyWatchedSeasons = 0;
 		for(Season season : seasonsWithAtLeastOneEpisodeWatched)
 		{
 			final int numberOfWatchedEpisodes = getWatchedEpisodesBySeason(user, season).size();
@@ -329,14 +330,14 @@ public class UserService
 		return completelyWatchedSeasons;
 	}
 
-	public Integer getNumberOfCompletedShows(User user)
+	public int getNumberOfCompletedShows(User user)
 	{
 		final List<Show> showsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
 				.map(watched -> watched.getEpisode().getSeason().getShow())
 				.distinct()
 				.toList();
 
-		Integer completelyWatchedShows = 0;
+		int completelyWatchedShows = 0;
 		for(Show show : showsWithAtLeastOneEpisodeWatched)
 		{
 			final int numberOfWatchedEpisodes = getWatchedEpisodesByShow(user, show).size();
@@ -349,7 +350,7 @@ public class UserService
 		return completelyWatchedShows;
 	}
 
-	private Integer getTotalPlayedMovieMinutes(User user)
+	private int getTotalPlayedMovieMinutes(User user)
 	{
 		return user.getMovies().stream()
 				.mapToInt(watched -> watched.getMovie().getLengthInMinutes())
@@ -511,7 +512,7 @@ public class UserService
 
 		final List<Show> shows = showService.getAll(searchText);
 		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
-		if(Boolean.FALSE.equals(showHiddenShows))
+		if(isFalse(showHiddenShows))
 		{
 			filteredShows = filteredShows.filter(show -> !user.isShowHidden(show.getId()));
 		}

@@ -26,9 +26,8 @@ import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -51,10 +50,9 @@ import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PA
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BackupRestoreService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BackupRestoreService.class);
-
 	private final UserService userService;
 	private final ShowService showService;
 	private final MovieService movieService;
@@ -76,7 +74,7 @@ public class BackupRestoreService
 	public void clearDatabase()
 	{
 		final List<User> users = userService.getUsers();
-		LOGGER.info("Delete {} users", users.size());
+		log.info("Delete {} users", users.size());
 
 		for(User user : users)
 		{
@@ -84,7 +82,7 @@ public class BackupRestoreService
 		}
 
 		final List<Show> shows = showService.getAll(null);
-		LOGGER.info("Delete {} shows", shows.size());
+		log.info("Delete {} shows", shows.size());
 		for(Show show : shows)
 		{
 			for(MediaItemImageType type : MediaItemImageType.values())
@@ -95,7 +93,7 @@ public class BackupRestoreService
 		}
 
 		final List<Movie> movies = movieService.getAll(null);
-		LOGGER.info("Delete {} movies", movies.size());
+		log.info("Delete {} movies", movies.size());
 		for(Movie movie : movies)
 		{
 			for(MediaItemImageType type : MediaItemImageType.values())
@@ -106,7 +104,7 @@ public class BackupRestoreService
 		}
 
 		final List<APIConfiguration> configurations = apiConfigurationService.getAllConfigurations();
-		LOGGER.info("Delete {} API configurations", configurations.size());
+		log.info("Delete {} API configurations", configurations.size());
 
 		for(APIConfiguration configuration : configurations)
 		{
@@ -132,14 +130,14 @@ public class BackupRestoreService
 	{
 		final List<Show> shows = showConverter.toEntities(backupShowModels);
 		showService.createAll(shows);
-		LOGGER.info("Restored shows");
+		log.info("Restored shows");
 	}
 
 	public void insertMovies(List<BackupMovieModel> backupMovieModels)
 	{
 		final List<Movie> movies = movieConverter.toEntities(backupMovieModels);
 		movieService.createAll(movies);
-		LOGGER.info("Restored movies");
+		log.info("Restored movies");
 	}
 
 	public void insertUsers(List<BackupUserModel> backupUserModels)
@@ -149,7 +147,7 @@ public class BackupRestoreService
 		{
 			userService.createUser(user);
 		}
-		LOGGER.info("Restored users");
+		log.info("Restored users");
 
 		for(User user : userService.getUsers())
 		{
@@ -174,7 +172,7 @@ public class BackupRestoreService
 					final Optional<Episode> episodeOptional = episodeService.getEpisodeById(backupWatchedEpisodeModel.getEpisodeId());
 					if(episodeOptional.isEmpty())
 					{
-						LOGGER.warn(MessageFormat.format("No episode found for id: {0}", backupWatchedEpisodeModel.getEpisodeId()));
+						log.warn("No episode found for id: {}", backupWatchedEpisodeModel.getEpisodeId());
 						return null;
 					}
 					return new WatchedEpisode(user, episodeOptional.get(), backupWatchedEpisodeModel.getWatchedAt());
@@ -196,7 +194,7 @@ public class BackupRestoreService
 				userService.saveUser(user);
 			}
 		}
-		LOGGER.info("Restored user shows, episodes and movies");
+		log.info("Restored user shows, episodes and movies");
 	}
 
 	public void insertApiConfigurations(List<BackupAPIConfigurationModel> backupAPIConfigurationModels)
@@ -206,7 +204,7 @@ public class BackupRestoreService
 		{
 			apiConfigurationService.createConfiguration(apiConfiguration);
 		}
-		LOGGER.info("Restored API configurations");
+		log.info("Restored API configurations");
 	}
 
 	private void updateSequences() throws SQLException
@@ -250,7 +248,7 @@ public class BackupRestoreService
 							{
 								long targetValue = biggestId != null ? biggestId + 1 : 1;
 								statement.execute(String.format("ALTER SEQUENCE %s RESTART WITH %d;", sequence, targetValue));
-								LOGGER.info("Set sequence {} to value {}", sequence, targetValue);
+								log.info("Set sequence {} to value {}", sequence, targetValue);
 							}
 						}
 					}
@@ -280,13 +278,13 @@ public class BackupRestoreService
 		final Path backupPath = basePath.resolve(IMAGE_PATH_NAME);
 		if(Files.notExists(backupPath))
 		{
-			LOGGER.info("Backup does not contain images");
+			log.info("Backup does not contain images");
 			return;
 		}
 
 		final Path targetPath = Paths.get(webConfigurationProperties.getImageResourcePathForOS());
 
 		FileUtils.copyDirectory(backupPath.toFile(), targetPath.toFile());
-		LOGGER.info("Restored image resources to {}", targetPath);
+		log.info("Restored image resources to {}", targetPath);
 	}
 }

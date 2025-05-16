@@ -3,10 +3,9 @@ package de.thecodelabs.pockettracker.backup.service;
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
 import de.thecodelabs.pockettracker.backup.model.BackupInstance;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -27,12 +26,11 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BackupService
 {
 	public static final String DATABASE_PATH_NAME = "database.json";
 	public static final String IMAGE_PATH_NAME = "images";
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(BackupService.class);
 
 	private final BackupCreateService backupCreateService;
 	private final BackupRestoreService backupRestoreService;
@@ -49,7 +47,7 @@ public class BackupService
 			Files.createDirectories(backupLocationPath);
 		}
 
-		LOGGER.info("Cleaning old backups...");
+		log.info("Cleaning old backups...");
 		deleteOldBackups(basePath);
 
 		backupCreateService.export(backupLocationPath);
@@ -71,7 +69,7 @@ public class BackupService
 		Files.delete(zipPath);
 		FileUtils.deleteDirectory(restoreBasePath.toFile());
 
-		LOGGER.info("Backup restore completed");
+		log.info("Backup restore completed");
 	}
 
 	public List<BackupInstance> getBackups() throws IOException
@@ -112,7 +110,7 @@ public class BackupService
 						}
 						catch(IOException e)
 						{
-							LOGGER.error("Error copy file into zip", e);
+							log.error("Error copy file into zip", e);
 						}
 					});
 		}
@@ -135,7 +133,7 @@ public class BackupService
 			ZipEntry entry;
 			while((entry = zipInputStream.getNextEntry()) != null)
 			{
-				LOGGER.info("Extract: {}", entry.getName());
+				log.info("Extract: {}", entry.getName());
 				final Path targetChildPath = restorePath.resolve(entry.getName());
 				if(!entry.isDirectory())
 				{
@@ -175,7 +173,7 @@ public class BackupService
 			final List<Path> removalBackups = backups.subList(0, backups.size() - backupConfigurationProperties.getKeep());
 			for(Path removalBackup : removalBackups)
 			{
-				LOGGER.info("Remove backup: {}", removalBackup);
+				log.info("Remove backup: {}", removalBackup);
 				FileUtils.deleteDirectory(removalBackup.toFile());
 			}
 		}

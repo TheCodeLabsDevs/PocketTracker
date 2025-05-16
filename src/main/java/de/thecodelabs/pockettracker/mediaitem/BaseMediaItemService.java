@@ -5,8 +5,7 @@ import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.utils.Helpers;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 
@@ -21,10 +20,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
+@Slf4j
 public abstract class BaseMediaItemService<T extends MediaItem>
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BaseMediaItemService.class);
-
 	protected final BaseMediaItemRepository<T> repository;
 	protected final WebConfigurationProperties webConfigurationProperties;
 
@@ -113,7 +111,7 @@ public abstract class BaseMediaItemService<T extends MediaItem>
 		}
 		catch(IOException e)
 		{
-			LOGGER.error("Failed to delete image", e);
+			log.error("Failed to delete image", e);
 		}
 	}
 

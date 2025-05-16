@@ -22,8 +22,7 @@ import de.thecodelabs.pockettracker.show.controller.SeasonInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,10 +37,9 @@ import java.util.Optional;
 @Service
 @ImporterType(APIType.TVDB_V3)
 @RequiredArgsConstructor
+@Slf4j
 public class TVDBv3ImporterService implements ShowImporterService, MovieImporterService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TVDBv3ImporterService.class);
-
 	public static final APIType API_TYPE = APIType.TVDB_V3;
 
 	private static final String ARTWORK_BASE_URL = "https://artworks.thetvdb.com/banners";
@@ -259,7 +257,7 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 			final Optional<de.thecodelabs.pockettracker.episode.model.Episode> existingEpisodeOptional = existingSeason.getEpisodeByNumber(episodeFromApi.getNumber());
 			if(existingEpisodeOptional.isEmpty())
 			{
-				LOGGER.debug("Adding new episode {} to season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+				log.debug("Adding new episode {} to season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
 				existingSeason.addEpisode(episodeFromApi);
 			}
 			else
@@ -269,7 +267,7 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 				existingEpisode.setDescription(episodeFromApi.getDescription());
 				existingEpisode.setFirstAired(episodeFromApi.getFirstAired());
 
-				LOGGER.debug("Updated existing episode {} from season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
+				log.debug("Updated existing episode {} from season {} of show \"{}\"", episodeFromApi.getNumber(), existingSeason.getNumber(), existingSeason.getShow().getName());
 			}
 		}
 
@@ -314,7 +312,7 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 		existingMovie.setDescription(movieFromApi.getDescription());
 		existingMovie.setLengthInMinutes(movieFromApi.getLengthInMinutes());
 		existingMovie.setReleaseDate(movieFromApi.getReleaseDate());
-		LOGGER.debug("Updated existing movie {} from API", existingMovie.getId());
+		log.debug("Updated existing movie {} from API", existingMovie.getId());
 
 		return existingMovie;
 	}

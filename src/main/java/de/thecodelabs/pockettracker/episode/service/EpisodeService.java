@@ -7,6 +7,7 @@ import de.thecodelabs.pockettracker.episode.repository.EpisodeRepository;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.utils.Helpers;
 import de.thecodelabs.utils.io.PathUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class EpisodeService
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(EpisodeService.class);
-
 	private final EpisodeRepository episodeRepository;
 	private final WebConfigurationProperties webConfigurationProperties;
 
@@ -147,7 +147,7 @@ public class EpisodeService
 		}
 		catch(IOException e)
 		{
-			LOGGER.error("Fail to delete poster image", e);
+			log.error("Fail to delete poster image", e);
 		}
 	}
 }

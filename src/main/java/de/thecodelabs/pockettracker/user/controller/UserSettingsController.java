@@ -13,9 +13,7 @@ import de.thecodelabs.pockettracker.utils.toast.Toast;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +29,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/user/settings")
 @RequiredArgsConstructor
+@Slf4j
 public class UserSettingsController
 {
-	private static final Logger logger = LoggerFactory.getLogger(UserSettingsController.class);
-
 	private final UserService userService;
 	private final UserAuthenticationService authenticationService;
 
@@ -55,7 +52,7 @@ public class UserSettingsController
 			}
 			catch(ServletException e)
 			{
-				logger.error("Cannot logout user", e);
+				log.error("Cannot logout user", e);
 			}
 			return "redirect:/";
 		}

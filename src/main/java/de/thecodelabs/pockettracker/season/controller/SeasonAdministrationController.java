@@ -6,9 +6,9 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.factory.ImporterNotConfiguredException;
 import de.thecodelabs.pockettracker.importer.factory.ShowImporterServiceFactory;
+import de.thecodelabs.pockettracker.season.SeasonService;
 import de.thecodelabs.pockettracker.season.model.EpisodesDialogModel;
 import de.thecodelabs.pockettracker.season.model.Season;
-import de.thecodelabs.pockettracker.season.SeasonService;
 import de.thecodelabs.pockettracker.show.controller.EpisodeInfo;
 import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
@@ -19,9 +19,7 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +37,9 @@ import java.util.*;
 @RequestMapping("/season")
 @PreAuthorize("@perm.hasPermission(T(de.thecodelabs.pockettracker.user.model.UserRole).ADMIN)")
 @RequiredArgsConstructor
+@Slf4j
 public class SeasonAdministrationController
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SeasonAdministrationController.class);
-
 	private final SeasonService seasonService;
 	private final UserService userService;
 	private final ShowImporterServiceFactory showImporterServiceFactory;
@@ -156,7 +153,7 @@ public class SeasonAdministrationController
 			try
 			{
 				final List<EpisodeInfo> seasonInfo = showImporterServiceFactory.getImporter(apiIdentifier.getType()).getAllAvailableEpisodeInfo(Integer.parseInt(apiIdentifier.getIdentifier()), season.getNumber());
-				LOGGER.debug(MessageFormat.format("Found {0} episodes for season {1} of show \"{2}\" for api {3}", seasonInfo.size(), season.getNumber(), show.getName(), apiIdentifier.getType()));
+				log.debug("Found {} episodes for season {} of show \"{}\" for api {}", seasonInfo.size(), season.getNumber(), show.getName(), apiIdentifier.getType());
 				episodeInfoByApi.put(apiIdentifier.getType(), seasonInfo);
 			}
 			catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
@@ -196,7 +193,7 @@ public class SeasonAdministrationController
 		try
 		{
 			showImporterServiceFactory.getImporter(apiIdentifier.getType()).updateSeasonFromApi(Integer.parseInt(apiIdentifier.getIdentifier()), season);
-			LOGGER.debug(MessageFormat.format("Updated season {0} of show \"{1}\"", season.getNumber(), show.getName()));
+			log.debug("Updated season {} of show \"{}\"", season.getNumber(), show.getName());
 		}
 		catch(ImportProcessException | IOException | ImporterNotConfiguredException e)
 		{

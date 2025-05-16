@@ -4,8 +4,7 @@ import de.thecodelabs.pockettracker.episode.model.Episode;
 import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.season.model.Season;
 import jakarta.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -18,10 +17,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class SeasonService
 {
-	private static final Logger logger = LoggerFactory.getLogger(SeasonService.class);
-
 	private final SeasonRepository seasonRepository;
 	private final MessageSource messageSource;
 
@@ -41,7 +39,7 @@ public class SeasonService
 			{
 				season.setFilledCompletely(false);
 				seasonRepository.save(season);
-				logger.debug(MessageFormat.format("Updated season {0}: Set missing attribute \"isFilledCompletely\" to false", season.getId()));
+				log.debug("Updated season {}: Set missing attribute \"isFilledCompletely\" to false", season.getId());
 			}
 		}
 	}
