@@ -2,7 +2,6 @@ package de.thecodelabs.pockettracker.configuration;
 
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;

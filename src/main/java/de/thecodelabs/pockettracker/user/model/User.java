@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.user.model;
 
-import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.authentication.ApiTokenAuthentication;
 import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication;
 import jakarta.persistence.*;

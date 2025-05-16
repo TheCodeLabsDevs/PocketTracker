@@ -5,7 +5,6 @@ import de.thecodelabs.pockettracker.user.PasswordValidationException;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

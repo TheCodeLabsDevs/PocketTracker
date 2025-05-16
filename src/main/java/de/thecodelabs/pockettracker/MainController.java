@@ -9,7 +9,6 @@ import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowSortOption;
-import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.user.model.User;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

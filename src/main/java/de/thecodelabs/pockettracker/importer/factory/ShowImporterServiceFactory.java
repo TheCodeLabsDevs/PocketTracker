@@ -3,7 +3,6 @@ package de.thecodelabs.pockettracker.importer.factory;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.importer.ShowImporterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 

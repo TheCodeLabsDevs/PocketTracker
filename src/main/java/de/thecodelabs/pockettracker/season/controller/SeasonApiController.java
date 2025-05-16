@@ -1,12 +1,11 @@
 package de.thecodelabs.pockettracker.season.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.season.SeasonService;
+import de.thecodelabs.pockettracker.season.model.Season;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

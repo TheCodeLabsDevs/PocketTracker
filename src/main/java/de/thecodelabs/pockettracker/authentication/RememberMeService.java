@@ -5,7 +5,6 @@ import de.thecodelabs.pockettracker.user.model.authentication.InternalAuthentica
 import de.thecodelabs.pockettracker.user.service.InternalAuthenticationService;
 import de.thecodelabs.pockettracker.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Service;

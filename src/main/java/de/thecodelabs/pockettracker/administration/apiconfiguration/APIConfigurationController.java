@@ -7,7 +7,6 @@ import de.thecodelabs.pockettracker.utils.WebRequestUtils;
 import de.thecodelabs.pockettracker.utils.beans.BeanUtils;
 import de.thecodelabs.pockettracker.utils.toast.Toast;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
