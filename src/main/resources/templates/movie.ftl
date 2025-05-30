@@ -14,7 +14,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title text-center">${movie.getName()} (${movie.getReleaseDate()?date('yyy-MM-dd')?string["dd.MM.yyyy"]})</h3>
+                <h3 class="card-title text-center">${movie.getName()} <#if movie.getReleaseDate()??>(${movie.getReleaseDate()?date('yyy-MM-dd')?string["dd.MM.yyyy"]})</#if></h3>
 
                 <#if userService.getWatchDateForMovie(currentUser, movie)??>
                     <div class="text-center d-flex align-items-center justify-content-center">
