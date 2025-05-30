@@ -58,6 +58,13 @@
                                     <img src="<@s.url "/image/placeholder_poster.jpg"/>" class="img-fluid w-50"/>
                                 </#if>
                             </@b.col>
+                            <@b.col>
+                                <#if userService.isMovieAdded(currentUser, movie.id)>
+                                    <@b.button url="/user/movies/remove/" + movie.getId() icon="fas fa-check" style="btn-success" classes="mt-4 w-50" label="button.watched"/>
+                                <#else>
+                                    <@b.button url="/user/movies/add/" + movie.getId() icon="fas fa-check" style="btn-outline-success" classes="mt-4 w-50" label="button.watch"/>
+                                </#if>
+                            </@b.col>
                         </@b.row>
                     </div>
 
