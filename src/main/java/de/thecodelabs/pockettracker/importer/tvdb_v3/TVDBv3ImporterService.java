@@ -134,14 +134,28 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 
 	private List<Episode> getEpisodes(TheTvdb tvdb, Integer seriesId, Integer seasonId) throws ImportProcessException, IOException
 	{
-		final Response<EpisodesResponse> episodesResponse = tvdb.series().episodesQuery(seriesId, null, seasonId, null, null, null, null, null, null, generalConfigurationProperties.getLanguage()).execute();
-		final EpisodesResponse body = episodesResponse.body();
-		if(body == null || body.data == null)
-		{
-			throw new ImportProcessException("Episode data from TVDB is null");
-		}
+		int currentPage = 1;
+		int totalPages = 1;
 
-		return body.data;
+		final List<Episode> totalResults = new ArrayList<>();
+		do
+		{
+			final Response<EpisodesResponse> episodesResponse = tvdb.series().episodesQuery(seriesId, null, seasonId, null, null, null, null, null, currentPage, generalConfigurationProperties.getLanguage()).execute();
+			final EpisodesResponse body = episodesResponse.body();
+			if(body == null || body.data == null)
+			{
+				throw new ImportProcessException("Episode data from TVDB is null");
+			}
+			if(body.links != null && body.links.last != null)
+			{
+				totalPages = body.links.last;
+			}
+			currentPage++;
+			totalResults.addAll(body.data);
+		}
+		while(currentPage <= totalPages);
+
+		return totalResults;
 	}
 
 	@Override
