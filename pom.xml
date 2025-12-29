@@ -33,6 +33,7 @@
         <thetvdb-java.version>2.4.0</thetvdb-java.version>
 
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -174,6 +175,15 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <distributionManagement>
