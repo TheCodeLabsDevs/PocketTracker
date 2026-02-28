@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.backup.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationService;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.backup.converter.APIConfigurationConverter;
@@ -29,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.json.JsonMapper;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -65,7 +65,7 @@ public class BackupRestoreService
 	private final UserConverter userConverter;
 	private final APIConfigurationConverter apiConfigurationConverter;
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
 	private final WebConfigurationProperties webConfigurationProperties;
 
@@ -116,7 +116,7 @@ public class BackupRestoreService
 		final Path databasePath = basePath.resolve(DATABASE_PATH_NAME);
 		final BufferedReader bufferedReader = Files.newBufferedReader(databasePath);
 
-		final Database database = objectMapper.reader().readValue(bufferedReader, Database.class);
+		final Database database = jsonMapper.readValue(bufferedReader, Database.class);
 		insertShows(database.shows());
 		insertMovies(database.movies());
 		insertUsers(database.users());

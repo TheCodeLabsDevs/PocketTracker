@@ -1,12 +1,12 @@
 package de.thecodelabs.pockettracker.importer.tvdb_v3;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.authentication.GeneralConfigurationProperties;
 import de.thecodelabs.pockettracker.importer.ImportProcessException;
 import de.thecodelabs.pockettracker.importer.model.MovieSearchItem;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,7 +27,7 @@ public class TVDBv3MovieAPIClient
 	private final APIConfiguration apiConfiguration;
 	private final GeneralConfigurationProperties generalConfigurationProperties;
 
-	private final ObjectMapper mapper = new ObjectMapper();
+	private final JsonMapper mapper = new JsonMapper();
 
 	private String getToken() throws ImportProcessException
 	{
@@ -55,7 +55,7 @@ public class TVDBv3MovieAPIClient
 			}
 
 			final JsonNode loginResponse = mapper.readTree(connection.getInputStream());
-			return loginResponse.get("token").asText();
+			return loginResponse.get("token").asString();
 		}
 		catch(final IOException e)
 		{
@@ -87,8 +87,8 @@ public class TVDBv3MovieAPIClient
 			if(translationOptional.isPresent())
 			{
 				final JsonNode translation = translationOptional.get();
-				name = translation.get("name").asText();
-				description = translation.get("overview").asText();
+				name = translation.get("name").asString();
+				description = translation.get("overview").asString();
 			}
 
 			return Optional.of(new MovieSearchItem(name, description, getReleaseDate(data), data.get("id").asInt(), data.get("runtime").asInt()));
@@ -102,15 +102,15 @@ public class TVDBv3MovieAPIClient
 	private Optional<JsonNode> getTranslationByLanguageLongKey(JsonNode data, TVDBv3SupportedLanguage language)
 	{
 		return StreamSupport.stream(data.get("translations").spliterator(), false)
-				.filter(item -> item.get("language_code").asText().equals(language.getLongKey()))
+				.filter(item -> item.get("language_code").asString().equals(language.getLongKey()))
 				.findFirst();
 	}
 
 	private String getReleaseDate(JsonNode data)
 	{
 		return StreamSupport.stream(data.get("release_dates").spliterator(), false)
-				.filter(item -> item.get("country").asText().equals("global"))
-				.map(item -> item.get("date").asText())
+				.filter(item -> item.get("country").asString().equals("global"))
+				.map(item -> item.get("date").asString())
 				.findFirst().orElse(null);
 	}
 
@@ -127,8 +127,8 @@ public class TVDBv3MovieAPIClient
 			final JsonNode data = responseOptional.get().get("data");
 
 			return StreamSupport.stream(data.get("artworks").spliterator(), false)
-					.filter(item -> item.get("artwork_type").asText().equals("Poster"))
-					.map(item -> ARTWORK_BASE_URL + item.get("url").asText())
+					.filter(item -> item.get("artwork_type").asString().equals("Poster"))
+					.map(item -> ARTWORK_BASE_URL + item.get("url").asString())
 					.toList();
 		}
 		catch(IOException e)
@@ -150,7 +150,7 @@ public class TVDBv3MovieAPIClient
 		final JsonNode response = mapper.readTree(connection.getInputStream());
 		if(response.has("error"))
 		{
-			if(response.get("error").asText().contains("not found"))
+			if(response.get("error").asString().contains("not found"))
 			{
 				return Optional.empty();
 			}

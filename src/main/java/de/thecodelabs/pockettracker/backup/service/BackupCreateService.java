@@ -1,6 +1,5 @@
 package de.thecodelabs.pockettracker.backup.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.APIConfigurationRepository;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIConfiguration;
 import de.thecodelabs.pockettracker.backup.configuration.BackupConfigurationProperties;
@@ -25,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class BackupCreateService
 	private final WebConfigurationProperties webConfigurationProperties;
 	private final BackupConfigurationProperties backupConfigurationProperties;
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
 	@Transactional
 	public void export(Path backupLocationPath) throws IOException
@@ -101,6 +101,6 @@ public class BackupCreateService
 		final Path databasePath = basePath.resolve(DATABASE_PATH_NAME);
 		final BufferedWriter writer = Files.newBufferedWriter(databasePath);
 
-		objectMapper.writer().writeValue(writer, database);
+		jsonMapper.writer().writeValue(writer, database);
 	}
 }
