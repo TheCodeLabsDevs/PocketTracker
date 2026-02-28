@@ -59,7 +59,7 @@ public class TVDBv3MovieAPIClient
 		}
 		catch(final IOException e)
 		{
-			throw new ImportProcessException("Could not login to TVDBv3 API");
+			throw new ImportProcessException("Could not login to TVDBv3 API", e);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class TVDBv3MovieAPIClient
 		}
 		catch(IOException e)
 		{
-			throw new ImportProcessException("Error searching for movie " + idToSearch);
+			throw new ImportProcessException("Error searching for movie " + idToSearch, e);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class TVDBv3MovieAPIClient
 		}
 		catch(IOException e)
 		{
-			throw new ImportProcessException("Error searching for movie " + identifier);
+			throw new ImportProcessException("Error searching for movie " + identifier, e);
 		}
 	}
 

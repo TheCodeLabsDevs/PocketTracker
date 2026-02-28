@@ -72,7 +72,7 @@ public class UserSettingsController
 		{
 			userService.editUser(userService.getCurrentUser(), userForm);
 		}
-		catch(PasswordValidationException e)
+		catch(PasswordValidationException _)
 		{
 			WebRequestUtils.putToast(request, new Toast("toast.validatePassword", BootstrapColor.DANGER));
 			return ReturnValues.REDIRECT_USER_SETTINGS;

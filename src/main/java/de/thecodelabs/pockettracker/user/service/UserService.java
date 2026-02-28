@@ -20,9 +20,9 @@ import de.thecodelabs.pockettracker.user.model.authentication.UserAuthentication
 import de.thecodelabs.pockettracker.user.repository.*;
 import de.thecodelabs.pockettracker.utils.BootstrapColor;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

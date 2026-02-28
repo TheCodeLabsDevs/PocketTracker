@@ -276,7 +276,7 @@ public class ShowAdministrationController
 			service.addApiIdentifier(showId, apiIdentifier);
 			WebRequestUtils.putToast(request, new Toast("toast.api.identifier.added", BootstrapColor.SUCCESS, apiIdentifier.getType()));
 		}
-		catch(IllegalArgumentException e)
+		catch(IllegalArgumentException _)
 		{
 			validation.addError(new FieldError("newApiIdentifier", "type", "", false, new String[]{"show.apiIdentifiers.warning.already.exists"}, new Object[]{apiIdentifier.getType()}, null));
 			WebRequestUtils.putToast(request, new Toast("toast.validation", BootstrapColor.DANGER));

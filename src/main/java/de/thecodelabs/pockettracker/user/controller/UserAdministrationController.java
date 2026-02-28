@@ -52,7 +52,7 @@ public class UserAdministrationController
 			final User user = userService.createUser(userForm);
 			userService.addInternalAuthentication(user, userForm);
 		}
-		catch(PasswordValidationException e)
+		catch(PasswordValidationException _)
 		{
 			return ReturnValues.REDIRECT_ADMIN_USER_ADD;
 		}
@@ -88,7 +88,7 @@ public class UserAdministrationController
 		{
 			userService.editUser(user, userForm);
 		}
-		catch(PasswordValidationException e)
+		catch(PasswordValidationException _)
 		{
 			return "redirect:/users/administration/" + id + "/edit";
 		}

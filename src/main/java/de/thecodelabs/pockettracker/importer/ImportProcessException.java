@@ -6,4 +6,9 @@ public class ImportProcessException extends Exception
 	{
 		super(message);
 	}
+
+	public ImportProcessException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 }

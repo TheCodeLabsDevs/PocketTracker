@@ -228,7 +228,7 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 			{
 				urls.addAll(getImageUrlsByType(identifier, type, language.getKey()));
 			}
-			catch(ImportProcessException e)
+			catch(ImportProcessException _)
 			{
 				// ignore if no artworks found for particular language
 			}

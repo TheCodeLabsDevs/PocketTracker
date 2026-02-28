@@ -42,7 +42,7 @@ public class SecurityConfiguration
 
 	@Order(2)
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+	public SecurityFilterChain filterChain(HttpSecurity http)
 	{
 		http
 				.csrf(Customizer.withDefaults())
@@ -79,7 +79,7 @@ public class SecurityConfiguration
 									}
 									catch(Exception e)
 									{
-										throw new BadCredentialsException("Fail to create Gitlab Authentication");
+										throw new BadCredentialsException("Fail to create Gitlab Authentication", e);
 									}
 								}
 
@@ -93,7 +93,7 @@ public class SecurityConfiguration
 
 	@Order(1)
 	@Bean
-	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception
+	public SecurityFilterChain apiFilterChain(HttpSecurity http)
 	{
 		final ApiKeyAuthFilter filter = new ApiKeyAuthFilter(apiConfigurationProperties.getHeaderName());
 		filter.setAuthenticationManager(authenticationManager);

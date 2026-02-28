@@ -47,7 +47,7 @@ public final class BeanUtils
 				return;
 			}
 		}
-		catch(NoSuchFieldException ignored)
+		catch(NoSuchFieldException _)
 		{
 			return;
 		}
