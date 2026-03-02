@@ -3,27 +3,26 @@ package de.thecodelabs.pockettracker.utils.json;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.utils.WebUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Component;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ser.std.StdSerializer;
 
+@Component
 public class JsonResourcePathSerializer extends StdSerializer<String>
 {
-	@SuppressWarnings("SpringJavaAutowiredMembersInspection")
-	@Autowired
-	private WebConfigurationProperties webConfigurationProperties;
+	private final WebConfigurationProperties webConfigurationProperties;
+	private final String contextPath;
 
-	@Value("${server.servlet.context-path:}")
-	private String contextPath;
-
-	public JsonResourcePathSerializer()
+	public JsonResourcePathSerializer(
+			WebConfigurationProperties webConfigurationProperties,
+			@Value("${server.servlet.context-path:}") String contextPath)
 	{
 		super(String.class);
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+		this.webConfigurationProperties = webConfigurationProperties;
+		this.contextPath = contextPath;
 	}
 
 	@Override
