@@ -2,7 +2,6 @@ package de.thecodelabs.pockettracker.episode.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.season.model.Season;
 import de.thecodelabs.pockettracker.user.model.WatchedEpisode;
 import de.thecodelabs.pockettracker.utils.beans.MergeIgnore;
@@ -15,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

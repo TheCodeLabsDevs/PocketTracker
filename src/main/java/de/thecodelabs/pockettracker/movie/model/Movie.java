@@ -3,7 +3,6 @@ package de.thecodelabs.pockettracker.movie.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.thecodelabs.pockettracker.administration.apiconfiguration.model.APIType;
 import de.thecodelabs.pockettracker.mediaitem.MediaItem;
 import de.thecodelabs.pockettracker.mediaitem.MediaItemImageType;
@@ -21,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

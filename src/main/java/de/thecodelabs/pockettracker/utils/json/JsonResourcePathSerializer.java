@@ -1,16 +1,15 @@
 package de.thecodelabs.pockettracker.utils.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import de.thecodelabs.pockettracker.configuration.WebConfigurationProperties;
 import de.thecodelabs.pockettracker.utils.WebUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 public class JsonResourcePathSerializer extends StdSerializer<String>
 {
@@ -28,7 +27,7 @@ public class JsonResourcePathSerializer extends StdSerializer<String>
 	}
 
 	@Override
-	public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException
+	public void serialize(String s, JsonGenerator jsonGenerator, SerializationContext provider) throws JacksonException
 	{
 		if(WebUtils.isApiRequest())
 		{
