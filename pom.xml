@@ -21,7 +21,7 @@
         <!-- Dependency overrides -->
         <snakeyaml.version>2.6</snakeyaml.version>
 
-        <springdoc-openapi-starter-webmvc-ui.version>3.0.1</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
 
         <freemarker-java8.version>3.0.3</freemarker-java8.version>
         <commons-io.version>2.21.0</commons-io.version>
