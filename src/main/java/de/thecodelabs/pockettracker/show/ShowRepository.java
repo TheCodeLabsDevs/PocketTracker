@@ -23,8 +23,8 @@ public interface ShowRepository extends BaseMediaItemRepository<Show>
 
 	@Query("""
 			SELECT s.id AS showId,
-				   COUNT(DISTINCT se.id) AS seasonCount,
-				   COUNT(e) AS episodeCount
+			    COUNT(DISTINCT se.id) AS seasonCount,
+			    COUNT(e) AS episodeCount
 			FROM Show s
 			LEFT JOIN s.seasons se
 			LEFT JOIN se.episodes e
