@@ -472,7 +472,8 @@ public class UserService
 
 		for(AddedMovie addedMovie : addedMovieList)
 		{
-			userAddedMovieRepository.deleteAddedMovie(addedMovie.getMovie().getId(), addedMovie.getUser().getId());
+			user.getMovies().remove(addedMovie);
+			userAddedMovieRepository.delete(addedMovie);
 		}
 		return true;
 	}
