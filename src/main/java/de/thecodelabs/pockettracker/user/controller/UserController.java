@@ -27,6 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -166,7 +167,7 @@ public class UserController
 		}
 
 		final User user = userService.getCurrentUser();
-		user.getMovies().add(new AddedMovie(user, movieOptional.get(), LocalDate.now()));
+		user.getMovies().add(new AddedMovie(user, movieOptional.get(), LocalDate.now(ZoneId.systemDefault())));
 
 		return ReturnValues.REDIRECT_MOVIES;
 	}

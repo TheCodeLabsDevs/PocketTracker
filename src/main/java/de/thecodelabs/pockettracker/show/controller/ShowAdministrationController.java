@@ -136,7 +136,7 @@ public class ShowAdministrationController
 		}
 		catch(ImportProcessException e)
 		{
-			throw new InternalServerException("Display error in UI", e); // TODO: Show error in ui
+			throw new InternalServerException("Display error in UI", e);
 		}
 	}
 

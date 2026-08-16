@@ -33,19 +33,12 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 		BackupUserModel model = new BackupUserModel();
 		BeanUtils.merge(entity, model);
 
-		model.setAuthentications(entity.getAuthentications().stream().map(e -> {
-			if(e instanceof InternalAuthentication authentication)
-			{
-				return internalAuthenticationConverter.toBean(authentication);
-			}
-			else if(e instanceof GitlabAuthentication authentication)
-			{
-				return gitlabAuthenticationConverter.toBean(authentication);
-			}
-			else
-			{
-				throw new IllegalArgumentException("Authentication Type: " + e.getClass() + " is not supported");
-			}
+		model.setAuthentications(entity.getAuthentications().stream().map(e -> switch(e)
+		{
+			case InternalAuthentication authentication -> internalAuthenticationConverter.toBean(authentication);
+			case GitlabAuthentication authentication -> gitlabAuthenticationConverter.toBean(authentication);
+			default ->
+					throw new IllegalArgumentException("Authentication Type: " + e.getClass() + " is not supported");
 		}).toList());
 		model.setTokens(userTokenConverter.toBeans(entity.getTokens()));
 
@@ -67,19 +60,14 @@ public class UserConverter implements AbstractConverter<BackupUserModel, User>
 		User entity = new User();
 		BeanUtils.merge(bean, entity);
 
-		entity.setAuthentications(bean.getAuthentications().stream().map(model -> {
-			if(model instanceof BackupUserInternalAuthentication authentication)
-			{
-				return internalAuthenticationConverter.toEntity(authentication);
-			}
-			else if(model instanceof BackupUserGitlabAuthentication authentication)
-			{
-				return gitlabAuthenticationConverter.toEntity(authentication);
-			}
-			else
-			{
-				throw new IllegalArgumentException("Authentication Type: " + model.getClass() + " is not supported");
-			}
+		entity.setAuthentications(bean.getAuthentications().stream().map(model -> switch(model)
+		{
+			case BackupUserInternalAuthentication authentication ->
+					internalAuthenticationConverter.toEntity(authentication);
+			case BackupUserGitlabAuthentication authentication ->
+					gitlabAuthenticationConverter.toEntity(authentication);
+			default ->
+					throw new IllegalArgumentException("Authentication Type: " + model.getClass() + " is not supported");
 		}).toList());
 		entity.getAuthentications().forEach(userAuthentication -> userAuthentication.setUser(entity));
 

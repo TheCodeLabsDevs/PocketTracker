@@ -105,7 +105,7 @@ public class EpisodeService
 		episodeRepository.delete(episode);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = IOException.class)
 	public void changeEpisodeImage(EpisodeImageType episodeImageType, Episode episode, MultipartFile file) throws IOException
 	{
 		deleteEpisodeImage(episodeImageType, episode);
@@ -127,7 +127,7 @@ public class EpisodeService
 		file.transferTo(bannerPath);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteEpisodeImage(EpisodeImageType episodeImageType, Episode episode)
 	{
 		if(episode.getImagePath(episodeImageType) == null)

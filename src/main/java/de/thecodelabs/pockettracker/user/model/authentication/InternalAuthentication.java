@@ -6,7 +6,6 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 
 @Entity
 @DiscriminatorValue("internal")
@@ -38,20 +37,6 @@ public class InternalAuthentication extends UserAuthentication
 		this.rememberMeDate = rememberMeDate;
 	}
 
-	public void setRememberMeDate(Date rememberMeDate)
-	{
-		if(rememberMeDate == null)
-		{
-			this.rememberMeDate = null;
-		}
-		else
-		{
-			this.rememberMeDate = rememberMeDate.toInstant()
-					.atZone(ZoneId.systemDefault())
-					.toLocalDateTime();
-		}
-	}
-
 	public String getRememberMeToken()
 	{
 		return rememberMeToken;
@@ -76,13 +61,15 @@ public class InternalAuthentication extends UserAuthentication
 	{
 		if(token == null)
 		{
-			setRememberMeDate((Date) null);
+			setRememberMeDate((LocalDateTime) null);
 			setRememberMeSeries(null);
 			setRememberMeToken(null);
 		}
 		else
 		{
-			setRememberMeDate(token.getDate());
+			setRememberMeDate(token.getDate().toInstant()
+					.atZone(ZoneId.systemDefault())
+					.toLocalDateTime());
 			setRememberMeSeries(token.getSeries());
 			setRememberMeToken(token.getTokenValue());
 		}

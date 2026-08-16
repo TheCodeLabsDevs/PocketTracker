@@ -23,6 +23,7 @@ public class TVDBv3MovieAPIClient
 {
 	private static final String BASE_URL = "https://api.thetvdb.com";
 	private static final String ARTWORK_BASE_URL = "https://artworks.thetvdb.com";
+	public static final String APPLICATION_JSON = "application/json";
 
 	private final APIConfiguration apiConfiguration;
 	private final GeneralConfigurationProperties generalConfigurationProperties;
@@ -36,8 +37,8 @@ public class TVDBv3MovieAPIClient
 			final URL loginUrl = URI.create(BASE_URL + "/login").toURL();
 			final HttpURLConnection connection = (HttpURLConnection) loginUrl.openConnection();
 			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Content-Type", APPLICATION_JSON);
+			connection.setRequestProperty("Accept", APPLICATION_JSON);
 			connection.setRequestProperty("Accept-Language", generalConfigurationProperties.getLanguage());
 			connection.setDoOutput(true);
 
@@ -144,7 +145,7 @@ public class TVDBv3MovieAPIClient
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setRequestProperty("Authorization", "Bearer " + token);
-		connection.setRequestProperty("Accept", "application/json");
+		connection.setRequestProperty("Accept", APPLICATION_JSON);
 		connection.setRequestProperty("Accept-Language", generalConfigurationProperties.getLanguage());
 
 		final JsonNode response = mapper.readTree(connection.getInputStream());

@@ -68,7 +68,7 @@ public abstract class BaseMediaItemService<T extends MediaItem>
 		repository.saveAll(items);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = IOException.class)
 	public void changeImage(MediaItemImageType mediaImageType, MediaItem item, String fileName, InputStream dataStream) throws IOException
 	{
 		deleteImage(mediaImageType, item);

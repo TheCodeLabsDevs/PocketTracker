@@ -47,6 +47,7 @@ public class MovieService extends BaseMediaItemService<Movie>
 	@Override
 	protected void prepareItem(Movie item)
 	{
+		// Nothing to do
 	}
 
 	@Transactional

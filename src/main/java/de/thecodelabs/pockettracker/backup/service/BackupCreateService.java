@@ -22,7 +22,7 @@ import de.thecodelabs.pockettracker.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -37,7 +37,7 @@ import static de.thecodelabs.pockettracker.backup.service.BackupService.DATABASE
 import static de.thecodelabs.pockettracker.backup.service.BackupService.IMAGE_PATH_NAME;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
 public class BackupCreateService
@@ -57,7 +57,7 @@ public class BackupCreateService
 
 	private final JsonMapper jsonMapper;
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void export(Path backupLocationPath) throws IOException
 	{
 		log.info("Start backup...");

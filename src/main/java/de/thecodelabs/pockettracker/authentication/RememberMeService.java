@@ -48,7 +48,9 @@ public class RememberMeService implements PersistentTokenRepository
 
 		final InternalAuthentication authentication = authenticationOptional.get();
 		authentication.setRememberMeToken(tokenValue);
-		authentication.setRememberMeDate(lastUsed);
+		authentication.setRememberMeDate(lastUsed.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDateTime());
 	}
 
 	@Override

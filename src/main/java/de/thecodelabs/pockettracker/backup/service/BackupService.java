@@ -38,7 +38,7 @@ public class BackupService
 
 	public void createBackup() throws IOException
 	{
-		final String backupFolderName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
+		final String backupFolderName = LocalDateTime.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
 		final Path basePath = Paths.get(backupConfigurationProperties.getLocation());
 
 		final Path backupLocationPath = basePath.resolve(backupFolderName);

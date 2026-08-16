@@ -72,7 +72,7 @@ public class MainController
 		model.addAttribute(ModelAttributes.SHOW, show);
 		model.addAttribute(ModelAttributes.IS_HIDDEN, user.isShowHidden(show.getId()));
 
-		if(latestWatchDate != null && latestWatchDate != LocalDate.MIN)
+		if(latestWatchDate != null && !latestWatchDate.equals(LocalDate.MIN))
 		{
 			model.addAttribute(ModelAttributes.LATEST_WATCHED, latestWatchDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 		}
