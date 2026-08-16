@@ -86,8 +86,16 @@ public class ShowService extends BaseMediaItemService<Show>
 		return season;
 	}
 
-	public Integer getTotalNumberOfEpisodes(Show show)
+	public Integer getTotalNumberOfEpisodes(UUID showId)
 	{
+		final Optional<Show> showOptional = getById(showId);
+		if(showOptional.isEmpty())
+		{
+			throw new NotFoundException("Show not found");
+		}
+
+		final Show show = showOptional.get();
+
 		return show.getSeasons().stream()
 				.mapToInt(season -> season.getEpisodes().size())
 				.sum();

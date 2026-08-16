@@ -241,10 +241,10 @@ public class UserService
 		return userForm.getPassword().equals(userForm.getPasswordRepeat());
 	}
 
-	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, Show show)
+	public List<WatchedEpisode> getWatchedEpisodesByShow(User user, UUID showId)
 	{
 		return user.getWatchedEpisodes().stream()
-				.filter(watched -> watched.getEpisode().getSeason().getShow().equals(show))
+				.filter(watched -> watched.getEpisode().getSeason().getShow().getId().equals(showId))
 				.toList();
 	}
 
@@ -335,16 +335,17 @@ public class UserService
 
 	public int getNumberOfCompletedShows(User user)
 	{
-		final List<Show> showsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
+		final List<UUID> showsWithAtLeastOneEpisodeWatched = user.getWatchedEpisodes().stream()
 				.map(watched -> watched.getEpisode().getSeason().getShow())
 				.distinct()
+				.map(Show::getId)
 				.toList();
 
 		int completelyWatchedShows = 0;
-		for(Show show : showsWithAtLeastOneEpisodeWatched)
+		for(UUID showId : showsWithAtLeastOneEpisodeWatched)
 		{
-			final int numberOfWatchedEpisodes = getWatchedEpisodesByShow(user, show).size();
-			if(numberOfWatchedEpisodes == showService.getTotalNumberOfEpisodes(show))
+			final int numberOfWatchedEpisodes = getWatchedEpisodesByShow(user, showId).size();
+			if(numberOfWatchedEpisodes == showService.getTotalNumberOfEpisodes(showId))
 			{
 				completelyWatchedShows++;
 			}
@@ -363,7 +364,7 @@ public class UserService
 	public List<StatisticItem> getGeneralStatistics(User user)
 	{
 		final List<StatisticItem> statisticItems = new ArrayList<>();
-		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows", new Object[]{user.getHiddenShows().size()}, LocaleContextHolder.getLocale()), BootstrapColor.INFO, BootstrapColor.DARK));
+		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows", new Object[]{showRepository.count() - user.getHiddenShows().size()}, LocaleContextHolder.getLocale()), BootstrapColor.INFO, BootstrapColor.DARK));
 		statisticItems.add(new StatisticItem("fas fa-tv", messageSource.getMessage("statistics.general.shows.complete", new Object[]{getNumberOfCompletedShows(user)}, LocaleContextHolder.getLocale()), BootstrapColor.PRIMARY, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("fas fa-folder", messageSource.getMessage("statistics.general.seasons.complete", new Object[]{getNumberOfCompletedSeasons(user)}, LocaleContextHolder.getLocale()), BootstrapColor.SUCCESS, BootstrapColor.LIGHT));
 		statisticItems.add(new StatisticItem("far fa-file", messageSource.getMessage("statistics.general.episodes", new Object[]{user.getWatchedEpisodes().size()}, LocaleContextHolder.getLocale()), BootstrapColor.DARK, BootstrapColor.LIGHT));
@@ -435,18 +436,6 @@ public class UserService
 		{
 			hiddenShowRepository.deleteHiddenShow(hiddenShow.getShow().getId(), hiddenShow.getUser().getId());
 		}
-	}
-
-	public void removeAllWatchedEpisodesFromUser(User user, Show show)
-	{
-		final List<WatchedEpisode> watchedEpisodesByShow = getWatchedEpisodesByShow(user, show);
-		if(watchedEpisodesByShow.isEmpty())
-		{
-			return;
-		}
-
-		watchedEpisodesByShow.forEach(episode ->
-				watchedEpisodeRepository.deleteWatchedEpisode(episode.getEpisode().getId(), episode.getUser().getId()));
 	}
 
 	@Transactional
