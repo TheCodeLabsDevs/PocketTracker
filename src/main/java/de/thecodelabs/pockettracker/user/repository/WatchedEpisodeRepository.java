@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface WatchedEpisodeRepository extends JpaRepository<WatchedEpisode, WatchedEpisode.WatchedEpisodeId>
@@ -15,4 +16,14 @@ public interface WatchedEpisodeRepository extends JpaRepository<WatchedEpisode, 
 	@Modifying
 	@Query("DELETE FROM WatchedEpisode episode WHERE episode.episodeId = ?1 and episode.userId = ?2")
 	void deleteWatchedEpisode(@Param("episodeId") UUID episodeId, @Param("userId") UUID userId);
+
+	@Query("""
+			SELECT we.episode.season.show.id AS showId,
+				   MAX(we.watchedAt) AS lastWatched,
+				   COUNT(we) AS watchedCount
+			FROM WatchedEpisode we
+			WHERE we.userId = :userId
+			GROUP BY we.episode.season.show.id
+			""")
+	List<ShowWatchStats> findWatchStatsByUser(@Param("userId") UUID userId);
 }

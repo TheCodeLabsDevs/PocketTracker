@@ -14,7 +14,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "appuser_watched_episodes")
+@Table(name = "appuser_watched_episodes",
+		indexes = @Index(name = "idx_watched_episodes_user_date",
+				columnList = "user_id, watched_at"))
 @IdClass(WatchedEpisode.WatchedEpisodeId.class)
 @Getter
 @NoArgsConstructor

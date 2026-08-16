@@ -15,12 +15,12 @@
                     ${show.getName()}
                 </p>
                 <p class="card-text">
-                   ${show.getSeasons()?size} <@b.localize "index.seasons"/> - ${showService.getTotalNumberOfEpisodes(show)} <@b.localize "index.episodes"/> <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if>
+                   ${seasonCounts[show.getId().toString()]!0} <@b.localize "index.seasons"/> - ${episodeCounts[show.getId().toString()]!0} <@b.localize "index.episodes"/> <#if show.getFinished()?? && show.getFinished()><i class="fas fa-flag-checkered"></i></#if>
                 </p>
 
                 <div class="mb-4">
-                    <#assign numberOfWatchedEpisodes=userService.getWatchedEpisodesByShow(currentUser, show)?size/>
-                    <#assign totalNumberOfEpisodes=showService.getTotalNumberOfEpisodes(show)/>
+                    <#assign numberOfWatchedEpisodes=watchedCounts[show.getId().toString()]!0/>
+                    <#assign totalNumberOfEpisodes=episodeCounts[show.getId().toString()]!0/>
                     <@progessBar numberOfWatchedEpisodes totalNumberOfEpisodes/>
                 </div>
 

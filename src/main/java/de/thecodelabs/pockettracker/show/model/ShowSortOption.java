@@ -8,18 +8,20 @@ import org.springframework.context.MessageSourceResolvable;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Getter
 public enum ShowSortOption implements MessageSourceResolvable
 {
-	NAME((shows, user) -> shows
+	NAME((shows, lastWatchDates) -> shows
 			.sorted(Comparator.comparing(s -> s.getName().toLowerCase()))
 			.toList()),
-	LAST_WATCHED((shows, user) -> shows
-			.sorted(Comparator.comparing((Show show) -> getLatestWatchDate(show, user))
-					.thenComparing(Show::getName)
-					.reversed())
+	LAST_WATCHED((shows, lastWatchDates) -> shows
+			.sorted(Comparator.comparing((Show show) -> lastWatchDates.getOrDefault(show.getId(), LocalDate.MIN))
+					.reversed()
+					.thenComparing(Show::getName))
 			.toList());
 
 	private final ShowSort sorter;
@@ -37,15 +39,13 @@ public enum ShowSortOption implements MessageSourceResolvable
 
 	public interface ShowSort
 	{
-		List<Show> sort(Stream<Show> shows, User user);
+		List<Show> sort(Stream<Show> shows, Map<UUID, LocalDate> lastWatchDates);
 	}
 
 	public static LocalDate getLatestWatchDate(Show show, User user)
 	{
-		return show.getSeasons().stream()
-				.flatMap(season -> season.getEpisodes().stream())
-				.flatMap(episode -> episode.getWatchedEpisodes().stream())
-				.filter(watchedEpisode -> watchedEpisode.getUser().equals(user))
+		return user.getWatchedEpisodes().stream()
+				.filter(watchedEpisode -> watchedEpisode.getEpisode().getSeason().getShow().equals(show))
 				.map(WatchedEpisode::getWatchedAt)
 				.max(LocalDate::compareTo).orElse(LocalDate.MIN);
 	}

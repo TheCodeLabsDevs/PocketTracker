@@ -9,6 +9,7 @@ import de.thecodelabs.pockettracker.show.model.APIIdentifier;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.user.model.HiddenShow;
 import de.thecodelabs.pockettracker.user.model.User;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,18 @@ import java.util.UUID;
 public class ShowService extends BaseMediaItemService<Show>
 {
 	private final MessageSource messageSource;
+	private final ShowRepository showRepository;
 
 	public ShowService(ShowRepository repository, WebConfigurationProperties webConfigurationProperties, MessageSource messageSource)
 	{
 		super(repository, webConfigurationProperties);
 		this.messageSource = messageSource;
+		this.showRepository = repository;
+	}
+
+	public List<Show> getAllForOverview(@Nullable String searchText)
+	{
+		return showRepository.findAllForOverview(searchText);
 	}
 
 	public List<Show> getAllFavoriteByUser(String name, User user)

@@ -5,6 +5,8 @@ import de.thecodelabs.pockettracker.exceptions.NotFoundException;
 import de.thecodelabs.pockettracker.movie.MovieService;
 import de.thecodelabs.pockettracker.movie.model.Movie;
 import de.thecodelabs.pockettracker.season.model.Season;
+import de.thecodelabs.pockettracker.show.ShowCounts;
+import de.thecodelabs.pockettracker.show.ShowRepository;
 import de.thecodelabs.pockettracker.show.ShowService;
 import de.thecodelabs.pockettracker.show.model.Show;
 import de.thecodelabs.pockettracker.show.model.ShowFilterOption;
@@ -50,6 +52,7 @@ public class UserService
 	private final GitlabAuthenticationRepository gitlabAuthenticationRepository;
 
 	private final ShowService showService;
+	private final ShowRepository showRepository;
 	private final MessageSource messageSource;
 
 	private final HiddenShowRepository hiddenShowRepository;
@@ -519,20 +522,49 @@ public class UserService
 
 		final User user = getCurrentUser();
 
-		final List<Show> shows = showService.getAll(searchText);
-		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user);
+		final List<Show> shows = showService.getAllForOverview(searchText);
+
+		final Map<UUID, LocalDate> lastWatchDates = new HashMap<>();
+		final Map<UUID, Long> watchedCounts = new HashMap<>();
+		for(ShowWatchStats stats : watchedEpisodeRepository.findWatchStatsByUser(user.getId()))
+		{
+			lastWatchDates.put(stats.getShowId(), stats.getLastWatched());
+			watchedCounts.put(stats.getShowId(), stats.getWatchedCount());
+		}
+
+		final Map<UUID, Long> seasonCounts = new HashMap<>();
+		final Map<UUID, Long> episodeCounts = new HashMap<>();
+		for(ShowCounts counts : showRepository.findSeasonAndEpisodeCounts())
+		{
+			seasonCounts.put(counts.getShowId(), counts.getSeasonCount());
+			episodeCounts.put(counts.getShowId(), counts.getEpisodeCount());
+		}
+
+		final Set<UUID> incompleteSeasonShowIds = new HashSet<>(showRepository.findIdsWithIncompleteSeason());
+
+		Stream<Show> filteredShows = filterOption.getFilter().filter(shows, user, watchedCounts, episodeCounts, incompleteSeasonShowIds);
 		if(isFalse(showHiddenShows))
 		{
 			filteredShows = filteredShows.filter(show -> !user.isShowHidden(show.getId()));
 		}
-		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, user);
+		final List<Show> sortedShows = sortOption.getSorter().sort(filteredShows, lastWatchDates);
 
 		model.addAttribute("shows", sortedShows);
+		model.addAttribute("seasonCounts", convertMapKeyToString(seasonCounts));
+		model.addAttribute("episodeCounts", convertMapKeyToString(episodeCounts));
+		model.addAttribute("watchedCounts", convertMapKeyToString(watchedCounts));
 		model.addAttribute("showHiddenShows", showHiddenShows);
 		model.addAttribute("currentFilterOption", filterOption);
 		model.addAttribute("currentSortOption", sortOption);
-		model.addAttribute("numberOfAllShows", showService.getAll(null).size());
+		model.addAttribute("numberOfAllShows", searchText == null || searchText.isEmpty() ? shows.size() : showRepository.count());
 		model.addAttribute("currentPage", "Meine Serien");
+	}
+
+	private static Map<String, Long> convertMapKeyToString(Map<UUID, Long> counts)
+	{
+		final Map<String, Long> result = new HashMap<>();
+		counts.forEach((key, value) -> result.put(key.toString(), value));
+		return result;
 	}
 
 	public void prepareMoviesModel(Model model, String searchText)
