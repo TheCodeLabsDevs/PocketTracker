@@ -48,7 +48,7 @@
                     <div class="col-12 col-md-8 mt-3 mt-md-0">
                         <div class="row">
                             <@showMacros.factItem "fas fa-folder" show.getSeasons()?size "factItem.seasons"/>
-                            <@showMacros.factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show) "factItem.episodes"/>
+                            <@showMacros.factItem "fas fa-film" showService.getTotalNumberOfEpisodes(show.getId()) "factItem.episodes"/>
                             <@showMacros.factItem "fas fa-hourglass" showService.getTotalPlayTime(show) "factItem.duration.minutes"/>
                         </div>
 
