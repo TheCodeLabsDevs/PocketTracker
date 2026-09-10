@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>25</java.version>
-        <jlibs.version>4.3.0</jlibs.version>
+        <jlibs.version>4.7.0</jlibs.version>
 
         <!-- Dependency overrides -->
         <snakeyaml.version>2.7</snakeyaml.version>
