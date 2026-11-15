@@ -73,20 +73,29 @@ public class TVDBv3ImporterService implements ShowImporterService, MovieImporter
 	}
 
 	@Override
-	public List<ShowSearchItem> searchForShow(String search) throws ImporterNotConfiguredException, ImportProcessException, IOException
+	public List<ShowSearchItem> searchForShow(String idToSearch) throws ImporterNotConfiguredException, ImportProcessException, IOException
 	{
-		final TheTvdb tvdb = createApiClient();
-
-		final Response<SeriesResultsResponse> response = tvdb.search().series(search, null, null, null, generalConfigurationProperties.getLanguage()).execute();
-		final SeriesResultsResponse body = response.body();
-		if(body == null || body.data == null)
+		final Integer id;
+		try
 		{
-			throw new ImportProcessException("Search request returned invalid data");
+			id = Integer.valueOf(idToSearch.trim());
+		}
+		catch(NumberFormatException _)
+		{
+			return List.of();
 		}
 
-		return body.data.stream()
-				.map(series -> new ShowSearchItem(series.seriesName, series.firstAired, series.id))
-				.toList();
+		final TheTvdb tvdb = createApiClient();
+
+		final Response<SeriesResponse> response = tvdb.series().series(id, generalConfigurationProperties.getLanguage()).execute();
+		final SeriesResponse body = response.body();
+		if(!response.isSuccessful() || body == null || body.data == null)
+		{
+			return List.of();
+		}
+
+		final Series series = body.data;
+		return List.of(new ShowSearchItem(series.seriesName, series.firstAired, series.id));
 	}
 
 	@Override

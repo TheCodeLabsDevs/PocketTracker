@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ShowImporterService
 {
-	List<ShowSearchItem> searchForShow(String search) throws ImporterNotConfiguredException, ImportProcessException, IOException;
+	List<ShowSearchItem> searchForShow(String idToSearch) throws ImporterNotConfiguredException, ImportProcessException, IOException;
 
 	Show createShow(String identifier) throws ImporterNotConfiguredException, IOException, ImportProcessException;
 
